@@ -60,7 +60,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
    - **Current holdings:** the value (the page's biggest number) and the overall return; the block opens Portfolio.
    - **Products:** Mutual funds (240+ funds) · Equity F&O (0 slippage) · Commodities (0 brokerage, "New").
 3. **Feed** on a rounded sheet over the summary area (radius 32 at the top), sections 32 apart:
-   - **Do more with Lemonn:** Trade ideas · IPO ("8 new") · Watchlist (count) · Refer & earn ("New").
+   - **Do more with Lemonn** (no heading — the four shortcuts start the feed): Trade ideas · IPO ("8 new") · Watchlist (count) · Refer & earn ("New").
    - **Top movers:** chips Top gainers / Top losers / Under ₹100 → two rows of stock cards (logo, symbol, price,
      change). View all.
    - **Watchlist:** the user's watchlists (name, stock count). New watchlist.
@@ -138,6 +138,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 
 ### Changelog
 
+- 2026-11-01 — Do more with Lemonn: heading removed; the four shortcuts start the feed on their own. Shortcut cards have no top padding and a rounded (12) hover; the count / "New" still sits over the icon (the card no longer clips).
 - 2026-10-23 — the six Under ₹100 stocks (IDEA, YESBANK, SOUTHBANK, SUZLON, NHPC, IRFC) show their real logos — added
   to the design system (`@l3/assets/company-logos`, now 56), so no movers fall back to initials.
 - 2026-10-23 — Top movers show real Indian stock data: gainers / losers / under ₹100 come from the company catalogue
@@ -451,11 +452,10 @@ import styles from './Home.module.css'
 export function Shortcuts({ onOpen }: { onOpen?: (id: string) => void }) {
   return (
     <Stack as="section" gap="16" aria-label={t('shortcuts.title')}>
-      <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('shortcuts.title')} /></Inset>
       <Inset paddingInline="16" paddingBlock="00">
         <Grid columns={4} gap="00">
           {shortcuts.map((s) => (
-            <Card key={s.id} variant="flat" padding="none" onClick={() => onOpen?.(s.id)}>
+            <Card key={s.id} variant="flat" padding="none" className={styles.shortcutCard} onClick={() => onOpen?.(s.id)}>
               <span className={styles.shortcut}>
                 <span className={styles.shortcutIcon}>
                   <span className={styles.shortcutCircle} aria-hidden="true"><Icon icon={s.icon} size={24} /></span>
@@ -712,8 +712,13 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
   flex-direction: column;
   align-items: center;
   gap: var(--l3-spacing-08);
-  padding-top: var(--l3-spacing-12); /* room for the count / "New" that sits 8 over the icon (the card clips) */
   text-align: center;
+}
+
+/* The flat card rounded (so its hover grey has rounded corners) and not clipping, so the count / "New" can sit over its top edge. */
+.shortcutCard[data-variant='flat'][data-padding='none'] {
+  overflow: visible;
+  border-radius: var(--l3-radius-12);
 }
 
 .shortcutIcon {
@@ -18139,6 +18144,7 @@ export function DashEntry({ label, ariaLabel, onClick }: DashEntryProps) {
 
 .orb[data-size='lg'] { --orb-box: var(--l3-size-96); }
 .orb[data-size='md'] { --orb-box: var(--l3-size-64); }
+.orb[data-size='compact'] { --orb-box: var(--l3-size-40); }
 .orb[data-size='sm'] { --orb-box: var(--l3-size-32); }
 
 /* The art is drawn at 100 and scaled to the box. */
@@ -18280,7 +18286,7 @@ import orbFill from './assets/orb-fill.svg'
 import orbRing from './assets/orb-ring.svg'
 import styles from './DashOrb.module.css'
 
-export type DashOrbSize = 'sm' | 'md' | 'lg'
+export type DashOrbSize = 'sm' | 'compact' | 'md' | 'lg' // 32 · 40 · 64 · 96
 
 /**
  * DASH's mascot — the lime ring with two leaves (Figma "Logo" / "BotIcon", the 100 × 100 vector component), drawn from

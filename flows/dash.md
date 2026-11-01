@@ -10,8 +10,8 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash · machine
 
 | Id | Screen | Figma | Taps go to | Note |
 |---|---|---|---|---|
-| `dash-02` | DASH landing | [5612:81961](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-81961) | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | From the DASH pill in the Stocks home top bar (stocks-01; first visit: the coach mark, stocks-08). Back returns home. Set Trading Rules opens the rules chat; Create Custom Strategy is another flow (not designed yet). ☰ opens your rules. |
-| `dash-28` | DASH home · returning user | — | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | For someone who has used DASH before (live app: rules only — here rules, indicators and strategies). No explaining again: their work first — Created with DASH (count · Manage), a sideways row of their latest indicators and rules with kind and status (tap: carry on in its chat), suggestions from what they have, and the field to ask or change anything. The prototype setting “DASH home” shows this on the landing too. |
+| `dash-02` | DASH home | [5612:81961](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-81961) | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | From the DASH pill in the Stocks home top bar (stocks-01; first visit: the coach mark, stocks-08). Follows the prototype setting User: New user → the landing (DASH AI · BETA in the top bar, the three build cards: Indicator, Trading rules, Strategy); Returning user → their home (as dash-28). Back returns home. The history button opens Past chats. |
+| `dash-28` | DASH home · returning user | — | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | For someone who has used DASH before (prototype setting User → Returning user; New user shows the landing, dash-02). No explaining again: the still orb and “What do you want to create today?”, the Rule · Indicator · Strategy pills (each with a count of what they made), then a sideways row of the picked kind — the Create card first, their latest three (tap: the details sheet), View all. Under it, Pick up where you left off (drafts, if they have any). Past chats: the history button in the top bar. The field to ask or change anything; typing shows suggestions. |
 | `dash-03` | Rules · what to set | [5612:40261](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40261) | `dash-02`, `dash-14`, `dash-04` | Figma “DASH AI - better layout” 2 (6494:30374): the chat’s empty state — the same screen as the landing and the conversation; the body pushes in from the landing while the background and the bar stay. Example rows drift sideways. A chip (or typing + Send) sends the message: it flies up into the chat as the greeting and examples fade away. History opens your rules. |
 | `dash-26` | Rules · typing | [6494:30768](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6494-30768) | `dash-02`, `dash-14`, `dash-04` | Figma “DASH AI - better layout” 3.1 (file 9r61YQp7QQZAQovDyz8hLF): the input tapped — heading and examples fold away, the orb stays centred, the input turns green, the keyboard rises and the background ends above it (300 ms). Tap the body to go back. |
 | `dash-04` | Thinking | [5612:40517](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40517) | `dash-02`, `dash-14`, `dash-05` | Moves on by itself after 1.6 s in the prototype (the real app: when DASH replies). |
@@ -29,7 +29,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash · machine
 | `dash-15` | Delete rule? | [5612:42250](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42250) | `dash-02`, `dash-14`, `dash-16` | Over the current Active rules (Figma shows an older list with Active / Paused tabs behind it). |
 | `dash-16` | Rule deleted | [5612:42455](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42455) | `dash-02`, `dash-17` | The list behind already has 3 rules. |
 | `dash-17` | Active rules · after delete | [5612:42076](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42076) | `dash-02`, `dash-15`, `dash-03`, `dash-20`, `fno-07`, `dash-24`, `dash-06` | Not a Figma frame: the list once the sheet closes (3 rules). |
-| `dash-30` | Past chats | — | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | A tall bottom sheet over DASH (here over the home): from the history button in the top bar, View all on Pick up where you left off, or a chat’s ⋮ → Past chats. Every chat by day, newest first; a row closes the sheet and opens its chat (rule → the rule preview, indicator → the ready indicator). |
+| `dash-30` | Past chats | — | `dash-03`, `stocks-01`, `dash-14`, `dash-20`, `dash-06`, `dash-24`, `fno-07` | A tall bottom sheet over DASH (here over the home): from the history button in the top bar, or a chat’s ⋮ → Past chats. Every chat by day, newest first; a row closes the sheet and opens its chat (rule → the rule preview, indicator → the ready indicator). |
 | `dash-20` | Indicator · what to show | — | `dash-14`, `dash-02`, `dash-21`, `dash-22`, `dash-23`, `dash-24`, `dash-25`, `dash-27` | Third option on the DASH landing. Empty chat: example prompts; a chip or typed text flies up and DASH reads it. |
 | `dash-21` | Indicator · which chart | — | `dash-14`, `dash-02`, `dash-21`, `dash-22`, `dash-23`, `dash-24`, `dash-25`, `dash-27` | DASH asks only what the prompt didn’t say: the chart… (only for “…on 15-min candles”; then it builds) |
 | `dash-22` | Indicator · which timeframe | — | `dash-14`, `dash-02`, `dash-21`, `dash-22`, `dash-23`, `dash-24`, `dash-25`, `dash-27` | …and the timeframe. (only for “…on Nifty 50”.) |
@@ -45,21 +45,22 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash · machine
 > the Figma links and the screens in this folder — without reading the rest of the repo.
 >
 > **Building it? Go through [CHECKLIST.md](CHECKLIST.md) line by line** — the small details (background, motion,
-> shapes, which prototype version to build) that are easy to miss.
+> shapes) that are easy to miss.
 
 - **Prototype:** https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash · one screen: `#/dash-03`
 - **Figma:** [DASH AI - main flow](https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11491-7726) (F&O dev
   handoff file) — an **old design without library components or styles**. Rebuilt with L3 components and tokens, plus
   DASH's **own chat style** (orb, glow background, chat input, chips, rule card), which is different from the rest of
   the app on purpose.
-- **Status:** ✅ · last updated 2026-10-22
+- **Status:** ✅ final, ready for dev · last updated 2026-11-01
 - **Entry:** the DASH pill in the **Stocks home** top bar (`stocks-01`; first visit: the coach mark, `stocks-08`) · **Exit:** back → Stocks home
 
 ### Screens
 
 | Id | Screen | Figma | What it shows / when |
 |---|---|---|---|
-| `dash-02` | DASH landing | 5612:81961 | Orb, "Hi Rohan!", what DASH can build, in this order: Create Custom Indicator · Set Trading Rules · Create Custom Strategy; ☰ = your rules |
+| `dash-02` | DASH home | 5612:81961 | Follows the setting **User**: New user → the landing (orb, "Hi Rohan!", Create Custom Indicator · Set Trading Rules · Create Custom Strategy); Returning user → the returning home (as `dash-28`) |
+| `dash-28` | DASH home · returning user | — | Still orb + “What do you want to create today?”, Rule · Indicator · Strategy pills with counts, the picked kind's row (Create card, latest 3, View all), Pick up where you left off, the field |
 | `dash-03` | Rules · what to set | 5612:40261 | Greeting, orb, example prompts (2 rows, scroll sideways), chat input |
 | `dash-04` | Thinking | 5612:40517 | The user's message, "Understanding your request…" with pulsing dots |
 | `dash-05` | DASH asks the limit | 5612:40650 | "Got it!" + a question card (₹2,000 / ₹5,000 / ₹10,000 / type your answer) in the input's place |
@@ -83,6 +84,29 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash · machine
 | `dash-25` | Indicator · saved | — | The preview card closes; DASH confirms it was saved and offers View indicator |
 | `dash-30` | Past chats (sheet) | — | A bottom sheet over DASH: opens at half the screen, grows tall when the list is scrolled / swiped up. Every chat by day, newest first: title + when (drafts: green “Draft · Edited …”); no kind — a chat can make mixed things. Tap a row → its chat; hold → Delete this chat → confirmation. Setting “Past chats: Empty” → L3 empty state |
 
+### The home: new user and returning user
+
+Two homes, picked by who the user is (prototype setting **User**; the app: whether they've made anything with DASH).
+Every other home version that was tried is in `archive/dash-home-versions/` (not built).
+
+- **New user — the landing** (`screens/Landing.tsx`). Top bar: back · “DASH AI” + BETA tag in the middle · history ·
+  Your creations. Orb, “Hi Rohan!”, “Let me know what you would like to do today?”, CHOOSE WHAT TO BUILD and three
+  `BuildOption` cards (Create Custom Indicator · Set Trading Rules · Create Custom Strategy). No field.
+- **Returning user — their home** (`screens/ReturningHome.tsx`), top to bottom:
+  1. The still orb (compact) and “What do you want to create today?” (32 under the orb).
+  2. **Rule · Indicator · Strategy** pills (`SlidingPills`, full width, 48 tall, Label/14). Each unpicked pill shows a
+     count of how many of that kind the user made (none for 0) — always on.
+  3. The picked kind's **row** (scrolls sideways): the Create card first (dashed, says what a rule / indicator /
+     strategy is; a tap starts that chat with the opening typed), then their latest 3 of that kind (kind ›, status,
+     name; a tap opens the details sheet), then View all (→ Your creations on that tab). Nothing made yet → three
+     “Try” examples instead. Every card is the Create card's height, so the row doesn't jump between kinds.
+  4. **Pick up where you left off** (`ResumeDrafts`) — only when they have unsaved chats; under the row. No View all:
+     every chat is in Past chats (the history button in the top bar).
+  5. The field (“Describe a rule…”, follows the pill). Typing folds 1–4 away and shows live suggestions (`FirstAsk`).
+- Prototype settings: **User** (new / returning) · **Made so far** (rules / indicators / both) · **Has past chats**
+  (one switch, **off by default**: off = the Past chats empty state and no drafts on the home; on = the sample history
+  and "Pick up where you left off").
+
 ### Navigation
 
 ```
@@ -96,7 +120,8 @@ dash-14 Delete ─▶ dash-15 ─Yes─▶ dash-16 ─Okay─▶ dash-17 · No �
 home / empty chat top bar: history ─▶ Past chats sheet (dash-30) · Your creations ─▶ dash-14
 Past chats sheet: a row ─▶ its chat · hold a row ─▶ Delete this chat ─▶ Delete this chat? ─Yes─▶ back to the sheet, row gone
 a started chat's top bar: ⋮ ─▶ dropdown: Past chats ─▶ dash-30 · Your creations ─▶ dash-14 · Delete this chat ─▶ Delete this chat? ─Yes─▶ home
-home Pick up where you left off: a card ─▶ its chat · View all ─▶ dash-30 · (compact card) hold ─▶ Delete this draft?
+home Pick up where you left off: a card ─▶ its chat · hold ─▶ Delete this draft? (no View all — Past chats is the history button)
+returning home: a pill ─▶ that kind's row · Create card ─▶ its chat with the opening typed · a creation ─▶ details sheet · View all ─▶ dash-14 (that kind's tab)
 
 dash-02 Create Custom Indicator ─▶ dash-20 ─prompt─▶ dash-21 ─chart─▶ dash-22 ─timeframe─▶ dash-23 ─built─▶ dash-24
 dash-24 Modify ─▶ DASH asks for a manual change ─send─▶ same preview + Modify / Save indicator · Save indicator ─▶ dash-25
@@ -115,9 +140,11 @@ dash-25 View indicator ─▶ fno-06 Scalper (Indicators sheet open, saved DASH 
   footer line ("Stepped in **3 times** this month"), `strong` the bold part.
 - `PastChat { id, kind: 'rule' | 'indicator', title, day, time, saved, edited? }` — chat history (Past chats, dash-30).
   `saved` = the rule / indicator the chat built was saved. Newest first.
-- **Pick up where you left off** (home, setting "Resume chats") = `pastChats` where `saved === false` only
+- **Pick up where you left off** (home, setting "Has past chats") = `pastChats` where `saved === false` only
   (`homeDrafts` is derived from them). A chat whose creation was saved is **never** shown upfront: the creation is in
-  Your creations and the chat stays in Past chats. No unsaved chats → no section (the home's centre-stage layout).
+  Your creations and the chat stays in Past chats. No unsaved chats → no section. **✕** at the right of its header
+  (Ghost Small, icon only) closes the whole section for the rest of the user's session (app: until the app restarts;
+  prototype: sessionStorage `dash:resume-closed`). The drafts stay in Past chats.
 - First name for greetings comes from the app's user (`Rohan` — fictional; Figma's "Samaira" isn't used).
 
 ### Components
@@ -134,6 +161,7 @@ dash-25 View indicator ─▶ fno-06 Scalper (Indicators sheet open, saved DASH 
 | Question | DASH `QuestionCard` | Radius 16 card: question + ✕ (L3 Ghost), numbered rows (24 disc), the pick gets a filled tick, dashed "Type your answer" row |
 | Rule card | DASH `RuleCard` + `BacktestStrip` | Orb sm + name, dashed line, value chip (preview) or 2-line description + chevron (→ read more); strip tinted by result |
 | Landing options | DASH `BuildOption` | Icon tile 56 (grey), name Heading/14, one line Label/12, chevron; DASH green edge at 50% |
+| Returning home | `screens/ReturningHome` + `SlidingPills` + `ExplainCreateCard` + `ResumeDrafts` | Pills 48 tall, Label/14, a count on each unpicked pill; Create card dashed (6 on 4 off) with a one-line “what it is”; creation cards kind ›, status, name |
 | Entry pill | shared `DashEntry` (src/shared/ui/dash) | Orb + "DASH" on a white-to-lime fill, green-to-lime edge; lives in the Stocks home top bar |
 | Sheets | L3 `BottomSheet` (via `Sheet`), `BottomSheetHeader`, `ButtonGroup` (horizontal for 2) | Read more · Rule created (L3 Spot success + confetti) · Delete? · Deleted |
 | Rules list | L3 `Card` (filled footer) + `ListCell` + `Avatar` (initial) + `Switch`; Delete = Tertiary Small | Create New = Large primary in the dock |
@@ -182,6 +210,7 @@ dash-25 View indicator ─▶ fno-06 Scalper (Indicators sheet open, saved DASH 
 - An **AI accent family** (DASH green `#50c83e`, glow lime / yellow / green) — local tokens `--app-dash-*`.
 - No **menu / dropdown** component — the chat's ⋮ dropdown is L3 ListCell rows on a raised surface (`components/ChatMenu`, local token `--app-dash-menu-width`).
 - SectionHeader: no **icon** slot before the title (“Your creations” puts the icon in the title).
+- SectionHeader: no **close (✕)** action — "Pick up where you left off" puts an L3 Ghost Small icon button beside it.
 - ListCell: a tappable card has no **flat** option (no drop shadow) — Past chats overrides it locally.
 - Actionbar: no **see-through** option for decorative backgrounds (`DashBar` clears its surface and hairline).
 - **Chat** components: chat input, message, quick-reply chip, prompt chip, question card.
@@ -233,6 +262,44 @@ screen (needs the mascot artwork), and the live landing's active-rules carousel.
 
 ### Changelog
 
+- 2026-11-01 — **Past chats: one setting, off by default; ✕ on Pick up where you left off.** "Resume chats" and "Has
+  past chats" were two switches for the same thing: now only **Has past chats** (default off). The resume section's
+  header has a ✕ on the right that hides the section for the session (switching the setting on again brings it back
+  in the prototype). L3 gap: SectionHeader has no close action, so the ✕ is an L3 Ghost Small icon button beside it.
+- 2026-11-01 — **Final for dev: V18 only.** The DASH version setting and every other home are gone (archived in
+  `archive/dash-home-versions/`, snapshot of `2ef504d`, with a table of which files each version used). Two homes:
+  new user = the landing, returning user = `screens/ReturningHome` (was `ReturningV2` + the V18 flags). Pill counts are
+  always on (setting removed); pill icons, the per-version settings and the floating version switcher are removed.
+  Pick up where you left off moved **under** the creations row and lost its View all (Past chats = the history
+  button). Resume chats is on by default. Unused CSS, copy keys (153) and `--app-dash-*` tokens (24) removed; the
+  versioned copy keys renamed (`home2.* / home3.* / home15.greeting / home18.about.*` → `home.*`).
+
+- 2026-10-31 — **V20 · Tiles** (id '24', new and returning users alike; `screens/HomeTiles`): "How can I help you trade today?" (centred), three Create tiles in a sideways row that runs past the screen's edge (V19's card as a tile: dashed outline, round solid green icon, "Create a rule · Set a limit, DASH holds you to it"; 152 wide, `--app-dash-v20-tile`), Your creations as on V3 · Dock (sideways row of the three most active, details sheet, View all card), the chat field at the bottom; the content is centred on the page. A tile types "Create a … that " with suggestions over the field (the rest fades). On entry the question, each tile and Your creations rise in, 200ms apart. In the floating switcher with V18 and V19.
+- 2026-10-31 — V19 · Greeting: the cards rise in from below (the scale pop is archived as `.pop`), with V18's dashed outline (6 on 4 off, still; `BuildOption` compact draws it). A fourth card **Your creations** ("10 made with DASH so far", light green icon) opens the creations page, once something is made.
+- 2026-10-31 — V18 · Create explained: the Create card plays a light inner glow once as it appears (the DASH gradient turning round inside its edge, 12 deep, fading; `--app-dash-explain-glow`), then is static. Creation cards read kind + › / status / name. The Create card is never shorter than a creation card (`--app-dash-v18-card`), so the centred page doesn't shift between kinds. View all from a one-kind row (V14–V18) opens the creations page on that kind's tab.
+- 2026-10-30 — **V18 · Create explained is the default** DASH version (was V7 · Pills); every other version stays in the dropdown.
+- 2026-10-30 — **V19 · Greeting** (id '23', new and returning users alike; `screens/HomeGreeting`): "Hey Rohan," and a big line on top ("Let's turn your trading ideas into something real today"), three small Create cards right under it (`BuildOption compact`: a pill that hugs its text, round 32 solid green icon with a white glyph, dashed border/intense edge), the plain chat field at the bottom ("Ask DASH anything"). A card types "Create a rule that " into the field, keyboard up; while typing the greeting and cards fade and the suggestions (FirstAsk) stack over the field. On landing the cards grow in from nothing (scale 0 → 1 from the left, no overshoot, 400ms each), the first at once, each next when the one above is halfway (`--app-dash-greet-*`). An earlier "shine border" landing animation is archived in `BuildOption.module.css` (`.shine`).
+- 2026-10-30 — Preview: a setting can float beside the phone mockup on chosen screens (`FlowOption.floatOn`, optional `floatValues`), centred on the phone. DASH version floats on `dash-02` and `stocks-01` with V18 and V19 as stacked chips (L3 Tabs, pill), the picked one black.
+- 2026-10-30 — **V17 · Heading explained** (id '21'): V15 with a quiet line under the heading saying what the picked kind is ("A rule is a limit you set on your trading. DASH holds you to it.").
+- 2026-10-30 — **V18 · Create explained** (id '22'): V15 whose dashed Create card says what the picked kind is ("A rule is a limit DASH keeps for you"), rising in when the kind changes, over "+ Create rule"; the dashed outline slowly travels round it (`--app-dash-march-duration`); a tap still starts one. The card is 32 narrower than a creation card, 16 between the line and "+ Create rule" (`components/ExplainCreateCard`).
+- 2026-10-30 — V15–V18: the heading is one greeting for every kind, "What do you want to create today?" (V14 keeps its flipping per-kind lines). V15's pills are 48 tall.
+- 2026-10-30 — Settings removed: **Big pills**, **Pill height** and **Pill corner radius** (and the Pills group). The kind pills, thumb and track are always fully round.
+- 2026-10-31 — V15 · Clean still: the kind pills' names at 14px (Label/14); other versions keep 12.
+- 2026-10-31 — V16 · Explained: pills 56 tall, fully round. Pill counts: the count badge has no white ring (pills and V11's ribbon tabs).
+- 2026-10-31 — **V16 · Explained** (id '20'): V15 with a small explainer line inside each kind pill — "Limits your trades" · "Chart signals" · "When to buy & sell" (L3 Tab `subLabel`, set to Label/10); pills 44 (`--app-dash-pill-explained`), names in capitals, no 4 ring round the pills, a count (Pill counts) on the name's line. New settings group **Pills**: **Pill height** (0 = the version's own, 24–64) and **Pill corner radius** (0–32; the pills, the thumb and the track share it).
+- 2026-10-31 — V14 / V15: the row under the pills is only the picked kind — its creations, or (nothing made, e.g. Strategy) the Create card then the "Try" suggestions (a tap types it in). V15's orb is 48 and sits 24 above the heading; the heading sits 32 above the pills.
+- 2026-10-31 — Setting **Big pills** (every version, A/B): the Rule · Indicator · Strategy pills 8 taller (32 → 40), fully round. V15: the small orb sits 4 right of centre and is still (its animation paused).
+- 2026-10-31 — **V14 · Clean and V15 · Clean still** (ids '18', '19'; from V10 · Heading, after senior feedback — a calmer middle):
+  - The top bar reads **DASH AI** with a small **BETA** tag (L3 Tag, neutral tertiary), centred (`DashBar center`); no orb or greeting in the middle, no "Your creations" header (View all is the last card); the cards sit 24 under the full-width pills.
+  - **V14:** a heading over the pills in DASH's voice (`components/FlipHeading`): a small grey line ("Tell me a habit, I'll make it a rule" · "Tell me what you watch, I'll chart it" · "Tell me your idea, I'll build and test it") and, bigger, a request that flips every 2.6 s ("Stop me after 3 losses", "Don't let me trade after 3 PM"…). Each line stays one line (no reflow).
+  - **V15:** no flipping — a small DASH orb (new 40 size, `compact`) over the one line "Tell me a habit, I'll make it a rule" (follows the pick).
+- 2026-10-31 — Fix: the rule chat's field takes typing once a rule card is there ("Describe a change to your rule": keyboard up; Send clears and puts it away), like the indicator chat.
+- 2026-10-31 — V8 · Tabs: nothing of the tab's kind made yet (Strategy, for now) → the "Try" suggestion cards follow the Create card in the row (a tap types it in).
+- 2026-10-31 — Fix: V12 / V13 · Center don't scroll — the page fits the screen exactly (the held page height less the dock's room) and its scroll is locked, so nothing slides past the centred field.
+- 2026-10-31 — Setting **Pill counts** (every version, A/B; off by default): a tiny neutral count on each unpicked Rule · Indicator · Strategy pill / ribbon tab — how many of that kind are made (none → no tag; `usePillCount` in SlidingPills). **V10 · Heading:** the pills under the question are full width (three equal). **V8 · Tabs:** one row only — "Your creations": "+ Create <kind>" (follows the top tab) then that kind's cards; the "Start a …" row with the Try examples is gone.
+- 2026-10-31 — Fix: V8 · Tabs' top-bar pills — the picked one's black thumb was hidden under a leftover white fill on the pill list; the white track now comes only from `--pills-track`.
+- 2026-10-31 — **V12 · Center and V13 · Center pills** (ids '16', '17'; new and returning users; `screens/HomeCenter`): a landing page like desktop AI chats. The field sits on the screen's centre line (an empty slot in the page; the field itself stays in the DASH dock and is lifted there), the orb and "How can I help you trade better?" stack up from its top, **Your creations** hangs from its bottom (no Create card; the heading "Your creations ›" opens them all). Tap the field: the rest steps away and the field glides straight down to its place over the keyboard (frame by frame from where it is, so the keyboard moving under it can't drag it); back the same way. The field's edge is the green → lime → yellow gradient, turning (`edgeTurn`). V13 has Rule · Indicator · Strategy inside the field (text on top; pills, + and Send under it); the section below follows the pick — that kind's creations, or **Suggestions** (the "Try" cards) when nothing of it is made yet.
+  - **Chats:** once the first message is sent the field drops its pills and becomes one line (+ on the left, the text, Send on the right) — no accidental kind switch mid-chat (`useChatKind` returns none; V11's ribbon still sinks its tabs first).
 - 2026-10-30 — **V11 · Ribbon as one union** (Figma "Union" 6850:44252): the field and the picked tab are ONE SVG shape behind the form (`components/RibbonTabs`, path built from the measured tab) — white, a 1px inside edge in a green → lime → yellow gradient (50%, full while typing) that turns slowly (4 s a turn), low shadow. The picked tab slides and stretches to a new pick; the other kinds are white tabs with a light edge drawn under it (the picked one is always on top). Coming in, the tabs rise out of the field one by one; once a conversation starts (`useChatKind` → `sunk`) they sink back and the row closes, leaving + · text · Send. Local tokens `--app-dash-union-edge-1/2/3`, `--app-dash-union-shadow`. The rule chat's field now has the + (Pine Script upload) like the indicator chat and the homes.
 - 2026-10-30 — **New versions V9–V11, pills, suggestions.**
   - **V9 · Switch** (id '13'): the floating field with a full-width Rule · Indicator · Strategy toggle as its top row and + · text · Send under it (`switchFullTop`); setting **Switch outside** puts the toggle just above the field instead.
@@ -323,25 +390,25 @@ deliberate. Exact values live in the file named on each line (all of it is also 
 that aren't L3 tokens are local tokens `--app-dash-*` in `src/local-tokens.css`: carry them over as named theme values,
 never as magic numbers.
 
-### 0. Which version to build
-The prototype shows several versions behind settings (`index.tsx` → `options`). **Build each setting's default** unless
-the product team tells you otherwise; the other values are experiments.
+### 0. What to build
+One design, final (2026-11-01). The prototype settings (`index.tsx` → `options`) only switch between **states** you
+build all of:
 
-| Setting | Build (default) | Other values (don't build unless asked) |
-|---|---|---|
-| DASH version | V7 · Pills, id 11 (new user: Landing, big cards; returning: Returning home V2 with the Create pills over the dock) | V3 Dock (id 7) · V4 Floating (id 8) · V5 Cards (id 9) · V6 Creations (id 10) · V8 Tabs (id 12, returning user: kind tabs in the top bar) · V9 Switch (id 13) · V10 Heading (id 14) · V11 Ribbon (id 15) · (archived: V1 Classic, id 1 · V2 Pills, id 2) |
-| User | Both states: New user and Returning user (the app knows which) | — |
-| Made so far | Build every case: Rules / Indicators / Both — a made kind shows its cards, the others are promoted | — |
-| Resume chats | Hide | Show |
+| Setting | Build |
+|---|---|
+| User | Both homes: **New user** = the landing (`screens/Landing.tsx`), **Returning user** = their home (`screens/ReturningHome.tsx`). The app knows which. |
+| Made so far | Every case: Rules / Indicators / Both — a made kind shows its cards and a count on its pill; the others show “Try” examples |
+| Resume chats | Both: with unsaved chats → Pick up where you left off (under the creations row); none → no section |
+| Has past chats | Both: the Past chats sheet with history, or its empty state |
 
-The version list is `components/dashVersion.ts` (each version's chat input) + `screens/homes.tsx` (its homes).
+The home versions that were tried (V1–V20, Combined) are in `archive/dash-home-versions/` — not to build.
 
 ### 1. Background (`components/DashScreen.tsx` + `DashScreen.module.css`)
 - [ ] One background for the whole DASH screen. It stays put while scenes change on top of it; it is never redrawn per screen.
 - [ ] Layers, bottom to top: white surface → **rotating gradient** (image `assets/`, a square 125% of the box tall, centred, drawn turned 180° and mirrored, 120% of its box) → **white blurred disc** (10% from the top to 3% from the bottom, blur `--app-dash-glow-blur`) → **fine grid lines** across the top.
 - [ ] Gradient motion: −164° → 196°, ease-in, over the first 75% of a 3.08 s loop, then still until the loop restarts.
 - [ ] Geometry is in fractions of the background box, so it scales with the screen and **shrinks when the keyboard is up** (the box's bottom = keyboard height, 300 ms `--app-dash-scene-easing`).
-- [ ] While chatting (Chat V2): the round disc crossfades (300 ms) to a straight **white veil**, so the glow at the bottom is a level band rising from the input's bottom edge (band `--app-dash-veil-band`).
+- [ ] While chatting: the round disc crossfades (300 ms) to a straight **white veil**, so the glow at the bottom is a level band rising from the input's bottom edge (band `--app-dash-veil-band`).
 - [ ] Loss tone: the same gradient hue-rotated to reds.
 - [ ] Edge to edge: the background runs under the status bar and the OS nav bar; the content is inset by them.
 - [ ] Top bar = L3 Actionbar, **transparent, no hairline**.
@@ -349,7 +416,7 @@ The version list is `components/dashVersion.ts` (each version's chat input) + `s
 
 ### 2. Orb (`src/shared/ui/dash/DashOrb.*`)
 - [ ] Artwork drawn at 100 and scaled. Ring = angular gradient (`--app-dash-glow-1/2/3`), its highlight turns clockwise, 1 s per turn, linear; the leaves don't move.
-- [ ] Halo copy offset 8 right / 10 down, blur `--app-dash-orb-halo-blur`. On homes V2 / V3 / V4 the orb is nudged 8 right (`orbNudge`).
+- [ ] Halo copy offset 8 right / 10 down, blur `--app-dash-orb-halo-blur`.
 
 ### 3. Scenes and motion (`components/SceneSwap.*`, `screens/DashAI.tsx`, README → Motion)
 - [ ] Landing, rules chat and indicator chat are **one screen whose scenes change in place**. Nothing is pushed between chat steps.
@@ -361,7 +428,7 @@ The version list is `components/dashVersion.ts` (each version's chat input) + `s
 ### 4. Chat input and messages (`components/Chat.*`, `SlidingPills.*`)
 - [ ] One fixed input for every scene. Send = 40 circle. A green typing caret.
 - [ ] Animated placeholder: the word slides up into place.
-- [ ] **Pills** kind switch (Rule · Indicator · Strategy): grey track, pills without fill, a **black raised thumb that glides** under the picked one (250 ms). Switching kind in an empty chat flips the chat.
+- [ ] **Pills** kind switch (Rule · Indicator · Strategy): grey track, pills without fill, **48 tall, Label/14**, a **black raised thumb that glides** under the picked one (250 ms). Each unpicked pill shows a small count of how many of that kind the user made (none for 0). Switching kind in an empty chat flips the chat.
 - [ ] **+** (Pine Script) shows only for Indicator, next to Send, and pops in. A picked file = small grey pill before the text (file icon, name, ✕).
 - [ ] **User message bubble**: min height 48, radius 24, padding 12 / 16, `surface-secondary`, Label/14, hugs its text.
 - [ ] Typing state: the drawn keyboard is up and the home's sections fold away (`sectionsFold`); the greeting glides. It reverses on close.
@@ -372,12 +439,15 @@ The version list is `components/dashVersion.ts` (each version's chat input) + `s
 - [ ] No shadows on DASH or home cards. Hover / press tint on landing cards = orb green at 10%.
 - [ ] Dashed "Create" cards: 1px `border-intense`, **6 on / 4 off dashes** (drawn as an SVG rect inside the card, not a CSS dashed border), radius 12, + on a light DASH-green disc.
 
-### 6. Home (`screens/ReturningV2.*`)
-- [ ] "Your creations": one sideways row, edge to edge (16 in at both ends), snap, small two-line cards; the active status shows in green.
-- [ ] The field's switch **reorders** the row (picked kind first). Strategy picked → "+ Create strategy" leads (not on V6). Cards on show slide down and fade one by one; new ones rise in one by one (~0.35 s).
+### 6. Returning home (`screens/ReturningHome.*`)
+- [ ] Order: still compact orb → “What do you want to create today?” (32 apart) → the pills (24 under) → the creations row → Pick up where you left off (32 under the row, only with drafts; no View all) → the field in the dock.
+- [ ] Top bar: back · history (→ Past chats) · Your creations. No title on the returning home; the landing has “DASH AI” + BETA in the middle.
+- [ ] The row shows **only the picked kind**, one sideways row, edge to edge (16 in at both ends), snap: the dashed Create card (62% wide, says what the kind is, + Create <kind>), their latest 3 (kind ›, status in green when on, name on 2 lines), View all. Every card is at least `--app-dash-create-card` tall, so switching kinds doesn't move the page.
+- [ ] Switching pills: the cards on show slide down and fade one by one; the new ones rise in one by one (~0.35 s).
+- [ ] Typing: the header and sections fold away; live suggestions (`FirstAsk`) finish the request.
 
 ### 7. History, sheets, Pine Script
-- [ ] History ("Created with DASH", `screens/Creations.tsx`): pill tabs All / Rules / Indicators / Strategies; card V3 = status + name left, switch right; on items bold heading text, off items medium label text.
+- [ ] History ("Created with DASH", `screens/Creations.tsx`): pill tabs All / Rules / Indicators / Strategies; the card = status + name left, switch right; on items bold heading text, off items medium label text.
 - [ ] Confirm and simple-action sheets use the **large header with an icon** (e.g. delete = bin in a red circle, 64).
 - [ ] Pine Script: upload sheet with 3 steps; the first-time tip loops a 3-step story in the chat; Copy / Share / Download live only in the saved and details sheets, never on the chat card.
 
@@ -2214,89 +2284,9 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
   }
 }
 
-/* The tooltip's anchor hugs the + (inline). */
-.attachTip {
-  display: inline-flex;
-  flex: none;
-}
-
 .attach.attach {
   background: var(--l3-surface-inverted);
   color: var(--l3-content-inverted);
-}
-
-/* The Pine Script bubble: a dark speech bubble above the field's left end, joined to the + by a stem (the + is its
-   foot), so bubble, stem and + read as one shape (designer's reference). It grows out of the + (scale from its corner,
-   250 ms). The form is its positioning box. */
-.tip {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.tipBubble {
-  position: absolute;
-  bottom: calc(100% - var(--l3-spacing-04));
-  left: var(--l3-spacing-08);
-  display: flex;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  box-sizing: border-box;
-  max-width: calc(100% - 2 * var(--l3-spacing-08));
-  padding: var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-24) var(--l3-radius-24) var(--l3-radius-24) 0;
-  background: var(--l3-surface-inverted);
-  pointer-events: auto;
-  transform-origin: bottom left;
-  animation: tip-grow var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
-}
-
-/* The stem: from under the bubble down to the +'s middle, the +'s width; a curve where it meets the bubble's edge. */
-.tipStem {
-  position: absolute;
-  top: calc(-1 * var(--l3-spacing-04));
-  left: var(--l3-spacing-08);
-  width: var(--l3-size-40);
-  height: calc(var(--l3-size-56) / 2 + var(--l3-spacing-04));
-  background: var(--l3-surface-inverted);
-  animation: tip-fade var(--l3-motion-duration-short) var(--l3-motion-easing-standard) both;
-}
-
-.tipStem::after {
-  position: absolute;
-  top: var(--l3-spacing-04);
-  left: 100%;
-  width: var(--l3-spacing-12);
-  height: var(--l3-spacing-12);
-  background: radial-gradient(circle at 100% 100%, transparent var(--l3-spacing-12), var(--l3-surface-inverted) calc(var(--l3-spacing-12) + 0.5px));
-  content: '';
-}
-
-.tipText {
-  min-width: 0;
-  padding: var(--l3-spacing-08) 0;
-  border: 0;
-  background: none;
-  color: var(--l3-content-inverted);
-  font: var(--l3-text-label-14);
-  text-align: start;
-  cursor: pointer;
-}
-
-.tipClose {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--l3-size-32);
-  height: var(--l3-size-32);
-  padding: 0;
-  border: 0;
-  border-radius: var(--l3-radius-full);
-  background: none;
-  color: var(--l3-content-inverted-secondary);
-  cursor: pointer;
 }
 
 @keyframes tip-grow {
@@ -2309,13 +2299,6 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
 @keyframes tip-fade {
   from {
     opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tipBubble,
-  .tipStem {
-    animation: none;
   }
 }
 
@@ -2335,12 +2318,6 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
     animation: none;
     box-shadow: 0 0 0 var(--l3-spacing-04) color-mix(in srgb, var(--app-dash-green) 35%, transparent);
   }
-}
-
-/* The coach mark's anchor wraps the + only (it hugs it, inline). */
-.attachTip {
-  display: inline-flex;
-  flex: none;
 }
 
 .attach.attach {
@@ -2667,10 +2644,9 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
   text-wrap: pretty;
 }
 
-/* An earlier message scrolled up under the pinned rule card (Figma: faded). */
-/* Message style "Bubbles": DASH's reply in a bubble on the left — the user's bubble's shape (radius 24, 12 / 16
+/* DASH's reply in a bubble on the left — the user's bubble's shape (radius 24, 12 / 16
    inside), on the plain surface with a hairline so it reads on DASH's background. */
-.assistant[data-bubble] {
+.assistant {
   box-sizing: border-box;
   width: fit-content; /* hugs its text, like the user's bubble */
   max-width: 85%;
@@ -2682,10 +2658,11 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
 
 /* Back-to-back replies sit a little closer: 12 apart instead of the chat's 20. Each turn is its own wrapper in the
    chat's list, so the pairs are found through them. (Corners stay as they are: designer's call.) */
-:global(div):has(> .assistant[data-bubble]) + :global(div) > .assistant[data-bubble] {
+:global(div):has(> .assistant) + :global(div) > .assistant {
   margin-top: calc(var(--l3-spacing-12) - var(--l3-spacing-20));
 }
 
+/* An earlier message scrolled up under the pinned rule card (Figma: faded). */
 .assistant[data-faded] {
   opacity: var(--l3-opacity-40);
 }
@@ -2750,7 +2727,7 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
 }
 
 /*
- * The field with a "what to build" switch (DASH home): two rows in a rounded box — the text across the top, then + on
+ * The field with a "what to build" switch (an empty chat): two rows in a rounded box — the text across the top, then + on
  * the left, the switch after it and Send on the right (like Claude Desktop's field).
  */
 .input[data-modes] {
@@ -2815,190 +2792,12 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
   }
 }
 
-/* Chat input "Pills above": the switch row over the field, 8 above it. */
-/* "Pills above" (DASH V3): the switch and, to its right, the + fill the field's top row; the text and Send share the
-   row under it. */
-.input[data-pills-top] {
-  flex-wrap: wrap;
-  gap: var(--l3-spacing-08);
-  padding: var(--l3-spacing-08);
-  border-radius: var(--l3-radius-24);
-}
-
-.modesTop {
-  display: flex;
-  order: -2;
-  /* the row minus the + (40) and the gap, so the text can't join this row */
-  flex: 1 0 calc(100% - var(--l3-size-40) - var(--l3-spacing-08));
-  min-width: 0;
-}
-
-.input[data-pills-top] .attachWrap {
-  order: -1;
-}
-
-.input[data-pills-top]:not(:has(.attachWrap)) .modesTop {
-  flex-basis: 100%;
-}
-
-.input[data-pills-top] .fieldWrap {
-  padding-left: var(--l3-spacing-08);
-}
-
-/* V9 · Switch: the toggle takes the whole top row; the + goes back to the start of the row under it (+ · text · Send). */
-.input[data-pills-full] .modesTop {
-  flex-basis: 100%;
-}
-
-.input[data-pills-full] .attachWrap {
-  order: 0;
-}
-
-/* V11 · Ribbon: the form is see-through; RibbonTabs draws the field + picked tab as one union shape behind it. */
-.input[data-ribbon] {
-  isolation: isolate;
-  padding-top: 0;
-  border-color: transparent;
-  background: transparent;
-  box-shadow: none;
-}
-
-.input[data-ribbon][data-typing],
-.input[data-ribbon]:focus-within {
-  border-color: transparent;
-}
-
-.input[data-ribbon] .modesTop {
-  /* always its own line (edge to edge, never shrinking), so + · text · Send keep the line under it — also once the
-     tabs have sunk and the row is closed (the 8 row gap is then the field's top padding) */
-  flex: 0 0 calc(100% + 2 * var(--l3-spacing-08));
-  margin: 0 calc(-1 * var(--l3-spacing-08));
-}
-
-/* The + right beside Send (with the switch, or the one-row field): 12 between them (the row's 4 gap + 8). */
-.input[data-modes] .attachWrap,
-.input[data-inline] .attachWrap {
+/* The + right beside Send (with the switch): 12 between them (the row's 4 gap + 8). */
+.input[data-modes] .attachWrap {
   margin-right: var(--l3-spacing-08);
 }
 
-/*
- * Dock field (DASH V7, like Gemini): the field runs edge to edge at the bottom of the screen, rounded top corners only,
- * flat against the keyboard. Text on the top row; the controls (pills, +, Send) on the row under it. It cancels the
- * dock area's 16 inset (left, right, bottom) so it touches the screen edges and the keyboard.
- */
-.input[data-dock] {
-  flex-wrap: wrap;
-  row-gap: var(--l3-spacing-12);
-  margin: 0 calc(-1 * var(--l3-spacing-16)) calc(-1 * var(--l3-spacing-16));
-  padding: var(--l3-spacing-16) var(--l3-spacing-12) var(--l3-spacing-12);
-  border-width: 1px 0 0; /* 1px: only the top edge — the sides and bottom are the screen's */
-  border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
-  /* See-through, so DASH's glow shows behind it. No backdrop blur: it smudged the screen's rounded bottom corners. */
-  background: rgb(from var(--l3-surface-primary) r g b / var(--l3-opacity-80)); /* glass: 80% */
-  box-shadow: none;
-  /* On the see-through dock the pills' grey track would read as a smudge: it's surface/primary instead. */
-  --pills-track: var(--l3-surface-primary);
-  --pills-track-shadow: var(--l3-shadow-elevation-low); /* so the white track lifts off the see-through dock */
-}
-
-.input[data-dock] .fieldWrap {
-  order: -1;
-  flex-basis: 100%;
-  min-height: var(--l3-size-32);
-  padding-inline: var(--l3-spacing-04);
-}
-
-/* Keyboard down: the dock's white carries on under the OS navigation bar to the screen's bottom edge. With the keyboard
-   up the dock sits flat on it instead. */
-.input[data-dock]:not([data-typing]) {
-  margin-bottom: calc(-1 * (var(--l3-spacing-16) + var(--os-inset-bottom, 0px)));
-  padding-bottom: calc(var(--l3-spacing-12) + var(--os-inset-bottom, 0px));
-}
-
-/* Without the pills the controls still sit on the lower row: the + on the left, Send on the right. */
-.input[data-dock]:not([data-modes]) .send.send {
-  margin-left: auto;
-}
-
-/*
- * DASH V8 · first message: while it's typed the field has an edge in DASH's light (teal → green → yellow); the glow
- * itself comes up from the bottom of the screen (DashScreen 'rise').
- */
-.input[data-first-glow] {
-  border-color: transparent;
-  background:
-    linear-gradient(var(--l3-surface-primary), var(--l3-surface-primary)) padding-box,
-    linear-gradient(90deg, var(--app-dash-glow-3), var(--app-dash-glow-1), var(--app-dash-glow-2)) border-box;
-  border-width: var(--app-dash-ftux-edge);
-  box-shadow: none;
-}
-
-
-/* A top row inside the field (DASH V7 · Pills: the Create pills); under it one row — the +, the text filling the rest,
-   Send. Wins over the dock's text-on-top layout. */
-.input[data-top] {
-  flex-wrap: wrap;
-  row-gap: var(--l3-spacing-12);
-}
-
-.topRow {
-  order: -1;
-  flex-basis: 100%;
-  min-width: 0;
-}
-
-.input[data-top] .fieldWrap.fieldWrap {
-  order: 0;
-  flex: 1 1 0;
-  padding-inline: var(--l3-spacing-04);
-}
-
-.input[data-top] .send.send {
-  margin-left: 0;
-}
-
-/* One row (DASH V7 · Pills): the text across, then the + beside Send — over the dock's text-on-top layout. The + is
-   white (surface/primary) with the light outline, like the other 40 controls. */
-.input[data-inline] {
-  flex-wrap: nowrap;
-  padding-inline: var(--l3-spacing-16); /* 16 from the screen edge on both sides */
-}
-
-/* No inner padding: the text, its caret and the animated placeholder all start at the same x. */
-.input[data-inline] .fieldWrap.fieldWrap {
-  order: 0;
-  flex: 1 1 0;
-  padding-inline: 0;
-}
-
-.input[data-inline] .attachWrap {
-  order: 1;
-}
-
-.input[data-inline] .send.send {
-  order: 2;
-  margin-left: 0;
-}
-
-
-/* DASH V7 · Pills: the dock is solid (surface/primary, not see-through) and lifts off the page with a low shadow. */
-.input[data-inline][data-dock] {
-  padding-bottom: calc(var(--l3-spacing-16) + var(--os-inset-bottom, 0px)); /* 16 under the row (the dock's 12 + 4) */
-  background: var(--l3-surface-primary);
-  box-shadow: var(--l3-shadow-elevation-low);
-}
-
-/* A taller (wrapped) text: the + and Send stay at the bottom of the row, beside the last line, like other chat boxes.
-   The text area is at least the buttons' 40, so a single line sits on their centre line. */
-.input[data-inline] {
-  align-items: flex-end;
-}
-
-.input[data-inline] .fieldWrap.fieldWrap {
-  min-height: var(--l3-size-40);
-}
-
-/* The + in every field and version: an outline button — white (surface/primary), a 1px border/intense ring, the +
+/* The + in every field: an outline button — white (surface/primary), a 1px border/intense ring, the +
    in the primary content colour. (The Pine Script highlight still lights it green: [data-glow].) */
 .input .attachWrap:not([data-glow]) .attach.attach.attach {
   background: var(--l3-surface-primary);
@@ -3007,7 +2806,7 @@ export function BuildOption({ icon, title, description, onClick }: BuildOptionPr
 }
 
 /* The plain floating field (+ on the left, then the text): 8 between the + and the text (the row's 4 + 4). */
-.input[data-attach]:not([data-dock]):not([data-inline]):not([data-modes]) .attachWrap {
+.input[data-attach]:not([data-modes]) .attachWrap {
   margin-right: var(--l3-spacing-04);
 }
 ```
@@ -3021,12 +2820,9 @@ import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
 import { msAdd, msArrowUpward, msChevronRight, msClose, msDescription, msUploadFile } from '@l3/icons/material'
 import sparkle from '../assets/sparkle.svg'
-import { useFlowOption, useSystemKeyboard } from '../../../shared/prototype'
+import { useSystemKeyboard } from '../../../shared/prototype'
 import { t } from '../copy'
-import { ModeMenu } from './ModeMenu'
-import { useDashVersion } from './dashVersion'
-import { SlidingPills, usePillIcon } from './SlidingPills'
-import { RibbonTabs } from './RibbonTabs'
+import { SlidingPills } from './SlidingPills'
 import { PineStory } from './PineStory'
 import styles from './Chat.module.css'
 
@@ -3037,12 +2833,6 @@ import styles from './Chat.module.css'
  */
 
 type ChatInputProps = {
-  /** A row at the top inside the field; the + · text · Send row sits under it. */
-  top?: ReactNode
-  /** One row: the text across, then the + beside Send (DASH V7 · Pills; overrides the dock's two rows). */
-  inline?: boolean
-  /** This is the chat's first message (a home, or an empty chat): DASH V8 makes the field glow while it's typed. */
-  firstMessage?: boolean
   /** `from`: where the text was typed — the sent message flies up from there. */
   onSend?: (text: string, from: HTMLElement) => void
   /** Controlled text (the prototype's on-screen keyboard types into it); leave out to let the field keep its own. */
@@ -3068,10 +2858,10 @@ type ChatInputProps = {
    *  puts it away. */
   attachTip?: { title: string; text: string; onDone: () => void } | null
   /**
-   * What to build, chosen in the field itself (DASH home, setting "Ask field: With switch"; like Claude Desktop's
-   * Chat / Cowork): the field grows to two rows — the text on top, then + · the switch (L3 Tabs pill-group, md: the 40 of the + and Send) · Send.
+   * What to build, chosen in the field itself (an empty chat; like Claude Desktop's Chat / Cowork): the field grows to
+   * two rows — the text on top, then the pills (sliding, md: the 40 of the + and Send) · + · Send.
    */
-  modes?: { value: string; items: { value: string; label: string; /** Just launched: a New dot (pills) / New after the name (dropdown). */ isNew?: boolean }[]; onChange: (value: string) => void; label: string; /** pills: the L3 pill group inside the field; menu: one pill that opens a dropdown (room for more); above: the pill group outside, full width over the field. */ display?: 'pills' | 'menu' | 'above'; /** V11 · Ribbon: the conversation has started — the tabs sink back into the field. */ sunk?: boolean }
+  modes?: { value: string; items: { value: string; label: string }[]; onChange: (value: string) => void; label: string }
 }
 
 /**
@@ -3080,7 +2870,7 @@ type ChatInputProps = {
  * - Default: border-light edge, placeholder in content/tertiary, Send off (L3 disabled) until there's text.
  * - Typing: the DASH green edge, the text in content/primary, Send on (L3 primary, black).
  */
-export function ChatInput({ top, inline = false, firstMessage = false, onSend, value: controlled, onChange, typing = false, onFocus, autoFocus, inputRef, onAttach, attachment, onRemoveAttachment, rotatingPlaceholder, attachTip, placeholder, modes }: ChatInputProps) {
+export function ChatInput({ onSend, value: controlled, onChange, typing = false, onFocus, autoFocus, inputRef, onAttach, attachment, onRemoveAttachment, rotatingPlaceholder, attachTip, placeholder, modes }: ChatInputProps) {
   const [own, setOwn] = useState('')
   const value = controlled ?? own
   const setValue = (v: string) => (onChange ? onChange(v) : setOwn(v))
@@ -3097,12 +2887,6 @@ export function ChatInput({ top, inline = false, firstMessage = false, onSend, v
     el.focus({ preventScroll: true })
     el.setSelectionRange(el.value.length, el.value.length)
   }, [typing, value, field])
-  // DASH version with a dock field (V7): edge to edge, text on top, controls under it.
-  const dashVersion = useDashVersion()
-  const pillIcon = usePillIcon()
-  const dock = dashVersion.dock
-  // DASH V8: the first message's field glows while it's being typed.
-  const firstGlow = !!dashVersion.firstMessageFocus && firstMessage && typing
   // The field grows with its text, like other chat boxes: one line, up to three (CSS max-height), then it scrolls.
   useLayoutEffect(() => {
     const el = field.current
@@ -3122,32 +2906,12 @@ export function ChatInput({ top, inline = false, firstMessage = false, onSend, v
       className={styles.input}
       data-typing={typing || undefined}
       data-attach={onAttach ? '' : undefined}
-      data-modes={modes && modes.display !== 'above' ? '' : undefined}
-      data-pills-top={modes?.display === 'above' || undefined}
-      data-pills-full={(modes?.display === 'above' && dashVersion.switchFullTop) || undefined}
-      data-ribbon={(modes?.display === 'above' && dashVersion.ribbonTabs) || undefined}
-      data-top={top ? '' : undefined}
-      data-inline={inline || undefined}
-      data-dock={dock || undefined}
-      data-first-glow={firstGlow || undefined}
-      data-surface={dock ? 'primary' : undefined}
+      data-modes={modes ? '' : undefined}
       onSubmit={(e) => {
         e.preventDefault()
         send()
       }}
     >
-      {top && <div className={styles.topRow}>{top}</div>}
-      {/* "Pills above" (DASH V3): the switch is the field's top row, full width (equal pills); text and Send under it. */}
-      {modes?.display === 'above' && (
-        <span className={styles.modesTop}>
-          {dashVersion.ribbonTabs ? (
-            // V11 · Ribbon: folder tabs growing out of the field; the white one slides to the pick.
-            <RibbonTabs sunk={modes.sunk} label={modes.label} items={modes.items.map(({ value, label }) => ({ value, label, iconLeft: pillIcon(value) }))} value={modes.value} onChange={modes.onChange} />
-          ) : (
-            <SlidingPills value={modes.value} items={modes.items} onChange={modes.onChange} label={modes.label} newLabel={t('askModes.new')} fill />
-          )}
-        </span>
-      )}
       {onAttach && (() => {
         const add = (
           <span className={styles.attachWrap} data-glow={attachTip ? '' : undefined}>
@@ -3198,13 +2962,9 @@ export function ChatInput({ top, inline = false, firstMessage = false, onSend, v
         inputMode={touch ? 'none' : undefined}
       />
       </span>
-      {modes && modes.display !== 'above' && (
+      {modes && (
         <span className={styles.modes}>
-          {modes.display === 'menu' ? (
-            <ModeMenu value={modes.value} items={modes.items} onChange={modes.onChange} label={modes.label} />
-          ) : (
-            <SlidingPills value={modes.value} items={modes.items} onChange={modes.onChange} label={modes.label} newLabel={t('askModes.new')} />
-          )}
+          <SlidingPills value={modes.value} items={modes.items} onChange={modes.onChange} label={modes.label} />
         </span>
       )}
       <Button type="submit" variant="primary" size="md" iconLeft={<Icon icon={msArrowUpward} />} aria-label={t('input.send')} disabled={!onSend || (!value.trim() && !attachment)} className={styles.send} />
@@ -3372,13 +3132,12 @@ export function UserFile({ name, caption }: { name: string; caption?: string }) 
 }
 
 /**
- * DASH's reply: a bold first line (Heading/14) and the text under it (Description/14). Prototype setting "Message
- * style" (A/B): Plain = no bubble (default); Bubbles = in a bubble on the left, like the user's on the right.
+ * DASH's reply: a bold first line (Heading/14) and the text under it (Description/14), in a bubble on the left, like
+ * the user's on the right.
  */
 export function AssistantMessage({ title, children, faded }: { title?: ReactNode; children?: ReactNode; faded?: boolean }) {
-  const bubble = useFlowOption('dash', 'messageStyle', 'bubbles') === 'bubbles'
   return (
-    <Stack gap="08" className={styles.assistant} data-faded={faded || undefined} data-bubble={bubble || undefined}>
+    <Stack gap="08" className={styles.assistant} data-faded={faded || undefined}>
       {title && <p className={styles.assistantTitle}>{title}</p>}
       {children && <p className={styles.assistantText}>{children}</p>}
     </Stack>
@@ -3402,7 +3161,7 @@ export function Thinking({ children }: { children: ReactNode }) {
 export type ReplyOption = { label: string; onClick?: () => void; suggested?: boolean }
 
 /** Quick replies under DASH's question: pill chips; the one DASH suggests has the green edge. */
-export function ReplyChips({ options, asButtons = false, glow = false }: { options: ReplyOption[]; /** Version 2: real L3 buttons — the suggested reply primary with ›, the others tertiary — so they read as actions. */ asButtons?: boolean; /** Suggestions (a ready indicator's changes): the DASH green edge, like the empty chat's suggestions. */ glow?: boolean }) {
+export function ReplyChips({ options, asButtons = false, glow = false }: { options: ReplyOption[]; /** Real L3 buttons — the suggested reply primary with ›, the others tertiary — so they read as actions. */ asButtons?: boolean; /** Suggestions (a ready indicator's changes): the DASH green edge, like the empty chat's suggestions. */ glow?: boolean }) {
   if (asButtons) {
     return (
       <Stack direction="horizontal" gap="08" wrap role="group" aria-label={t('replies.label')}>
@@ -3494,14 +3253,12 @@ import styles from './ChatMenu.module.css'
  * Your creations, Delete this chat. A tap outside or Esc closes it. L3 gap: no menu / popover component, so this is
  * L3 list rows on a raised surface.
  */
-export function ChatMenu({ onPastChats, onCreations, onDelete, icon = msMoreVert, label = t('chatMenu.button') }: {
+export function ChatMenu({ onPastChats, onCreations, onDelete }: {
   onPastChats?: () => void
   onCreations?: () => void
-  /** Leave out for a menu without Delete this chat (V8 · Tabs' home: ☰ with Past chats and Your creations). */
   onDelete?: () => void
-  icon?: string
-  label?: string
 }) {
+  const label = t('chatMenu.button')
   const [open, setOpen] = useState(false)
   const wrap = useRef<HTMLSpanElement>(null)
   useEffect(() => {
@@ -3518,7 +3275,7 @@ export function ChatMenu({ onPastChats, onCreations, onDelete, icon = msMoreVert
   const pick = (go?: () => void) => () => { setOpen(false); go?.() }
   return (
     <span ref={wrap} className={styles.wrap}>
-      <ActionbarAction icon={icon} label={label} onClick={() => setOpen((o) => !o)} />
+      <ActionbarAction icon={msMoreVert} label={label} onClick={() => setOpen((o) => !o)} />
       {open && (
         <div className={styles.menu} role="group" aria-label={label}>
           <ListCell as="button" size="sm" iconLeft={<Icon icon={msHistory} />} label={t('landing.pastChats')} onClick={pick(onPastChats)} />
@@ -3527,98 +3284,6 @@ export function ChatMenu({ onPastChats, onCreations, onDelete, icon = msMoreVert
         </div>
       )}
     </span>
-  )
-}
-```
-
-### `src/flows/dash/components/CreatePills.module.css`
-
-```css
-/* DASH "Pills" version: the Create pills over the dock — one sideways row; it bleeds to the screen edges (the dock's
-   16 inset handed back), the first pill 16 in. */
-.row {
-  display: flex;
-  gap: var(--l3-spacing-08);
-  margin: 0 calc(-1 * var(--l3-spacing-16)) var(--l3-spacing-12);
-  padding-inline: var(--l3-spacing-16);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.row::-webkit-scrollbar {
-  display: none;
-}
-
-/* A pill: 40 tall, white with a 1px light edge, the disc then the label. */
-.pill {
-  position: relative;
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  height: var(--l3-size-40);
-  padding: 0 var(--l3-spacing-16) 0 var(--l3-spacing-08);
-  border: 0;
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-primary);
-  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: the edge */
-  color: var(--l3-content-primary);
-  font: var(--l3-text-label-14);
-  white-space: nowrap;
-  cursor: pointer;
-  touch-action: manipulation;
-  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
-}
-
-.pill:active {
-  transform: scale(var(--l3-motion-scale-press-default));
-}
-
-/* The black raised disc (like the Primary button) with the pencil. */
-.icon {
-  display: grid;
-  place-items: center;
-  width: var(--l3-size-24);
-  height: var(--l3-size-24);
-  border-radius: var(--l3-radius-full);
-  background-color: var(--l3-surface-inverted);
-  color: var(--l3-content-inverted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pill {
-    transition: none;
-  }
-
-}
-```
-
-### `src/flows/dash/components/CreatePills.tsx`
-
-```tsx
-import { Icon } from '@l3/components/Icon'
-import { raised } from '@l3/components/Raised'
-import { msEdit } from '@l3/icons/material'
-import { t } from '../copy'
-import type { CreationKind } from './dashVersion'
-import styles from './CreatePills.module.css'
-
-const KINDS: CreationKind[] = ['strategy', 'indicator']
-
-/**
- * DASH "Pills" version: just above the field, a sideways row of white pills with a light 1px edge — the black raised disc with a pencil, then "Create strategy" / "Create indicator". A tap
- * starts it in the field (the opening words, the matching pill, keyboard up).
- */
-export function CreatePills({ onCreate }: { onCreate: (kind: CreationKind) => void }) {
-  return (
-    <div className={styles.row} role="list" aria-label={t('createPills.label')}>
-      {KINDS.map((kind) => (
-        <button key={kind} type="button" role="listitem" className={styles.pill} onClick={() => onCreate(kind)}>
-          <span className={styles.icon} {...raised('strong')}><Icon icon={msEdit} size={16} /></span>
-          {t(`createPills.${kind}`)}
-        </button>
-      ))}
-    </div>
   )
 }
 ```
@@ -3727,51 +3392,7 @@ export function DashDock({ children }: { children: ReactNode }) {
     opacity var(--app-dash-scene) var(--app-dash-scene-easing);
 }
 
-/* DASH V8 · typing the first message: a white wash over the whole background (fades in with the keyboard), so the
-   field's glow is what stands out. */
-.background::after {
-  position: absolute;
-  inset: 0;
-  background: var(--l3-surface-default);
-  opacity: 0;
-  content: '';
-  transition: opacity var(--app-dash-scene) var(--app-dash-scene-easing);
-}
-
-.frame[data-first-focus] .background::after {
-  opacity: var(--l3-opacity-80);
-}
-
-/* V8: the wash clears towards the bottom and the white disc ends higher, so the glow climbs up from the bottom behind
-   the field and the suggestions stacked over it. */
-.frame[data-first-focus='rise'] .background::after {
-  background: linear-gradient(to top, transparent var(--app-dash-first-rise-clear), var(--l3-surface-default) var(--app-dash-first-rise-white));
-}
-
-.frame[data-first-focus='rise'] .overlay {
-  bottom: var(--app-dash-first-rise-glow);
-}
-
-/* V9 (cards over the field): the clear part and the glow reach higher, up behind the cards. */
-.frame[data-glow-rise='cards'][data-first-focus='rise'] .background::after {
-  background: linear-gradient(to top, transparent var(--app-dash-cards-rise-clear), var(--l3-surface-default) var(--app-dash-cards-rise-white));
-}
-
-.frame[data-glow-rise='cards'][data-first-focus='rise'] .overlay {
-  bottom: var(--app-dash-cards-rise-glow);
-}
-
-/* Some versions raise the glow — the white disc ends higher: behind the see-through dock (V7), or up behind the cards
-   above the field as well (V9). */
-.frame[data-glow-rise='dock'] .overlay {
-  bottom: var(--app-dash-dock-glow-rise);
-}
-
-.frame[data-glow-rise='cards'] .overlay {
-  bottom: var(--app-dash-cards-glow-rise);
-}
-
-/* Chatting (Version 2): the round disc gives way to a straight white veil (crossfade, 300 ms), so the glow at the bottom
+/* Chatting: the round disc gives way to a straight white veil (crossfade, 300 ms), so the glow at the bottom
    is a level band rising from the input's bottom edge — not the disc's curve. The conversation sits on the calm
    middle and fades into the band as it scrolls under the input. */
 .frame[data-chatting] .overlay {
@@ -3829,23 +3450,9 @@ export function DashDock({ children }: { children: ReactNode }) {
   box-shadow: none;
 }
 
-/* V8 · Tabs: the kind tabs centred on the bar's 48 row (under the status-bar space), between back and the actions. */
+/* The bar's centre (the landing's "DASH AI · BETA" title) on the bar's 48 row (under the status-bar space), between back and the actions. */
 .barWrap {
   position: relative;
-}
-
-/* The tabs' track on surface/primary (L3's pill group is surface/secondary): it sits on DASH's glow, not a white bar. */
-.barCenter.barCenter {
-  --pills-track: var(--l3-surface-primary);
-}
-
-.barCenter.barCenter [data-appearance='pill-group'] {
-  background: var(--l3-surface-primary);
-}
-
-/* …and the unpicked pills share it (L3 gives them surface/secondary, the track's usual colour). */
-.barCenter.barCenter [data-appearance='pill'][data-emphasis='tertiary'][aria-selected='false'] {
-  --tab-surface: var(--l3-surface-primary);
 }
 
 .barCenter {
@@ -3886,7 +3493,6 @@ import { Screen } from '../../../shared/ui/Screen'
 import gradient from '../assets/bg-gradient.png'
 import grids from '../assets/grids.svg'
 import styles from './DashScreen.module.css'
-import { useDashVersion } from './dashVersion'
 
 /** brand = lime-green (every page); loss = the same gradient turned red, when the backtest says the rule would cost money. */
 export type DashTone = 'brand' | 'loss'
@@ -3895,11 +3501,8 @@ type DashScreenProps = ComponentProps<typeof Screen> & {
   tone?: DashTone
   /** The keyboard is up: the background ends above it (Figma "3.1 Manual typing" — bg 516 tall on 800). */
   keyboard?: boolean
-  /** Version 2, a conversation on screen: the soft dark disc stretches taller so the chat reads well on it. */
+  /** A conversation on screen: the soft dark disc stretches taller so the chat reads well on it. */
   chatting?: boolean
-  /** The chat's first message is being typed: 'wash' — a white wash over the background (V9); 'rise' — the wash
-   *  clears at the bottom and the glow climbs up behind the suggestions (V8). */
-  firstFocus?: false | 'wash' | 'rise'
 }
 
 /**
@@ -3912,9 +3515,7 @@ type DashScreenProps = ComponentProps<typeof Screen> & {
  * end above it (300 ms, ease-in-out). The page is edge to edge (data-edge-to-edge): it draws under the OS status and
  * navigation bars, which have no fill on DASH pages, so the gradient and its motion show behind them too.
  */
-export function DashScreen({ tone = 'brand', keyboard = false, chatting = false, firstFocus = false, className, ...screen }: DashScreenProps) {
-  // Some DASH versions raise the glow: behind the see-through dock (V7), or up behind the cards too (V9).
-  const glowRise = useDashVersion().glowRise
+export function DashScreen({ tone = 'brand', keyboard = false, chatting = false, className, ...screen }: DashScreenProps) {
   // The turning colour glow: normal speed for the first 5 s on DASH, then half speed (it slows from where it is — the
   // running animation's playback rate, so nothing jumps). The frame stays mounted across DASH screens, so this is
   // once per visit to DASH.
@@ -3924,7 +3525,7 @@ export function DashScreen({ tone = 'brand', keyboard = false, chatting = false,
     return () => window.clearTimeout(id)
   }, [])
   return (
-    <div className={styles.frame} data-tone={tone} data-keyboard={keyboard || undefined} data-chatting={chatting || undefined} data-glow-rise={glowRise} data-first-focus={firstFocus || undefined} data-edge-to-edge="" data-dash="">
+    <div className={styles.frame} data-tone={tone} data-keyboard={keyboard || undefined} data-chatting={chatting || undefined} data-edge-to-edge="" data-dash="">
       <div className={styles.background} aria-hidden="true">
         <div ref={glow} className={styles.gradientBox}>
           <img src={gradient} alt="" className={styles.gradient} />
@@ -3942,7 +3543,7 @@ export function DashScreen({ tone = 'brand', keyboard = false, chatting = false,
  * The L3 Actionbar on DASH's background: see-through (the gradient runs under it) and without the hairline. The DASH
  * pages carry no title (Figma): back on the left, one Tertiary action on the right.
  */
-export function DashBar({ center, ...props }: ActionbarProps & { /** Something in the middle of the bar's row (V8 · Tabs: the kind tabs). */ center?: ReactNode }) {
+export function DashBar({ center, ...props }: ActionbarProps & { /** Something in the middle of the bar's row (the home: DASH AI · BETA). */ center?: ReactNode }) {
   if (!center) return <Actionbar {...props} className={styles.bar} />
   return (
     <div className={styles.barWrap}>
@@ -3957,10 +3558,180 @@ const GLOW_FULL_SPEED_MS = 5000
 const GLOW_SLOW_RATE = 0.5
 ```
 
+### `src/flows/dash/components/ExplainCreateCard.module.css`
+
+```css
+/* The Create card: the dashed Create card (same 1px, 6-on 4-off outline as the plain one). */
+.outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.outline rect {
+  width: calc(100% - 1px); /* the 1px stroke sits on the half-pixel inside each edge */
+  height: calc(100% - 1px);
+  fill: none;
+  stroke: var(--l3-border-intense);
+  stroke-width: 1px;
+  stroke-dasharray: 6 4;
+  /* The dashes travel slowly round the card (one dash + gap every --app-dash-march-duration), to draw the eye a little. */
+  animation: march var(--app-dash-march-duration) linear infinite;
+}
+
+@keyframes march {
+  to {
+    stroke-dashoffset: -10; /* one dash + gap (6 + 4): the loop is seamless */
+  }
+}
+
+/* The inner glow: the DASH green → lime → yellow gradient, blurred, turning once round inside the card's edge (soft, 40%;
+   it emerges from the border, spreads in a little and draws back — the middle stays clear) while it fades in and out — once, as the card appears; then nothing (static card). */
+.glowClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  /* A frame along the edges, --explain-glow-reach deep (it grows in from the border and back): the middle stays clear
+     so the text reads. #000: mask alpha, not a colour. */
+  mask:
+    linear-gradient(to right, #000, transparent var(--explain-glow-reach), transparent calc(100% - var(--explain-glow-reach)), #000),
+    linear-gradient(to bottom, #000, transparent var(--explain-glow-reach), transparent calc(100% - var(--explain-glow-reach)), #000);
+  animation: explain-glow-reach var(--app-dash-explain-glow) var(--l3-motion-easing-standard) both;
+}
+
+@property --explain-glow-reach {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* The glow starts at the border and spreads inward (12 deep), then draws back into it. */
+@keyframes explain-glow-reach {
+  0% { --explain-glow-reach: 0px; }
+  45% { --explain-glow-reach: var(--l3-spacing-12); }
+  100% { --explain-glow-reach: 0px; }
+}
+
+.glow {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from var(--explain-glow-angle), var(--app-dash-union-edge-1), var(--app-dash-union-edge-2), var(--app-dash-union-edge-3), var(--app-dash-union-edge-1));
+  filter: blur(var(--l3-spacing-16));
+  opacity: 0;
+  animation: explain-glow var(--app-dash-explain-glow) var(--l3-motion-easing-standard) both;
+}
+
+@property --explain-glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes explain-glow {
+  0% { --explain-glow-angle: 0deg; opacity: 0; }
+  15% { opacity: var(--l3-opacity-40); }
+  65% { opacity: var(--l3-opacity-40); }
+  100% { --explain-glow-angle: 360deg; opacity: 0; }
+}
+
+/* The text and the + sit over the glow. */
+.line,
+.action {
+  position: relative;
+}
+
+/* The explainer: one short line (two at most on a narrow screen), Label/14, content/primary; it rises in. */
+.line {
+  display: -webkit-box;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-14);
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  animation: line-in var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(60%);
+  }
+}
+
+/* The action: a small black + disc, then "Create rule" — what a tap does. */
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+  border-radius: var(--l3-radius-full);
+  background-color: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+}
+
+.label {
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-label-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outline rect,
+  .line,
+  .glow,
+  .glowClip {
+    animation: none;
+  }
+}
+```
+
+### `src/flows/dash/components/ExplainCreateCard.tsx`
+
+```tsx
+import { Icon } from '@l3/components/Icon'
+import { msAdd } from '@l3/icons/material'
+import { raised } from '@l3/components/Raised'
+import { t } from '../copy'
+import type { Mode } from './askModes'
+import styles from './ExplainCreateCard.module.css'
+
+/**
+ * The Create card (first in the returning home's row): the dashed "Create rule" card, but it says what a rule is — one short line ("A rule is a
+ * limit DASH keeps for you") that rises in when the picked kind changes, over the + and "Create rule". The whole card
+ * is still the Create button (a tap types the opening words in, keyboard up). As it appears, an inner glow turns round
+ * once inside its edge and fades away.
+ */
+export function ExplainCreateCard({ kind, className, onClick }: { kind: Mode; className?: string; onClick: () => void }) {
+  return (
+    <button type="button" role="listitem" data-key={`create-${kind}`} className={className} onClick={onClick}>
+      {/* An inner glow — the DASH gradient turning round inside the edge — plays once as the card appears (on landing
+          and each time the picked kind changes: the card is keyed by it), then fades: the card is static again. */}
+      <span className={styles.glowClip} aria-hidden="true"><span className={styles.glow} /></span>
+      <svg className={styles.outline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
+      <span key={kind} className={styles.line}>{t(`home.about.${kind}`)}</span>
+      <span className={styles.action}>
+        <span className={styles.icon} {...raised('strong')}><Icon icon={msAdd} size={16} /></span>
+        <span className={styles.label}>{t(`home.create.${kind}`)}</span>
+      </span>
+    </button>
+  )
+}
+```
+
 ### `src/flows/dash/components/FirstAsk.module.css`
 
 ```css
-/* DASH V8 · first message: suggestions stacked left-aligned above the field (wrapping rows), rising in one by one. */
+/* Typing the first message: suggestions stacked left-aligned above the field (wrapping rows), rising in one by one. */
 .list {
   display: flex;
   flex-wrap: wrap;
@@ -4006,59 +3777,9 @@ const GLOW_SLOW_RATE = 0.5
   }
 }
 
-/* V10 · the creations card: glass (80% white, blurred glow behind), the rows inside with no card look of their own. */
-.card {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: var(--l3-spacing-12);
-  padding-block: var(--l3-spacing-04);
-  border: 1px solid var(--l3-border-light); /* 1px: the card's edge */
-  border-radius: var(--l3-radius-20);
-  overflow: clip; /* a row's press / hover tint stays inside the rounded corners */
-  background: rgb(from var(--l3-surface-primary) r g b / var(--l3-opacity-80)); /* glass: 80% */
-  backdrop-filter: blur(var(--app-dash-glass-blur)); /* glass: 16px */
-  animation: first-ask-in var(--app-dash-reveal) var(--l3-motion-easing-decelerate) both;
-}
-
-.row {
-  animation: first-ask-in var(--app-dash-reveal) var(--l3-motion-easing-decelerate) both;
-}
-
-.row:nth-child(2) { animation-delay: var(--app-dash-reveal-step); }
-.row:nth-child(3) { animation-delay: calc(2 * var(--app-dash-reveal-step)); }
-
-/* The row's Create: small, fully round, on surface/primary. */
-.create.create {
-  border-radius: var(--l3-radius-full);
-  background-color: var(--l3-surface-primary);
-}
-
-/* The whole row taps. */
-.row {
-  cursor: pointer;
-}
-
-/* V10 · live suggestions (the same pills): the typed words in bold. */
+/* Live suggestions (the same pills): the typed words in bold. */
 .chip strong {
   font-weight: var(--l3-font-weight-750);
-}
-
-/* The kind's mark on a light DASH-green tile (as on the home's cards). */
-.tile {
-  display: grid;
-  place-items: center;
-  width: var(--l3-size-40);
-  height: var(--l3-size-40);
-  border-radius: var(--l3-radius-12);
-  background: var(--app-dash-tile);
-  color: var(--l3-content-accent-success-default);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card,
-  .row {
-    animation: none;
-  }
 }
 ```
 
@@ -4066,13 +3787,8 @@ const GLOW_SLOW_RATE = 0.5
 
 ```tsx
 import type { CSSProperties } from 'react'
-import { Icon } from '@l3/components/Icon'
-import { Button } from '@l3/components/Button'
-import { ListCell } from '@l3/components/ListCell'
-import { msFunction, msMonitoring, msRule } from '@l3/icons/material'
 import { t } from '../copy'
-import { dashRules, savedIndicators } from '../data'
-import { useDashUser, useDashVersion, type CreationKind } from './dashVersion'
+import type { CreationKind } from './dashUser'
 import styles from './FirstAsk.module.css'
 
 export type FirstAskKind = 'home' | 'rule' | 'indicator' | 'strategy'
@@ -4080,27 +3796,22 @@ export type FirstAskKind = 'home' | 'rule' | 'indicator' | 'strategy'
 const NUMBERS = ['1', '2', '3', '4'] as const
 
 /**
- * DASH V7 / V8 / V10 · first message: while someone types the first message of a chat (on a home or in an empty chat),
+ * First message: while someone types the first message of a chat (on a home or in an empty chat),
  * suggestions stack up just above the field — for the picked kind (they flip with the field's pills), and once
  * something is typed, ones that finish it (they change with every key). A tap puts the text in the field. Gone once
  * the chat has started (the next messages type as usual, with the conversation in view).
  */
-export function FirstAsk({ kind: place, mode, text = '', onPick, onKind }: {
+export function FirstAsk({ kind: place, mode, text = '', onPick }: {
   kind: FirstAskKind
   /** The field's picked pill (a home): the suggestions are for that kind and flip when it changes. */
   mode?: CreationKind
   /** What's in the field: once something is typed, the suggestions follow it (live, with every key). */
   text?: string
   onPick: (text: string) => void
-  /** V10 Create: the kind picked (the field's pill follows). */
-  onKind?: (kind: CreationKind) => void
 }) {
-  const firstCard = !!useDashVersion().firstCard
   const kind: FirstAskKind = place === 'home' && mode ? mode : place
-  // Something typed: suggestions that finish it (V7, V8, V10).
+  // Something typed: suggestions that finish it.
   if (text.trim()) return <LiveAsk kind={kind} text={text} onPick={onPick} />
-  // V10, nothing typed yet: one card — what they have of each kind, and Create.
-  if (firstCard) return <FirstCreations onCreate={(k) => { onPick(t(`home9.start.${k}`)); onKind?.(k) }} />
   const items = NUMBERS.map((n) => t(`firstAsk.${kind}.${n}`))
   return (
     <div className={styles.list} role="group" aria-label={t('firstAsk.label')}>
@@ -4113,52 +3824,6 @@ export function FirstAsk({ kind: place, mode, text = '', onPick, onKind }: {
   )
 }
 
-const ROWS: { kind: CreationKind; icon: typeof msRule }[] = [
-  { kind: 'rule', icon: msRule },
-  { kind: 'strategy', icon: msFunction },
-  { kind: 'indicator', icon: msMonitoring },
-]
-
-/** What exists of each kind (sample data): how many, how many on. Strategies can't be made yet. */
-const counts = (kind: CreationKind) =>
-  kind === 'rule'
-    ? { total: dashRules.length, active: dashRules.filter((r) => r.on).length }
-    : kind === 'indicator'
-      ? { total: savedIndicators.length, active: savedIndicators.filter((x) => x.on).length }
-      : { total: 0, active: 0 }
-
-/**
- * DASH V10 · first message: over the field, ONE glass card with a row per kind (no card look per row, like a list of
- * connectors): the kind's tile, its name, what they have — "3 of 8 rules active" (all on: "8 rules active"; none
- * made: "None yet") — and Create on the right; the whole row taps and puts the opening words in the field.
- */
-export function FirstCreations({ onCreate }: { onCreate: (kind: CreationKind) => void }) {
-  const { made } = useDashUser()
-  const status = (kind: CreationKind) => {
-    const { total, active } = counts(kind)
-    if (!made[kind] || total === 0) return t(`firstCard.none.${kind}`)
-    return active === total ? t(`firstCard.allActive.${kind}`, { count: total }) : t(`firstCard.someActive.${kind}`, { active, total })
-  }
-  return (
-    <div className={styles.card} role="group" aria-label={t('firstCard.label')}>
-      {ROWS.map(({ kind, icon }) => (
-        <ListCell
-          key={kind}
-          className={styles.row}
-          label={t(`firstCard.name.${kind}`)}
-          description={status(kind)}
-          iconLeft={<span className={styles.tile}><Icon icon={icon} size={20} /></span>}
-          // The whole row taps (a tappable div, so the real Create button can sit inside it — keyboard and screen
-          // readers use the button).
-          as="div"
-          onClick={() => onCreate(kind)}
-          trailing={<Button variant="tertiary" size="sm" className={styles.create} aria-label={t(`firstCard.createLabel.${kind}`)} onClick={(e) => { e.stopPropagation(); onCreate(kind) }}>{t('firstCard.create')}</Button>}
-        />
-      ))}
-    </div>
-  )
-}
-
 const TAILS = ['1', '2', '3', '4', '5', '6'] as const
 const KINDS: CreationKind[] = ['rule', 'indicator', 'strategy']
 /** Words that say nothing about what they want (and the opening words Create types). */
@@ -4166,14 +3831,15 @@ const STOP = new Set(['build', 'an', 'a', 'ai', 'that', 'the', 'me', 'my', 'i', 
 const words = (s: string) => s.toLowerCase().replace(/[^a-z0-9₹%\s]/g, ' ').split(/\s+/).filter(Boolean)
 
 /**
- * DASH V10 · as the first message is typed: suggestion pills that finish it, changing with every key — each shows a
+ * As the first message is typed: suggestion pills that finish it, changing with every key — each shows a
  * request's ending (the typed words in bold) and a tap puts the whole request in the field ("Build an Ai rule that
  * caps my daily loss at ₹5,000"). The kind
  * comes from the opening words (Create typed them), the chat's kind, or — on the home — whichever match best.
  */
 function LiveAsk({ kind, text, onPick }: { kind: FirstAskKind; text: string; onPick: (text: string) => void }) {
-  // The opening words a Create typed ("Build an Ai rule that", or the row's "Build a rule that"): they set the kind.
-  const openings = (k: CreationKind) => [t(`home9.start.${k}`), t(`home3.start.${k}`)].map((o) => o.trim())
+  // The opening words a Create typed ("Build an Ai rule that", the row's "Build a rule that", the short "Create a rule
+  // that"): they set the kind.
+  const openings = (k: CreationKind) => [t(`home.startAlt.${k}`), t(`home.start.${k}`), t(`home.startShort.${k}`)].map((o) => o.trim())
   const opening = KINDS.flatMap((k) => openings(k).map((o) => ({ k, o }))).find(({ o }) => text.toLowerCase().startsWith(o.toLowerCase()))
   const started = opening?.k
   const kinds = started ? [started] : kind === 'home' ? KINDS : [kind]
@@ -4187,12 +3853,12 @@ function LiveAsk({ kind, text, onPick }: { kind: FirstAskKind; text: string; onP
   const shown = (ranked.length ? ranked : pool).slice(0, 4)
   const bold = (tail: string) =>
     tail.split(/(\s+)/).map((part, i) => (typed.some((w) => part.toLowerCase().replace(/[^a-z0-9₹%]/g, '').startsWith(w)) ? <strong key={i}>{part}</strong> : part))
-  // The same pills as V8's suggestions (stacked, left-aligned): the request's ending, typed words in bold; a tap puts
+  // The same pills as the opening suggestions (stacked, left-aligned): the request's ending, typed words in bold; a tap puts
   // the whole request in the field.
   return (
     <div className={styles.list} role="group" aria-label={t('liveAsk.label')}>
       {shown.map(({ kind: k, tail }, i) => (
-        <button key={`${k}${tail}`} type="button" className={styles.chip} style={{ '--i': i } as CSSProperties} onClick={() => onPick(`${opening && opening.k === k ? `${opening.o} ` : t(`home9.start.${k}`)}${tail}`)}>
+        <button key={`${k}${tail}`} type="button" className={styles.chip} style={{ '--i': i } as CSSProperties} onClick={() => onPick(`${opening && opening.k === k ? `${opening.o} ` : t(`home.startAlt.${k}`)}${tail}`)}>
           {bold(tail)}
         </button>
       ))}
@@ -4316,11 +3982,6 @@ function LiveAsk({ kind, text, onPick }: { kind: FirstAskKind; text: string; onP
   font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
   animation: card-fade var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
-}
-
-.meta {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
 }
 
 .market {
@@ -4521,7 +4182,7 @@ function LiveAsk({ kind, text, onPick }: { kind: FirstAskKind; text: string; onP
   }
 }
 
-/* Version 2: an earlier version, replaced by a newer card below — mini, dimmed, the plain light edge. */
+/* An earlier version, replaced by a newer card below — mini, dimmed, the plain light edge. */
 .card[data-superseded] {
   border-color: var(--l3-border-light);
   opacity: var(--l3-opacity-60);
@@ -4565,7 +4226,7 @@ type IndicatorCardProps = {
   compact?: boolean
   /** Tapping the mini card opens it again. */
   onExpand?: () => void
-  /** Version 2: a newer version was shared below — this one folds to its mini form, dimmed, tagged "Earlier version". */
+  /** A newer version was shared below — this one folds to its mini form, dimmed, tagged "Earlier version". */
   superseded?: boolean
   /** What the chart is drawn with (timeframe, EMA, Supertrend) — a change in the chat redraws it. */
   settings?: IndicatorSettings
@@ -5598,189 +5259,6 @@ function useChartGestures(
 }
 ```
 
-### `src/flows/dash/components/ModeMenu.module.css`
-
-```css
-/* The "what to build" pill: hugs its label, sits after the + in the field's lower row. */
-.wrap {
-  display: inline-flex;
-  flex: none;
-}
-
-/* The pill: black and 40 — the height of the + and Send beside it (an L3 md pill is 32; in a pill group the group's 4
-   padding makes it 40). */
-.pill.pill {
-  height: var(--l3-size-40);
-  padding-inline: var(--l3-spacing-16); /* a little more room either side than the md pill's 12 */
-  /* The black chip (the pill group's selected look: surface/inverted, inverted text), raised strong (L3 Raised). */
-  --tab-surface: var(--l3-surface-inverted);
-  --tab-content: var(--l3-content-inverted);
-  --tab-border: transparent;
-  --tab-layer-default: var(--l3-state-layer-light-default);
-  --tab-layer-hover: var(--l3-state-layer-light-hover);
-  --tab-layer-pressed: var(--l3-state-layer-light-pressed);
-  --raise-layer: var(--tab-layer);
-}
-
-/* While the panel is open it sits over the chip (it grew out of it): the chip itself steps back. */
-.wrap[data-open] .pill {
-  visibility: hidden;
-}
-
-/*
- * The panel the chip grows into: drawn over the DASH screen, its bottom-left corner on the chip's, black (the opposite
- * theme's surface — set on the panel through data-product / data-mode) with round corners; the options are L3 list
- * cells (Small). ModeMenu.tsx animates its clip-path from the chip's box to the full panel and back.
- */
-.menu {
-  position: absolute;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  width: var(--app-dash-mode-menu); /* one width whatever is picked, so it never wobbles */
-  padding: var(--l3-spacing-04);
-  border-radius: var(--l3-radius-20);
-  background: var(--l3-surface-primary);
-  color: var(--l3-content-primary);
-}
-
-.option.option {
-  border-radius: var(--l3-radius-16);
-  background-color: transparent;
-}
-
-.option.option[data-selected] {
-  background-color: var(--l3-surface-secondary);
-}
-
-/* Text 2 up from L3's 14 (Label/16) on the chip and in the panel. */
-.pill.pill,
-.pill.pill * {
-  font: var(--l3-text-label-16);
-}
-
-.option.option :is(span) {
-  font: var(--l3-text-label-16);
-}
-```
-
-### `src/flows/dash/components/ModeMenu.tsx`
-
-```tsx
-import { useId, useLayoutEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { Icon } from '@l3/components/Icon'
-import { lmSwitchArrowVertical } from '@l3/components/icons/glyphs'
-import { ListCell } from '@l3/components/ListCell'
-import { Tab } from '@l3/components/Tabs'
-import { msCheck } from '@l3/icons/material'
-import pickerStyles from './MarketPicker.module.css'
-import styles from './ModeMenu.module.css'
-
-/**
- * "What to build" as one pill (setting "Chat input: Dropdown"): the current pick and a ↕ — an L3 action pill (Tab,
- * pill · md), black, 40 like the + and Send. A tap grows the chip itself into the menu: a black, round-cornered panel
- * opens up out of the chip's spot (its corner stays put, the rest unfolds — 250 ms), with the options as L3 list cells
- * (Small) in the opposite theme so they read white on black, the chosen one ✓. Picking, or a tap outside, folds it
- * back into the chip. Room for a 4th option, unlike the pill group.
- */
-export function ModeMenu({ value, items, onChange, label }: { value: string; items: { value: string; label: string; isNew?: boolean }[]; onChange: (value: string) => void; label: string }) {
-  const listId = useId()
-  const trigger = useRef<HTMLSpanElement>(null)
-  const menu = useRef<HTMLSpanElement>(null)
-  const [place, setPlace] = useState<{ host: HTMLElement; left: number; bottom: number; chipW: number; chipH: number; product?: string; mode?: string } | null>(null)
-  const [closing, setClosing] = useState(false)
-  const current = items.find((i) => i.value === value) ?? items[0]
-
-  const open = () => {
-    const chip = trigger.current
-    const host = chip?.closest<HTMLElement>('[data-dash]')
-    if (!chip || !host) return
-    const h = host.getBoundingClientRect()
-    const b = chip.getBoundingClientRect()
-    const scale = h.width / host.offsetWidth || 1 // the phone mockup may be scaled on screen
-    // The menu takes the opposite theme of the page (white text on the black panel; in dark mode, the other way).
-    const root = document.documentElement.dataset
-    setPlace({
-      host,
-      left: (b.left - h.left) / scale,
-      bottom: (h.bottom - b.bottom) / scale,
-      chipW: b.width / scale,
-      chipH: b.height / scale,
-      product: root.product,
-      mode: root.mode === 'dark' ? 'light' : 'dark',
-    })
-  }
-
-  /** The chip's own box inside the open panel (bottom left), as a clip-path: where the panel grows from / folds to. */
-  const chipClip = (el: HTMLElement) => {
-    if (!place) return ''
-    return `inset(${el.offsetHeight - place.chipH}px ${el.offsetWidth - place.chipW}px 0 0 round ${place.chipH / 2}px)`
-  }
-  const fullClip = 'inset(0 0 0 0 round var(--l3-radius-20))'
-
-  // Opening: unfold from the chip.
-  useLayoutEffect(() => {
-    const el = menu.current
-    if (!el || !place || closing) return
-    el.getAnimations().forEach((a) => a.cancel())
-    el.animate([{ clipPath: chipClip(el) }, { clipPath: fullClip }], { duration: 250, easing: 'cubic-bezier(0.2, 0, 0, 1)' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [place])
-
-  const close = (pick?: string) => {
-    const el = menu.current
-    if (pick) onChange(pick)
-    if (!el) return setPlace(null)
-    setClosing(true)
-    el.getAnimations().forEach((a) => a.cancel())
-    const fold = el.animate([{ clipPath: fullClip }, { clipPath: chipClip(el) }], { duration: 200, easing: 'cubic-bezier(0.3, 0, 1, 1)', fill: 'forwards' })
-    fold.onfinish = () => {
-      setPlace(null)
-      setClosing(false)
-    }
-  }
-
-  return (
-    <span ref={trigger} className={styles.wrap} data-open={place ? '' : undefined}>
-      <Tab type="button" action appearance="pill" emphasis="tertiary" size="md" iconRight={<Icon icon={lmSwitchArrowVertical} />} aria-haspopup="menu" aria-expanded={!!place} aria-controls={listId} aria-label={`${label}: ${current.label}`} onClick={() => (place ? close() : open())} className={styles.pill} raised="strong">
-        {current.label}
-      </Tab>
-      {place && createPortal(
-        <>
-          <span className={pickerStyles.backdrop} onClick={() => close()} aria-hidden="true" />
-          <span
-            ref={menu}
-            className={styles.menu}
-            id={listId}
-            role="menu"
-            aria-label={label}
-            data-product={place.product}
-            data-mode={place.mode}
-            style={{ left: place.left, bottom: place.bottom }}
-          >
-            {items.map((item) => (
-              <ListCell
-                key={item.value}
-                as="button"
-                size="sm"
-                label={item.label}
-                labelSuffix={item.isNew ? 'New' : undefined}
-                selected={item.value === value}
-                iconRight={item.value === value ? <Icon icon={msCheck} /> : undefined}
-                onClick={() => close(item.value)}
-                className={styles.option}
-              />
-            ))}
-          </span>
-        </>,
-        place.host,
-      )}
-    </span>
-  )
-}
-```
-
 ### `src/flows/dash/components/PineActions.module.css`
 
 ```css
@@ -6610,7 +6088,13 @@ export function QuestionCard({ question, selected: initial, onAnswer, onClose }:
 ### `src/flows/dash/components/ResumeDrafts.module.css`
 
 ```css
-/* DASH homes · Pick up where you left off (setting "Resume chats"): moved here from ReturningV2 so every version shows it. */
+/* DASH home · Pick up where you left off (setting "Has past chats"). */
+
+/* The header row: the section header takes the width, ✕ (Ghost Small, icon only) at the end. */
+.header {
+  flex: 1;
+  min-width: 0;
+}
 
 /* Pick up where you left off: one card per draft, side by side and swiped (snapping), edge to edge; one draft fills
    the width. Each card: the DASH green edge, ✕ at the top right, Continue hugging its label. */
@@ -6726,7 +6210,7 @@ export function QuestionCard({ question, selected: initial, onAnswer, onClose }:
 ### `src/flows/dash/components/ResumeDrafts.tsx`
 
 ```tsx
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Avatar } from '@l3/components/Avatar'
 import { BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
@@ -6734,7 +6218,7 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
-import { msChevronRight, msDelete, msHistory } from '@l3/icons/material'
+import { msChevronRight, msClose, msDelete, msHistory } from '@l3/icons/material'
 import { useFlowOption } from '../../../shared/prototype'
 import { Sheet } from '../../../shared/ui/Sheet'
 import { t } from '../copy'
@@ -6742,15 +6226,42 @@ import { homeDrafts, type HomeDraft } from '../data'
 import { useLongPress } from './longPress'
 import styles from './ResumeDrafts.module.css'
 
-/** Prototype setting "Resume chats" (every DASH version, returning user): Show → the sample drafts, Hide (default) → none. */
+/** Closed with ✕ on its header: the section stays away for the rest of the session (sessionStorage). */
+const CLOSED_KEY = 'dash:resume-closed'
+
+function readClosed() {
+  try { return sessionStorage.getItem(CLOSED_KEY) === 'yes' } catch { return false }
+}
+
+function writeClosed(closed: boolean) {
+  try {
+    if (closed) sessionStorage.setItem(CLOSED_KEY, 'yes')
+    else sessionStorage.removeItem(CLOSED_KEY)
+  } catch { /* private mode: closed for this page only */ }
+}
+
+/**
+ * Prototype setting "Has past chats" (default off): With chats → the sample drafts, Empty → none. Closing the section
+ * hides them for the session; switching the setting on again brings them back (so the state can be shown again).
+ */
 export function useResumeDrafts() {
-  const resume = useFlowOption('dash', 'resumeChats', 'hide')
-  // No past chats at all (setting "Past chats: Empty") → no drafts either.
-  const history = useFlowOption('dash', 'pastChats', 'some')
-  const shown = resume === 'show' && history !== 'none'
+  const shown = useFlowOption('dash', 'pastChats', 'none') !== 'none'
+  const [closed, setClosed] = useState(readClosed)
   const [drafts, setDrafts] = useState<HomeDraft[]>(shown ? homeDrafts : [])
-  useEffect(() => setDrafts(shown ? homeDrafts : []), [shown])
-  return [drafts, setDrafts] as const
+  const wasShown = useRef(shown)
+  useEffect(() => {
+    if (shown && !wasShown.current) {
+      writeClosed(false)
+      setClosed(false)
+    }
+    wasShown.current = shown
+    setDrafts(shown ? homeDrafts : [])
+  }, [shown])
+  const close = () => {
+    writeClosed(true)
+    setClosed(true)
+  }
+  return [closed ? [] : drafts, setDrafts, close] as const
 }
 
 /**
@@ -6764,12 +6275,12 @@ function CompactDraft({ draft, onOpen, onHold }: { draft: HomeDraft; onOpen: () 
       type="button"
       role="listitem"
       className={styles.compact}
-      aria-label={t('home2.resumeHold', { name: draft.title, edited: draft.edited })}
+      aria-label={t('home.resumeHold', { name: draft.title, edited: draft.edited })}
       {...press}
     >
       <Avatar size={40} icon={<Icon icon={msHistory} size={20} />} className={styles.compactAvatar} />
       <span className={styles.compactText}>
-        <span className={styles.compactEdited}>{t('home2.draftEdited', { edited: draft.edited })}</span>
+        <span className={styles.compactEdited}>{t('home.draftEdited', { edited: draft.edited })}</span>
         <span className={styles.compactTitle}>{draft.title}</span>
       </span>
       <span className={styles.compactCaret}><Icon icon={msChevronRight} size={16} /></span>
@@ -6780,21 +6291,26 @@ function CompactDraft({ draft, onOpen, onHold }: { draft: HomeDraft; onOpen: () 
 /**
  * Pick up where you left off: chats left before saving (rare, so only when there are some) — one card each, swiped
  * sideways when there are two or more: the compact card (the big Continue + ✕ card is archived in
- * archive/dash-resume-card-big). A tap opens the draft's chat; press and hold removes one (a sheet asks first).
+ * archive/dash-resume-card-big). A tap opens the draft's chat; press and hold removes one (a sheet asks first). ✕ on
+ * the header closes the whole section for the session.
  */
-export function ResumeDrafts({ drafts, onOpen, onRemove, onViewAll }: {
+export function ResumeDrafts({ drafts, onOpen, onRemove, onClose }: {
   drafts: HomeDraft[]
-  /** View all: every past chat (the Past chats page). */
-  onViewAll?: () => void
+  /** A draft's card: carry on in its chat. */
   onOpen: (kind: HomeDraft['kind']) => void
   onRemove: (id: string) => void
+  /** ✕ on the header: hide the section for the rest of the session. */
+  onClose: () => void
 }) {
   const [removing, setRemoving] = useState<HomeDraft | null>(null)
   const sheetId = useId()
   if (drafts.length === 0) return null
   return (
-    <Stack as="section" gap="12" aria-label={t('home2.resume')}>
-      <SectionHeader title={t('home2.resume')} headingLevel={2} action={onViewAll && { type: 'view-all', onClick: onViewAll }} />
+    <Stack as="section" gap="12" aria-label={t('home.resume')}>
+      <Stack direction="horizontal" align="center" gap="08">
+        <SectionHeader title={t('home.resume')} headingLevel={2} className={styles.header} />
+        <Button variant="ghost" size="sm" iconLeft={<Icon icon={msClose} />} aria-label={t('home.resumeClose')} onClick={onClose} />
+      </Stack>
       <div className={styles.drafts} data-single={drafts.length === 1 || undefined} role="list">
         {drafts.map((d) => <CompactDraft key={d.id} draft={d} onOpen={() => onOpen(d.kind)} onHold={() => setRemoving(d)} />)}
       </div>
@@ -6804,344 +6320,23 @@ export function ResumeDrafts({ drafts, onOpen, onRemove, onViewAll }: {
           labelledBy={sheetId}
           onClose={() => setRemoving(null)}
           className={styles.removeSheet}
-          header={<BottomSheetHeader size="lg" headingId={sheetId} heading={t('home2.removeTitle')} description={t('home2.removeText', { name: removing.title })} icon={<span className={styles.removeIcon}><Icon icon={msDelete} size={24} /></span>} />}
+          header={<BottomSheetHeader size="lg" headingId={sheetId} heading={t('home.removeTitle')} description={t('home.removeText', { name: removing.title })} icon={<span className={styles.removeIcon}><Icon icon={msDelete} size={24} /></span>} />}
           footer={
-            <ButtonGroup aria-label={t('home2.removeTitle')} direction="vertical">
+            <ButtonGroup aria-label={t('home.removeTitle')} direction="vertical">
               <Button
                 onClick={() => {
                   onRemove(removing.id)
                   setRemoving(null)
                 }}
               >
-                {t('home2.removeConfirm')}
+                {t('home.removeConfirm')}
               </Button>
-              <Button variant="secondary" onClick={() => setRemoving(null)}>{t('home2.removeKeep')}</Button>
+              <Button variant="secondary" onClick={() => setRemoving(null)}>{t('home.removeKeep')}</Button>
             </ButtonGroup>
           }
         />
       )}
     </Stack>
-  )
-}
-```
-
-### `src/flows/dash/components/RibbonTabs.module.css`
-
-```css
-/* V11 · Ribbon. The tabs row sits over the field; the field + picked tab union is an SVG behind the whole form
-   (the form itself is see-through: Chat.module.css [data-ribbon]). Once a conversation has started the tabs sink
-   back into the field and the row closes (height → 0). */
-.row {
-  display: flex;
-  width: 100%;
-  height: var(--l3-size-40);
-  transition: height var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
-  /* 36 in: past the field's rounded corner (its radius + the tab's 12 curve), so the curves land on the straight edge */
-  padding-inline: var(--l3-spacing-36);
-}
-
-/* The tabs sunk (a conversation going): the row closes; the labels are gone. */
-.row[data-closed] {
-  height: 0;
-}
-
-.row[data-closed] .tabs {
-  visibility: hidden;
-}
-
-/* The union: covers the form's border box, behind its content. */
-.union {
-  position: absolute;
-  z-index: -1;
-  top: -1px;
-  left: -1px;
-  overflow: visible;
-  filter: var(--app-dash-union-shadow);
-  pointer-events: none;
-}
-
-.fill {
-  fill: var(--l3-surface-primary);
-}
-
-/* Figma: 1px inside, the gradient at 50%; full while typing (the field is active). */
-.stroke {
-  fill: none;
-  stroke-width: 2px;
-  stroke-opacity: 0.5;
-  transition: stroke-opacity var(--app-dash-scene) var(--app-dash-scene-easing);
-}
-
-:global(form[data-typing]) .stroke,
-:global(form:focus-within) .stroke {
-  stroke-opacity: 1;
-}
-
-.edge1 { stop-color: var(--app-dash-union-edge-1); }
-.edge2 { stop-color: var(--app-dash-union-edge-2); }
-.edge3 { stop-color: var(--app-dash-union-edge-3); }
-
-/* L3's ribbon row and tabs go see-through: the union draws the picked one. */
-.tabs.tabs {
-  position: relative;
-  gap: var(--l3-spacing-04);
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.tabs.tabs [role='tab'][role='tab'] {
-  --tab-padding-inline: var(--l3-spacing-08); /* 8 (L3 ribbon: 12): three tabs with icons fit the field's width */
-  --tab-surface: transparent;
-  --tab-border: transparent;
-  --tab-content: var(--l3-content-secondary);
-  box-shadow: none;
-  transition: color var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
-}
-
-.tabs.tabs [role='tab'][role='tab']::before {
-  content: none;
-}
-
-/* The other kinds' tabs are drawn in the SVG under the union (the picked tab always on top): white, a light edge. */
-.otherTab {
-  fill: var(--l3-surface-primary);
-  stroke: var(--l3-border-light);
-  stroke-width: 1px;
-}
-
-.tabs.tabs [role='tab'][role='tab'][aria-selected='true'] {
-  --tab-content: var(--l3-content-primary);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tabs [role='tab'] {
-    transition: none;
-  }
-}
-```
-
-### `src/flows/dash/components/RibbonTabs.tsx`
-
-```tsx
-import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
-import { Tabs } from '@l3/components/Tabs'
-import styles from './RibbonTabs.module.css'
-
-/** The tab's top corners and the curves where it meets the field (Figma "Union": ~12). */
-const CORNER = 12
-const FLARE = 12
-/** Tab → tab: the union's tab part slides and stretches (ms). */
-const SLIDE_MS = 250
-/** Coming in: each tab rises out of the field (ms), the next one this much later. */
-const RISE_MS = 320
-const RISE_STAGGER_MS = 90
-/** A conversation started: the tabs sink back into the field together (ms), then the row closes. */
-const SINK_MS = 260
-const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-/** The union's gradient edge: one full turn (s). */
-const EDGE_TURN_S = 4
-
-type Span = [number, number]
-
-/**
- * The union outline (Figma "Union" 6850:44252): the field (a pill under the tabs row) and the picked tab as ONE shape —
- * tab corners, curves into the field's top edge. `rise` 0–1: how far the tab is out of the field (0 = a plain pill).
- */
-function unionPath(w: number, h: number, rowH: number, [x0, x1]: Span, rise: number) {
-  const r = Math.min((h - rowH) / 2, 28) // the field: a pill
-  const tabH = rowH * rise
-  const f = Math.min(FLARE, tabH / 2)
-  const c = Math.min(CORNER, tabH / 2)
-  const top = rowH - tabH + 0.5
-  const tab = tabH < 0.5
-    ? [`H ${w - r}`]
-    : [
-        `H ${x0 - f}`,
-        `A ${f} ${f} 0 0 0 ${x0} ${rowH - f}`,
-        `V ${top + c}`,
-        `A ${c} ${c} 0 0 1 ${x0 + c} ${top}`,
-        `H ${x1 - c}`,
-        `A ${c} ${c} 0 0 1 ${x1} ${top + c}`,
-        `V ${rowH - f}`,
-        `A ${f} ${f} 0 0 0 ${x1 + f} ${rowH}`,
-        `H ${w - r}`,
-      ]
-  return [
-    `M ${r} ${rowH}`,
-    ...tab,
-    `A ${r} ${r} 0 0 1 ${w} ${rowH + r}`,
-    `V ${h - r}`,
-    `A ${r} ${r} 0 0 1 ${w - r} ${h}`,
-    `H ${r}`,
-    `A ${r} ${r} 0 0 1 0 ${h - r}`,
-    `V ${rowH + r}`,
-    `A ${r} ${r} 0 0 1 ${r} ${rowH}`,
-    'Z',
-  ].join(' ')
-}
-
-/** Another kind's tab (rounded top, open at the bottom — the field covers it), `rise` 0–1 out of the field. */
-function tabPath(rowH: number, [a, b]: Span, rise: number) {
-  const tabH = rowH * rise
-  if (tabH < 0.5) return ''
-  const c = Math.min(CORNER, tabH)
-  const top = rowH - tabH + 0.5
-  return `M ${a + 0.5} ${rowH + 1} V ${top + c} A ${c} ${c} 0 0 1 ${a + c} ${top} H ${b - c} A ${c} ${c} 0 0 1 ${b - 0.5} ${top + c} V ${rowH + 1}`
-}
-
-/**
- * V11 · Ribbon: Rule · Indicator · Strategy as folder tabs growing out of the top of the field. The field and the
- * picked tab are one union (white, a green → lime → yellow 1px inside edge, low shadow — Figma "Union"); the other
- * kinds are white tabs with a light edge behind it, so the picked one is always on top.
- * - Coming in: the tabs rise out of the field one by one (labels fade up with them).
- * - A new pick: the union's tab slides and stretches there.
- * - `sunk` (a conversation has started): the tabs sink back into the field and the row closes.
- * Built on L3 Tabs (ribbon: keyboard and a11y); the shapes are one SVG behind the whole field.
- */
-export function RibbonTabs({ value, items, onChange, label, sunk = false }: {
-  value: string
-  items: { value: string; label: string; iconLeft?: ReactNode }[]
-  onChange: (value: string) => void
-  label: string
-  sunk?: boolean
-}) {
-  const row = useRef<HTMLSpanElement>(null)
-  const id = useId()
-  const [shape, setShape] = useState<{ w: number; h: number; rowH: number; picked: Span; tabs: Span[]; pickedIndex: number } | null>(null)
-  // What's on screen right now (animated): the union's tab span and each tab's rise.
-  const shownSpan = useRef<Span | null>(null)
-  const rises = useRef<number[]>(items.map(() => (sunk ? 1 : 0)))
-  const [closed, setClosed] = useState(false)
-  const slideFrame = useRef(0)
-  const riseFrame = useRef(0)
-
-  // Read the layout and draw with the current animated values.
-  const render = () => {
-    const el = row.current
-    const form = el?.closest('form')
-    if (!el || !form) return
-    const tabEls = [...el.querySelectorAll<HTMLElement>('[role=tab]')]
-    const span = (tab: HTMLElement): Span => {
-      let x = tab.offsetLeft
-      for (let n = tab.offsetParent as HTMLElement | null; n && n !== form; n = n.offsetParent as HTMLElement | null) x += n.offsetLeft
-      return [x + form.clientLeft, x + form.clientLeft + tab.offsetWidth]
-    }
-    const pickedIndex = tabEls.findIndex((t) => t.getAttribute('aria-selected') === 'true')
-    if (pickedIndex < 0) return
-    const rowH = el.offsetHeight + form.clientTop
-    // The labels ride with their tab: up out of the field, fading in.
-    tabEls.forEach((t, i) => {
-      const r = rises.current[i] ?? 1
-      t.style.transform = r < 1 ? `translateY(${(1 - r) * 0.6 * rowH}px)` : ''
-      t.style.opacity = r < 1 ? String(r) : ''
-    })
-    setShape({ w: form.offsetWidth, h: form.offsetHeight, rowH, picked: shownSpan.current ?? span(tabEls[pickedIndex]), tabs: tabEls.map(span), pickedIndex })
-  }
-  const targetSpan = (): Span | null => {
-    const el = row.current
-    const form = el?.closest('form')
-    const picked = el?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
-    if (!el || !form || !picked) return null
-    let x = picked.offsetLeft
-    for (let n = picked.offsetParent as HTMLElement | null; n && n !== form; n = n.offsetParent as HTMLElement | null) x += n.offsetLeft
-    return [x + form.clientLeft, x + form.clientLeft + picked.offsetWidth]
-  }
-
-  // A new pick: slide the union's tab there (the first placement doesn't slide).
-  useLayoutEffect(() => {
-    const to = targetSpan()
-    if (!to) return
-    const from = shownSpan.current
-    cancelAnimationFrame(slideFrame.current)
-    if (!from || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      shownSpan.current = to
-      render()
-      return
-    }
-    const start = performance.now()
-    const step = (now: number) => {
-      const t = ease(Math.min(1, (now - start) / SLIDE_MS))
-      shownSpan.current = [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t]
-      render()
-      if (t < 1) slideFrame.current = requestAnimationFrame(step)
-    }
-    slideFrame.current = requestAnimationFrame(step)
-  }, [value, items.map((i) => `${i.value}${i.iconLeft ? '+' : ''}`).join('|')])
-
-  // Coming in (rise one by one) or a conversation started (sink together, then close the row).
-  useLayoutEffect(() => {
-    cancelAnimationFrame(riseFrame.current)
-    if (!sunk) setClosed(false)
-    const from = rises.current.slice()
-    const to = items.map(() => (sunk ? 0 : 1))
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rises.current = to
-      setClosed(sunk)
-      render()
-      return
-    }
-    const start = performance.now()
-    const step = (now: number) => {
-      let done = true
-      rises.current = from.map((r, i) => {
-        const delay = sunk ? 0 : i * RISE_STAGGER_MS
-        const t = Math.max(0, Math.min(1, (now - start - delay) / (sunk ? SINK_MS : RISE_MS)))
-        if (t < 1) done = false
-        return r + (to[i] - r) * ease(t)
-      })
-      render()
-      if (!done) riseFrame.current = requestAnimationFrame(step)
-      else if (sunk) setClosed(true)
-    }
-    riseFrame.current = requestAnimationFrame(step)
-  }, [sunk])
-
-  // The field grows with its text (and the row closes): redraw in place. (The first callback, on starting to watch,
-  // is skipped — it would cut a slide short.)
-  useLayoutEffect(() => {
-    const form = row.current?.closest('form')
-    if (!form) return
-    let watching = false
-    const watch = new ResizeObserver(() => {
-      if (watching) render()
-      watching = true
-    })
-    watch.observe(form)
-    return () => {
-      watch.disconnect()
-      cancelAnimationFrame(slideFrame.current)
-      cancelAnimationFrame(riseFrame.current)
-    }
-  }, [])
-
-  const rise = (i: number) => rises.current[i] ?? 1
-  const reduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  return (
-    <span ref={row} className={styles.row} data-closed={closed || undefined}>
-      {shape && (
-        <svg className={styles.union} width={shape.w} height={shape.h} viewBox={`0 0 ${shape.w} ${shape.h}`} aria-hidden="true">
-          <defs>
-            <linearGradient id={`${id}-edge`} x1="0" y1="0" x2="0.15" y2="1">
-              <stop offset="0" className={styles.edge1} />
-              <stop offset="0.57" className={styles.edge2} />
-              <stop offset="1" className={styles.edge3} />
-              {/* The edge's colours turn slowly round the shape (one turn per EDGE_TURN_S), like V5's create cards. */}
-              {!reduceMotion && <animateTransform attributeName="gradientTransform" type="rotate" from="0 0.5 0.5" to="360 0.5 0.5" dur={`${EDGE_TURN_S}s`} repeatCount="indefinite" />}
-            </linearGradient>
-            <clipPath id={`${id}-clip`}>
-              <path d={unionPath(shape.w, shape.h, shape.rowH, shape.picked, rise(shape.pickedIndex))} />
-            </clipPath>
-          </defs>
-          {/* Behind: the other kinds' tabs. */}
-          {shape.tabs.map((s, i) => (i === shape.pickedIndex ? null : <path key={i} className={styles.otherTab} d={tabPath(shape.rowH, s, rise(i))} />))}
-          {/* The union: white fill, then a 2px stroke clipped to the inside = a 1px inside edge (Figma's inside stroke). */}
-          <path d={unionPath(shape.w, shape.h, shape.rowH, shape.picked, rise(shape.pickedIndex))} className={styles.fill} />
-          <path d={unionPath(shape.w, shape.h, shape.rowH, shape.picked, rise(shape.pickedIndex))} className={styles.stroke} stroke={`url(#${id}-edge)`} clipPath={`url(#${id}-clip)`} />
-        </svg>
-      )}
-      <Tabs aria-label={label} appearance="ribbon" size="md" items={items} value={value} onChange={onChange} className={styles.tabs} />
-    </span>
   )
 }
 ```
@@ -7304,7 +6499,7 @@ export function RibbonTabs({ value, items, onChange, label, sunk = false }: {
 }
 
 
-/* Version 1's pinned card, folded while the chat scrolls: only the title row stays (300 ms, ease in and out). */
+/* The pinned card, folded while the chat scrolls: only the title row stays (300 ms, ease in and out). */
 .fold {
   display: grid;
   grid-template-rows: 1fr;
@@ -7700,7 +6895,7 @@ export function SceneSwap({ sceneKey, move, children }: { sceneKey: string; move
   position: relative;
   display: inline-flex;
   border-radius: var(--l3-radius-full);
-  background: var(--pills-track, var(--l3-surface-secondary)); /* a field may set --pills-track (V7 dock: primary) */
+  background: var(--pills-track, var(--l3-surface-secondary)); /* a field may set --pills-track */
   box-shadow: var(--pills-track-shadow, none); /* …and --pills-track-shadow (the dock's white track: a low shadow) */
 }
 
@@ -7735,6 +6930,34 @@ export function SceneSwap({ sceneKey, move, children }: { sceneKey: string; move
   transition: color var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
 }
 
+/* The pills 48 tall, fully round; the thumb follows (it spans the pill's height). L3 gap: pill tabs stop at md (40). */
+.track .tabs.tabs [role='tab'][role='tab'][role='tab'] {
+  --tab-height: var(--l3-size-48);
+  --tab-radius: var(--l3-radius-full);
+  border-radius: var(--l3-radius-full);
+}
+
+/* The names at Label/14 (L3's pill tabs use 12). */
+.track [role='tab'][role='tab'] {
+  font-size: var(--l3-text-label-14-size);
+  line-height: var(--l3-text-label-14-line-height);
+}
+
+/* The track, the thumb and every pill fully round, whatever their height. */
+.track,
+.track .thumb {
+  border-radius: var(--l3-radius-full);
+}
+
+.track .tabs.tabs [role='tab'][role='tab'][role='tab'][role='tab'] {
+  --tab-radius: var(--l3-radius-full);
+  border-radius: var(--l3-radius-full);
+}
+
+.track .tabs.tabs {
+  border-radius: var(--l3-radius-full);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .thumb[data-ready='yes'],
   .tabs [role='tab'] {
@@ -7742,8 +6965,7 @@ export function SceneSwap({ sceneKey, move, children }: { sceneKey: string; move
   }
 }
 
-/* Full width (DASH V3 "Pills above", the field's top row): the track and the L3 group stretch; the pills share it
-   equally. Inside the field, so it keeps the grey track. */
+/* Full width (the returning home, under the heading): the track and the L3 group stretch; the pills share it equally. */
 .track[data-fill] {
   display: flex;
   width: 100%;
@@ -7752,68 +6974,99 @@ export function SceneSwap({ sceneKey, move, children }: { sceneKey: string; move
 .track[data-fill] .tabs {
   flex: 1;
 }
+
+/* The count sits flat on the pill — no white ring (L3's Badge draws one to stand off busy
+   backgrounds). */
+.track [role='tab'] [class*='_badge_'] {
+  box-shadow: none;
+}
 ```
 
 ### `src/flows/dash/components/SlidingPills.tsx`
 
 ```tsx
-import { useLayoutEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react'
 import { Badge } from '@l3/components/Badge'
-import { Icon } from '@l3/components/Icon'
 import { Tabs } from '@l3/components/Tabs'
-import { msFunction, msMonitoring, msRule } from '@l3/icons/material'
-import { useFlowOption } from '../../../shared/prototype'
+import { dashRules, savedIndicators } from '../data'
+import { useDashUser } from './dashUser'
 import styles from './SlidingPills.module.css'
 
-/** Setting "Pill icons": each kind's icon before its name (the same marks as V5 · Cards' cards). */
-const KIND_ICONS: Record<string, string> = { rule: msRule, indicator: msMonitoring, strategy: msFunction }
-
-/** The kind switcher's icon for a value while the setting "Pill icons" is on (also used by V11's ribbon tabs). */
-export function usePillIcon() {
-  const on = useFlowOption('dash', 'pillIcons', 'off') === 'on'
-  return (value: string) => (on && KIND_ICONS[value] ? <Icon icon={KIND_ICONS[value]} size={16} /> : undefined)
+/**
+ * A tiny rounded count on each unpicked kind — how many of it the user has made (none → no count, so a new user sees
+ * none). Returns the badge for a pill, or nothing.
+ */
+function usePillCount() {
+  const { made } = useDashUser()
+  const counts: Record<string, number> = {
+    rule: made.rule ? dashRules.length : 0,
+    indicator: made.indicator ? savedIndicators.length : 0,
+    strategy: 0, // strategies can't be made yet
+  }
+  return (value: string, picked: boolean): ReactNode =>
+    !picked && counts[value] ? <Badge count={counts[value]} color="neutral" size="sm" label={`${counts[value]}`} /> : undefined
 }
 
 /**
- * The field's "what to build" pill group (L3 Tabs, pill-group · toggle · md) with a sliding black thumb: the picked
- * pill's black doesn't flip from one pill to the next, it glides there (250 ms) and the labels swap colour as it
- * passes. The pills themselves are transparent here; the grey track and the thumb are drawn behind them.
+ * The "what to build" pill group (L3 Tabs, pill-group · toggle · md, made 48 tall with names at Label/14) with a
+ * sliding black thumb: the picked pill's black doesn't flip from one pill to the next, it glides there (250 ms) and
+ * the labels swap colour as it passes. The pills themselves are transparent here; the grey track and the thumb are
+ * drawn behind them. Each unpicked pill carries its count.
  */
-export function SlidingPills({ value, items, onChange, label, newLabel, fill = false }: {
+export function SlidingPills({ value, items, onChange, label, fill = false }: {
   value: string
-  items: { value: string; label: string; isNew?: boolean }[]
+  items: { value: string; label: string }[]
   onChange: (value: string) => void
   label: string
-  newLabel: string
-  /** Full width, the pills sharing it equally (Chat input "Pills above"). */
+  /** Full width, the pills sharing it equally (the returning home, under the heading). */
   fill?: boolean
 }) {
-  const icons = useFlowOption('dash', 'pillIcons', 'off') === 'on'
+  const count = usePillCount()
+  const withCounts = items.map((item) => {
+    const badge = count(item.value, item.value === value)
+    return badge ? { ...item, badge } : item
+  })
   const track = useRef<HTMLSpanElement>(null)
   const thumb = useRef<HTMLSpanElement>(null)
   const first = useRef(true)
-  useLayoutEffect(() => {
+  // Puts the thumb exactly under the picked pill.
+  const place = () => {
     const picked = track.current?.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
     const el = thumb.current
-    if (!picked || !el) return
+    if (!picked || !el) return null
     el.style.left = `${picked.offsetLeft}px`
     el.style.width = `${picked.offsetWidth}px`
+    return el
+  }
+  useLayoutEffect(() => {
+    const el = place()
+    if (!el) return
     // The first placement doesn't animate; the slide (CSS transition on left / width) switches on a frame later, so
     // even the very first pick glides — turning it on in the same frame as a move made that move jump.
     if (first.current) {
       first.current = false
       requestAnimationFrame(() => { el.dataset.ready = 'yes' })
     }
-  }, [value, fill, icons, items.map((i) => i.value).join('|')]) // also when the pills themselves change (3 → 1 once a chat starts)
-  const withBadges = items.map(({ isNew, ...item }) => ({
-    ...item,
-    ...(icons && KIND_ICONS[item.value] ? { iconLeft: <Icon icon={KIND_ICONS[item.value]} size={16} /> } : {}),
-    ...(isNew ? { badge: <Badge dot color="discover" label={newLabel} /> as ReactNode } : {}),
-  }))
+    // also when the pills themselves change, or a count comes or goes (it changes a pill's width)
+  }, [value, fill, withCounts.map((i) => `${i.value}${'badge' in i ? '#' : ''}`).join('|')])
+  // The pills change width with the screen (full width: they share it): the thumb follows at once, without the slide.
+  useEffect(() => {
+    const box = track.current
+    if (!box) return
+    const observer = new ResizeObserver(() => {
+      const el = thumb.current
+      if (!el || first.current) return
+      delete el.dataset.ready
+      place()
+      requestAnimationFrame(() => { el.dataset.ready = 'yes' })
+    })
+    observer.observe(box)
+    return () => observer.disconnect()
+  }, [])
   return (
     <span ref={track} className={styles.track} data-fill={fill || undefined}>
       <span ref={thumb} className={styles.thumb} data-raised="strong" aria-hidden="true" />
-      <Tabs aria-label={label} appearance="pill-group" behavior="toggle" size="md" width={fill ? 'fill' : 'hug'} items={withBadges} value={value} onChange={onChange} className={styles.tabs} />
+      <Tabs aria-label={label} appearance="pill-group" behavior="toggle" size="md" width={fill ? 'fill' : 'hug'} items={withCounts} value={value} onChange={onChange} className={styles.tabs} />
     </span>
   )
 }
@@ -8007,31 +7260,26 @@ export function SuccessBurst({ leaving = false }: { leaving?: boolean }) {
 
 ```ts
 import { useEffect, useState } from 'react'
-import { useDashVersion } from './dashVersion'
 import { t } from '../copy'
 
 export type Mode = 'rule' | 'indicator' | 'strategy'
 
+const MODES = ['rule', 'indicator', 'strategy'] as const
+
 /**
- * The DASH home field's "what to build" switch (setting "Chat input": Pills / Dropdown / Previous). With the switch, the
- * field always shows Rule · Indicator · Strategy — so someone who has only made rules still sees what else DASH
- * builds — and the placeholder and where Send goes follow the pick. Plain: the rotating placeholder, Send guesses.
+ * The returning home's "what to build" pills (Rule · Indicator · Strategy, under the heading): the row of cards, the
+ * field's placeholder and where Send goes follow the pick. Someone who has only made rules still sees what else DASH
+ * builds.
  */
-export function useAskModes({ onRules, onIndicator, guess, newKind }: { onRules?: () => void; onIndicator?: () => void; guess: (text: string) => void; /** The kind launched last: marked New in the switch (returning home V3). */ newKind?: Mode }) {
-  const field = useDashVersion().field
-  const on = field !== 'plain'
+export function useAskModes({ onRules, onIndicator, guess }: { onRules?: () => void; onIndicator?: () => void; guess: (text: string) => void }) {
   const [mode, setMode] = useState<Mode>('rule')
-  if (!on) return null
   return {
-    /** The pick: the + (Pine Script upload) only shows for indicators. */
     mode,
     modes: {
       value: mode,
       label: t('askModes.label'),
-      items: (['rule', 'indicator', 'strategy'] as const).map((value) => ({ value, label: t(`askModes.${value}`), isNew: value === newKind })),
+      items: MODES.map((value) => ({ value, label: t(`askModes.${value}`) })),
       onChange: (v: string) => setMode(v as Mode),
-      // Dropdown: one pill (↕) that opens a menu; Pills: all three side by side in the field; Pills above: over it.
-      display: field === 'menu' ? ('menu' as const) : field === 'above' ? ('above' as const) : ('pills' as const),
     },
     placeholder: t(`askModes.placeholder.${mode}`),
     // Rules and indicators open their chat; a strategy (no chat yet) goes by what was typed.
@@ -8040,131 +7288,35 @@ export function useAskModes({ onRules, onIndicator, guess, newKind }: { onRules?
 }
 
 /**
- * Inside a chat: the same two-row field as the home's, always with all three pills — they tell people what DASH can
- * make (the AI adapts to whatever is typed; the pick isn't a filter). Before anything is sent (switcher given), a pick
- * flips the chat's suggestions (or opens the other chat); once the conversation has started, a pick only moves the
- * highlight. Plain field (a version with the Previous field) → none.
+ * Inside an empty chat: the field has the three pills in it (text on top; +, the pills and Send under it) — they tell
+ * people what DASH can make. A pick flips the chat's suggestions (or opens the other chat). Once the conversation has
+ * started (no switcher) the pills go and the field is a plain one-line box, so a stray tap can't switch kinds mid-chat.
  */
 export function useChatKind(kind: Mode, switcher?: { onChange: (kind: Mode) => void } | null) {
-  const field = useDashVersion().field
-  // The highlighted pill: this chat's kind, or what was picked during the conversation.
   const [picked, setPicked] = useState<Mode>(kind)
   useEffect(() => setPicked(kind), [kind])
-  if (field === 'plain') return null
+  if (!switcher) return null
   return {
     value: picked,
     label: t('askModes.label'),
-    items: (['rule', 'indicator', 'strategy'] as const).map((value) => ({ value, label: t(`askModes.${value}`) })),
-    onChange: (v: string) => {
-      if (switcher) switcher.onChange(v as Mode)
-      else setPicked(v as Mode)
-    },
-    display: field === 'above' ? ('above' as const) : ('pills' as const),
-    /** The conversation has started (no switcher): V11's ribbon tabs sink back into the field. */
-    sunk: !switcher,
+    items: MODES.map((value) => ({ value, label: t(`askModes.${value}`) })),
+    onChange: (v: string) => switcher.onChange(v as Mode),
   }
 }
 ```
 
-### `src/flows/dash/components/dashVersion.ts`
+### `src/flows/dash/components/dashUser.ts`
 
 ```ts
 import { useFlowOption } from '../../../shared/prototype'
 
-/**
- * DASH versions — the prototype setting "DASH version" (dropdown, Home group). A version is the whole DASH home
- * experience: which home a new and a returning user see, and the chat input's style. Pure data here; each version's
- * scenes are in screens/homes.tsx (same `value`).
- *
- * To add a version: one entry here + one in screens/homes.tsx (build new scenes in new files, so the others stay).
- * The user (setting "User": New / Returning, and "Made so far" for a returning one) is NOT part of a version: every
- * version reads it with useDashUser() and adapts its cards (a rule made → no "Create rule" card, its numbers instead).
- */
-
-/** The chat input's style: Previous (plain, rotating placeholder) · Pills (Rule · Indicator · Strategy in the field) ·
- *  Pills above (a full-width switch over the field) · Dropdown (one chip that opens a menu). */
-export type AskField = 'plain' | 'switch' | 'above' | 'menu'
-
-export type DashVersionInfo = {
-  /** Stored value of the setting (keep it once published: people's picks are saved under it). */
-  value: string
-  /** In the dropdown: "V7 · Dock" — one short word after the number. */
-  label: string
-  /** Off the dropdown, code kept (an old pick still shows it). */
-  hidden?: boolean
-  field: AskField
-  /** The field is a dock: edge to edge at the bottom, rounded top corners, text on top and the controls (pills, +,
-   *  Send) in a row under it (like Gemini). */
-  dock?: boolean
-  /** First message focus: while typing the first message of a chat (home or empty chat) the field glows, what's
-   *  behind it washes out under white, and suggestions stack above the field. Later messages type as usual. */
-  firstMessageFocus?: boolean
-  /** Create pills ("Create strategy" · "Create indicator") as the top row inside the field (the + · text · Send row
-   *  under them, no kind pills); the "Your creations" row then shows only what's been made (no + Create card). */
-  createPills?: boolean
-  /** V10: while the first message is typed, one card over the field — a row per kind (how many, how many active) with
-   *  Create — instead of the suggestion pills. */
-  firstCard?: boolean
-  /** While the first message is typed: the suggestions over the field, and the DASH orb + title step away (V7). V8's
-   *  firstMessageFocus includes this. */
-  firstSuggestions?: boolean
-  /** Only the white wash while the first message is typed — no field edge or suggestions (V9). 'rise': the wash
-   *  clears at the bottom and the glow climbs behind what sits over the field. */
-  firstMessageWash?: 'wash' | 'rise'
-  /** The glow rises higher from the bottom (the white disc ends higher): 'dock' behind the field (V7), 'cards' up
-   *  behind the cards above it too (V9). */
-  glowRise?: 'dock' | 'cards'
-  /** V8 · Tabs: Rule · Indicator · Strategy as tabs in the middle of the top bar (not in the field); the whole home
-   *  body follows the pick. The field is the plain floating one. */
-  topKinds?: boolean
-  /** V9 · Switch (with field 'above'): the Rule · Indicator · Strategy toggle takes the field's whole top row; the +,
-   *  the text and Send make the row under it. */
-  switchFullTop?: boolean
-  /** V10 · Heading: the Rule · Indicator · Strategy pills right under the page's question, not in the field. */
-  pillsUnderTitle?: boolean
-  /** V11 · Ribbon (with field 'above' + switchFullTop): the kinds as L3 ribbon (folder) tabs, the field's top row on a
-   *  grey strip — the picked tab is white and opens into the field. */
-  ribbonTabs?: boolean
-}
-
-// The dropdown numbers the shown versions in order (V1–V6); `value` stays the original id (picks are saved under it,
-// and the code and changelog call them by it): V3 Dock = '7', V4 Focus = '8', V5 Cards = '9', V6 Creations = '10', V7 Pills = '11'.
-// Hidden ones ('1', '2', '3', '4', '5', '6', 'combined') are older ideas kept in the code. The shown labels keep their
-// numbers (V3–V7) so they match what's been shared.
-export const dashVersions: DashVersionInfo[] = [
-  { value: '1', label: 'Old · V1 Classic', hidden: true, field: 'plain' }, // archived 2026-10-30
-  { value: '2', label: 'Old · V2 Pills', hidden: true, field: 'switch' }, // archived 2026-10-30 (was the default)
-  { value: '3', label: 'Old · Pills above', hidden: true, field: 'above' },
-  { value: '4', label: 'Old · Dropdown field', hidden: true, field: 'menu' },
-  { value: '5', label: 'Old · A section per kind', hidden: true, field: 'plain' },
-  { value: '6', label: 'Old · One home, Create cards', hidden: true, field: 'switch' },
-  { value: '7', label: 'V3 · Dock', field: 'switch', dock: true, glowRise: 'dock', firstSuggestions: true },
-  { value: '8', label: 'V4 · Floating', field: 'switch', firstMessageFocus: true },
-  { value: '9', label: 'V5 · Cards', field: 'switch', dock: true, glowRise: 'cards', firstMessageWash: 'rise', firstSuggestions: true },
-  { value: '10', label: 'V6 · Creations', field: 'switch', firstMessageFocus: true, firstCard: true },
-  { value: '11', label: 'V7 · Pills', field: 'plain', dock: true, glowRise: 'dock', createPills: true, firstSuggestions: true },
-  { value: '12', label: 'V8 · Tabs', field: 'plain', topKinds: true },
-  { value: '13', label: 'V9 · Switch', field: 'above', switchFullTop: true, firstSuggestions: true },
-  { value: '14', label: 'V10 · Heading', field: 'switch', pillsUnderTitle: true, firstSuggestions: true },
-  { value: '15', label: 'V11 · Ribbon', field: 'above', switchFullTop: true, ribbonTabs: true, firstSuggestions: true },
-  { value: 'combined', label: 'Combined', hidden: true, field: 'switch' },
-]
-
-/** The setting's default: V7 · Pills (since 2026-10-30; V2 · Pills before it was archived). */
-export const defaultDashVersion = '11'
-
-export const dashVersionInfo = (value: string) => dashVersions.find((v) => v.value === value) ?? dashVersions.find((v) => v.value === defaultDashVersion)!
-
-/** The picked DASH version. */
-export function useDashVersion() {
-  return dashVersionInfo(useFlowOption('dash', 'dashVersion', defaultDashVersion))
-}
-
 export type CreationKind = 'rule' | 'indicator' | 'strategy'
 
 /**
- * The person using DASH (settings "User" and "Made so far"): new (nothing made) or returning, and what they've made.
- * `forced` (a screen that is always one or the other, e.g. dash-28) wins over the setting.
+ * The person using DASH (prototype settings "User" and "Made so far"): new (nothing made) or returning, and what
+ * they've made. A new user sees the Landing home (what DASH builds, big cards, no field); a returning one the
+ * returning home (ReturningHome). `forced` (a screen that is always one or the other, e.g. dash-28) wins over the
+ * setting.
  */
 export function useDashUser(forced?: boolean) {
   const picked = useFlowOption('dash', 'user', 'returning') === 'returning'
@@ -8379,33 +7531,6 @@ export function useHomeKeyboard({ typing = false, onTyping }: { typing?: boolean
       </div>
     ),
   }
-}
-```
-
-### `src/flows/dash/components/homeKind.ts`
-
-```ts
-import { useSyncExternalStore } from 'react'
-import type { Mode } from './askModes'
-
-/**
- * V8 · Tabs: what the home is about (Rule · Indicator · Strategy). The pick lives in the top bar (DashAI) and the home
- * body follows it (HomeTabs), so it's one small shared value both read.
- */
-let kind: Mode = 'rule'
-const listeners = new Set<() => void>()
-
-export function setHomeKind(next: Mode) {
-  if (next === kind) return
-  kind = next
-  listeners.forEach((l) => l())
-}
-
-export function useHomeKind(): Mode {
-  return useSyncExternalStore(
-    (l) => { listeners.add(l); return () => { listeners.delete(l) } },
-    () => kind,
-  )
 }
 ```
 
@@ -8767,10 +7892,17 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
 ```json
 {
   "landing.menu": "Your creations",
+  "landing.barTitle": "DASH AI",
+  "home.greeting": "What do you want to create today?",
+  "home.startShort.rule": "Create a rule that ",
+  "home.startShort.indicator": "Create an indicator that ",
+  "home.startShort.strategy": "Create a strategy that ",
+  "home.about.rule": "A rule is a limit DASH keeps for you",
+  "home.about.indicator": "An indicator is a signal on your chart",
+  "home.about.strategy": "A strategy says when to buy and sell",
+  "landing.beta": "BETA",
   "landing.pastChats": "Past chats",
   "chatMenu.button": "Chat options",
-  "chatMenu.menu": "Menu",
-  "chatMenu.title": "This chat",
   "chatMenu.delete": "Delete this chat",
   "chatMenu.deleteTitle": "Delete this chat?",
   "chatMenu.deleteText": "The conversation is deleted for good. Anything you created in it stays in Your creations.",
@@ -8778,7 +7910,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "chatMenu.alsoDeleteText": "Rules, indicators or strategies made here are removed from Your creations",
   "chatMenu.deleteConfirm": "Yes, delete",
   "chatMenu.deleteKeep": "No, keep it",
-  "chatMenu.deleted": "Chat deleted",
   "pastChats.title": "Past chats",
   "pastChats.today": "Today",
   "pastChats.yesterday": "Yesterday",
@@ -8793,7 +7924,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "landing.rulesDescription": "Build trading habits that protect your capital.",
   "landing.strategyTitle": "Create Custom Strategy",
   "landing.strategyDescription": "Describe your strategy and let DASH build it for you.",
-  "rulesHome.history": "Rule history",
   "rulesHome.title": "Hello, {name}!\nWhat rules do you want to set?",
   "rulesHome.description": "Describe your trading habits, and I'll turn them into personalised rules.",
   "rulesHome.examples": "Here are some examples",
@@ -8802,7 +7932,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "input.label": "Message DASH",
   "input.send": "Send",
   "replies.label": "Quick replies",
-  "chat.title": "Trading rules",
   "chat.thinking": "Understanding your request…",
   "chat.gotIt": "Got it!",
   "chat.needDetails": "I just need a few details to set this up.",
@@ -8833,10 +7962,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "created.description": "Trade as normal. I’ll step in only at the line you set.",
   "created.viewRule": "View rule",
   "created.close": "Close",
-  "created.cancel": "Cancel",
-  "created.viewRules": "View Rules",
-  "rules.title": "Trading rules",
-  "rules.active": "Active rules ({count})",
   "rules.delete": "Delete",
   "rules.deleteLabel": "Delete {name}",
   "rules.toggleLabel": "{name} on",
@@ -8849,8 +7974,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "deleted.okay": "Okay",
   "landing.indicatorTitle": "Create Custom Indicator",
   "landing.indicatorDescription": "Describe what your chart should show and DASH draws it.",
-  "indicator.title": "Custom indicator",
-  "indicator.history": "Your indicators",
   "indicator.emptyTitle": "Hello, {name}!\nWhat should your chart show?",
   "indicator.emptyDescription": "Describe it in plain words. DASH builds the indicator and draws it on your chart.",
   "indicator.gotIt": "Got it!",
@@ -8859,14 +7982,11 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "indicator.readyTitle": "Your indicator is ready",
   "indicator.readyText": "Review it, modify it, or save it when you’re ready.",
   "indicator.revisionPrompt": "Describe the changes you want to make.",
-  "indicator.changed": "Done! Here’s the updated preview.",
   "indicator.savedTitle": "Your indicator has been saved",
   "indicator.savedText": "You can view it in Scalper whenever you’re ready.",
   "indicator.view": "View indicator",
   "indicator.yourIndicator": "Your indicator",
   "indicator.building": "Building",
-  "indicator.ready": "Ready",
-  "indicator.placement": "{place} · checked on {count} candles",
   "indicator.linePart": "Line · {name}",
   "indicator.notes": "{count} notes from testing",
   "indicator.modify": "Modify",
@@ -8875,14 +7995,11 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "indicator.savedTag": "Saved",
   "indicator.oneQuestion": "One quick question before I build it.",
   "indicator.noQuestions": "Your message has everything I need, so I’m building it now.",
-  "indicator.buildingBelow": "Building it for {chart} on {timeframe} candles. Watch it take shape.",
   "indicator.earlierTag": "Earlier version",
   "indicator.updatedTitle": "Updated",
-  "indicator.updatedText": "Here’s the new version with your change. The earlier one is folded above.",
   "indicatorSaved.title": "Your indicator is ready to use",
   "indicatorSaved.description": "It’s saved to Your indicators. Add it to any chart from Scalper.",
   "indicatorSaved.summary": "{place} · tested on {count} candles",
-  "indicatorSaved.done": "Done",
   "indicatorSaved.view": "View indicator",
   "creations.title": "Created with DASH",
   "creations.tabs": "Show",
@@ -8907,17 +8024,12 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "creations.createIndicator": "Create an indicator",
   "creations.createStrategy": "Create a strategy",
   "rules.smart": "Smart Rule",
-  "rules.details": "{name}: details",
-  "rules.okay": "Okay",
   "creations.deleteRule": "Are you sure you want to delete this rule?",
-  "rules.detailsButton": "Details",
   "creations.deleteRuleButton": "Delete rule",
   "creations.deleteIndicatorButton": "Delete indicator",
   "cards.paused": "Paused",
   "cards.onChart": "On chart",
-  "cards.smartInfo": "What's a Smart Rule?",
   "details.switchStatus": "Status: {status}. Tap to switch",
-  "cards.smartTip": "A built-in safety rule, on by default to protect you from big losses.",
   "cards.rulePaused": "Rule paused",
   "cards.ruleOn": "Rule turned on",
   "cards.indicatorOn": "Indicator added to the chart",
@@ -8925,17 +8037,12 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "cards.undo": "Undo",
   "cards.rulesStatus": "{on} active · {off} paused",
   "cards.indicatorsStatus": "{on} on chart · {off} off",
-  "cards.editWithDash": "Edit with DASH",
-  "cards.addToChart": "Add to chart",
   "details.on": "On",
   "details.notOnChart": "Not on a chart",
-  "details.facts": "About it",
   "details.status": "Status",
-  "details.activity": "Activity",
   "indicator.changeTimeframe": "The timeframe is now {value}.",
   "indicator.changeEma": "The EMA now averages the last {value} candles.",
   "indicator.changeSupertrend": "Supertrend is now ({period}, {multiplier}).",
-  "indicator.earlierFolded": "The earlier one is folded above.",
   "indicator.suggestLabel": "Want to change something? Tap one or type your own.",
   "indicator.suggestTimeframe": "Change the timeframe to {value}",
   "indicator.suggestEma": "Use a {value} EMA",
@@ -8944,12 +8051,10 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "indicator.changeOther": "Done. I’ve made that change to your indicator.",
   "indicator.updatedNote": "Indicator updated",
   "indicator.expand": "View the full chart",
-  "indicator.fullViewDescription": "{place} · {timeframe} candles",
   "indicator.collapse": "Exit full view",
   "input.attach": "Attach a Pine Script",
   "input.removeAttachment": "Remove {name}",
   "input.attachmentPlaceholder": "Add a note, or just send",
-  "indicator.uploadPine": "Upload a Pine Script",
   "indicator.pineCaption": "Pine Script",
   "indicator.pastedPine": "Pasted Pine Script",
   "indicator.readingPine": "Reading your Pine Script…",
@@ -8958,39 +8063,13 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "indicator.suggestRename": "Rename indicator",
   "indicator.renamePrefix": "Change the indicator name to: ",
   "indicator.changeName": "It’s now called “{name}”.",
-  "home.greeting": "Hey {name},",
-  "home.title": "How can I help you trade better?",
-  "home.created": "Created with DASH",
-  "home.createdCount": "{count} created with DASH",
-  "home.manage": "Manage",
   "home.kind.indicator": "Indicator",
   "home.kind.rule": "Rule",
   "home.kind.strategy": "Strategy",
-  "home.suggestAddToChart": "Add my Supertrend indicator to Bank Nifty",
-  "home.suggestTighten": "Make my daily loss rule stricter",
-  "home.suggestNewIndicator": "Create a new indicator",
-  "home2.hello": "Hey {name}",
-  "home2.helloSub": "Here’s how your DASH tools are doing",
-  "home2.resume": "Pick up where you left off",
-  "home2.continue": "Continue",
-  "home2.draftEdited": "Draft · {edited}",
-  "home2.resumeHold": "{name}. {edited}. Opens the chat; press and hold to delete",
-  "home2.today": "Today",
-  "home2.stepIns": "Stepped in {count}× today",
-  "home2.signals": "{count} signal today",
-  "home2.library": "Your library",
-  "home2.rulesOnLabel": "rules on",
-  "home2.indicatorsOnLabel": "indicators on a chart",
-  "home2.ruleOnLabel": "rule on",
-  "home2.indicatorOnLabel": "indicator on a chart",
-  "combined.rules.title": "Rules",
-  "combined.rules.empty": "Warn or stop you before a costly trade.",
-  "combined.rules.create": "Create rule",
-  "combined.indicators.title": "Indicators",
-  "combined.indicators.empty": "Draw your own signals on any chart.",
-  "combined.indicators.create": "Create indicator",
-  "combined.rules.unit": "rules active",
-  "combined.indicators.unit": "on a chart",
+  "home.resume": "Pick up where you left off",
+  "home.resumeClose": "Close Pick up where you left off",
+  "home.draftEdited": "Draft · {edited}",
+  "home.resumeHold": "{name}. {edited}. Opens the chat; press and hold to delete",
   "pineExport.title": "Export your Pine Script",
   "pineExport.text": "Download, copy or share it for TradingView",
   "pineExport.copied": "Copied",
@@ -9006,27 +8085,21 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "askModes.placeholder.indicator": "Describe an indicator…",
   "askModes.placeholder.strategy": "Describe a strategy…",
   "askModes.new": "New",
-  "home3.new": "New",
-  "home3.create.rule": "Create rule",
-  "home3.create.indicator": "Create indicator",
-  "home3.create.strategy": "Create strategy",
-  "home3.try": "Try",
-  "home3.strategyStart": "Build a strategy that ",
-  "home3.ex.rule1": "Stop me after 3 losing trades in a day",
-  "home3.ex.rule2": "Warn me when my day loss hits ₹2,000",
-  "home3.ex.rule3": "No new trades in the last 15 minutes",
-  "home3.ex.indicator1": "Supertrend with a 20 EMA on 15 min",
-  "home3.ex.indicator2": "RSI that flags overbought on NIFTY 50",
-  "home3.ex.indicator3": "VWAP with bands for BANK NIFTY",
-  "home3.ex.strategy1": "Buy NIFTY on a 1% dip, exit at 2% profit",
-  "home3.ex.strategy2": "Sell when Supertrend flips red on 15 min",
-  "home3.ex.strategy3": "Enter on an opening range breakout",
+  "home.create.rule": "Create rule",
+  "home.create.indicator": "Create indicator",
+  "home.create.strategy": "Create strategy",
+  "home.try": "Try",
+  "home.ex.rule1": "Stop me after 3 losing trades in a day",
+  "home.ex.rule2": "Warn me when my day loss hits ₹2,000",
+  "home.ex.rule3": "No new trades in the last 15 minutes",
+  "home.ex.indicator1": "Supertrend with a 20 EMA on 15 min",
+  "home.ex.indicator2": "RSI that flags overbought on NIFTY 50",
+  "home.ex.indicator3": "VWAP with bands for BANK NIFTY",
+  "home.ex.strategy1": "Buy NIFTY on a 1% dip, exit at 2% profit",
+  "home.ex.strategy2": "Sell when Supertrend flips red on 15 min",
+  "home.ex.strategy3": "Enter on an opening range breakout",
   "strategyHome.title": "Hello, {name}!\nWhat strategy should DASH build?",
   "strategyHome.description": "Describe your entries, exits and risk. DASH builds it and shows how it would have done.",
-  "home.createPrefix": "Create a new",
-  "home.word.indicator": "indicator",
-  "home.word.rule": "rule",
-  "home.word.strategy": "strategy",
   "pineTip.text": "Tap + to upload it. DASH turns it into an indicator for your charts.",
   "pineTip.title": "Bring your Pine Script",
   "pineTip.hide": "Hide",
@@ -9048,22 +8121,15 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "input.changeIndicator": "Describe a change to your indicator",
   "input.describeRule": "Describe the rule you want",
   "input.changeRule": "Describe a change to your rule",
-  "home2.removeDraft": "Delete {name}",
-  "home2.removeTitle": "Delete this draft?",
-  "home2.removeText": "“{name}” isn’t saved yet, so deleting it means it’s gone for good.",
-  "home2.removeConfirm": "Yes, delete",
-  "home2.removeKeep": "No, keep it",
-  "home2.creations": "Your creations",
-  "home2.viewAll": "View all",
-  "home2.viewAllMore": "{count} more",
-  "home4.creations": "Ai creations",
-  "home4.createLabel": "Create something new",
-  "home4.createButton": "Create",
-  "home4.createTitle.indicator": "Create\nindicator",
-  "home4.createTitle.rule": "Create\nrule",
-  "home4.createTitle.strategy": "Create\nstrategy",
-  "home2.triggered": "Triggered {count}× today",
-  "home2.notTriggered": "Not triggered today",
+  "home.removeTitle": "Delete this draft?",
+  "home.removeText": "“{name}” isn’t saved yet, so deleting it means it’s gone for good.",
+  "home.removeConfirm": "Yes, delete",
+  "home.removeKeep": "No, keep it",
+  "home.creations": "Your creations",
+  "home.viewAll": "View all",
+  "home.viewAllMore": "{count} more",
+  "home.triggered": "Triggered {count}× today",
+  "home.notTriggered": "Not triggered today",
   "pineSheet.title": "Upload a Pine Script",
   "pineSheet.description": "Bring an indicator you wrote on TradingView. DASH turns it into an indicator for your Lemonn charts.",
   "pineSheet.step1": "Pick your Pine Script file",
@@ -9073,18 +8139,6 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "pineSheet.paste": "You can also paste the script straight into the chat.",
   "pineSheet.choose": "Choose a file",
   "pineSheet.notNow": "Not now",
-  "home2.group.rule": "Your rules",
-  "home2.group.indicator": "Your indicators",
-  "home2.group.strategy": "Your strategies",
-  "home2.rulesNote": "{total} · {count} stepped in today",
-  "home2.indicatorsNote": "{total} · {count} on a chart",
-  "home2.strategiesEmpty": "No strategies yet",
-  "home2.strategiesEmptyText": "Describe a strategy below and DASH builds it for you.",
-  "home2.strategiesSoon": "Coming soon: build a strategy with DASH",
-  "details.ruleOn": "Rule on",
-  "details.ruleOnText": "Steps in when its limit is hit",
-  "details.showOnChart": "Show on chart",
-  "details.showOnChartText": "Draws it on your Scalper chart",
   "creations.filter.rules.all": "All ({count})",
   "creations.filter.rules.on": "Active ({count})",
   "creations.filter.rules.off": "Paused ({count})",
@@ -9109,42 +8163,9 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "firstAsk.strategy.2": "Scalp the 5-min EMA cross",
   "firstAsk.strategy.3": "Buy the dip after a 3% fall",
   "firstAsk.strategy.4": "Exit at 2% profit or 1% loss",
-  "home9.greeting.morning": "Good morning, {name}",
-  "home9.greeting.afternoon": "Good afternoon, {name}",
-  "home9.greeting.evening": "Good evening, {name}",
-  "home9.title": "How can I help you today?",
-  "home9.cardsLabel": "What DASH builds",
-  "home9.name.rule": "Ai rules",
-  "home9.name.indicator": "Ai indicators",
-  "home9.name.strategy": "Ai strategies",
-  "home9.create.rule": "Create Ai rules",
-  "home9.create.indicator": "Create Ai indicators",
-  "home9.create.strategy": "Create new strategy",
-  "home9.start.rule": "Build an Ai rule that ",
-  "home9.start.indicator": "Build an Ai indicator that ",
-  "home9.start.strategy": "Build an Ai strategy that ",
-  "home9.made.active": "{count} active",
-  "home9.made.saved": "{count} saved",
-  "home9.made.rule": "Rules",
-  "home9.made.indicator": "Indicators",
-  "home9.placeholder": "Ask DASH anything",
-  "firstCard.label": "What you've made",
-  "firstCard.create": "Create",
-  "firstCard.createLabel.rule": "Create a rule",
-  "firstCard.createLabel.indicator": "Create an indicator",
-  "firstCard.createLabel.strategy": "Create a strategy",
-  "firstCard.allActive.rule": "{count} rules active",
-  "firstCard.allActive.indicator": "{count} indicators on a chart",
-  "firstCard.allActive.strategy": "{count} strategies active",
-  "firstCard.someActive.rule": "{active} of {total} rules active",
-  "firstCard.someActive.indicator": "{active} of {total} indicators on a chart",
-  "firstCard.someActive.strategy": "{active} of {total} strategies active",
-  "firstCard.none.rule": "None yet · protect your trades",
-  "firstCard.none.indicator": "None yet · see more on your chart",
-  "firstCard.none.strategy": "None yet · trade your own plan",
-  "firstCard.name.rule": "Rules",
-  "firstCard.name.strategy": "Strategies",
-  "firstCard.name.indicator": "Indicators",
+  "home.startAlt.rule": "Build an Ai rule that ",
+  "home.startAlt.indicator": "Build an Ai indicator that ",
+  "home.startAlt.strategy": "Build an Ai strategy that ",
   "liveAsk.rule.1": "stops trading after 3 losses in a row",
   "liveAsk.rule.2": "caps my daily loss at ₹5,000",
   "liveAsk.rule.3": "alerts me when a trade is down 2%",
@@ -9164,19 +8185,9 @@ export function useStickToBottom(scroller: RefObject<HTMLElement | null>, turn: 
   "liveAsk.strategy.5": "trades the opening range breakout",
   "liveAsk.strategy.6": "sells when RSI crosses 70",
   "liveAsk.label": "Suggestions for what you're typing",
-  "home8.title.rule": "What should a rule do for you?",
-  "home8.title.indicator": "What should your indicator show?",
-  "home8.title.strategy": "What should your strategy trade?",
-  "home8.start.rule": "Start a rule",
-  "home8.start.indicator": "Start an indicator",
-  "home8.start.strategy": "Start a strategy",
-  "home3.start.rule": "Build a rule that ",
-  "home3.start.indicator": "Build an indicator that ",
-  "home3.start.strategy": "Build a strategy that ",
-  "createPills.label": "Create",
-  "createPills.rule": "Create rules",
-  "createPills.strategy": "Create strategy",
-  "createPills.indicator": "Create indicator"
+  "home.start.rule": "Build a rule that ",
+  "home.start.indicator": "Build an indicator that ",
+  "home.start.strategy": "Build a strategy that "
 }
 ```
 
@@ -9260,7 +8271,7 @@ export type SavedRule = {
   title: string
   /** One line: what it does, at what limit. */
   summary: string
-  /** Version 2: made by DASH from the user's trading (the "Smart Rule ⓘ" tag). */
+  /** Made by DASH from the user's trading (the "Smart Rule ⓘ" tag). */
   smart?: boolean
   on: boolean
   /** What happened lately / when it was made — the card's footer line. `strong` is the part in bold. */
@@ -9280,7 +8291,7 @@ export const activeRules: SavedRule[] = [
 export const rulesAfterDelete = activeRules.filter((r) => r.id !== 'max-daily-loss')
 
 /**
- * Version 2 · Created with DASH: the user's saved indicators (same shape as a rule — `on` = on the chart in Scalper).
+ * Created with DASH: the user's saved indicators (same shape as a rule — `on` = on the chart in Scalper).
  * Strategies: none yet (that tab shows its empty state).
  */
 export const savedIndicators: SavedRule[] = [
@@ -9289,7 +8300,7 @@ export const savedIndicators: SavedRule[] = [
 ]
 export const savedStrategies: SavedRule[] = []
 
-/** Version 2 · the user's rules as the live app shows them (titles, wording, on / off and dates from its screens). */
+/** the user's rules as the live app shows them (titles, wording, on / off and dates from its screens). */
 export const dashRules: SavedRule[] = [
   { id: 'day-pnl-gate', title: 'Day P&L Gate at 5% Opening balance', summary: 'When your Day P&L, closed trades and open positions together, is down 5% of your opening balance, you’ll see a warning before you place a new entry order.', on: true, activity: { text: 'Created on 26 Oct’26' } },
   { id: 'expiry-day-entry', title: 'Expiry Day Options Entry Warning', summary: 'You’ll see a warning when you try to place a new entry order for an option on its expiry day.', on: true, activity: { text: 'Created on 22 Oct’26' } },
@@ -9344,13 +8355,12 @@ export const homeTriggers: Record<string, number> = { 'day-pnl-gate': 2, 'expiry
 ### `src/flows/dash/index.tsx`
 
 ```tsx
-import { msPerson, msChat, msDashboard, msForum, msHome, msLabel, msLayers, msPlayCircle, msRule, msViewAgenda, msVisibility } from '@l3/icons/material'
+import { msPerson, msChat, msRule } from '@l3/icons/material'
 import type { Flow } from '../types'
 import { switchKind } from './components/pendingMessage'
 import { activeRules, backtests, maxDailyLoss, rulesAfterDelete } from './data'
 import { ActiveRules } from './screens/ActiveRules'
 import { DashAI } from './screens/DashAI'
-import { dashVersions, defaultDashVersion } from './components/dashVersion'
 import type { IndicatorStep } from './screens/IndicatorChat'
 import { DeleteRuleSheet, ReadMoreSheet, RuleCreatedSheet, RuleDeletedSheet } from './sheets/RuleSheets'
 import { IndicatorSavedSheet } from './sheets/IndicatorSheets'
@@ -9371,33 +8381,17 @@ export const dash: Flow = {
   title: 'DASH Ai · Trading rules',
   description: 'Describe a trading habit; DASH builds it into a rule, backtests it, saves it. Your active rules, on / off, delete.',
   figmaFile: 'nLs24dTJdPz9A5pu3AWMbe',
-  // Prototype setting: Version 1 = the cards (rule, indicator) pinned above the chat. Version 2 = the cards inside the
-  // chat as a turn. Both: three indicator examples (asks nothing / the timeframe / where it goes).
+  // Prototype settings: who is using DASH (new → the landing, returning → their home), what they've made, and whether
+  // they have past chats.
   options: [
-    // DASH version (dropdown — there will be many): the whole home experience, homes + chat input style. The list is in
-    // components/dashVersion.ts (+ its homes in screens/homes.tsx). Hidden ones (Combined) stay in the code, off the panel.
-    { id: 'dashVersion', group: 'Home', icon: msHome, label: 'DASH version', picker: 'dropdown', values: dashVersions.filter((v) => !v.hidden).map(({ value, label }) => ({ value, label })), default: defaultDashVersion },
-    // Who is using DASH — every version reads it (useDashUser) and adapts its cards.
+    // Who is using DASH (useDashUser): a new user gets the landing (dash-02), a returning one their home (dash-28).
     { id: 'user', group: 'Home', icon: msPerson, label: 'New user', picker: 'toggle', values: [{ value: 'returning', label: 'Returning user' }, { value: 'new', label: 'New user' }], default: 'returning' },
-    // A returning user: what they've made so far. A made kind shows its numbers / cards; the others are promoted.
+    // A returning user: what they've made so far. A made kind shows its cards; the others show examples to try.
     { id: 'made', showIf: { user: ['returning'] }, group: 'Home', icon: msRule, label: 'Made so far', values: [{ value: 'rules', label: 'Rules' }, { value: 'indicators', label: 'Indicators' }, { value: 'both', label: 'Both' }], default: 'both' },
-    // V6: a Create card for strategies too.
-    { id: 'homeStrategyCard', showIf: { dashVersion: ['6'] }, group: 'Home', icon: msLayers, label: 'Strategy card', picker: 'toggle', values: [{ value: 'hide', label: 'Off' }, { value: 'show', label: 'On' }], default: 'hide' },
-    // V6: the Create cards with a small button, or the plain dashed + Create card (the whole card taps).
-    { id: 'homeCreateStyle', showIf: { dashVersion: ['6'] }, group: 'Home', icon: msLayers, label: 'Create cards', values: [{ value: 'button', label: 'Button' }, { value: 'outline', label: 'Outline' }], default: 'button' },
-    // Every version, returning user · drafts to resume: Show (two sample drafts) or Hide (default; none — the centre-stage layout).
-    { id: 'resumeChats', showIf: { user: ['returning'] }, group: 'Home', icon: msPlayCircle, label: 'Resume chats', picker: 'toggle', values: [{ value: 'hide', label: 'Hide' }, { value: 'show', label: 'Show' }], default: 'hide' },
-    // Every version: an icon in each Rule · Indicator · Strategy pill (off by default).
-    { id: 'pillIcons', group: 'Home', icon: msRule, label: 'Pill icons', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
-    // V9 · Switch: the Rule · Indicator · Strategy toggle inside the field (top row) or just above it, outside.
-    { id: 'switchOutside', showIf: { dashVersion: ['13'] }, group: 'Home', icon: msViewAgenda, label: 'Switch outside', picker: 'toggle', values: [{ value: 'off', label: 'Inside' }, { value: 'on', label: 'Outside' }], default: 'off' },
-    // Past chats sheet: With chats (the sample history) or Empty (the empty state; no drafts on the home either).
-    { id: 'pastChats', group: 'Home', icon: msChat, label: 'Has past chats', picker: 'toggle', values: [{ value: 'none', label: 'Empty' }, { value: 'some', label: 'With chats' }], default: 'some' },
-    // V5, for testing: hide one section.
-    { id: 'homeHide', showIf: { dashVersion: ['5'], user: ['returning'] }, group: 'Home', icon: msVisibility, label: 'Hide section', values: [{ value: 'none', label: 'None' }, { value: 'indicators', label: 'Indicators' }, { value: 'strategies', label: 'Strategies' }], default: 'none' },
-    // Combined (hidden): its card style.
-    { id: 'homeCardStyle', showIf: { dashVersion: ['combined'] }, group: 'Home', icon: msLayers, label: 'Home card style', values: [{ value: 'plain', label: 'Plain' }, { value: 'glow', label: 'Green' }], default: 'glow' },
-    // Pine Script: upload a file (the paperclip, or the 4th suggestion) or paste one in the indicator chat — on / off.
+    // Past chats (one setting, default off): On → the Past chats sheet (history button) has the sample history and a
+    // returning user's home shows "Pick up where you left off" (two drafts, closable with ✕ for the session). Off → the
+    // sheet's empty state and no drafts on the home.
+    { id: 'pastChats', group: 'Home', icon: msChat, label: 'Has past chats', picker: 'toggle', values: [{ value: 'none', label: 'Empty' }, { value: 'some', label: 'With chats' }], default: 'none' },
   ],
   sections: [
     { id: 'entry', title: 'Entry' },
@@ -9409,8 +8403,8 @@ export const dash: Flow = {
   ],
   screens: [
     // ---- Entry
-    { id: 'dash-02', group: 'dash', section: 'entry', name: 'DASH landing', figma: '5612:81961', note: 'From the DASH pill in the Stocks home top bar (stocks-01; first visit: the coach mark, stocks-08). Back returns home. Set Trading Rules opens the rules chat; Create Custom Strategy is another flow (not designed yet). ☰ opens your rules.', render: (go) => <DashAI scene="landing" onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
-    { id: 'dash-28', group: 'dash', section: 'entry', name: 'DASH home · returning user', figma: '', note: 'For someone who has used DASH before (live app: rules only — here rules, indicators and strategies). No explaining again: their work first — Created with DASH (count · Manage), a sideways row of their latest indicators and rules with kind and status (tap: carry on in its chat), suggestions from what they have, and the field to ask or change anything. The prototype setting “DASH home” shows this on the landing too.', render: (go) => <DashAI scene="landing" returning onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
+    { id: 'dash-02', group: 'dash', section: 'entry', name: 'DASH home', figma: '5612:81961', note: 'From the DASH pill in the Stocks home top bar (stocks-01; first visit: the coach mark, stocks-08). Follows the prototype setting User: New user → the landing (DASH AI · BETA in the top bar, the three build cards: Indicator, Trading rules, Strategy); Returning user → their home (as dash-28). Back returns home. The history button opens Past chats.', render: (go) => <DashAI scene="landing" onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
+    { id: 'dash-28', group: 'dash', section: 'entry', name: 'DASH home · returning user', figma: '', note: 'For someone who has used DASH before (prototype setting User → Returning user; New user shows the landing, dash-02). No explaining again: the still orb and “What do you want to create today?”, the Rule · Indicator · Strategy pills (each with a count of what they made), then a sideways row of the picked kind — the Create card first, their latest three (tap: the details sheet), View all. Under it, Pick up where you left off (drafts, if they have any). Past chats: the history button in the top bar. The field to ask or change anything; typing shows suggestions.', render: (go) => <DashAI scene="landing" returning onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
     // ---- Create a rule
     { id: 'dash-03', group: 'dash', section: 'create', name: 'Rules · what to set', figma: '5612:40261', note: 'Figma “DASH AI - better layout” 2 (6494:30374): the chat’s empty state — the same screen as the landing and the conversation; the body pushes in from the landing while the background and the bar stay. Example rows drift sideways. A chip (or typing + Send) sends the message: it flies up into the chat as the greeting and examples fade away. History opens your rules.', render: (go) => <DashAI scene="rules" step="empty" onSwitchKind={(k) => go(k === 'indicator' ? 'dash-20' : 'dash-03')} onBack={() => go('dash-02')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onSend={() => go('dash-04')} /> },
     { id: 'dash-26', group: 'dash', section: 'create', name: 'Rules · typing', figma: '6494:30768', note: 'Figma “DASH AI - better layout” 3.1 (file 9r61YQp7QQZAQovDyz8hLF): the input tapped — heading and examples fold away, the orb stays centred, the input turns green, the keyboard rises and the background ends above it (300 ms). Tap the body to go back.', render: (go) => <DashAI scene="rules" step="empty" typing onBack={() => go('dash-02')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onSend={() => go('dash-04')} /> },
@@ -9432,7 +8426,7 @@ export const dash: Flow = {
     { id: 'dash-16', section: 'rules', name: 'Rule deleted', figma: '5612:42455', note: 'The list behind already has 3 rules.', render: (go) => <ActiveRules rules={rulesAfterDelete} onBack={() => go('dash-02')} sheet={<RuleDeletedSheet onOkay={() => go('dash-17')} />} /> },
     { id: 'dash-17', section: 'rules', name: 'Active rules · after delete', figma: '5612:42076', note: 'Not a Figma frame: the list once the sheet closes (3 rules).', render: (go) => <ActiveRules rules={rulesAfterDelete} onBack={() => go('dash-02')} onDelete={() => go('dash-15')} onCreate={() => go('dash-03')} onCreateIndicator={() => go('dash-20')} onAddToChart={() => go('fno-07')} onEditIndicator={() => go('dash-24')} onEditRule={() => go('dash-06')} /> },
     // ---- Custom indicator (wireframe "AI Indicator") — ONE chat screen in different states (group 'indicator')
-    { id: 'dash-30', section: 'history', name: 'Past chats', figma: '', note: 'A tall bottom sheet over DASH (here over the home): from the history button in the top bar, View all on Pick up where you left off, or a chat’s ⋮ → Past chats. Every chat by day, newest first; a row closes the sheet and opens its chat (rule → the rule preview, indicator → the ready indicator).', group: 'dash', render: (go) => <DashAI scene="landing" pastChatsOpen onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
+    { id: 'dash-30', section: 'history', name: 'Past chats', figma: '', note: 'A tall bottom sheet over DASH (here over the home): from the history button in the top bar, or a chat’s ⋮ → Past chats. Every chat by day, newest first; a row closes the sheet and opens its chat (rule → the rule preview, indicator → the ready indicator).', group: 'dash', render: (go) => <DashAI scene="landing" pastChatsOpen onStrategy={() => { switchKind('strategy'); go('dash-03') }} onBack={() => go('stocks-01')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} onRules={() => go('dash-03')} onIndicator={() => go('dash-20')} onOpenRule={() => go('dash-06')} onOpenIndicator={() => go('dash-24')} onAddToChart={() => go('fno-07')} /> },
     { id: 'dash-20', group: 'dash', section: 'indicator', name: 'Indicator · what to show', figma: '', note: 'Third option on the DASH landing. Empty chat: example prompts; a chip or typed text flies up and DASH reads it.', render: (go) => <DashAI scene="indicator" onSwitchKind={(k) => go(k === 'indicator' ? 'dash-20' : 'dash-03')} onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} step="empty" onBack={() => go('dash-02')} onSend={() => go('dash-21')} onChart={() => go('dash-22')} onTimeframe={() => go('dash-23')} onBuilt={() => go('dash-24')} onSaved={() => go('dash-25')} onSaveSheet={() => go('dash-27')} onStep={(st) => go(indicatorStep[st])} /> },
     { id: 'dash-21', group: 'dash', section: 'indicator', name: 'Indicator · which chart', figma: '', note: 'DASH asks only what the prompt didn’t say: the chart… (only for “…on 15-min candles”; then it builds)', render: (go) => <DashAI scene="indicator" onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} step="chart" onBack={() => go('dash-02')} onSend={() => go('dash-21')} onChart={() => go('dash-22')} onTimeframe={() => go('dash-23')} onBuilt={() => go('dash-24')} onSaved={() => go('dash-25')} onSaveSheet={() => go('dash-27')} onStep={(st) => go(indicatorStep[st])} /> },
     { id: 'dash-22', group: 'dash', section: 'indicator', name: 'Indicator · which timeframe', figma: '', note: '…and the timeframe. (only for “…on Nifty 50”.)', render: (go) => <DashAI scene="indicator" onYourRules={() => go('dash-14')} onOpenPastChat={(kind) => go(kind === 'indicator' ? 'dash-24' : 'dash-06')} step="timeframe" onBack={() => go('dash-02')} onSend={() => go('dash-21')} onChart={() => go('dash-22')} onTimeframe={() => go('dash-23')} onBuilt={() => go('dash-24')} onSaved={() => go('dash-25')} onSaveSheet={() => go('dash-27')} onStep={(st) => go(indicatorStep[st])} /> },
@@ -9462,7 +8456,7 @@ export const indicatorPrompts: string[][] = [
 export type IndicatorAsk = 'chart' | 'timeframe'
 
 /**
- * Version 2's three example requests — one per case: everything said (DASH asks nothing and builds), no timeframe
+ * three example requests — one per case: everything said (DASH asks nothing and builds), no timeframe
  * (DASH asks the timeframe), no chart (DASH asks where it goes). `chart` / `timeframe` are what the request already says.
  */
 export type IndicatorPrompt = { text: string; asks: IndicatorAsk[]; chart: string; timeframe: string }
@@ -9739,9 +8733,9 @@ import styles from './ActiveRules.module.css'
 
 type ActiveRulesProps = {
   rules: SavedRule[]
-  /** Version 2: Create on the AI Indicators tab. */
+  /** Create on the AI Indicators tab. */
   onCreateIndicator?: () => void
-  /** Version 2 · card style New: the details' Edit with DASH / Add to chart. */
+  /** card style New: the details' Edit with DASH / Add to chart. */
   onAddToChart?: () => void
   onEditIndicator?: () => void
   onEditRule?: () => void
@@ -9811,7 +8805,7 @@ export function RuleItem({ rule, onDelete, leading, hideLeading = false, toggleL
 ### `src/flows/dash/screens/Creations.module.css`
 
 ```css
-/* Created with DASH (Version 2): a plain L3 screen — the Actionbar, sections, the dock. */
+/* Created with DASH: a plain L3 screen — the Actionbar, sections, the dock. */
 .list {
   margin: 0;
   padding: 0;
@@ -9874,7 +8868,7 @@ type CreationsProps = {
 }
 
 /**
- * Version 2 · Created with DASH — everything the user made with DASH, on a plain screen (L3 Actionbar, no DASH
+ * Created with DASH — everything the user made with DASH, on a plain screen (L3 Actionbar, no DASH
  * background): pill tabs in the Actionbar's bottom slot filter it — All · AI Rules · AI Indicators · AI Strategies.
  * All shows a section per kind that has something; a tab (or All) with nothing shows the L3 empty state with a way to
  * create one. Rules and indicators are the same card — the name's initial in an L3 Avatar, a switch (on / on the chart), footer: activity + Delete.
@@ -10041,6 +9035,17 @@ export function Creations({ rules, indicators, strategies, onBack, onDeleteRule,
   flex: none;
   flex-direction: column;
 }
+
+/* New user (landing): "DASH AI" and the BETA tag on one line, centred in the top bar (Heading/14, as an L2 bar title). */
+.barTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-14);
+  white-space: nowrap;
+}
 ```
 
 ### `src/flows/dash/screens/DashAI.tsx`
@@ -10048,8 +9053,7 @@ export function Creations({ rules, indicators, strategies, onBack, onDeleteRule,
 ```tsx
 import { useEffect, useState, type ReactNode } from 'react'
 import { ActionbarAction } from '@l3/components/Actionbar'
-import { msHistory, msMenu, msWidgets } from '@l3/icons/material'
-import { useFlowOption } from '../../../shared/prototype'
+import { msHistory, msWidgets } from '@l3/icons/material'
 import { DashBar, DashScreen } from '../components/DashScreen'
 import { SceneSwap, type SceneMove } from '../components/SceneSwap'
 import { isSwitchingKind } from '../components/pendingMessage'
@@ -10058,14 +9062,12 @@ import styles from './DashAI.module.css'
 import { t } from '../copy'
 import { IndicatorScene, type IndicatorChatProps } from './IndicatorChat'
 import { LandingScene, type LandingProps } from './Landing'
-import { homeScenes } from './homes'
-import { defaultDashVersion, useDashUser, useDashVersion } from '../components/dashVersion'
+import { ReturningHomeScene } from './ReturningHome'
+import { useDashUser } from '../components/dashUser'
 import { RuleScene, type RuleChatProps } from './RuleChat'
 import { DeleteChatSheet } from '../sheets/ChatSheets'
 import { ChatMenu } from '../components/ChatMenu'
-import { SlidingPills } from '../components/SlidingPills'
-import { setHomeKind, useHomeKind } from '../components/homeKind'
-import type { Mode } from '../components/askModes'
+import { Tag } from '@l3/components/Tag'
 import { PastChatsSheet } from './PastChats'
 import type { PastChat } from '../data'
 
@@ -10103,12 +9105,10 @@ const order = { landing: 0, rules: 1, indicator: 1 } as const
  */
 export function DashAI(props: DashAIProps) {
   const { scene, onBack, onYourRules, onOpenPastChat, sheet } = props
-  /** Prototype settings "DASH version" (which homes, components/dashVersion.ts + screens/homes.tsx) and "User" (new /
-   *  returning; a screen may force it with the `returning` prop, e.g. dash-28). */
+  /** Prototype setting "User": new (the Landing home) or returning (ReturningHome); a screen may force it with the
+   *  `returning` prop (dash-28). */
   const forcedReturning = 'returning' in props ? props.returning : undefined
   const { returning } = useDashUser(forcedReturning)
-  const dashVersion = useDashVersion()
-  const home = homeScenes[dashVersion.value] ?? homeScenes[defaultDashVersion]
   const [typing, setTyping] = useState(props.typing ?? false)
   const [dockHost, setDockHost] = useState<HTMLDivElement | null>(null)
   // The field rises into place when the screen had none before (the new user's home → a chat): it slides up from the
@@ -10128,7 +9128,7 @@ export function DashAI(props: DashAIProps) {
     watch.observe(dockHost, { childList: true })
     return () => watch.disconnect()
   }, [dockHost])
-  // DASH's own sheets: Past chats (tall, from the history button / View all / ⋮) and Delete this chat? (⋮).
+  // DASH's own sheets: Past chats (tall, from the history button or ⋮) and Delete this chat? (⋮).
   const [chatSheet, setChatSheet] = useState<'history' | 'delete' | null>(props.pastChatsOpen ? 'history' : null)
   const onPastChats = () => setChatSheet('history')
   // A past chat being deleted from the Past chats sheet (its row's hold menu), and the ones deleted this visit.
@@ -10143,7 +9143,7 @@ export function DashAI(props: DashAIProps) {
     //   right; back the other way) and the field rises from the bottom (dock animation below);
     // - a home with the field ↔ a chat, or switching kind in the field: the body cross-fades, the field stays put;
     // - otherwise push / back by order.
-    const newUserHome = !returning && !!home.newUserNoField
+    const newUserHome = !returning
     const touchesHome = lastScene === 'landing' || scene === 'landing'
     setMove(touchesHome && newUserHome ? (scene === 'landing' ? 'back' : 'push') : touchesHome || isSwitchingKind() ? 'fade' : order[scene] < order[lastScene] ? 'back' : 'push')
     setTyping(false)
@@ -10163,18 +9163,12 @@ export function DashAI(props: DashAIProps) {
   }, [typing])
 
   const tone = props.scene === 'rules' && props.step === 'cost' ? 'loss' : 'brand'
-  // V8 · Tabs, returning user's home: Rule · Indicator · Strategy in the middle of the top bar (the body follows), and
-  // one ☰ on the right (Past chats, Your creations) so the tabs sit centred between back and it.
-  const homeKind = useHomeKind()
-  const kindTabs = dashVersion.topKinds && props.scene === 'landing' && returning ? (
-    // The same sliding pills as the field's: the black thumb glides to the pick, never flips.
-    <SlidingPills
-      label={t('askModes.label')}
-      newLabel={t('askModes.new')}
-      items={(['rule', 'indicator', 'strategy'] as const).map((value) => ({ value, label: t(`askModes.${value}`) }))}
-      value={homeKind}
-      onChange={(v) => setHomeKind(v as Mode)}
-    />
+  // The home's top bar says what this is — "DASH AI" and a small BETA tag (neutral, tertiary), centred.
+  const barTitle = props.scene === 'landing' ? (
+    <span className={styles.barTitle}>
+      {t('landing.barTitle')}
+      <Tag variant="tertiary" color="neutral" size="sm">{t('landing.beta')}</Tag>
+    </span>
   ) : undefined
   /** A chat has started (not the home, not an empty chat): the top bar's ⋮ menu. */
   const inChat = props.scene !== 'landing' && props.step !== 'empty'
@@ -10184,9 +9178,10 @@ export function DashAI(props: DashAIProps) {
 
   let body: ReactNode
   if (props.scene === 'landing') {
-    const homeProps = { returning, typing, onTyping: setTyping, onManage: onYourRules, onPastChats, onOpenRule: props.onOpenRule, onOpenIndicator: props.onOpenIndicator, onRules: props.onRules, onIndicator: props.onIndicator, onStrategy: props.onStrategy, onAddToChart: props.onAddToChart }
-    const Home = returning ? home.returning : home.newUser
-    body = <Home {...homeProps} />
+    // New user: what DASH builds, big cards, no field. Returning: their work and the field (ReturningHome).
+    body = returning
+      ? <ReturningHomeScene returning typing={typing} onTyping={setTyping} onManage={onYourRules} onOpenRule={props.onOpenRule} onOpenIndicator={props.onOpenIndicator} onRules={props.onRules} onIndicator={props.onIndicator} onStrategy={props.onStrategy} />
+      : <LandingScene onRules={props.onRules} onIndicator={props.onIndicator} onStrategy={props.onStrategy} />
   }
   else if (props.scene === 'rules') body = <RuleScene {...props} typing={typing} onTyping={setTyping} />
   else body = <IndicatorScene {...props} typing={typing} onTyping={setTyping} />
@@ -10196,12 +9191,11 @@ export function DashAI(props: DashAIProps) {
       tone={tone}
       keyboard={keyboardUp}
       chatting={inChat}
-      firstFocus={typing && (props.scene === 'landing' || props.step === 'empty') && (dashVersion.firstMessageFocus ? 'rise' : dashVersion.firstMessageWash ?? false)}
       // The input's fixed place (DashDock): every scene renders its field here, so it stays put while the body changes.
       bottom={<div ref={setDockHost} className={styles.dockHost} />}
       // Right of the bar — on the home and an empty chat: past chats (history), then what they've made. Once a chat has
       // started (a message sent, or a past chat opened): one ⋮ dropdown with those two and Delete this chat.
-      top={<DashBar onBack={onBack} center={kindTabs} actions={inChat ? <ChatMenu onPastChats={onPastChats} onCreations={onYourRules} onDelete={() => setChatSheet('delete')} /> : kindTabs ? <ChatMenu icon={msMenu} label={t('chatMenu.menu')} onPastChats={onPastChats} onCreations={onYourRules} /> : <><ActionbarAction icon={msHistory} label={t('landing.pastChats')} onClick={onPastChats} /><ActionbarAction icon={msWidgets} label={t('landing.menu')} onClick={() => onYourRules?.()} /></>} />}
+      top={<DashBar onBack={onBack} center={barTitle} actions={inChat ? <ChatMenu onPastChats={onPastChats} onCreations={onYourRules} onDelete={() => setChatSheet('delete')} /> : <><ActionbarAction icon={msHistory} label={t('landing.pastChats')} onClick={onPastChats} /><ActionbarAction icon={msWidgets} label={t('landing.menu')} onClick={() => onYourRules?.()} /></>} />}
       sheet={
         chatSheet === 'history' ? (
           <PastChatsSheet
@@ -10234,886 +9228,6 @@ export function DashAI(props: DashAIProps) {
 }
 ```
 
-### `src/flows/dash/screens/HomeCombined.module.css`
-
-```css
-/* DASH home, Combined: Rules and Indicators, two cards side by side (equal height; the footer button sits at the bottom). */
-.card {
-  height: 100%;
-}
-
-.card > :first-child {
-  flex: 1;
-}
-
-.title {
-  display: flex;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  margin: 0;
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-}
-
-/* Something made: the number leads (count large, "/total" smaller), what it counts under it. */
-/* Made something: the stat sits at the card's bottom (the title stays at the top), large. */
-.body[data-has] {
-  height: 100%;
-  justify-content: space-between;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--l3-spacing-02);
-  margin: 0;
-}
-
-.count {
-  font: var(--l3-text-heading-36);
-  color: var(--l3-content-primary);
-}
-
-.total {
-  font: var(--l3-text-heading-20);
-  color: var(--l3-content-tertiary);
-}
-
-.unit {
-  font: var(--l3-text-description-14);
-  color: var(--l3-content-secondary);
-}
-
-/* Nothing made yet: what it's for. */
-.description {
-  margin: 0;
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-/* Green (prototype setting "Home card style"): the DASH green edge and radius of the new-user cards (BuildOption),
-   no fill. Plain keeps L3's white card with the normal stroke. */
-.glow.glow {
-  --card-border: inset 0 0 0 1px var(--app-dash-green); /* 1px: the stroke */
-  border-radius: var(--l3-radius-16);
-  /* A faint DASH-green glow from the right edge, so the space beside the text isn't flat (subtle on purpose). */
-  background-image: radial-gradient(
-    ellipse 70% 90% at 100% 70%,
-    color-mix(in srgb, var(--app-dash-glow-1) var(--app-dash-card-glow), transparent),
-    transparent
-  );
-}
-
-/* The Pine Script tip, "Overlay": it sits over the cards, which dim behind it. */
-.cards[data-dimmed] {
-  opacity: var(--l3-opacity-40);
-  transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
-}
-```
-
-### `src/flows/dash/screens/HomeCombined.tsx`
-
-```tsx
-import { useRef, useState } from 'react'
-import { Button } from '@l3/components/Button'
-import { Card } from '@l3/components/Card'
-import { Grid } from '@l3/components/Grid'
-import { Icon } from '@l3/components/Icon'
-import { Inset } from '@l3/components/Inset'
-import { Stack } from '@l3/components/Stack'
-import { msChevronRight } from '@l3/icons/material'
-import { useFlowOption } from '../../../shared/prototype'
-import { DashOrb } from '../../../shared/ui/dash/DashOrb'
-import { useHomeKeyboard } from '../components/homeKeyboard'
-import { ChatInput } from '../components/Chat'
-import { useAskModes } from '../components/askModes'
-import { useDashUser } from '../components/dashVersion'
-import { openHistoryOn } from '../components/historyFilter'
-import { usePineTip } from '../components/pineTip'
-import { holdFile } from '../components/pendingFile'
-import { DashDock } from '../components/DashDock'
-import { t } from '../copy'
-import { dashRules, firstName, savedIndicators } from '../data'
-import { PineUploadSheet } from '../sheets/PineUploadSheet'
-import type { ReturningProps } from './Returning'
-import home from './ReturningV2.module.css'
-import styles from './HomeCombined.module.css'
-
-/**
- * DASH home, Combined (prototype setting "DASH home" → Combined): one home for new and returning users.
- * 1. the header, centred, as on Returning home v2: the DASH orb over the greeting;
- * 2. two cards, Rules and Indicators. Each card has two states:
- *    side by side, one small button each (in the footer):
- *    - nothing made yet: what it's for, and Create rule / Create indicator (opens that chat);
- *    - something made: the number leads (3/8 rules active); no button — the card opens the history page on that tab;
- * 3. the field — ask for anything in words.
- * Settings "User" / "Made so far": a kind not made invites (Create rule / Create indicator), a made one shows its numbers.
- */
-export function HomeCombinedScene({ returning, onManage, onRules, onIndicator, typing, onTyping }: ReturningProps) {
-  // The drawn keyboard (as in the chats): the field types on it; a tap on the page or Send puts it away.
-  const kb = useHomeKeyboard({ typing, onTyping })
-  // What this person made (settings "User" / "Made so far").
-  const { made } = useDashUser(returning)
-  const hasRules = made.rule
-  const hasIndicators = made.indicator
-  const rulesActive = dashRules.filter((r) => r.on).length
-  const indicatorsOn = savedIndicators.filter((x) => x.on).length
-  const viewAll = (tab: 'rules' | 'indicators') => {
-    openHistoryOn(tab)
-    onManage?.()
-  }
-  // The field (prototype): a request about charts goes to the indicator chat, anything else to rules.
-  const ask = (text: string) => (/indicator|chart|ema|supertrend|rsi|macd|average|candle/i.test(text) ? onIndicator?.() : onRules?.())
-  // Setting "Ask field": the switch in the field (Rule · Indicator · Strategy) picks where Send goes.
-  const askModes = useAskModes({ onRules, onIndicator, guess: ask })
-
-  // Pine Script (prototype setting): the field's + explains itself (a sheet), then picks a file for the indicator chat.
-  const fileInput = useRef<HTMLInputElement>(null)
-  const [pineSheet, setPineSheet] = useState(false)
-  // The first-time Pine Script tip on the field's + (as in the indicator chat): over the cards (they dim) or pushed up.
-  const tip = usePineTip()
-  const tipOn = tip.show
-
-  /** Prototype setting "Home card style": Plain (white, normal stroke) or Green (the DASH green edge of the new-user cards). */
-  const glow = useFlowOption('dash', 'homeCardStyle', 'glow') === 'glow'
-
-  const cards = [
-    {
-      kind: 'rules' as const,
-      title: t('combined.rules.title'),
-      has: hasRules,
-      count: rulesActive,
-      total: dashRules.length,
-      unit: t('combined.rules.unit'),
-      empty: t('combined.rules.empty'),
-      create: t('combined.rules.create'),
-      onCreate: onRules,
-    },
-    {
-      kind: 'indicators' as const,
-      title: t('combined.indicators.title'),
-      has: hasIndicators,
-      count: indicatorsOn,
-      total: savedIndicators.length,
-      unit: t('combined.indicators.unit'),
-      empty: t('combined.indicators.empty'),
-      create: t('combined.indicators.create'),
-      onCreate: onIndicator,
-    },
-  ]
-
-  return (
-    <div className={home.scene}>
-      <div className={home.scroll} onClick={kb.close}>
-        <Inset paddingInline="16" className={home.page}>
-          <Stack gap="40" className={home.content}>
-            {/* 1 · Header: the DASH orb, then the greeting under it (as on Returning home v2's centre stage). */}
-            <Stack gap="16" align="center" className={home.reveal}>
-              <span className={home.orbNudge}><DashOrb size="lg" /></span>
-              <Stack gap="04" className={home.centreHeading}>
-                <p className={home.centreGreeting}>{t('home.greeting', { name: firstName })}</p>
-                <h1 className={home.centreTitle}>{t('home.title')}</h1>
-              </Stack>
-            </Stack>
-
-            {/* 2 · Rules and Indicators, side by side: an invitation until something's made, then the number leads
-                (how many are working, out of how many made) and the card itself opens the list. Only the empty card has a
-                button (Create rule / Create indicator). */}
-            <Grid columns={2} gap="12" className={`${home.sections} ${styles.cards}`} data-dimmed={tipOn || undefined}>
-              {cards.map((c) => (
-                <Card
-                  key={c.kind}
-                  className={glow ? `${styles.card} ${styles.glow}` : styles.card}
-                  // Made something: the whole card opens the history page on its tab (no button). Nothing yet: one
-                  // small Create button in the footer.
-                  onClick={c.has ? () => viewAll(c.kind) : undefined}
-                  aria-label={c.has ? `${c.title}: ${c.count}/${c.total} ${c.unit}` : undefined}
-                  footer={c.has ? undefined : <Button size="sm" onClick={c.onCreate}>{c.create}</Button>}
-                >
-                  <Stack gap={c.has ? '24' : '08'} className={styles.body} data-has={c.has || undefined}>
-                    {/* Made something: › after the title says the card opens the list. */}
-                    <h2 className={styles.title}>{c.title}{c.has && <Icon icon={msChevronRight} size={16} />}</h2>
-                    {c.has ? (
-                      <p className={styles.stat}>
-                        <span className={styles.count}>{c.count}<span className={styles.total}>/{c.total}</span></span>
-                        <span className={styles.unit}>{c.unit}</span>
-                      </p>
-                    ) : (
-                      <p className={styles.description}>{c.empty}</p>
-                    )}
-                  </Stack>
-                </Card>
-              ))}
-            </Grid>
-          </Stack>
-        </Inset>
-      </div>
-
-      {/* 3 · Ask DASH: start anything in words. */}
-      {/* The field (and keyboard) go to the DASH screen's fixed input place, so they stay put across scenes. */}
-      <DashDock>
-      <div className={home.dock}>
-        <Inset paddingInline="16" paddingBlock="16">
-          <ChatInput
-            {...kb.field}
-            onSend={kb.sending(askModes?.send ?? ask)}
-            modes={askModes?.modes}
-            placeholder={askModes?.placeholder}
-            rotatingPlaceholder={askModes ? undefined : { prefix: t('home.createPrefix'), words: [t('home.word.indicator'), t('home.word.rule'), t('home.word.strategy')] }} // The + (Pine Script upload) is always there, whatever is picked — a script always becomes an indicator.
-            onAttach={() => setPineSheet(true)}
-            attachTip={tipOn ? { title: t('pineTip.title'), text: t('pineTip.text'), onDone: tip.close } : null}
-          />
-          <input
-            ref={fileInput}
-            type="file"
-            hidden
-            onChange={(e) => {
-              const file = e.target.files?.[0]
-              e.target.value = ''
-              if (!file) return
-              holdFile({ name: file.name })
-              onIndicator?.()
-            }}
-          />
-          {pineSheet && (
-            <PineUploadSheet
-              onClose={() => setPineSheet(false)}
-              onChoose={() => {
-                setPineSheet(false)
-                fileInput.current?.click()
-              }}
-            />
-          )}
-        </Inset>
-      </div>
-      {kb.keyboard}
-      </DashDock>
-    </div>
-  )
-}
-```
-
-### `src/flows/dash/screens/HomeTabs.module.css`
-
-```css
-/* DASH V8 · Tabs home. The cards, header text and field come from ReturningV2.module.css. */
-.page {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  /* The whole body sits in the middle of the space between the top bar and the field (from the top once it's taller). */
-  justify-content: safe center;
-}
-
-/* A tab change: the body fades and rises in (the top bar and the field stay). */
-.body {
-  animation: tabs-body-in var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate);
-}
-
-/* The field active: the body fades and lifts away (the suggestions over the field take over). */
-.body {
-  transition:
-    opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard),
-    transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
-}
-
-.body[data-hidden] {
-  opacity: 0;
-  transform: translateY(calc(-1 * var(--l3-spacing-12)));
-  pointer-events: none;
-}
-
-.heading {
-  text-align: center;
-}
-
-@keyframes tabs-body-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--l3-spacing-08));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .body {
-    animation: none;
-    transition: none;
-  }
-}
-```
-
-### `src/flows/dash/screens/HomeTabs.tsx`
-
-```tsx
-import { useState } from 'react'
-import { Icon } from '@l3/components/Icon'
-import { Inset } from '@l3/components/Inset'
-import { raised } from '@l3/components/Raised'
-import { SectionHeader } from '@l3/components/SectionHeader'
-import { Stack } from '@l3/components/Stack'
-import { msAdd, msChevronRight, msLightbulb } from '@l3/icons/material'
-import { DashOrb } from '../../../shared/ui/dash/DashOrb'
-import { ChatInput } from '../components/Chat'
-import { DashDock } from '../components/DashDock'
-import { useDashUser } from '../components/dashVersion'
-import { openHistoryOn } from '../components/historyFilter'
-import { useHomeKeyboard } from '../components/homeKeyboard'
-import { setHomeKind, useHomeKind } from '../components/homeKind'
-import { FirstAsk } from '../components/FirstAsk'
-import { usePineUpload } from '../components/pineUpload'
-import { ResumeDrafts, useResumeDrafts } from '../components/ResumeDrafts'
-import { t } from '../copy'
-import { dashRules, firstName, homeTriggers, savedIndicators, type SavedRule } from '../data'
-import { CreationDetailsSheet } from '../sheets/RuleSheets'
-import type { ReturningProps } from './Returning'
-// The creation / create / try cards are the same as the other returning homes'.
-import cards from './ReturningV2.module.css'
-import styles from './HomeTabs.module.css'
-
-/** Made ones shown before View all. */
-const MAX_MADE = 3
-const EXAMPLES = {
-  rule: ['home3.ex.rule1', 'home3.ex.rule2', 'home3.ex.rule3'],
-  indicator: ['home3.ex.indicator1', 'home3.ex.indicator2', 'home3.ex.indicator3'],
-  strategy: ['home3.ex.strategy1', 'home3.ex.strategy2', 'home3.ex.strategy3'],
-} as const
-
-/**
- * DASH V8 · Tabs — the returning user's home. Rule · Indicator · Strategy are tabs in the middle of the top bar
- * (DashAI), not in the field, so the page reads top-down: what it's about → what's there → ask. The whole body
- * follows the tab (fading in):
- * 1. the header, centred: the DASH orb, "Hey Rohan," and a question for that kind;
- * 2. Pick up where you left off — that kind's drafts only (setting "Resume chats");
- * 3. Your rules / indicators — what's been made of that kind (3, then View all → history on that tab); a card opens
- *    its details sheet. Nothing made (strategies, for now) → no section;
- * 4. Start one — "+ Create <kind>" (types the opening words), then three examples to try (tap → into the field);
- * 5. the plain floating field (no pills): its placeholder and where Send goes follow the tab; + uploads a Pine Script.
- *    Active (typing): the body steps away and suggestions for the tab show over the field (FirstAsk), as in V7.
- */
-export function HomeTabsScene({ returning, onManage, onOpenRule, onOpenIndicator, onPastChats, onRules, onIndicator, onStrategy, typing, onTyping }: ReturningProps) {
-  const kind = useHomeKind()
-  const kb = useHomeKeyboard({ typing, onTyping })
-  const { made } = useDashUser(returning)
-  const [allDrafts, setDrafts] = useResumeDrafts()
-  const drafts = allDrafts.filter((d) => d.kind === kind)
-  const pine = usePineUpload(onIndicator)
-  const [details, setDetails] = useState<{ item: SavedRule; kind: 'rule' | 'indicator' } | null>(null)
-  const [onMap, setOnMap] = useState<Record<string, boolean>>({})
-  const isOn = (item: SavedRule) => onMap[item.id] ?? item.on
-
-  // That kind's creations: rules that stepped in today first; indicators as saved. No strategies yet.
-  const items: SavedRule[] = !made[kind] ? [] : kind === 'rule'
-    ? [...dashRules.filter((r) => homeTriggers[r.id]), ...dashRules.filter((r) => !homeTriggers[r.id])]
-    : kind === 'indicator' ? savedIndicators : []
-
-  // Send opens the tab's chat (a strategy: the strategy chat).
-  const send = () => {
-    if (kind === 'rule') onRules?.()
-    else if (kind === 'indicator') onIndicator?.()
-    else (onStrategy ?? onRules)?.()
-  }
-  const start = (text: string) => { kb.field.onChange(text); kb.field.onFocus() }
-
-  const card = (item: SavedRule, k: 'rule' | 'indicator') => {
-    const triggered = homeTriggers[item.id] ?? 0
-    const on = isOn(item)
-    const status = k === 'rule' ? (!on ? t('cards.paused') : triggered ? t('home2.triggered', { count: triggered }) : t('home2.notTriggered')) : on ? t('cards.onChart') : t('details.notOnChart')
-    const lit = k === 'rule' ? on && triggered > 0 : on
-    return (
-      <button key={item.id} type="button" role="listitem" className={cards.item} onClick={() => setDetails({ item, kind: k })}>
-        <span className={cards.itemTop}>
-          <span className={cards.itemStatus}><span data-on={lit || undefined}>{status}</span></span>
-          <Icon icon={msChevronRight} size={16} />
-        </span>
-        <span className={cards.itemTitle}>{item.title}</span>
-      </button>
-    )
-  }
-
-  return (
-    <div className={cards.scene}>
-      <div className={cards.scroll} onClick={kb.close}>
-        <Inset paddingInline="16" paddingBlock="24" className={styles.page}>
-          {/* The whole body follows the top bar's tab: a new key fades it in. */}
-          {/* Typing (the field active): the body steps away and the suggestions over the field take over, as in V7. */}
-          <Stack key={kind} gap="32" className={styles.body} data-hidden={typing || undefined}>
-            <Stack gap="16" align="center" className={styles.header}>
-              <span className={cards.orbNudge}><DashOrb size="md" /></span>
-              <Stack gap="04" className={styles.heading}>
-                <p className={cards.centreGreeting}>{t('home.greeting', { name: firstName })}</p>
-                <h1 className={cards.centreTitle}>{t(`home8.title.${kind}`)}</h1>
-              </Stack>
-            </Stack>
-
-            <ResumeDrafts drafts={drafts} onViewAll={onPastChats} onOpen={(k) => (k === 'indicator' ? onOpenIndicator : onOpenRule)?.()} onRemove={(id) => setDrafts((list) => list.filter((d) => d.id !== id))} />
-
-            {items.length > 0 && kind !== 'strategy' && (
-              <Stack as="section" gap="12" aria-label={t(`home2.group.${kind}`)}>
-                <SectionHeader
-                  title={t(`home2.group.${kind}`)}
-                  headingLevel={2}
-                  action={{ type: 'view-all', onClick: () => { openHistoryOn(kind === 'rule' ? 'rules' : 'indicators'); onManage?.() } }}
-                />
-                <div className={cards.row} role="list">
-                  {items.slice(0, MAX_MADE).map((item) => card(item, kind))}
-                </div>
-              </Stack>
-            )}
-
-            <Stack as="section" gap="12" aria-label={t(`home8.start.${kind}`)}>
-              <SectionHeader title={t(`home8.start.${kind}`)} headingLevel={2} />
-              <div className={cards.row} role="list">
-                <button type="button" role="listitem" className={`${cards.item} ${cards.createCard}`} onClick={() => start(t(`home3.start.${kind}`))}>
-                  <svg className={cards.createOutline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
-                  <span className={cards.createIcon} {...raised('strong')}><Icon icon={msAdd} size={20} /></span>
-                  <span className={cards.itemTitle}>{t(`home3.create.${kind}`)}</span>
-                </button>
-                {EXAMPLES[kind].map((key) => (
-                  <button key={key} type="button" role="listitem" className={cards.item} onClick={() => start(t(key))}>
-                    <span className={cards.itemTop}>
-                      <span className={cards.tryLabel}><Icon icon={msLightbulb} size={12} />{t('home3.try')}</span>
-                      <Icon icon={msChevronRight} size={16} />
-                    </span>
-                    <span className={cards.itemTitle}>{t(key)}</span>
-                  </button>
-                ))}
-              </div>
-            </Stack>
-          </Stack>
-        </Inset>
-      </div>
-
-      {details && (
-        <CreationDetailsSheet
-          item={details.item}
-          kind={details.kind}
-          on={isOn(details.item)}
-          onToggle={(on) => setOnMap((m) => ({ ...m, [details.item.id]: on }))}
-          onClose={() => setDetails(null)}
-          onEdit={() => {
-            const k = details.kind
-            setDetails(null)
-            if (k === 'rule') onOpenRule?.()
-            else onOpenIndicator?.()
-          }}
-          onDelete={() => setDetails(null)}
-        />
-      )}
-
-      {/* The plain floating field, as in V1: no pills (they're the top bar's tabs). */}
-      <DashDock>
-        <div className={cards.dock}>
-          <Inset paddingInline="16" paddingBlock="16">
-            {/* The field active: suggestions for the tab's kind over it (picking one fills the field; their kind pills
-                move the top bar's tab); once something is typed, ones that finish it. */}
-            {typing && <FirstAsk kind="home" mode={kind} text={kb.field.value} onPick={(text) => kb.field.onChange(text)} onKind={(k) => setHomeKind(k)} />}
-            <ChatInput {...kb.field} firstMessage onSend={kb.sending(send)} placeholder={t(`askModes.placeholder.${kind}`)} onAttach={pine.onAttach} />
-            {pine.ui}
-          </Inset>
-        </div>
-        {kb.keyboard}
-      </DashDock>
-    </div>
-  )
-}
-```
-
-### `src/flows/dash/screens/HomeV9.module.css`
-
-```css
-/* DASH V9 home: header at the top left; the cards and the field at the bottom (in the DASH screen's dock). */
-.scene {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.scroll {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-  overflow-y: auto;
-  padding-block: var(--l3-spacing-24);
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  /* backwards, not both: once in, the animation lets go, so the typing fade below can run */
-  animation: v9-in var(--app-dash-reveal) var(--l3-motion-easing-decelerate) backwards;
-}
-
-.header {
-  transition:
-    opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard),
-    transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
-}
-
-.header[data-hidden] {
-  opacity: 0;
-  transform: translateY(calc(-1 * var(--l3-spacing-12)));
-  pointer-events: none;
-}
-
-/* Nothing to resume: the header fills the space above the cards and sits in its middle, centred. */
-.page:has(> [data-centre]) {
-  flex: 1;
-  justify-content: center;
-}
-
-.header[data-centre] .intro {
-  align-items: center;
-  text-align: center;
-}
-
-.orb {
-  display: inline-flex;
-}
-
-.header[data-centre] .orb {
-  translate: var(--l3-spacing-08) 0;
-}
-
-.greeting {
-  margin: 0;
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-heading-16);
-}
-
-.title {
-  margin: 0;
-  color: var(--l3-content-primary);
-  font: var(--l3-text-heading-24);
-}
-
-.dock {
-  flex: none;
-}
-
-/* The cards: one sideways row, 16 in from both edges, square, white on DASH's glow. */
-.cards[hidden] {
-  display: none; /* the field active: suggestions instead */
-}
-
-.cards {
-  display: flex;
-  gap: var(--l3-spacing-08);
-  padding-inline: var(--l3-spacing-16);
-  overflow-x: auto;
-  scroll-padding-inline: var(--l3-spacing-16);
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.cards::-webkit-scrollbar {
-  display: none;
-}
-
-.card {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-  /* 2.5 in view at any screen width (the third peeks, so the row reads as scrollable): laid out at the 392 screen's
-     size and zoomed to this one — the icon, text, padding and corners scale with it. */
-  width: var(--app-dash-v9-card);
-  aspect-ratio: 1;
-  zoom: var(--v9-card-zoom, 1);
-  padding: var(--l3-spacing-12);
-  border: 1px solid var(--l3-border-light); /* 1px: the card's edge */
-  border-radius: var(--l3-radius-16);
-  /* Glass: 80% white with the glow blurred through it. */
-  background: rgb(from var(--l3-surface-primary) r g b / var(--l3-opacity-80)); /* glass: 80% */
-  backdrop-filter: blur(var(--app-dash-glass-blur)); /* glass: 16px */
-  text-align: start;
-  cursor: pointer;
-  scroll-snap-align: start;
-  animation: v9-in var(--app-dash-reveal) var(--l3-motion-easing-decelerate) both;
-  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
-}
-
-@property --v9-edge-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes v9-edge-turn {
-  to {
-    --v9-edge-angle: 360deg;
-  }
-}
-
-/* Not made yet: an edge in DASH's light (teal → green → yellow, as on V8's field) instead of the grey one. Drawn as a
-   masked ring over the glass, so the gradient doesn't tint the see-through fill. */
-.card[data-create] {
-  position: relative;
-  border-color: transparent;
-}
-
-.card[data-create]::before {
-  position: absolute;
-  inset: -1px; /* over the card's own 1px border */
-  border-radius: inherit;
-  /* turning slowly round the card, like the Pine Script tip's edge */
-  background: conic-gradient(from var(--v9-edge-angle), var(--app-dash-glow-3), var(--app-dash-glow-1), var(--app-dash-glow-2), var(--app-dash-glow-3));
-  content: '';
-  animation: v9-edge-turn 4s linear infinite;
-  pointer-events: none;
-  /* The ring: a rounded-rect stroke as the mask (the card's 16 radius, 4 wide centred on the edge → 2 inside), so
-     the corners stay as thin as the sides. Mask art: only its alpha counts. */
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='16' fill='none' stroke='black' stroke-width='4'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='16' fill='none' stroke='black' stroke-width='4'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.card:nth-child(2) { animation-delay: var(--app-dash-reveal-step); }
-.card:nth-child(3) { animation-delay: calc(2 * var(--app-dash-reveal-step)); }
-
-.card:active {
-  transform: scale(var(--l3-motion-scale-press-default));
-}
-
-.icon {
-  display: grid;
-  place-items: center;
-  width: var(--l3-size-40);
-  height: var(--l3-size-40);
-  border-radius: var(--l3-radius-full);
-  /* Made cards: a white disc (surface/primary) on a small low shadow, the mark in green. */
-  background: var(--l3-surface-primary);
-  box-shadow: var(--l3-shadow-elevation-low);
-  color: var(--l3-content-accent-success-default);
-}
-
-/* Create cards (not made yet): a black disc like the Primary button (surface/inverted), raised strong (L3 Raised),
-   the mark in the inverted content colour. */
-.card[data-create] .icon {
-  background-color: var(--l3-surface-inverted);
-  color: var(--l3-content-inverted);
-}
-
-/* The title: "Create Ai rules" (wraps as text) or, made, "3 active" over "Rules" (one line each). */
-.bottom {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--l3-spacing-04);
-}
-
-.caret {
-  display: inline-flex;
-  flex: none;
-  color: var(--l3-content-secondary);
-}
-
-.name {
-  color: var(--l3-content-primary);
-  font: var(--l3-text-heading-14);
-}
-
-.line {
-  display: block;
-}
-
-@keyframes v9-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--l3-spacing-12));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .header,
-  .card,
-  .card[data-create]::before {
-    animation: none;
-  }
-
-  .card {
-    transition: none;
-  }
-}
-```
-
-### `src/flows/dash/screens/HomeV9.tsx`
-
-```tsx
-import { useLayoutEffect, useState } from 'react'
-import { Icon } from '@l3/components/Icon'
-import { Inset } from '@l3/components/Inset'
-import { raised } from '@l3/components/Raised'
-import { Stack } from '@l3/components/Stack'
-import { msChevronRight, msFunction, msMonitoring, msRule } from '@l3/icons/material'
-import { DashOrb } from '../../../shared/ui/dash/DashOrb'
-import { useAskModes } from '../components/askModes'
-import { ChatInput } from '../components/Chat'
-import { FirstAsk } from '../components/FirstAsk'
-import { DashDock } from '../components/DashDock'
-import { useDashUser, type CreationKind } from '../components/dashVersion'
-import { openHistoryOn } from '../components/historyFilter'
-import { useHomeKeyboard } from '../components/homeKeyboard'
-import { usePineUpload } from '../components/pineUpload'
-import { ResumeDrafts, useResumeDrafts } from '../components/ResumeDrafts'
-import { t } from '../copy'
-import { dashRules, firstName, savedIndicators } from '../data'
-import type { ReturningProps } from './Returning'
-import styles from './HomeV9.module.css'
-
-/** The greeting by the time of day. */
-const partOfDay = () => {
-  const h = new Date().getHours()
-  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'
-}
-
-const KINDS: { kind: CreationKind; icon: typeof msRule }[] = [
-  { kind: 'rule', icon: msRule },
-  { kind: 'indicator', icon: msMonitoring },
-  { kind: 'strategy', icon: msFunction },
-]
-
-/**
- * The cards scale with the screen: 2.5 always in view, a card 40% of the row inside its 16 padding. Each is laid out at
- * its design width (--app-dash-v9-card, the 392 screen's) and zoomed by row width / design — so the icon, text,
- * padding and corners grow and shrink with it, not only the box.
- */
-function useCardZoom() {
-  // A callback ref: the row mounts inside the dock (drawn after the page), so an effect on a plain ref could miss it.
-  const [el, setEl] = useState<HTMLDivElement | null>(null)
-  useLayoutEffect(() => {
-    if (!el) return
-    const fit = () => {
-      const style = getComputedStyle(el)
-      const pad = parseFloat(style.paddingLeft) * 2
-      const design = parseFloat(style.getPropertyValue('--app-dash-v9-card'))
-      if (design) el.style.setProperty('--v9-card-zoom', String((0.4 * (el.clientWidth - pad)) / design))
-    }
-    fit()
-    const watch = new ResizeObserver(fit)
-    watch.observe(el)
-    return () => watch.disconnect()
-  }, [el])
-  return setEl
-}
-
-/**
- * DASH V9 home (new and returning users alike; Synora-like): the DASH orb and "How can I help you today?" at the top left, a row of
- * square white cards just above a plain chat field — one per kind (Ai rules · Ai indicators · Ai strategies).
- * - Not made yet: "Create Ai rules ›" — tap: the field opens with "Build an Ai rule that " typed, to carry on.
- * - Made: the title on two lines, the same style as "Create Ai / strategies": "3 active / Rules", "2 saved /
- *   Indicators" — tap: history on that tab.
- * Every card: the icon at the top left, a › at the bottom right (the whole card is the tap target).
- */
-export function HomeV9Scene({ returning, onManage, onPastChats, onOpenRule, onOpenIndicator, onRules, onIndicator, onStrategy, typing, onTyping }: ReturningProps) {
-  const kb = useHomeKeyboard({ typing, onTyping })
-  const cardsRow = useCardZoom()
-  const { made } = useDashUser(returning)
-  const [drafts, setDrafts] = useResumeDrafts()
-
-  // Made, then the kind on its own line: rules → how many are on ("3 active"); indicators → how many are saved
-  // ("2 saved"). Strategies can't be made yet.
-  const title = (kind: CreationKind) => {
-    if (!made[kind]) return t(`home9.create.${kind}`)
-    if (kind === 'strategy') return t('home9.name.strategy')
-    const count = kind === 'rule'
-      ? t('home9.made.active', { count: dashRules.filter((r) => r.on).length })
-      : t('home9.made.saved', { count: savedIndicators.length })
-    return (
-      <>
-        <span className={styles.line}>{count}</span>
-        <span className={styles.line}>{t(`home9.made.${kind}`)}</span>
-      </>
-    )
-  }
-
-  const open = (kind: CreationKind) => {
-    if (made[kind]) {
-      openHistoryOn(kind === 'rule' ? 'rules' : 'indicators')
-      onManage?.()
-      return
-    }
-    // Start it in the field, like the strategy invite: the opening words typed, the keyboard up.
-    kb.field.onChange(t(`home9.start.${kind}`))
-    askModes?.modes.onChange(kind) // the pill follows the card
-    kb.field.onFocus()
-  }
-
-  // Send: what was started decides the chat (the opening words, or charts → indicators); anything else → rules.
-  const ask = (text: string) => {
-    if (text.startsWith(t('home9.start.strategy').trim())) onStrategy?.()
-    else if (text.startsWith(t('home9.start.indicator').trim()) || /indicator|chart|ema|supertrend|rsi|macd|vwap|candle/i.test(text)) onIndicator?.()
-    else onRules?.()
-  }
-
-  // The + (Pine Script upload), as on the other homes: a script always becomes an indicator.
-  const pine = usePineUpload(onIndicator)
-  // The field's Rule · Indicator · Strategy pills: where Send goes and the placeholder follow the pick.
-  const askModes = useAskModes({ onRules, onIndicator, guess: (text) => ask(text) })
-
-  return (
-    <div className={styles.scene}>
-      <div className={styles.scroll} onClick={kb.close}>
-        <Inset paddingInline="16" className={styles.page}>
-          {/* Top: the orb, then the greeting (no drafts only) and the title, left-aligned. */}
-          {/* Typing: the header steps away (the field, the cards and the glow take over). */}
-          {/* Resume chats (setting, off by default): the drafts under the title, stepping away with it. */}
-          {/* Nothing to resume: the orb, greeting and title sit in the middle of the space, centred (like the other
-              versions); with drafts they go to the top left, the drafts under them. */}
-          <Stack gap="32" className={styles.header} data-hidden={typing || undefined} data-centre={drafts.length === 0 || undefined}>
-            <Stack gap="16" className={styles.intro}>
-              {/* 8 to the right when centred: the ring sits left of the art's box (the leaves fill its right) */}
-              <span className={styles.orb}><DashOrb size="md" /></span>
-              {/* The time-of-day greeting only while there's nothing to resume (Resume chats off, or no drafts). */}
-              <Stack gap="04">
-                {drafts.length === 0 && <p className={styles.greeting}>{t(`home9.greeting.${partOfDay()}`, { name: firstName })}</p>}
-                <h1 className={styles.title}>{t('home9.title')}</h1>
-              </Stack>
-            </Stack>
-            <ResumeDrafts drafts={drafts} onViewAll={onPastChats} onOpen={(kind) => (kind === 'indicator' ? onOpenIndicator : onOpenRule)?.()} onRemove={(id) => setDrafts((list) => list.filter((d) => d.id !== id))} />
-          </Stack>
-        </Inset>
-      </div>
-
-      <DashDock>
-        <div className={styles.dock}>
-          {/* The field active: the cards make way for suggestions for the picked pill (once something is typed, ones
-              that finish it), as in the other versions. */}
-          {typing && (
-            <Inset paddingInline="16">
-              <FirstAsk kind="home" mode={askModes?.mode} text={kb.field.value} onPick={(text) => kb.field.onChange(text)} onKind={(k) => askModes?.modes.onChange(k)} />
-            </Inset>
-          )}
-          {/* Square cards, one per kind, sideways; just above the field. */}
-          <div ref={cardsRow} className={styles.cards} role="list" aria-label={t('home9.cardsLabel')} hidden={typing || undefined}>
-            {/* Not made yet first (the invite leads); what they've made moves to the back. Stable within each group. */}
-            {[...KINDS].sort((a, b) => Number(made[a.kind]) - Number(made[b.kind])).map(({ kind, icon }) => (
-              <button key={kind} type="button" role="listitem" className={styles.card} data-create={!made[kind] || undefined} onClick={() => open(kind)}>
-                <span className={styles.icon} {...(made[kind] ? {} : raised('strong'))}><Icon icon={icon} size={20} /></span>
-                {/* Bottom: the title on the left, › at the bottom right. */}
-                <span className={styles.bottom}>
-                  <span className={styles.name}>{title(kind)}</span>
-                  <span className={styles.caret}><Icon icon={msChevronRight} size={16} /></span>
-                </span>
-              </button>
-            ))}
-          </div>
-          <Inset paddingInline="16" paddingBlock="16">
-            <ChatInput {...kb.field} onSend={kb.sending(askModes ? (text: string) => (askModes.mode === 'strategy' ? onStrategy?.() : askModes.send(text)) : ask)} modes={askModes?.modes} placeholder={askModes?.placeholder ?? t('home9.placeholder')} onAttach={pine.onAttach} />
-            {pine.ui}
-          </Inset>
-        </div>
-        {kb.keyboard}
-      </DashDock>
-    </div>
-  )
-}
-```
-
 ### `src/flows/dash/screens/IndicatorChat.tsx`
 
 ```tsx
@@ -11138,7 +9252,6 @@ import { useStickToBottom } from '../components/stickToBottom'
 import { switchKind, takeMessage } from '../components/pendingMessage'
 import { DashDock } from '../components/DashDock'
 import { FirstAsk } from '../components/FirstAsk'
-import { useDashVersion } from '../components/dashVersion'
 import { useChatKind } from '../components/askModes'
 import { t } from '../copy'
 import { firstName } from '../data'
@@ -11151,7 +9264,7 @@ export type IndicatorStep = 'empty' | 'chart' | 'timeframe' | 'building' | 'read
 
 export type IndicatorChatProps = {
   step: IndicatorStep
-  /** Version 2: go to a step of the chat (which question comes next depends on the request). */
+  /** Go to a step of the chat (which question comes next depends on the request). */
   onStep?: (step: IndicatorStep) => void
   request?: string
   /** 'empty': a prompt sent — DASH asks which chart. */
@@ -11162,7 +9275,7 @@ export type IndicatorChatProps = {
   onBuilt?: () => void
   /** Save indicator → saved confirmation. */
   onSaved?: () => void
-  /** Version 2: Save indicator opens the "ready to use" sheet instead (closing it leaves the chat saved). */
+  /** Save indicator opens the "ready to use" sheet instead (closing it leaves the chat saved). */
   onSaveSheet?: () => void
   /** View indicator opens the future Scalper destination. */
   onViewIndicator?: () => void
@@ -11328,7 +9441,7 @@ export function IndicatorScene({ step, onStep, request: initialRequest, onSend, 
     setChanging(true)
     window.setTimeout(() => {
       setChanging(false)
-      setCompactWanted(false) // the changed card opens in full (Version 1's pinned card too, even if it was scrolled mini)
+      setCompactWanted(false) // the changed card opens in full (The pinned card too, even if it was scrolled mini)
     }, THINKING_MS)
   }
 
@@ -11346,11 +9459,8 @@ export function IndicatorScene({ step, onStep, request: initialRequest, onSend, 
   // phone too.
   const canChange = step === 'ready' && !changing
   const typingNow = typing && (empty || revisionRequested || canChange)
-  // DASH V8: typing the chat's first message — the intro washes out, suggestions over the glowing field.
-  const dashVersion = useDashVersion()
-  const firstFocus = !!dashVersion.firstMessageFocus && empty && typingNow
-  // V7: suggestions too, and the intro steps away instead of washing out.
-  const firstSuggest = (firstFocus || !!dashVersion.firstSuggestions) && empty && typingNow
+  // Typing the chat's first message: the intro steps away and suggestions stack over the field.
+  const firstSuggest = typingNow && empty
   const keyboardUp = typingNow
   // Typing a change: the newest card folds to its mini form, so the chat and the keyboard get the room. Sending puts
   // the keyboard away; after DASH thinks, the changed card comes back full size and draws itself again.
@@ -11511,7 +9621,7 @@ export function IndicatorScene({ step, onStep, request: initialRequest, onSend, 
         <Inset paddingInline="16" paddingBlock="16">
           {firstSuggest && <FirstAsk kind="indicator" text={draft} onPick={setDraft} />}
           <ChatInput
-            firstMessage={empty}
+           
             key="input"
             modes={chatKind ?? undefined}
             value={draft}
@@ -11631,15 +9741,17 @@ export type LandingProps = {
   onRules?: () => void
   onIndicator?: () => void
   onStrategy?: () => void
-  /** Returning user (prototype setting "DASH home", or forced for its own screen): their work first (ReturningScene). */
+  /** A returning user (setting "User", or forced by the screen, dash-28): the DASH screen shows ReturningHome instead. */
   returning?: boolean
+  /** ReturningHome: a creation's Edit, or a draft to resume, opens its chat. */
   onOpenRule?: () => void
   onOpenIndicator?: () => void
+  /** "Add to chart" (from the creations page): Scalper, its indicators. */
   onAddToChart?: () => void
 }
 
 /**
- * DASH's home — a scene of the one DASH screen (Figma "1. Flow start – Landing screen"): the orb, a greeting, and what
+ * DASH's home for a new user — a scene of the one DASH screen (Figma "1. Flow start – Landing screen"): the orb, a greeting, and what
  * DASH can build (Trading rules · Custom indicator · Custom strategy). No field here (nothing made yet: the cards are the
  * way in). Picking an option cross-fades the body to the chat while the background and the top bar stay, and the
  * chat's field rises into the screen's input place from the bottom (DashAI).
@@ -11676,15 +9788,23 @@ export function LandingScene({ onRules, onIndicator, onStrategy }: LandingProps)
 ### `src/flows/dash/screens/PastChats.module.css`
 
 ```css
-/* The sheet's height is set from code (half the screen, then tall); it animates between the two. */
-.sheet.sheet {
-  transition: height var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+/* The sheet's height is set from code: half the screen, then it follows the scroll up to the tall sheet (no
+   transition — it moves with the finger / wheel). */
+
+/* The history icon in front of the heading, placed like L3's back button would be (24, 12 before the heading) — the top
+   bar's history button, so the two read as the same place. L3 gap: the small sheet header's leading slot only takes
+   its own back arrow (and not on a first sheet), so the icon comes in the `info` slot (after the heading, 16) and is
+   moved in front and sized to the back button's place. */
+.headingIcon {
+  display: inline-flex;
+  color: var(--l3-content-primary);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .sheet.sheet {
-    transition: none;
-  }
+.sheet :has(> .headingIcon) {
+  order: -1;
+  width: var(--l3-icon-size-24);
+  height: var(--l3-icon-size-24);
+  margin-inline-end: var(--l3-spacing-08); /* 12 to the heading, with the row's 4 gap */
 }
 
 /* No chats yet: the empty state, centred, with room around it. */
@@ -11761,7 +9881,7 @@ import { Icon } from '@l3/components/Icon'
 import { ListCell } from '@l3/components/ListCell'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
-import { msChevronRight, msDelete } from '@l3/icons/material'
+import { msChevronRight, msDelete, msHistory } from '@l3/icons/material'
 import { useFlowOption } from '../../../shared/prototype'
 import { Sheet } from '../../../shared/ui/Sheet'
 import { t } from '../copy'
@@ -11772,7 +9892,7 @@ import styles from './PastChats.module.css'
 const DAYS: PastChat['day'][] = ['today', 'yesterday', 'earlier']
 
 /**
- * Past chats — a bottom sheet over DASH (opens at half the screen, grows tall when the list is scrolled or swiped up) (the history button, View all on Pick up where you left off, or the chat
+ * Past chats — a bottom sheet over DASH (opens at half the screen and grows with the scroll, up to the tall sheet) (the history button, View all on Pick up where you left off, or the chat
  * ⋮ → Past chats), so it's quick to dip in and out. Every chat with DASH, so one that's no longer on the home can still
  * be opened. Grouped by day, newest first. A row: the title, when it was ("9:20 am"; a draft: the green
  * "Draft · Edited 2 hr ago"), ›. No kind or kind icon — one chat can create rules, indicators and strategies alike.
@@ -11788,7 +9908,7 @@ export function PastChatsSheet({ onClose, onOpen, onDelete, removed = [] }: {
 }) {
   const headingId = useId()
   // Setting "Past chats": With chats / Empty (the empty state).
-  const empty = useFlowOption('dash', 'pastChats', 'some') === 'none'
+  const empty = useFlowOption('dash', 'pastChats', 'none') === 'none'
   const chats = empty ? [] : pastChats.filter((c) => !removed.includes(c.id))
   // The row whose hold menu is open.
   const [menuFor, setMenuFor] = useState<string | null>(null)
@@ -11798,48 +9918,70 @@ export function PastChatsSheet({ onClose, onOpen, onDelete, removed = [] }: {
     document.addEventListener('pointerdown', close)
     return () => document.removeEventListener('pointerdown', close)
   }, [menuFor])
-  // Opens at half the screen; grows to the tall sheet (L3's max: the screen less 48) once the list is scrolled or
-  // swiped up. The sheet's height lives on L3's surface; this measures the screen it sits in.
+  // Opens at half the screen and grows with the scroll: scrolling (or a wheel / swipe) up inside it raises the sheet
+  // first, as far as the scroll goes, up to the tall sheet (L3's max: the screen less 48); only then does the list
+  // itself scroll. A wheel back up at the list's top lowers it again (a swipe down is L3's drag-to-close). The sheet's
+  // height lives on L3's surface; this measures the screen it sits in.
   // A callback ref: the sheet's content is drawn by the screen's sheet host after this renders.
   const [body, setBody] = useState<HTMLDivElement | null>(null)
-  const [tall, setTall] = useState(false)
   useEffect(() => {
     const surface = body?.closest<HTMLElement>('[data-placement]')
     const root = surface?.parentElement?.parentElement
-    if (!surface || !root) return
-    const fit = () => { surface.style.height = `${tall ? root.clientHeight - 48 : root.clientHeight / 2}px` }
-    fit()
-    const watch = new ResizeObserver(fit)
+    const scroller = body?.closest<HTMLElement>('[data-sheet-content]')
+    if (!surface || !root || !scroller) return
+    const min = () => root.clientHeight / 2
+    const max = () => root.clientHeight - 48
+    let height = min()
+    const set = (h: number) => {
+      height = Math.min(max(), Math.max(min(), h))
+      surface.style.height = `${height}px`
+    }
+    set(height)
+    const watch = new ResizeObserver(() => set(height))
     watch.observe(root)
+    // The list scrolled while the sheet can still grow: the sheet takes that distance (the list goes back to its top).
+    const onScroll = () => {
+      if (height >= max() || scroller.scrollTop <= 0) return
+      const by = scroller.scrollTop
+      scroller.scrollTop = 0
+      set(height + by)
+    }
+    const onWheel = (e: WheelEvent) => {
+      const grow = e.deltaY > 0 && height < max()
+      const shrink = e.deltaY < 0 && height > min() && scroller.scrollTop <= 0
+      if (!grow && !shrink) return
+      e.preventDefault()
+      set(height + e.deltaY)
+    }
+    let lastY = 0
+    const onTouchStart = (e: TouchEvent) => { lastY = e.touches[0].clientY }
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0].clientY
+      const up = lastY - y
+      lastY = y
+      if (up <= 0 || height >= max()) return
+      e.preventDefault()
+      set(height + up)
+    }
+    surface.style.transition = 'none' // follows the finger / wheel 1:1
+    scroller.addEventListener('scroll', onScroll, { passive: true })
+    scroller.addEventListener('wheel', onWheel, { passive: false })
+    scroller.addEventListener('touchstart', onTouchStart, { passive: true })
+    scroller.addEventListener('touchmove', onTouchMove, { passive: false })
     // L3's sheet host keeps the same surface when the next sheet (e.g. Delete this chat?) takes over: hand it back
     // without a height, so that sheet hugs its content.
     return () => {
       watch.disconnect()
-      surface.style.height = ''
-    }
-  }, [body, tall])
-  // Scrolling the list, a wheel or a swipe up inside the sheet: tall.
-  useEffect(() => {
-    const scroller = body?.closest<HTMLElement>('[data-sheet-content]')
-    if (!scroller || tall) return
-    let startY = 0
-    const grow = () => setTall(true)
-    const onTouchStart = (e: TouchEvent) => { startY = e.touches[0].clientY }
-    const onTouchMove = (e: TouchEvent) => { if (startY - e.touches[0].clientY > 8) grow() }
-    const onWheel = (e: WheelEvent) => { if (e.deltaY > 0) grow() }
-    scroller.addEventListener('scroll', grow, { passive: true })
-    scroller.addEventListener('wheel', onWheel, { passive: true })
-    scroller.addEventListener('touchstart', onTouchStart, { passive: true })
-    scroller.addEventListener('touchmove', onTouchMove, { passive: true })
-    return () => {
-      scroller.removeEventListener('scroll', grow)
+      scroller.removeEventListener('scroll', onScroll)
       scroller.removeEventListener('wheel', onWheel)
       scroller.removeEventListener('touchstart', onTouchStart)
       scroller.removeEventListener('touchmove', onTouchMove)
+      surface.style.height = ''
+      surface.style.transition = ''
     }
-  }, [body, tall])
+  }, [body])
   return (
-    <Sheet labelledBy={headingId} onClose={onClose} className={styles.sheet} header={<BottomSheetHeader headingId={headingId} heading={t('pastChats.title')} />}>
+    <Sheet labelledBy={headingId} onClose={onClose} className={styles.sheet} header={<BottomSheetHeader headingId={headingId} heading={t('pastChats.title')} info={<span className={styles.headingIcon}><Icon icon={msHistory} size={24} /></span>} />}>
       <div ref={setBody}>
         {chats.length === 0 ? (
           // Nothing yet: the L3 empty state (its default illustration) and a way to start.
@@ -11878,7 +10020,7 @@ function PastChatRow({ chat, menuOpen, onOpen, onHold, onDelete }: { chat: PastC
         variant="card"
         className={styles.row}
         label={chat.title}
-        description={!chat.saved ? <span className={styles.draft}>{t('home2.draftEdited', { edited: chat.edited ?? chat.time })}</span> : chat.time}
+        description={!chat.saved ? <span className={styles.draft}>{t('home.draftEdited', { edited: chat.edited ?? chat.time })}</span> : chat.time}
         iconRight={<Icon icon={msChevronRight} />}
         onClick={onClick}
       />
@@ -11892,306 +10034,10 @@ function PastChatRow({ chat, menuOpen, onOpen, onHold, onDelete }: { chat: PastC
 }
 ```
 
-### `src/flows/dash/screens/Returning.module.css`
+### `src/flows/dash/screens/ReturningHome.module.css`
 
 ```css
-/*
- * DASH home for a returning user: the body scrolls over DASH's background, the field stays at the bottom (as live).
- * The cards row runs edge to edge and scrolls sideways, 16 in from the screen at both ends.
- */
-.scene {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-block: var(--l3-spacing-16) var(--l3-spacing-24);
-}
-
-.body {
-  min-height: 100%;
-  justify-content: center;
-}
-
-.heading {
-  text-align: center;
-}
-
-.greeting {
-  margin: 0;
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-secondary);
-}
-
-.title {
-  margin: 0;
-  font: var(--l3-text-heading-20);
-  color: var(--l3-content-primary);
-  text-wrap: balance;
-}
-
-.sectionTitle {
-  margin: 0;
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-secondary);
-}
-
-/* Manage ›: a text action (as live). */
-.manage {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  min-height: var(--l3-size-32);
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--l3-content-primary);
-  font: var(--l3-text-label-14);
-  cursor: pointer;
-}
-
-.row {
-  display: flex;
-  gap: var(--l3-spacing-12);
-  overflow-x: auto;
-  padding-inline: var(--l3-spacing-16);
-  scroll-padding-inline: var(--l3-spacing-16);
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-/* One piece of work: its kind and status, the name (one line), what it does (two lines). */
-.card {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  gap: var(--l3-spacing-04);
-  box-sizing: border-box;
-  width: 80%;
-  padding: var(--l3-spacing-12) var(--l3-spacing-16);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-16);
-  background: var(--l3-surface-default);
-  text-align: start;
-  cursor: pointer;
-  scroll-snap-align: start;
-  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
-}
-
-.card:active {
-  transform: scale(var(--l3-motion-scale-press-default));
-}
-
-.cardTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--l3-spacing-08);
-  margin-bottom: var(--l3-spacing-04);
-}
-
-.kind {
-  padding: var(--l3-spacing-02) var(--l3-spacing-08);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-accent-success-light);
-  color: var(--l3-content-accent-success-default);
-  font: var(--l3-text-label-12);
-}
-
-.kind[data-kind='rule'] {
-  background: var(--l3-surface-accent-discover-light);
-  color: var(--l3-content-accent-discover-default);
-}
-
-.status {
-  color: var(--l3-content-tertiary);
-  font: var(--l3-text-description-12);
-}
-
-.status[data-on] {
-  color: var(--l3-content-accent-success-default);
-}
-
-.cardTitle {
-  overflow: hidden;
-  color: var(--l3-content-primary);
-  font: var(--l3-text-heading-14);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.cardSummary {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-description-12);
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.dock {
-  flex: none;
-}
-```
-
-### `src/flows/dash/screens/Returning.tsx`
-
-```tsx
-import { useRef, useState } from 'react'
-import { Icon } from '@l3/components/Icon'
-import { Inset } from '@l3/components/Inset'
-import { Stack } from '@l3/components/Stack'
-import { msChevronRight } from '@l3/icons/material'
-import { DashOrb } from '../../../shared/ui/dash/DashOrb'
-import { holdFile } from '../components/pendingFile'
-import { PineUploadSheet } from '../sheets/PineUploadSheet'
-import { useHomeKeyboard } from '../components/homeKeyboard'
-import { ChatInput, SuggestionList } from '../components/Chat'
-import { DashDock } from '../components/DashDock'
-import { t } from '../copy'
-import { dashRules, firstName, savedIndicators, savedStrategies, type SavedRule } from '../data'
-import styles from './Returning.module.css'
-
-export type ReturningProps = {
-  /** Manage: everything made with DASH (Created with DASH). */
-  onManage?: () => void
-  /** A rule or an indicator card: carry on with it in its DASH chat. */
-  onOpenRule?: () => void
-  onOpenIndicator?: () => void
-  /** Resume chats · View all: the Past chats page. */
-  onPastChats?: () => void
-  /** Suggestions / the field: start something new. */
-  onRules?: () => void
-  onIndicator?: () => void
-  /** New or returning (settings "User", or forced by the screen): the scene reads what was made with useDashUser(it). */
-  returning?: boolean
-  /** Create strategy (DASH home V4's strategy card): the rules chat in strategy mode. */
-  onStrategy?: () => void
-  /** "Add my … to a chart": Scalper, its indicators. */
-  onAddToChart?: () => void
-  /** Typing state (field focused, the drawn keyboard up) — kept by the DASH screen. */
-  typing?: boolean
-  onTyping?: (typing: boolean) => void
-}
-
-type Recent = SavedRule & { kind: 'rule' | 'indicator' | 'strategy' }
-
-/**
- * DASH home for someone coming back (the live app's returning home, extended to everything DASH makes): it doesn't
- * explain what DASH does again — it puts what they made first, so they can carry on with it:
- * - the orb and the greeting (as live);
- * - Created with DASH (count · Manage ›) and a sideways row of their latest work, indicators and rules mixed, each
- *   tagged with its kind and status; a tap continues it in its DASH chat;
- * - suggestions built from what they have (add the indicator to a chart, tighten a rule, start something new);
- * - the field: ask anything or change something they made.
- */
-export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules, onIndicator, onAddToChart, typing, onTyping }: ReturningProps) {
-  // The drawn keyboard (as in the chats): the field types on it; a tap on the page or Send puts it away.
-  const kb = useHomeKeyboard({ typing, onTyping })
-  const recent: Recent[] = [
-    ...savedIndicators.map((i) => ({ ...i, kind: 'indicator' as const })),
-    ...dashRules.slice(0, 4).map((r) => ({ ...r, kind: 'rule' as const })),
-  ]
-  const total = savedIndicators.length + dashRules.length + savedStrategies.length
-  const suggestions = [t('home.suggestAddToChart'), t('home.suggestTighten'), t('home.suggestNewIndicator')]
-  const pick = (s: string) => (s === suggestions[0] ? onAddToChart?.() : s === suggestions[1] ? onRules?.() : onIndicator?.())
-  // The field (prototype): a request about charts goes to the indicator chat, anything else to rules.
-  const ask = (text: string) => (/indicator|chart|ema|supertrend|rsi|macd|average|candle/i.test(text) ? onIndicator?.() : onRules?.())
-
-  const fileInput = useRef<HTMLInputElement>(null)
-  // The + explains itself first (a sheet), then Choose a file opens the picker.
-  const [pineSheet, setPineSheet] = useState(false)
-  const picker = (
-    <input
-      ref={fileInput}
-      type="file"
-      hidden
-      onChange={(e) => {
-        const file = e.target.files?.[0]
-        e.target.value = ''
-        if (!file) return
-        holdFile({ name: file.name })
-        onIndicator?.()
-      }}
-    />
-  )
-
-  return (
-    <div className={styles.scene}>
-      <div className={styles.scroll} onClick={kb.close}>
-        <Stack gap="32" className={styles.body}>
-          <Stack gap="16" align="center">
-            <DashOrb size="md" />
-            <Stack gap="04" className={styles.heading}>
-              <p className={styles.greeting}>{t('home.greeting', { name: firstName })}</p>
-              <h1 className={styles.title}>{t('home.title')}</h1>
-            </Stack>
-          </Stack>
-
-          <Stack as="section" gap="12" aria-label={t('home.created')}>
-            <Inset paddingInline="16">
-              <Stack direction="horizontal" align="center" justify="between">
-                <h2 className={styles.sectionTitle}>{t('home.createdCount', { count: total })}</h2>
-                <button type="button" className={styles.manage} onClick={onManage}>
-                  {t('home.manage')}
-                  <Icon icon={msChevronRight} size={16} />
-                </button>
-              </Stack>
-            </Inset>
-            <div className={styles.row} role="list">
-              {recent.map((item) => (
-                <button key={item.id} type="button" role="listitem" className={styles.card} onClick={item.kind === 'indicator' ? onOpenIndicator : onOpenRule}>
-                  <span className={styles.cardTop}>
-                    <span className={styles.kind} data-kind={item.kind}>{t(`home.kind.${item.kind}`)}</span>
-                    <span className={styles.status} data-on={item.on || undefined}>
-                      {item.kind === 'indicator' ? (item.on ? t('cards.onChart') : t('details.notOnChart')) : item.on ? t('details.on') : t('cards.paused')}
-                    </span>
-                  </span>
-                  <span className={styles.cardTitle}>{item.title}</span>
-                  <span className={styles.cardSummary}>{item.summary}</span>
-                </button>
-              ))}
-            </div>
-          </Stack>
-
-          <Inset paddingInline="16">
-            <SuggestionList items={suggestions} onPick={pick} />
-          </Inset>
-        </Stack>
-      </div>
-      {/* The field (and keyboard) go to the DASH screen's fixed input place, so they stay put across scenes. */}
-      <DashDock>
-      <div className={styles.dock}>
-        <Inset paddingInline="16" paddingBlock="16">
-          <ChatInput {...kb.field} onSend={kb.sending(ask)} rotatingPlaceholder={{ prefix: t('home.createPrefix'), words: [t('home.word.indicator'), t('home.word.rule'), t('home.word.strategy')] }} onAttach={() => setPineSheet(true)} />
-          {picker}
-          {pineSheet && (
-            <PineUploadSheet
-              onClose={() => setPineSheet(false)}
-              onChoose={() => {
-                setPineSheet(false)
-                fileInput.current?.click()
-              }}
-            />
-          )}
-        </Inset>
-      </div>
-      {kb.keyboard}
-      </DashDock>
-    </div>
-  )
-}
-```
-
-### `src/flows/dash/screens/ReturningV2.module.css`
-
-```css
-/* Returning home v2: the body scrolls over DASH's background, the create dock stays at the bottom. */
+/* The returning home: the body scrolls over DASH's background, the field stays at the bottom. */
 .scene {
   display: flex;
   flex: 1;
@@ -12208,53 +10054,20 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   padding-block: var(--l3-spacing-08) var(--l3-spacing-24);
 }
 
-/* The page fills the scroll area, so the centre-stage layout can centre itself in it. */
+/* The page fills the scroll area, so the content can centre itself in it. */
 .page {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
+/* Centred in the space above the field. */
 .content {
   flex: 1;
-}
-
-/* Both states sit centred in the space above the field (the resume state too: no empty band left at the bottom). */
-.content {
   justify-content: center;
 }
 
-/* Centre stage (no draft to resume): Returning home v1's heading — the greeting, then the question in Heading/20. */
-.centreHeading {
-  text-align: center;
-}
-
-.centreGreeting {
-  margin: 0;
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-secondary);
-}
-
-.centreTitle {
-  margin: 0;
-  font: var(--l3-text-heading-20);
-  color: var(--l3-content-primary);
-  text-wrap: balance;
-}
-
-.hello {
-  margin: 0;
-  font: var(--l3-text-heading-18);
-  color: var(--l3-content-primary);
-}
-
-.helloSub {
-  margin: 0;
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-/* Your library: one sideways row, edge to edge (16 in at both ends), small cards — two lines each. */
+/* The picked kind's row: sideways, edge to edge (16 in at both ends). */
 .row {
   display: flex;
   gap: var(--l3-spacing-08);
@@ -12291,23 +10104,13 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   transform: scale(var(--l3-motion-scale-press-default));
 }
 
-/* A creation card's first line: what it did today / whether it's on a chart (green when it's active), and ›. */
+/* A creation card's first line: its kind, and ›. */
 .itemTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--l3-spacing-08);
   color: var(--l3-content-tertiary);
-}
-
-/* Strategies (not built yet): a quiet dashed placeholder. */
-.soon {
-  display: block;
-  padding: var(--l3-spacing-12);
-  border: 1px dashed var(--l3-border-light);
-  border-radius: var(--l3-radius-12);
-  color: var(--l3-content-tertiary);
-  font: var(--l3-text-description-12);
 }
 
 .itemMeta {
@@ -12322,6 +10125,11 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
 
 .itemStatus [data-on] {
   color: var(--l3-content-accent-success-default);
+}
+
+/* The name under the kind and status lines, 4 below them (8 in all, with the card's 4 gap). */
+.itemStatus + .itemTitle {
+  margin-top: var(--l3-spacing-04);
 }
 
 .itemTitle {
@@ -12363,53 +10171,17 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   }
 }
 
-/* Your strategies, none yet: a plain card — what's missing, and where to start (the field). */
-.strategyEmptyTitle {
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-}
-
-.strategyEmptyText {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-/* V3 · a kind not tried yet: "+ Create" first — a 1px dashed outline (border/intense), the + on a light DASH-green disc — then example cards. */
+/* The Create card (ExplainCreateCard draws its dashed outline): 32 narrower than a creation card, and never shorter than
+   one with a two-line name, so the row keeps one height whatever kind is picked (the page is centred: a shorter row
+   moved everything). */
 .createCard.createCard {
-  justify-content: center;
-  gap: var(--l3-spacing-08);
-  width: 40%;
   position: relative;
-  border-color: transparent; /* the outline is drawn by .createOutline */
-}
-
-/* The create card's outline: 1px, border/intense, in longer dashes (6 on, 4 off) than a CSS dashed border can draw. */
-.createOutline {
-  position: absolute;
-  inset: 0; /* inside the card's edge (drawn inward), so nothing outside it can trim it */
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.createOutline rect {
-  width: calc(100% - 1px); /* the 1px stroke sits on the half-pixel inside each edge */
-  height: calc(100% - 1px);
-  fill: none;
-  stroke: var(--l3-border-intense);
-  stroke-width: 1px;
-  stroke-dasharray: 6 4;
-}
-
-/* The +: a black disc like the Primary button (surface/inverted), raised strong (L3 Raised: sheen, bevel, drop). */
-.createIcon {
-  display: grid;
-  place-items: center;
-  width: var(--l3-size-32);
-  height: var(--l3-size-32);
-  border-radius: var(--l3-radius-full);
-  background-color: var(--l3-surface-inverted);
-  color: var(--l3-content-inverted);
+  justify-content: space-between;
+  gap: var(--l3-spacing-16); /* what the kind is ↔ "+ Create rule" */
+  width: calc(62% - var(--l3-spacing-32));
+  min-width: var(--app-dash-create-card-min);
+  min-height: var(--app-dash-create-card);
+  border-color: transparent;
 }
 
 /* An example's first line: 💡 Try, in the discover colour. */
@@ -12470,68 +10242,7 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   }
 }
 
-/* The DASH orb on the home: nudged 8 right — its ring sits left in the art's box (the leaves fill the right), so the
-   ring lines up with the centred greeting. */
-.orbNudge {
-  display: inline-flex;
-  translate: var(--l3-spacing-08) 0;
-}
-
-/* V4 · the Create cards: one row, equal columns (2, or 3 with the strategy card). */
-.createGrid {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: column;
-  gap: var(--l3-spacing-08);
-}
-
-.createCell.createCell {
-  justify-content: flex-start; /* a title on one line lines up with titles on two */
-  width: auto;
-  min-width: 0;
-}
-
-/* Three Button cards: in a sideways row (.row), each 40% wide, so a title still fits beside its icon. */
-.createScroll {
-  flex: none;
-  width: 40%;
-  scroll-snap-align: start;
-}
-
-/* Style "Button": the dashed outline (.createOutline), the title and icon (.createBlockHead), a small primary button. */
-.createBlock {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--l3-spacing-16); /* title row ↔ button */
-  padding: var(--l3-spacing-12);
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-default);
-}
-
-/* Title top left, icon top right. The title is always two lines ("Create" / "indicator", the line break is in the copy),
-   so every card in the row is the same height and its button sits in the same place. */
-.createBlockHead {
-  display: flex;
-  align-self: stretch;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--l3-spacing-08);
-}
-
-.createBlockHead .createIcon {
-  flex: none;
-}
-
-.createBlockTitle {
-  min-width: 0;
-  white-space: pre-line;
-  color: var(--l3-content-primary);
-  font: var(--l3-text-label-14);
-}
-
-/* V8 · typing the first message: the header (orb + greeting) fades up and away; back when the keyboard closes. */
+/* Typing the first message: the header (orb, heading, pills) fades up and away; back when the keyboard closes. */
 .header {
   transition:
     opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard),
@@ -12549,14 +10260,7 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   pointer-events: none;
 }
 
-/* "Your creations" heading: the top bar's widgets icon, then the title. */
-.creationsTitle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--l3-spacing-08);
-}
-
-/* Your creations · the last card: View all (→ the full page). Narrow, content centred: an arrow on a grey disc,
+/* The row's last card: View all (→ the full page). Narrow, content centred: an arrow on a grey disc,
    "View all", "N more". It never sets the row's height: size containment gives it no height of its own, so the row's
    stretch makes it exactly as tall as the other cards — then it shows only what fits (below). */
 .viewAllCard.viewAllCard {
@@ -12593,159 +10297,149 @@ export function ReturningScene({ onManage, onOpenRule, onOpenIndicator, onRules,
   color: var(--l3-content-primary);
 }
 
-/* V9 · Switch, "Switch outside": the toggle just above the field, full width, 8 over it. */
-.switchOutside {
-  margin-bottom: var(--l3-spacing-08);
+/* The kind pills under the heading, full width. */
+.pills {
+  align-self: stretch;
+}
+
+/* The heading under the small orb (Heading/18, centred, one line). */
+.title {
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-18);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The small orb (48), 4 right of centre so it reads centred, and still (no animation in it). */
+.orb {
+  display: inline-flex;
+  translate: var(--l3-spacing-04) 0;
+}
+
+.orb.orb [data-size] {
+  --orb-box: var(--l3-size-48);
+}
+
+.orb * {
+  animation-play-state: paused !important; /* the orb's own motion, stopped */
 }
 ```
 
-### `src/flows/dash/screens/ReturningV2.tsx`
+### `src/flows/dash/screens/ReturningHome.tsx`
 
 ```tsx
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Button } from '@l3/components/Button'
-import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
-import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
-import { Tag } from '@l3/components/Tag'
-import { raised } from '@l3/components/Raised'
-import { msAdd, msAssignmentAdd, msFunction, msLightbulb, msChevronRight, msMonitoring, msWidgets, msArrowForward } from '@l3/icons/material'
-import { useFlowOption } from '../../../shared/prototype'
+import { msLightbulb, msChevronRight, msArrowForward } from '@l3/icons/material'
 import { DashOrb } from '../../../shared/ui/dash/DashOrb'
 import { openHistoryOn } from '../components/historyFilter'
 import { holdFile } from '../components/pendingFile'
 import { PineUploadSheet } from '../sheets/PineUploadSheet'
 import { useHomeKeyboard } from '../components/homeKeyboard'
 import { ChatInput } from '../components/Chat'
-import { useAskModes } from '../components/askModes'
-import { useDashUser, useDashVersion } from '../components/dashVersion'
+import { useAskModes, type Mode } from '../components/askModes'
+import { useDashUser } from '../components/dashUser'
 import { FirstAsk } from '../components/FirstAsk'
-import { CreatePills } from '../components/CreatePills'
 import { SlidingPills } from '../components/SlidingPills'
+import { ExplainCreateCard } from '../components/ExplainCreateCard'
 import { ResumeDrafts, useResumeDrafts } from '../components/ResumeDrafts'
 import { DashDock } from '../components/DashDock'
 import { t } from '../copy'
-import { dashRules, firstName, homeTriggers, savedIndicators, type SavedRule } from '../data'
+import { dashRules, homeTriggers, savedIndicators, type SavedRule } from '../data'
 import { CreationDetailsSheet } from '../sheets/RuleSheets'
-import type { ReturningProps } from './Returning'
-import styles from './ReturningV2.module.css'
+import styles from './ReturningHome.module.css'
 
-/**
- * DASH home for a returning user, Version 2 (prototype setting "Returning home"): what they made and whether it's
- * working come first, asking DASH is at the bottom:
- * 1. the header, centred: the DASH orb over the greeting — big with nothing to resume (centre stage, like Returning
- *    home v1), a size smaller while drafts show; 48 down to the sections (32 apart);
- * 2. Pick up where you left off — chats left before saving (rare: only when there are some), swiped sideways if more
- *    than one, each with Continue and ✕ (removes it, asking first in a sheet);
- * 3. Your creations — one sideways row, rules and indicators together (most active first): a rule leads with what it
- *    did today, an indicator with whether it's on a chart; a card opens its details sheet; View all;
- * 4. the field — change something or start something new, in words.
- * Kept to three things so it reads at a glance (designer's call). Status is sample data (the app has no feed yet).
- */
-/** Your strategies on the home: shown (none saved yet — an empty card that points to the field). */
-const SHOW_STRATEGIES = true
-/** V3: the kind launched last — marked New on its section and in the field's switch. */
-const NEW_KIND = 'strategy' as const
-/** V3 · what each kind can do, shown on its row until the first one is made (copy keys). */
+export type ReturningProps = {
+  /** Everything made with DASH: the creations page (Your creations). */
+  onManage?: () => void
+  /** A creation's details sheet → Edit, or a draft to resume: carry on in its DASH chat. */
+  onOpenRule?: () => void
+  onOpenIndicator?: () => void
+  /** The field / a Create card: start something new. */
+  onRules?: () => void
+  onIndicator?: () => void
+  /** A strategy (no builder yet): the rules chat in strategy mode. */
+  onStrategy?: () => void
+  /** New or returning (setting "User", or forced by the screen): what was made is read with useDashUser(it). */
+  returning?: boolean
+  /** Typing state (field focused, the drawn keyboard up) — kept by the DASH screen. */
+  typing?: boolean
+  onTyping?: (typing: boolean) => void
+}
+
+/** What each kind can do — the picked kind's row shows these until the first one is made (copy keys). */
 const EXAMPLES = {
-  rule: ['home3.ex.rule1', 'home3.ex.rule2', 'home3.ex.rule3'],
-  indicator: ['home3.ex.indicator1', 'home3.ex.indicator2', 'home3.ex.indicator3'],
-  strategy: ['home3.ex.strategy1', 'home3.ex.strategy2', 'home3.ex.strategy3'],
+  rule: ['home.ex.rule1', 'home.ex.rule2', 'home.ex.rule3'],
+  indicator: ['home.ex.indicator1', 'home.ex.indicator2', 'home.ex.indicator3'],
+  strategy: ['home.ex.strategy1', 'home.ex.strategy2', 'home.ex.strategy3'],
 } as const
 
-/** Your creations on the home: at most this many cards, then the View all card. */
+/** Creations on the home: at most this many cards, then the View all card. */
 const HOME_CREATIONS = 3
+/** View all: the creations page opens on the picked kind's tab. */
+const HISTORY_TAB = { rule: 'rules', indicator: 'indicators', strategy: 'strategies' } as const
 
-export function ReturningV2Scene({ version3 = false, version4 = false, returning, onManage, onPastChats, onOpenRule, onOpenIndicator, onRules, onIndicator, onStrategy, typing, onTyping }: ReturningProps & {
-  /** Returning home V3: every kind always has a place (an invite card until one is made) and the newest kind is marked New. */
-  version3?: boolean
-  /** DASH home V4 (new and returning users alike): V2 with "Ai creations", and dashed Create cards under it. */
-  version4?: boolean
-}) {
+/**
+ * DASH home for a returning user (the new user's home is Landing). Top to bottom:
+ * 1. a small still DASH orb over "What do you want to create today?" (the top bar says DASH AI · BETA);
+ * 2. Rule · Indicator · Strategy — sliding pills, full width, each unpicked one with a count of how many are made;
+ * 3. one row for the picked kind: the dashed Create card that says what the kind is (ExplainCreateCard — a tap types
+ *    the opening words into the field), up to three of their creations (status + name; a tap opens its details sheet),
+ *    then View all (the creations page, on that kind's tab). Nothing made of that kind → three examples to try;
+ * 4. Pick up where you left off — chats left before saving, only when there are some (setting "Has past chats"; ✕ closes it for the session);
+ * 5. the field at the bottom; while the first message is typed the body folds away and suggestions stack above it.
+ * Status (triggered today, on a chart) is sample data.
+ */
+export function ReturningHomeScene({ returning, onManage, onOpenRule, onOpenIndicator, onRules, onIndicator, onStrategy, typing, onTyping }: ReturningProps) {
   // The drawn keyboard (as in the chats): the field types on it; a tap on the page or Send puts it away.
   const kb = useHomeKeyboard({ typing, onTyping })
-  /** Where a draft carries on: its chat. */
-  const open = (kind: 'rule' | 'indicator') => (kind === 'indicator' ? onOpenIndicator : onOpenRule) ?? (() => {})
-  // Prototype setting "Resume chats": Show (the sample drafts) / Hide (none — the centre-stage state).
-  const [drafts, setDrafts] = useResumeDrafts()
-  const grouped = false // Your creations: always Mixed (one row, kinds together); the Grouped code stays for reference
-  const rulesTriggered = dashRules.filter((r) => homeTriggers[r.id]).length
-  /** Rules that stepped in today first. */
-  const rulesSorted = [...dashRules.filter((r) => homeTriggers[r.id]), ...dashRules.filter((r) => !homeTriggers[r.id])]
-  /** One creation card: what it did today / whether it's on a chart (green when active), the name, › — opens its details. */
-  const card = (item: SavedRule, k: 'rule' | 'indicator', withKind: boolean) => {
-    const triggered = homeTriggers[item.id] ?? 0
-    const on = isOn(item)
-    const status = k === 'rule' ? (!on ? t('cards.paused') : triggered ? t('home2.triggered', { count: triggered }) : t('home2.notTriggered')) : on ? t('cards.onChart') : t('details.notOnChart')
-    const lit = k === 'rule' ? on && triggered > 0 : on
-    return (
-      <button key={item.id} data-key={item.id} type="button" role="listitem" className={styles.item} onClick={() => setDetails({ item, kind: k })}>
-        <span className={styles.itemTop}>
-          <span className={styles.itemStatus}>
-            {withKind && <>{t(`home.kind.${k}`)} · </>}
-            <span data-on={lit || undefined}>{status}</span>
-          </span>
-          <Icon icon={msChevronRight} size={16} />
-        </span>
-        <span className={styles.itemTitle}>{item.title}</span>
-      </button>
-    )
-  }
+  const [drafts, setDrafts, closeDrafts] = useResumeDrafts()
   /** On / off as changed from a details sheet (cards follow it). */
   const [onMap, setOnMap] = useState<Record<string, boolean>>({})
   const isOn = (item: SavedRule) => onMap[item.id] ?? item.on
   /** The creation whose details sheet is open. */
-  /** Your creations, one row, most active first: rules that stepped in today, then indicators, then the other rules. */
+  const [details, setDetails] = useState<{ item: SavedRule; kind: 'rule' | 'indicator' } | null>(null)
   // What this person has made so far (settings "User" / "Made so far"): only those kinds show. No strategies yet.
   const has = useDashUser(returning).made
-  const dashVersion = useDashVersion()
-  const firstFocus = !!dashVersion.firstMessageFocus
-  // V7 / V8 · typing the first message: suggestions over the field, and the header (orb + greeting) steps away.
-  const firstSuggest = firstFocus || !!dashVersion.firstSuggestions
+  /** Most active first: rules that stepped in today, then indicators, then the other rules. */
   const creations: { item: SavedRule; kind: 'rule' | 'indicator' }[] = [
     ...dashRules.filter((r) => homeTriggers[r.id]).map((item) => ({ item, kind: 'rule' as const })),
     ...savedIndicators.map((item) => ({ item, kind: 'indicator' as const })),
     ...dashRules.filter((r) => !homeTriggers[r.id]).map((item) => ({ item, kind: 'rule' as const })),
   ].filter((c) => has[c.kind])
-  /** No draft to resume: the centre-stage layout. */
-  const centre = drafts.length === 0
-  const [details, setDetails] = useState<{ item: SavedRule; kind: 'rule' | 'indicator' } | null>(null)
-  // The field (prototype): a request about charts goes to the indicator chat, anything else to rules.
-  const ask = (text: string) =>
-    // A strategy started from a Create pill opens the strategy chat; charts → indicators; anything else → rules.
-    text.startsWith(t('home3.start.strategy').trim()) ? (onStrategy ?? onRules)?.()
-      : /indicator|chart|ema|supertrend|rsi|macd|average|candle/i.test(text) ? onIndicator?.() : onRules?.()
-  // Setting "Ask field": the switch in the field (Rule · Indicator · Strategy) picks where Send goes.
-  // V3 has no switch in the field (the sections already offer each kind): the plain one-line field there.
-  /** V3 · an example tapped: rules and indicators open their chat; a strategy (no chat yet) goes into the field. */
-  const tryExample = (kind: 'rule' | 'indicator' | 'strategy', text: string) => {
-    if (kind === 'rule') onRules?.()
-    else if (kind === 'indicator') onIndicator?.()
-    else {
-      kb.field.onChange(text)
-      kb.field.onFocus()
-    }
+
+  /** One creation card: the kind and ›, what it did today / whether it's on a chart (green when active), the name. */
+  const card = (item: SavedRule, kind: 'rule' | 'indicator') => {
+    const triggered = homeTriggers[item.id] ?? 0
+    const on = isOn(item)
+    const status = kind === 'rule' ? (!on ? t('cards.paused') : triggered ? t('home.triggered', { count: triggered }) : t('home.notTriggered')) : on ? t('cards.onChart') : t('details.notOnChart')
+    const lit = kind === 'rule' ? on && triggered > 0 : on
+    return (
+      <button key={item.id} data-key={item.id} type="button" role="listitem" className={styles.item} onClick={() => setDetails({ item, kind })}>
+        <span className={styles.itemTop}>
+          <span className={styles.itemStatus}>{t(`home.kind.${kind}`)}</span>
+          <Icon icon={msChevronRight} size={16} />
+        </span>
+        <span className={styles.itemStatus}><span data-on={lit || undefined}>{status}</span></span>
+        <span className={styles.itemTitle}>{item.title}</span>
+      </button>
+    )
   }
-  const switchModes = useAskModes({ onRules, onIndicator, guess: ask })
-  const askModes = version3 ? null : switchModes
-  // V3 testing: hide one section (setting "Hide section (V3)": None / Indicators / Strategies).
-  const hidden = useFlowOption('dash', 'homeHide', 'none')
-  // V4 · the Create cards under Ai creations: indicator and rule; strategy only when the setting "Strategy card" is on.
-  const strategyCard = useFlowOption('dash', 'homeStrategyCard', 'hide') === 'show'
-  // V9 · Switch, setting "Switch outside": the Rule · Indicator · Strategy toggle just above the field, outside it.
-  const switchOutsidePick = useFlowOption('dash', 'switchOutside', 'off')
-  const switchOutside = !!dashVersion.switchFullTop && switchOutsidePick === 'on'
-  // V10 · Heading: the pills under the page's question instead of in the field.
-  const pillsUnderTitle = !!dashVersion.pillsUnderTitle
-  const createStyle = useFlowOption('dash', 'homeCreateStyle', 'button')
-  // Only kinds not made yet are promoted: a rule made → no Create rule card (its numbers are in Ai creations).
-  const createCards = [
-    { kind: 'indicator' as const, icon: msMonitoring, onClick: onIndicator },
-    { kind: 'rule' as const, icon: msAssignmentAdd, onClick: onRules },
-    ...(strategyCard ? [{ kind: 'strategy' as const, icon: msFunction, onClick: onStrategy }] : []),
-  ].filter((c) => !has[c.kind])
+
+  // The field (prototype): Send goes to the picked kind's chat; a strategy (no chat yet) by what was typed — charts →
+  // indicators, anything else → rules.
+  const ask = (text: string) =>
+    text.startsWith(t('home.start.strategy').trim()) ? (onStrategy ?? onRules)?.()
+      : /indicator|chart|ema|supertrend|rsi|macd|average|candle/i.test(text) ? onIndicator?.() : onRules?.()
+  const askModes = useAskModes({ onRules, onIndicator, guess: ask })
+  /** Types a kind's opening words into the field, keyboard up. */
+  const startWith = (text: string) => {
+    kb.field.onChange(text)
+    kb.field.onFocus()
+  }
 
   const fileInput = useRef<HTMLInputElement>(null)
   // The + explains itself first (a sheet), then Choose a file opens the picker.
@@ -12765,23 +10459,21 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
     />
   )
 
-  /** The kind picked in the field's switch: its creations come first (everything stays — only the order changes). */
-  const picked = askModes?.mode
-  const firstOrder = (kind: 'rule' | 'indicator' | 'strategy') => (picked && kind === picked ? -1 : 0)
-  // A new pick: the row scrolls back to its start, so the kind that now leads is in view…
-  const mixedRow = useRef<HTMLDivElement>(null)
-  // …in a short sequence: the cards on show slide down and fade one after another, then the row takes the new order
-  // (back at its start) and the new first cards rise in from below, one after another. Fast: ≈ 0.45 s in all.
-  const [shown, setShown] = useState(picked)
-  const visibleCards = (row: HTMLElement) =>
-    [...row.querySelectorAll<HTMLElement>('[data-key]')].filter((el) => el.offsetLeft - row.scrollLeft < row.clientWidth)
+  // A new pick changes the row in a short sequence: the cards on show slide down and fade one after another, then the
+  // row takes the new kind (back at its start) and its first cards rise in from below. ≈ 0.45 s in all.
+  const picked = askModes.mode
+  const [shown, setShown] = useState<Mode>(picked)
+  const row = useRef<HTMLDivElement>(null)
+  const rowCreations = creations.filter((c) => c.kind === shown)
+  const visibleCards = (el: HTMLElement) =>
+    [...el.querySelectorAll<HTMLElement>('[data-key]')].filter((card) => card.offsetLeft - el.scrollLeft < el.clientWidth)
   useEffect(() => {
-    const row = mixedRow.current
+    const el = row.current
     if (picked === shown) return
-    if (!row || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return setShown(picked)
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return setShown(picked)
     let live = true
-    const out = visibleCards(row).map((el, i) =>
-      el.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(var(--l3-spacing-16))', opacity: 0 }], { duration: 120, delay: i * 40, easing: 'cubic-bezier(0.3, 0, 1, 1)', fill: 'forwards' }).finished,
+    const out = visibleCards(el).map((card, i) =>
+      card.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(var(--l3-spacing-16))', opacity: 0 }], { duration: 120, delay: i * 40, easing: 'cubic-bezier(0.3, 0, 1, 1)', fill: 'forwards' }).finished,
     )
     Promise.all(out).then(() => live && setShown(picked))
     return () => {
@@ -12791,221 +10483,75 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
   }, [picked])
   const firstShow = useRef(true)
   useLayoutEffect(() => {
-    const row = mixedRow.current
-    if (firstShow.current || !row) {
+    const el = row.current
+    if (firstShow.current || !el) {
       firstShow.current = false
       return
     }
-    row.scrollLeft = 0
-    const cards = [...row.querySelectorAll<HTMLElement>('[data-key]')]
-    cards.forEach((el) => el.getAnimations().forEach((an) => an.cancel()))
+    el.scrollLeft = 0
+    el.querySelectorAll<HTMLElement>('[data-key]').forEach((card) => card.getAnimations().forEach((an) => an.cancel()))
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    visibleCards(row).forEach((el, i) =>
-      el.animate([{ transform: 'translateY(var(--l3-spacing-16))', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 180, delay: i * 50, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards' }),
+    visibleCards(el).forEach((card, i) =>
+      card.animate([{ transform: 'translateY(var(--l3-spacing-16))', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 180, delay: i * 50, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards' }),
     )
   }, [shown])
-
-  /**
-   * One kind's section — made: its cards (V2's row) and View all; not made: "+ Create" and a few "Try" examples. Used
-   * by V3 (every kind).
-   */
-  const kindSection = (kind: 'rule' | 'indicator' | 'strategy', made: boolean) => {
-    const items = kind === 'rule' ? rulesSorted : kind === 'indicator' ? savedIndicators : []
-    const isNew = version3 && kind === NEW_KIND
-    const create = () => {
-      if (kind === 'rule') onRules?.()
-      else if (kind === 'indicator') onIndicator?.()
-      else {
-        // No strategy chat yet: the field starts the sentence and the keyboard comes up.
-        kb.field.onChange(t('home3.strategyStart'))
-        kb.field.onFocus()
-      }
-    }
-    return (
-      <Stack key={kind} as="section" gap="12" aria-label={t(`home2.group.${kind}`)}>
-        <SectionHeader
-          title={t(`home2.group.${kind}`)}
-          headingLevel={2}
-          tag={isNew ? <Tag color="discover" variant="secondary" size="sm">{t('home3.new')}</Tag> : undefined}
-          action={made ? { type: 'view-all', onClick: () => { openHistoryOn(kind === 'rule' ? 'rules' : 'indicators'); onManage?.() } } : undefined}
-        />
-        {made ? (
-          <div className={styles.row} role="list">
-            {items.map((item) => card(item, kind as 'rule' | 'indicator', false))}
-          </div>
-        ) : (
-          // Not tried yet: a row like the ones above — "+ Create" first (dashed), then a few things this
-          // kind can do (tap one to start with it), so it teaches as well as invites.
-          <div className={styles.row} role="list">
-            <button type="button" role="listitem" className={`${styles.item} ${styles.createCard}`} onClick={create}>
-              <svg className={styles.createOutline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
-                              <span className={styles.createIcon} {...raised('strong')}><Icon icon={msAdd} size={20} /></span>
-              <span className={styles.itemTitle}>{t(`home3.create.${kind}`)}</span>
-            </button>
-            {EXAMPLES[kind].map((key) => (
-              <button key={key} type="button" role="listitem" className={styles.item} onClick={() => tryExample(kind, t(key))}>
-                <span className={styles.itemTop}>
-                  <span className={styles.tryLabel}><Icon icon={msLightbulb} size={12} />{t('home3.try')}</span>
-                  <Icon icon={msChevronRight} size={16} />
-                </span>
-                <span className={styles.itemTitle}>{t(key)}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </Stack>
-    )
-  }
 
   return (
     <div className={styles.scene}>
       <div className={styles.scroll} onClick={kb.close}>
         <Inset paddingInline="16" className={styles.page}>
-          <Stack gap={centre ? '40' : '48'} className={styles.content} data-centre={centre || undefined}>
-            {/* 1 · Header, centred in both states: the DASH orb, then the greeting under it. Big with nothing to resume
-                (centre stage); a size smaller while drafts are shown, so the sections fit. */}
-            {/* V7 / V8 · typing the first message: the header steps away (the field and the suggestions take over). */}
-            <Stack gap="16" align="center" className={`${styles.reveal} ${styles.header}`} data-hidden={(typing && firstSuggest) || undefined}>
-              {/* 8 to the right: the ring sits left of the art's box (the leaves fill its right), so it reads centred */}
-              <span className={styles.orbNudge}><DashOrb size={centre ? 'lg' : 'md'} /></span>
-              <Stack gap="04" className={styles.centreHeading}>
-                <p className={styles.centreGreeting}>{t('home.greeting', { name: firstName })}</p>
-                <h1 className={styles.centreTitle}>{t('home.title')}</h1>
+          <Stack gap="24" className={styles.content}>
+            {/* 1–2 · The heading and the kind pills. Typing the first message: they step away (the suggestions take over). */}
+            <Stack gap="32" align="center" className={`${styles.reveal} ${styles.header}`} data-hidden={typing || undefined}>
+              <Stack gap="24" align="center">
+                {/* 4 to the right (the ring sits left of the art's box) and still — no motion, so it doesn't pull focus */}
+                <span className={styles.orb}><DashOrb size="compact" /></span>
+                <h1 className={styles.title}>{t('home.greeting')}</h1>
               </Stack>
-              {/* V10 · Heading: what to build sits right under the question (the field below has no pills). */}
-              {pillsUnderTitle && askModes && (
-                <SlidingPills value={askModes.modes.value} items={askModes.modes.items} onChange={askModes.modes.onChange} label={askModes.modes.label} newLabel={t('askModes.new')} />
-              )}
+              <div className={styles.pills}>
+                <SlidingPills value={askModes.modes.value} items={askModes.modes.items} onChange={askModes.modes.onChange} label={askModes.modes.label} fill />
+              </div>
             </Stack>
 
-            {/* The sections, 32 apart (the header sits 48 above them). On landing they appear one after another, after
-                the header (the field below is there from the start). */}
-            {/* Typing (keyboard up): the sections fade and fold away with the keyboard's rise (and come back as it goes),
-                so the greeting glides to its place instead of jumping. */}
+            {/* Typing (keyboard up): the sections fade and fold away with the keyboard's rise (and come back as it goes). */}
             <div className={styles.sectionsFold} data-folded={typing || undefined}>
-            <div className={styles.sectionsFoldInner}>
-            <Stack gap="32" className={styles.sections}>
-            {/* 2 · Pick up where you left off: chats left before saving (rare, so only when there are some) — one card
-                each, swiped sideways when there are two or more; ✕ removes one (asks first). */}
-            <ResumeDrafts drafts={drafts} onViewAll={onPastChats} onOpen={(kind) => open(kind)()} onRemove={(id) => setDrafts((list) => list.filter((d) => d.id !== id))} />
+              <div className={styles.sectionsFoldInner}>
+                <Stack gap="32" className={styles.sections}>
+                  {/* 3 · The picked kind's row. */}
+                  <section aria-label={t('home.creations')}>
+                    <div ref={row} className={styles.row} role="list">
+                      <ExplainCreateCard key={`explain-${shown}`} kind={shown} className={`${styles.item} ${styles.createCard}`} onClick={() => startWith(t(`home.start.${shown}`))} />
+                      {rowCreations.slice(0, HOME_CREATIONS).map(({ item, kind }) => card(item, kind))}
+                      {rowCreations.length === 0 && EXAMPLES[shown].map((key) => (
+                        <button key={key} data-key={key} type="button" role="listitem" className={styles.item} onClick={() => startWith(t(key))}>
+                          <span className={styles.itemTop}>
+                            <span className={styles.tryLabel}><Icon icon={msLightbulb} size={12} />{t('home.try')}</span>
+                            <Icon icon={msChevronRight} size={16} />
+                          </span>
+                          <span className={styles.itemTitle}>{t(key)}</span>
+                        </button>
+                      ))}
+                      {rowCreations.length > 0 && (
+                        // As tall as the other cards, never taller: it shows what fits — the arrow, then "View all", then
+                        // "N more" (CSS container queries). The name is on the button, so the arrow alone still reads.
+                        <button data-key="view-all" type="button" role="listitem" aria-label={t('home.viewAll')} className={`${styles.item} ${styles.viewAllCard}`} onClick={() => { openHistoryOn(HISTORY_TAB[shown]); onManage?.() }}>
+                          <span className={styles.viewAllIcon}><Icon icon={msArrowForward} size={20} /></span>
+                          <span className={`${styles.itemTitle} ${styles.viewAllLabel}`} aria-hidden="true">{t('home.viewAll')}</span>
+                          {rowCreations.length > HOME_CREATIONS && <span className={`${styles.itemMeta} ${styles.viewAllMore}`} aria-hidden="true">{t('home.viewAllMore', { count: rowCreations.length - HOME_CREATIONS })}</span>}
+                        </button>
+                      )}
+                    </div>
+                  </section>
 
-            {/* 3 · What they made. Grouped (default): a section per kind — Your rules / Your indicators / Your strategies,
-                each with its count and what's active, View all, and its own row. Mixed: one "Your creations" row, kinds
-                together (each card names its kind). A card (›) opens its details sheet (as on the history page). */}
-            {version3 ? (
-              // V3 · every kind has a place: what they made first (as in V2's grouped rows), then an invite card for
-              // each kind they haven't tried — so someone with only rules still sees indicators and strategies. The
-              // newest kind (NEW_KIND) is tagged New. A new kind later is one more entry here.
-              <>
-                {(['rule', 'indicator', 'strategy'] as const)
-                  .slice()
-                  .sort((a, b) => Number(has[b]) - Number(has[a]))
-                  .filter((kind) => kind !== { none: '', indicators: 'indicator', strategies: 'strategy' }[hidden])
-                  .map((kind) => kindSection(kind, has[kind]))}
-              </>
-            ) : grouped ? (
-              <>
-                {[
-                  { kind: 'rule' as const, items: rulesSorted, note: t('home2.rulesNote', { total: dashRules.length, count: rulesTriggered }) },
-                  { kind: 'indicator' as const, items: savedIndicators, note: t('home2.indicatorsNote', { total: savedIndicators.length, count: savedIndicators.filter((x) => x.on).length }) },
-                ].map((g) => (
-                  <Stack key={g.kind} as="section" gap="12" aria-label={t(`home2.group.${g.kind}`)} style={{ order: firstOrder(g.kind) }}>
-                    <SectionHeader
-                      title={t(`home2.group.${g.kind}`)}
-                      headingLevel={2}
-                      action={{
-                        type: 'view-all',
-                        // The history page, on this kind's tab.
-                        onClick: () => {
-                          openHistoryOn(g.kind === 'rule' ? 'rules' : 'indicators')
-                          onManage?.()
-                        },
-                      }}
-                    />
-                    <div className={styles.row} role="list">
-                      {g.items.map((item) => card(item, g.kind, false))}
-                    </div>
-                  </Stack>
-                ))}
-                {/* Your strategies: none saved yet, so an empty card (no View all). */}
-                {SHOW_STRATEGIES && (
-                  <Stack as="section" gap="12" aria-label={t('home2.group.strategy')} style={{ order: firstOrder('strategy') }}>
-                    <SectionHeader title={t('home2.group.strategy')} headingLevel={2} />
-                    {/* None saved yet (strategies aren't built yet): say so, and point to the field below. */}
-                    <Card className={styles.strategyEmpty}>
-                      <Stack gap="04">
-                        <span className={styles.strategyEmptyTitle}>{t('home2.strategiesEmpty')}</span>
-                        <span className={styles.strategyEmptyText}>{t('home2.strategiesEmptyText')}</span>
-                      </Stack>
-                    </Card>
-                  </Stack>
-                )}
-              </>
-            ) : (
-              <>
-              {/* Nothing made yet (a new user on V6): no creations section, only the Create cards. */}
-              {creations.length > 0 && (
-              <Stack as="section" gap="12" aria-label={t(version4 ? 'home4.creations' : 'home2.creations')}>
-                {/* The heading carries the top bar's Your creations icon (widgets), so the two read as the same place. L3 gap:
-                    SectionHeader has no icon slot — the icon goes in the title. */}
-                <SectionHeader title={<span className={styles.creationsTitle}><Icon icon={msWidgets} size={16} />{t(version4 ? 'home4.creations' : 'home2.creations')}</span>} headingLevel={2} action={{ type: 'view-all', onClick: () => onManage?.() }} />
-                <div ref={mixedRow} className={styles.row} role="list">
-                  {/* "+ Create <picked kind>" leads the row (flips with the field's pill): the opening words go into the field,
-                      keyboard up (not on the old V6: its Create cards do that). */}
-                  {shown && !version4 && !dashVersion.createPills && (
-                    <button data-key={`create-${shown}`} type="button" role="listitem" className={`${styles.item} ${styles.createCard}`} onClick={() => { kb.field.onChange(t(`home3.start.${shown}`)); kb.field.onFocus() }}>
-                      <svg className={styles.createOutline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
-                              <span className={styles.createIcon} {...raised('strong')}><Icon icon={msAdd} size={20} /></span>
-                      <span className={styles.itemTitle}>{t(`home3.create.${shown}`)}</span>
-                    </button>
-                  )}
-                  {/* At most three creations here (the picked kind first), then a "View all" card to the full page (with
-                      "N more" when some are left out), so the row doesn't scroll on and on. */}
-                  {[...creations].sort((a, b) => Number(b.kind === shown) - Number(a.kind === shown)).slice(0, HOME_CREATIONS).map(({ item, kind: k }) => card(item, k, true))}
-                  {(
-                    // As tall as the other cards, never taller: it shows what fits — the arrow, then "View all", then
-                    // "N more" (CSS container queries). The name is on the button, so the arrow alone still reads.
-                    <button data-key="view-all" type="button" role="listitem" aria-label={t('home2.viewAll')} className={`${styles.item} ${styles.viewAllCard}`} onClick={() => onManage?.()}>
-                      <span className={styles.viewAllIcon}><Icon icon={msArrowForward} size={20} /></span>
-                      <span className={`${styles.itemTitle} ${styles.viewAllLabel}`} aria-hidden="true">{t('home2.viewAll')}</span>
-                      {creations.length > HOME_CREATIONS && <span className={`${styles.itemMeta} ${styles.viewAllMore}`} aria-hidden="true">{t('home2.viewAllMore', { count: creations.length - HOME_CREATIONS })}</span>}
-                    </button>
-                  )}
-                </div>
-              </Stack>
-              )}
-              {/* V4 · start something new: one small dashed card per kind, side by side in one row. Style "Button": title
-                  top left (always two lines: Create / the kind), icon top right, a small primary button; style "Outline": the + Create card of the creations row, the whole card taps. */}
-              {version4 && (
-                // Three Button cards leave the title too little room beside the icon: that row scrolls sideways (40% cards).
-                <div className={createStyle === 'button' && createCards.length > 2 ? styles.row : styles.createGrid} role="list" aria-label={t('home4.createLabel')}>
-                  {createCards.map((c) => createStyle === 'outline' ? (
-                    <button key={c.kind} type="button" role="listitem" className={`${styles.item} ${styles.createCard} ${styles.createCell}`} onClick={c.onClick}>
-                      <svg className={styles.createOutline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
-                      <span className={styles.createIcon} {...raised('strong')}><Icon icon={msAdd} size={20} /></span>
-                      <span className={styles.itemTitle}>{t(`home3.create.${c.kind}`)}</span>
-                    </button>
-                  ) : (
-                    <div key={c.kind} role="listitem" className={`${styles.createBlock} ${createCards.length > 2 ? styles.createScroll : styles.createCell}`}>
-                      <svg className={styles.createOutline} aria-hidden="true"><rect x="0.5" y="0.5" width="100%" height="100%" rx="11" /></svg>
-                      <span className={styles.createBlockHead}>
-                        <span className={styles.createBlockTitle}>{t(`home4.createTitle.${c.kind}`)}</span>
-                        <span className={styles.createIcon} {...raised('strong')}><Icon icon={c.icon} size={20} /></span>
-                      </span>
-                      <Button size="sm" fullWidth onClick={c.onClick}>{t('home4.createButton')}</Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-              </>
-            )}
-            </Stack>
-            </div>
+                  {/* 4 · Pick up where you left off: only when there are drafts. Every past chat is in the top bar's
+                      history, so this section has no View all. */}
+                  <ResumeDrafts drafts={drafts} onOpen={(kind) => (kind === 'indicator' ? onOpenIndicator : onOpenRule)?.()} onRemove={(id) => setDrafts((list) => list.filter((d) => d.id !== id))} onClose={closeDrafts} />
+                </Stack>
+              </div>
             </div>
           </Stack>
         </Inset>
       </div>
-
 
       {details && (
         <CreationDetailsSheet
@@ -13024,45 +10570,31 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
         />
       )}
 
-      {/* 4 · Ask DASH: change something or start something new, in words. */}
-      {/* The field (and keyboard) go to the DASH screen's fixed input place, so they stay put across scenes. */}
+      {/* 5 · The field. It goes to the DASH screen's fixed input place, so it stays put across scenes. */}
       <DashDock>
-      <div className={styles.dock}>
-        <Inset paddingInline="16" paddingBlock="16">
-          {firstSuggest && typing && <FirstAsk kind="home" mode={askModes?.mode} text={kb.field.value} onPick={(text) => kb.field.onChange(text)} onKind={(k) => askModes?.modes.onChange(k)} />}
-          {/* "Pills" version: the Create pills just above the field, under the suggestions when the field opens; once
-              something is typed they go and only the suggestions that finish it stay. */}
-          {dashVersion.createPills && !(typing && kb.field.value.trim()) && (
-            <CreatePills onCreate={(k) => { kb.field.onChange(t(`home3.start.${k}`)); kb.field.onFocus() }} />
-          )}
-          {switchOutside && askModes && (
-            <div className={styles.switchOutside}>
-              <SlidingPills value={askModes.modes.value} items={askModes.modes.items} onChange={askModes.modes.onChange} label={askModes.modes.label} newLabel={t('askModes.new')} fill />
-            </div>
-          )}
-          <ChatInput
-            firstMessage
-            // "Pills" version: one row — the text across, then the + beside Send.
-            inline={!!dashVersion.createPills}
-            {...kb.field}
-            onSend={kb.sending(askModes?.send ?? ask)}
-            modes={switchOutside || pillsUnderTitle ? undefined : askModes?.modes}
-            placeholder={askModes?.placeholder}
-            rotatingPlaceholder={askModes ? undefined : { prefix: t('home.createPrefix'), words: [t('home.word.indicator'), t('home.word.rule'), t('home.word.strategy')] }} // The + (Pine Script upload) is always there, whatever is picked — a script always becomes an indicator.
-            onAttach={() => setPineSheet(true)} />
-          {picker}
-          {pineSheet && (
-            <PineUploadSheet
-              onClose={() => setPineSheet(false)}
-              onChoose={() => {
-                setPineSheet(false)
-                fileInput.current?.click()
-              }}
+        <div className={styles.dock}>
+          <Inset paddingInline="16" paddingBlock="16">
+            {typing && <FirstAsk kind="home" mode={askModes.mode} text={kb.field.value} onPick={(text) => kb.field.onChange(text)} />}
+            <ChatInput
+              {...kb.field}
+              onSend={kb.sending(askModes.send)}
+              placeholder={askModes.placeholder}
+              // The + (Pine Script upload) is always there, whatever is picked — a script always becomes an indicator.
+              onAttach={() => setPineSheet(true)}
             />
-          )}
-        </Inset>
-      </div>
-      {kb.keyboard}
+            {picker}
+            {pineSheet && (
+              <PineUploadSheet
+                onClose={() => setPineSheet(false)}
+                onChoose={() => {
+                  setPineSheet(false)
+                  fileInput.current?.click()
+                }}
+              />
+            )}
+          </Inset>
+        </div>
+        {kb.keyboard}
       </DashDock>
     </div>
   )
@@ -13164,7 +10696,7 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
   animation: dash-fade-in var(--app-dash-scene) var(--app-dash-scene-easing) both;
 }
 
-/* Version 2: no panel — the chat sits straight on DASH's background (the soft blurred disc), like the empty state. */
+/* No panel — the chat sits straight on DASH's background (the soft blurred disc), like the empty state. */
 .panel[data-flat] {
   border-radius: 0;
   background: none;
@@ -13185,7 +10717,7 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
   transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
 }
 
-/* DASH V7 / V8 / V10 · typing the chat's first message: the intro (orb + title) steps away; the suggestions take its place. */
+/* Typing the chat's first message: the intro (orb + title) steps away; the suggestions take its place. */
 .intro[data-hidden] {
   opacity: 0;
   pointer-events: none;
@@ -13263,11 +10795,6 @@ export function ReturningV2Scene({ version3 = false, version4 = false, returning
   }
 }
 
-/* Answered: the input drops back from where the card was (live app: 150 ms down from the card's top). */
-.inputBack {
-  animation: dash-input-back var(--l3-motion-duration-short) var(--l3-motion-easing-decelerate) both;
-}
-
 @keyframes dash-input-back {
   from {
     opacity: 0;
@@ -13342,7 +10869,6 @@ import { useStickToBottom } from '../components/stickToBottom'
 import { switchKind, takeKind, takeMessage } from '../components/pendingMessage'
 import { DashDock } from '../components/DashDock'
 import { FirstAsk } from '../components/FirstAsk'
-import { useDashVersion } from '../components/dashVersion'
 import { useChatKind } from '../components/askModes'
 import { usePineUpload } from '../components/pineUpload'
 import { t } from '../copy'
@@ -13404,7 +10930,7 @@ const INTRO_OUT_MS = 300
  * - the conversation builds up — every message stays; the panel scrolls to the newest.
  */
 /** Strategy suggestions for the empty chat in strategy mode. */
-const strategyTop = [t('home3.ex.strategy1'), t('home3.ex.strategy2'), t('home3.ex.strategy3')]
+const strategyTop = [t('home.ex.strategy1'), t('home.ex.strategy2'), t('home.ex.strategy3')]
 
 export function RuleScene({ step, request: initialRequest = maxDailyLoss.title, onSend, onThought, onAnswer, onRefine, onProceed, onSave, onImprove, onReadMore, typing = false, onTyping, onSwitchKind, created = false, onViewRules }: RuleChatProps) {
   // The field keeps the home's shape: one pill naming this chat's kind where the home has its switch.
@@ -13432,7 +10958,7 @@ export function RuleScene({ step, request: initialRequest = maxDailyLoss.title, 
   const [introLeaving, setIntroLeaving] = useState(false)
   const scene = useRef<HTMLDivElement>(null)
   const scroller = useRef<HTMLDivElement>(null)
-  // Version 1's pinned card folds while the user scrolls the chat down, and opens at the top (or on a tap).
+  // The pinned card folds while the user scrolls the chat down, and opens at the top (or on a tap).
   const [compactWanted, setCompactWanted] = useState(false)
   const touchY = useRef<number | null>(null)
   const userScroll = (down: boolean) => {
@@ -13504,18 +11030,17 @@ export function RuleScene({ step, request: initialRequest = maxDailyLoss.title, 
   const empty = step === 'empty'
   const hasCard = !empty && step !== 'thinking' && step !== 'question'
   // The rule card is pinned above the chat (it folds to its title row while the chat is scrolled). (The card inside
-  // DASH's message — Chat V2 — is in archive/dash-chat-versions.)
+  // DASH's message — its earlier style — is in archive/dash-chat-versions.)
   const pinned = hasCard
   const card = <RuleCard rule={maxDailyLoss} backtest={backtest} onOpen={onReadMore} compact={pinned && compactWanted} onExpand={() => setCompactWanted(false)} />
   const thinking = step === 'thinking' || pending != null
   const asking = step === 'question' && !pending
   // Typing in the empty chat; the drawn keyboard only on a laptop (a phone opens its own).
-  const typingNow = empty && typing
-  // DASH V8: typing the chat's first message — the intro washes out, suggestions over the glowing field.
-  const dashVersion = useDashVersion()
-  const firstFocus = !!dashVersion.firstMessageFocus && typingNow
-  // V7: suggestions too, and the intro steps away instead of washing out.
-  const firstSuggest = (firstFocus || !!dashVersion.firstSuggestions) && typingNow
+  // The field takes typing in the empty chat and, once a rule card is there, for a change to it (keyboard up).
+  const canChange = hasCard
+  const typingNow = typing && (empty || canChange)
+  // Typing the chat's first message: the intro steps away and suggestions stack over the field.
+  const firstSuggest = typingNow
   const keyboardUp = typingNow // the drawn keyboard, on a phone too
 
   return (
@@ -13594,7 +11119,7 @@ export function RuleScene({ step, request: initialRequest = maxDailyLoss.title, 
         <Inset paddingInline="16" paddingBlock="16">
           {firstSuggest && <FirstAsk kind={strategy ? 'strategy' : 'rule'} text={draft} onPick={setDraft} />}
           {/* + (Pine Script upload) on the left, as on the homes and the indicator chat: a script becomes an indicator. */}
-          <ChatInput onAttach={pine.onAttach} firstMessage={empty} modes={chatKind ?? undefined} value={draft} onChange={setDraft} typing={typingNow} onFocus={empty ? () => onTyping?.(true) : undefined} autoFocus={typingNow} onSend={empty ? send : () => {}} placeholder={empty ? (strategy ? t('askModes.placeholder.strategy') : t('input.describeRule')) : hasCard ? t('input.changeRule') : undefined} />
+          <ChatInput onAttach={pine.onAttach} modes={chatKind ?? undefined} value={draft} onChange={setDraft} typing={typingNow} onFocus={empty || canChange ? () => onTyping?.(true) : undefined} autoFocus={typingNow} onSend={empty ? send : () => { setDraft(''); onTyping?.(false) }} placeholder={empty ? (strategy ? t('askModes.placeholder.strategy') : t('input.describeRule')) : hasCard ? t('input.changeRule') : undefined} />
           {pine.ui}
         </Inset>
       </div>
@@ -13770,7 +11295,7 @@ type SimpleCreationCardProps = {
  */
 export function SimpleCreationCard({ item, kind, on, onToggle, onOpen }: SimpleCreationCardProps) {
   const triggered = homeTriggers[item.id] ?? 0
-  const status = kind === 'rule' ? (!on ? t('cards.paused') : triggered ? t('home2.triggered', { count: triggered }) : t('home2.notTriggered')) : on ? t('cards.onChart') : t('details.notOnChart')
+  const status = kind === 'rule' ? (!on ? t('cards.paused') : triggered ? t('home.triggered', { count: triggered }) : t('home.notTriggered')) : on ? t('cards.onChart') : t('details.notOnChart')
   const lit = kind === 'rule' ? on && triggered > 0 : on
   return (
     <Card className={styles.card} surface="primary">
@@ -13786,61 +11311,6 @@ export function SimpleCreationCard({ item, kind, on, onToggle, onOpen }: SimpleC
       </div>
     </Card>
   )
-}
-```
-
-### `src/flows/dash/screens/homes.tsx`
-
-```tsx
-import type { ComponentType } from 'react'
-import { HomeCombinedScene } from './HomeCombined'
-import { HomeV9Scene } from './HomeV9'
-import { LandingScene } from './Landing'
-import { type ReturningProps } from './Returning'
-import { ReturningV2Scene } from './ReturningV2'
-import { HomeTabsScene } from './HomeTabs'
-
-/**
- * Each DASH version's homes (setting "DASH version"; the list, labels and chat input are in components/dashVersion.ts,
- * same `value`). A version gives the scene a new and a returning user see — the same one when its design is shared;
- * it then adapts its cards to the user with useDashUser() (what they've made).
- *
- * To add a version: build its scene in a new file in screens/, add it here and to dashVersions.
- */
-export type HomeScenes = {
-  newUser: ComponentType<ReturningProps>
-  returning: ComponentType<ReturningProps>
-  /** The new user's home has no chat field (big cards): going to a chat pushes and the field rises in. */
-  newUserNoField?: boolean
-}
-
-/** The new user's home before versions: what DASH can build, big cards, no field. */
-const Landing = (p: ReturningProps) => <LandingScene onRules={p.onRules} onIndicator={p.onIndicator} onStrategy={p.onStrategy} />
-const ReturningV2 = (p: ReturningProps) => <ReturningV2Scene {...p} />
-const ReturningV3 = (p: ReturningProps) => <ReturningV2Scene version3 {...p} />
-const OneHome = (p: ReturningProps) => <ReturningV2Scene version4 {...p} />
-
-export const homeScenes: Record<string, HomeScenes> = {
-  '1': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '2': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '3': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '4': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '5': { newUser: Landing, returning: ReturningV3, newUserNoField: true },
-  '6': { newUser: OneHome, returning: OneHome },
-  '7': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '8': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '9': { newUser: HomeV9Scene, returning: HomeV9Scene },
-  '10': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  '11': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  // V8 · Tabs (returning user): the kind tabs in the top bar, the body follows them, the plain floating field.
-  '12': { newUser: Landing, returning: HomeTabsScene, newUserNoField: true },
-  // V9 · Switch: the returning home with the full-width Rule · Indicator · Strategy toggle on top inside the field.
-  '13': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  // V10 · Heading: the kind pills right under "How can I help you trade better?", the field without pills.
-  '14': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  // V11 · Ribbon: the kinds as ribbon tabs on top of the field (the picked one opens into it).
-  '15': { newUser: Landing, returning: ReturningV2, newUserNoField: true },
-  combined: { newUser: HomeCombinedScene, returning: HomeCombinedScene },
 }
 ```
 
@@ -13930,7 +11400,7 @@ import styles from './RuleSheets.module.css'
 const TICK_FLIP_MS = 150
 
 /**
- * After Save indicator (Version 2): the indicator is created and saved — the tick bursts, a summary of what was saved,
+ * After Save indicator: the indicator is created and saved — the tick bursts, a summary of what was saved,
  * Done (back to the chat) and View indicator (Scalper's Indicators sheet, with it under Your indicators).
  */
 export function IndicatorSavedSheet({ draft, onDone, onView }: { draft: IndicatorDraft; onDone?: () => void; onView?: () => void }) {
@@ -14156,27 +11626,6 @@ export function PineUploadSheet({ onChoose, onClose }: { onChoose: () => void; o
   color: var(--l3-content-accent-error-default);
 }
 
-/* Version 2 details: centred, like "Your rule is created". */
-.details {
-  padding-top: var(--l3-spacing-08);
-  text-align: center;
-}
-
-/* Card style New · a Smart Rule's details: what Smart Rule means (the card has just the tag). */
-.smartNote {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  margin: 0;
-  padding: var(--l3-spacing-12);
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-secondary);
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-description-12);
-  text-align: center;
-}
-
 /* Card style New · details */
 .activityValue {
   font: var(--l3-text-label-12);
@@ -14187,22 +11636,6 @@ export function PineUploadSheet({ onChoose, onClose }: { onChoose: () => void; o
 .activityValue strong {
   font: var(--l3-text-heading-12);
   color: var(--l3-content-primary);
-}
-
-/* Details version 2: the Status tag is the switch (a plain button around the L3 Tag; tap target grows past the tag). */
-.statusSwitch {
-  position: relative;
-  display: inline-flex;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.statusSwitch::after {
-  content: '';
-  position: absolute;
-  inset: calc(-1 * var(--l3-spacing-12));
 }
 
 /* Details version 3: one toggle card — Status in Heading/14, the activity under it, the status word + switch right. */
@@ -14218,12 +11651,6 @@ export function PineUploadSheet({ onChoose, onClose }: { onChoose: () => void; o
   color: var(--l3-content-primary);
   font: var(--l3-text-label-12);
   cursor: pointer;
-}
-
-/* The other actions: plain rows, a hairline between; Delete last, in the error colour. */
-.actions {
-  margin-inline: calc(-1 * var(--l3-spacing-16));
-  border-top: 1px solid var(--l3-border-light);
 }
 
 .danger.danger,
@@ -14328,7 +11755,7 @@ export function RuleCreatedSheet({ rule, onCancel, onViewRules }: { rule: DraftR
 }
 
 /** Delete? (Figma "Delete rule" 5612:42250): the question as the header, the rule, No / Yes, Delete. */
-export function DeleteRuleSheet({ rule, heading = t('delete.title'), large = false, onNo, onYes }: { rule: { title: string; summary: string }; /** What's being deleted (default: a rule). */ heading?: string; /** Version 2: the large header with the delete icon in a red circle; Yes, Delete above No. */ large?: boolean; onNo?: () => void; onYes?: () => void }) {
+export function DeleteRuleSheet({ rule, heading = t('delete.title'), large = false, onNo, onYes }: { rule: { title: string; summary: string }; /** What's being deleted (default: a rule). */ heading?: string; /** The large header with the delete icon in a red circle; Yes, Delete above No. */ large?: boolean; onNo?: () => void; onYes?: () => void }) {
   const id = useId()
   if (large) {
     return (
@@ -15119,6 +12546,7 @@ export const typeText = (value: string, key: string) => {
 
 .orb[data-size='lg'] { --orb-box: var(--l3-size-96); }
 .orb[data-size='md'] { --orb-box: var(--l3-size-64); }
+.orb[data-size='compact'] { --orb-box: var(--l3-size-40); }
 .orb[data-size='sm'] { --orb-box: var(--l3-size-32); }
 
 /* The art is drawn at 100 and scaled to the box. */
@@ -15260,7 +12688,7 @@ import orbFill from './assets/orb-fill.svg'
 import orbRing from './assets/orb-ring.svg'
 import styles from './DashOrb.module.css'
 
-export type DashOrbSize = 'sm' | 'md' | 'lg'
+export type DashOrbSize = 'sm' | 'compact' | 'md' | 'lg' // 32 · 40 · 64 · 96
 
 /**
  * DASH's mascot — the lime ring with two leaves (Figma "Logo" / "BotIcon", the 100 × 100 vector component), drawn from
