@@ -1,0 +1,413 @@
+{
+  "id": "fno",
+  "title": "F&O",
+  "description": "Equity F&O home: P&L, indices, chart metrics, watchlists, Smart Options, Futures Heatmap and Smart Futures.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/fno",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "fno-01",
+      "name": "Equity home",
+      "figma": "11569:41100",
+      "note": "From the main F&O tab. Home returns to Stocks; DASH, Search, Profile and Wallet open their existing flows. Selectors, chart metrics, filters, sorting and watchlist creation work locally. Destinations outside this frame open an explanatory sheet.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11569-41100"
+    },
+    {
+      "id": "fno-02",
+      "name": "Home · watchlists & Smart Options",
+      "figma": "11569:41100",
+      "note": "The same long screen, scrolled to watchlists.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11569-41100"
+    },
+    {
+      "id": "fno-03",
+      "name": "Home · Futures Heatmap",
+      "figma": "11569:41100",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11569-41100"
+    },
+    {
+      "id": "fno-04",
+      "name": "Home · Smart Futures",
+      "figma": "11569:41100",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11569-41100"
+    },
+    {
+      "id": "fno-05",
+      "name": "Scalper",
+      "figma": "",
+      "note": "From ScalpPro on F&O home or the Scalper bottom-nav tab. The chart-tools sheet groups personal DASH AI indicators separately from Lemon indicators.",
+      "goesTo": [
+        "fno-01",
+        "dash-20"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-06",
+      "name": "Scalper · DASH indicator",
+      "figma": "",
+      "note": "From DASH AI’s View indicator. Opens the chart-tools sheet directly on Indicators, the saved DASH AI indicator under Your indicators with a focus guide. Tap rows to add / remove indicators (several at once); search filters the list.",
+      "goesTo": [
+        "fno-01",
+        "dash-20"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-07",
+      "name": "Scalper · indicator applied",
+      "figma": "",
+      "note": "With the saved DASH AI indicator on the chart: “1 ▾” at the chart’s top-left and illustrative EMA 9 / 21 lines on the NIFTY 50 candles.",
+      "goesTo": [
+        "fno-01",
+        "dash-20"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-08",
+      "name": "Commodities home",
+      "figma": "6754:63637",
+      "note": "The Commodities product tab. Gold / Silver / Crude Oil / Natural Gas shortcuts open the Lot summary (Gold Summary). The chart’s instrument selector (“Gold”) opens the contract picker. Popular commodities: Options ⇕ Futures switch; Futures Heatmap: Bullion / Energy / Metals.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-63637"
+    },
+    {
+      "id": "fno-09",
+      "name": "Commodities · heatmap & Smart Futures",
+      "figma": "6754:63637",
+      "note": "The same long screen, scrolled to the Futures Heatmap.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-63637"
+    },
+    {
+      "id": "fno-10",
+      "name": "Contract picker · Commodities",
+      "figma": "6754:65111",
+      "note": "From the chart’s “Gold ⇕”. Equity / Commodities tabs in the sheet header’s bottom slot, commodity chips (All, Gold, Silver …) under them; contracts grouped by commodity as radio rows (Gold Mini tagged “Lowest Margin”). Picking one updates the chart and closes the sheet.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-65111"
+    },
+    {
+      "id": "fno-11",
+      "name": "Contract picker · Equity",
+      "figma": "6754:65054",
+      "note": "The same sheet on its Equity tab: the 8 index contracts.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-65054"
+    },
+    {
+      "id": "fno-12",
+      "name": "Gold Summary · by price",
+      "figma": "6754:65113",
+      "note": "From a commodity shortcut on fno-08. Gold lot tabs (Gold, Gold Mini, Gold Guinea, Gold Ten, Gold Petal) in the Actionbar’s bottom slot; Futures (View all) and Options (View option chain, expiry month, category pills, Filter, sort). The sort opens a sheet: By Price · By Volume · Margin per lot.",
+      "goesTo": [
+        "fno-08",
+        "fno-17"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-65113"
+    },
+    {
+      "id": "fno-13",
+      "name": "Gold Summary · by volume",
+      "figma": "6754:65288",
+      "note": "Sorted by volume: each option shows its traded volume, no change.",
+      "goesTo": [
+        "fno-08",
+        "fno-17"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-65288"
+    },
+    {
+      "id": "fno-14",
+      "name": "Gold Summary · margin per lot",
+      "figma": "6754:65444",
+      "note": "Sorted by margin per lot: each option shows the margin for one lot, no change.",
+      "goesTo": [
+        "fno-08",
+        "fno-17"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-65444"
+    },
+    {
+      "id": "fno-15",
+      "name": "Strategies · Equity",
+      "figma": "6754:64178",
+      "note": "The Strategies product tab with Equity selected in the pill group: shortcuts, Zing Trades, Smart Invest, Pre-build Strategies (Nifty 50 ⇕, Bullish / Bearish / Neutral / Volatile), Quick Trade. Card footer buttons stay Small (32) as in Figma.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-64178"
+    },
+    {
+      "id": "fno-16",
+      "name": "Strategies · Commodities",
+      "figma": "6754:64607",
+      "note": "The same tab with Commodities selected: commodity Smart Invest baskets, GOLD as the underlying.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-64607"
+    },
+    {
+      "id": "fno-17",
+      "name": "Option chain",
+      "figma": "11630:16785",
+      "note": "From Option chain on the F&O chart (any product tab) or the Option Chain bottom-nav tab; Back → F&O home. Opens scrolled to the spot pill. BankNifty ▾ and Expiry ▾ open sheets; Σ shows delta instead of the day change; the basket and Zing tile open the explanatory sheet. Column heads: Call / Put metric (LTP, OI, OI Chg, IV) and the strike range (All, ±5, ±10). Tap a price to Buy, tap it again to Sell, a third time to clear.",
+      "goesTo": [
+        "fno-01",
+        "fno-21"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11630-16785"
+    },
+    {
+      "id": "fno-18",
+      "name": "Option chain · Buy selected",
+      "figma": "11630:16184",
+      "note": "A put price tapped once: B badge, green wash, the order dock with the contract, Balance / Req, quantity in lots and Buy (brand). Buy places a sample order (toast) and clears the selection.",
+      "goesTo": [
+        "fno-01",
+        "fno-21"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11630-16184"
+    },
+    {
+      "id": "fno-19",
+      "name": "Option chain · Sell selected",
+      "figma": "11695:26269",
+      "note": "The same put tapped again: S badge, red wash, Sell (secondary) in the dock; Req becomes the margin per lot.",
+      "goesTo": [
+        "fno-01",
+        "fno-21"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=11695-26269"
+    },
+    {
+      "id": "fno-20",
+      "name": "Option chain · illiquid contract",
+      "figma": "",
+      "note": "Illiquid contracts (deep in-the-money calls, far out-of-the-money puts) carry a block icon beside the price, like Groww. Unlike Groww, a tap never selects them: a tooltip opens just above — “ILLIQUID contract” / “Can’t be traded” ⓘ; tapping away closes it, ⓘ opens a sheet with why it’s blocked, its traded lots and buy–sell gap, and a tip. Opens on the 25,700 put with the tooltip up.",
+      "goesTo": [
+        "fno-01",
+        "fno-21"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-21",
+      "name": "Asset page · Gold MINI",
+      "figma": "6754:61613",
+      "note": "A commodity contract page. Entry (one of several): the contract name in the option chain order dock (“25,400 Put ›”). Back returns where it came from; Option chain → fno-17; Buy / Sell open the sample sheet. Equity contracts get their own (similar) page later.",
+      "goesTo": [
+        "fno-17",
+        "fno-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-61613"
+    },
+    {
+      "id": "fno-22",
+      "name": "Asset page · illiquid",
+      "figma": "6754:61613",
+      "note": "Product rule (commodities only): an illiquid contract’s page shows the ILLIQUID tag next to its name and Buy / Sell greyed out, with “Trading is not allowed as this contract is illiquid” above them — whatever screen it was opened from.",
+      "goesTo": [
+        "fno-17",
+        "fno-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6754-61613"
+    },
+    {
+      "id": "fno-23",
+      "name": "Gold Summary · Buy / Sell sheet",
+      "figma": "",
+      "note": "Tapping any futures or option card opens the Buy / Sell sheet (live app, 2026-10-29): name › (asset page fno-21) · price, expiry · change, Buy (brand) / Sell (secondary).",
+      "goesTo": [
+        "fno-08",
+        "fno-17"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-24",
+      "name": "Gold Summary · illiquid sheet",
+      "figma": "",
+      "note": "Product rule (commodities): an illiquid contract carries the ILLIQUID tag on its card (edge case — illiquid contracts shouldn’t be listed, but the state is built) and in the sheet; Buy / Sell are greyed out with “Trading is not allowed as this contract is illiquid”. Only the name › (asset page fno-22) or tapping outside works.",
+      "goesTo": [
+        "fno-08",
+        "fno-17"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "fno-25",
+      "name": "Order pad · Buy · Market",
+      "figma": "8671:18433",
+      "note": "Commodity option chain order pad (other order pads differ a little). From Buy on the commodity asset page or the Gold Summary Buy / Sell sheet. Delivery / Intraday tabs, Market / Limit / SL pills, Quantity (⇕ lots) in steps of one lot, Set TPSL, Avail. · Req, Buy. Placing shows a sample toast; no order is sent.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-26",
+      "name": "Order pad · Buy · Limit",
+      "figma": "8671:18433",
+      "note": "Limit adds the validity (Day ⇕ → Day / IOC) and a limit price row with a % stepper from the market price.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-27",
+      "name": "Order pad · Buy · SL",
+      "figma": "8671:18433",
+      "note": "SL adds a trigger price row above the limit row.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-28",
+      "name": "Order pad · Buy · Intraday",
+      "figma": "8671:18433",
+      "note": "Intraday: “This position will auto close by 11:30 PM” above the dock.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-29",
+      "name": "Order pad · Sell · Market",
+      "figma": "8671:18433",
+      "note": "Sell adds Margin · Leverage (grey strip) above the quantity; the action is Sell (red).",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-30",
+      "name": "Order pad · Sell · SL",
+      "figma": "8671:18433",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-31",
+      "name": "Order pad · Sell · Intraday",
+      "figma": "8671:18433",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433"
+    },
+    {
+      "id": "fno-32",
+      "name": "Order pad · Buy · ILLIQUID (edge case)",
+      "figma": "8671:18433 + product rule",
+      "note": "Should never be reached — every entry point blocks illiquid contracts — but if one slips through: ILLIQUID tag in the header (tap → “What does illiquidity mean?”), the blocked note in the dock (tap → same sheet) and Buy disabled. Inputs stay usable.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433 + product rule"
+    },
+    {
+      "id": "fno-33",
+      "name": "Order pad · Sell · ILLIQUID (edge case)",
+      "figma": "8671:18433 + product rule",
+      "note": "The same edge case on the Sell side: Sell disabled.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=8671-18433 + product rule"
+    }
+  ],
+  "files": [
+    "src/flows/fno/README.md",
+    "src/flows/fno/assets/commodities.svg",
+    "src/flows/fno/assets/downtrend.svg",
+    "src/flows/fno/assets/equity.svg",
+    "src/flows/fno/assets/option-chain.svg",
+    "src/flows/fno/assets/referral.svg",
+    "src/flows/fno/assets/scalppro.svg",
+    "src/flows/fno/assets/smart-invest.svg",
+    "src/flows/fno/assets/strategies.svg",
+    "src/flows/fno/assets/trade-calls.svg",
+    "src/flows/fno/assets/watchlist.svg",
+    "src/flows/fno/assets/zing.svg",
+    "src/flows/fno/commodities/assets/crude-oil.png",
+    "src/flows/fno/commodities/assets/gold-default.png",
+    "src/flows/fno/commodities/assets/gold-guinea.png",
+    "src/flows/fno/commodities/assets/gold-mini.png",
+    "src/flows/fno/commodities/assets/gold-petal.png",
+    "src/flows/fno/commodities/assets/gold-ten.png",
+    "src/flows/fno/commodities/assets/gold.png",
+    "src/flows/fno/commodities/assets/natural-gas.png",
+    "src/flows/fno/commodities/assets/silver.png",
+    "src/flows/fno/commodities/components/Commodities.module.css",
+    "src/flows/fno/commodities/components/CommoditiesFeed.tsx",
+    "src/flows/fno/commodities/components/CommodityHeatmap.tsx",
+    "src/flows/fno/commodities/components/CommodityShortcuts.tsx",
+    "src/flows/fno/commodities/components/PopularCommodities.tsx",
+    "src/flows/fno/commodities/data.ts",
+    "src/flows/fno/commodities/screens/AssetPage.module.css",
+    "src/flows/fno/commodities/screens/AssetPage.tsx",
+    "src/flows/fno/commodities/screens/LotSummary.tsx",
+    "src/flows/fno/commodities/sheets/ContractPickerSheet.tsx",
+    "src/flows/fno/commodities/sheets/ContractSheet.module.css",
+    "src/flows/fno/commodities/sheets/ContractSheet.tsx",
+    "src/flows/fno/components/ContractSection.tsx",
+    "src/flows/fno/components/Discovery.tsx",
+    "src/flows/fno/components/FnoNav.tsx",
+    "src/flows/fno/components/Header.module.css",
+    "src/flows/fno/components/Header.tsx",
+    "src/flows/fno/components/Heatmap.tsx",
+    "src/flows/fno/components/HomeParts.module.css",
+    "src/flows/fno/components/Overview.tsx",
+    "src/flows/fno/components/TradingChart.tsx",
+    "src/flows/fno/components/TradingPane.module.css",
+    "src/flows/fno/components/TradingPane.tsx",
+    "src/flows/fno/copy.json",
+    "src/flows/fno/copy.ts",
+    "src/flows/fno/data.ts",
+    "src/flows/fno/index.tsx",
+    "src/flows/fno/option-chain/components/OrderDock.module.css",
+    "src/flows/fno/option-chain/components/OrderDock.tsx",
+    "src/flows/fno/option-chain/data.ts",
+    "src/flows/fno/option-chain/screens/OptionChain.module.css",
+    "src/flows/fno/option-chain/screens/OptionChain.tsx",
+    "src/flows/fno/order-pad/data.ts",
+    "src/flows/fno/order-pad/screens/OrderPad.module.css",
+    "src/flows/fno/order-pad/screens/OrderPad.tsx",
+    "src/flows/fno/screens/Home.tsx",
+    "src/flows/fno/screens/Scalper.module.css",
+    "src/flows/fno/screens/Scalper.tsx",
+    "src/flows/fno/sheets/ChartToolsSheet.module.css",
+    "src/flows/fno/sheets/ChartToolsSheet.tsx",
+    "src/flows/fno/sheets/HomeSheets.tsx",
+    "src/flows/fno/sheets/IlliquidSheet.tsx",
+    "src/flows/fno/sheets/IndicatorDetailsSheet.tsx",
+    "src/flows/fno/strategies/components/Strategies.module.css",
+    "src/flows/fno/strategies/components/StrategiesFeed.tsx",
+    "src/flows/fno/strategies/data.ts"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/IlliquidSheet.module.css",
+    "src/shared/ui/IlliquidSheet.tsx",
+    "src/shared/ui/Rail.module.css",
+    "src/shared/ui/Rail.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/dash/DashEntry.module.css",
+    "src/shared/ui/dash/DashEntry.tsx",
+    "src/shared/ui/dash/DashOrb.module.css",
+    "src/shared/ui/dash/DashOrb.tsx",
+    "src/shared/ui/dash/assets/leaf-back.svg",
+    "src/shared/ui/dash/assets/leaf-front.svg",
+    "src/shared/ui/dash/assets/orb-fill.svg",
+    "src/shared/ui/dash/assets/orb-ring.svg"
+  ]
+}

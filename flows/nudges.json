@@ -1,0 +1,126 @@
+{
+  "id": "nudges",
+  "title": "Overtrading nudges (playground)",
+  "description": "Journey-aware P&L limit and TP/SL prompts: silent help on the order pad, and one nudge sheet when the revenge flag and the journey engine agree.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/nudges",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "nudges-01",
+      "name": "Order pad · silent help",
+      "figma": "8671:18433",
+      "note": "The default — no interruption. The F&O commodity order pad (fno-25) as it is, plus silent help: “Set TPSL” becomes a TP/SL row, pre-filled and on (Target +20% · Stop-loss −10%); “Set a loss limit for today” is the first line of the dock. Buy fires the nudge picked in the settings (Case, Data state), once: the shared cap is 1 per session.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-02",
+      "name": "Nudge · from settings",
+      "figma": "",
+      "note": "The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C, the draft title (“Overtrading detected”) and the draft’s two guardrail buttons.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-03",
+      "name": "Nudge · generic",
+      "figma": "",
+      "note": "Fires with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D of any case). Box 1 “Down today” is always known.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-04",
+      "name": "Nudge · size-up · A (own loss)",
+      "figma": "",
+      "note": "Enough history and his last size-up lost: Box 2 is his own loss, tagged “Your past trades”, in loss red.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-05",
+      "name": "Nudge · orders today · B",
+      "figma": "",
+      "note": "Enough history, last time didn’t lose: Box 1 is his own ratio (“3× your usual”), Box 2 the measured group line, tagged “Lemonn traders”.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-06",
+      "name": "Nudge · orders today · C (thin history)",
+      "figma": "",
+      "note": "Too few past sessions for “your usual”: Box 1 becomes today’s raw fact (“14 orders”).",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-07",
+      "name": "Nudge · averaging down (TP/SL first)",
+      "figma": "",
+      "note": "A case whose main button is TP/SL. Averaging down is one of the three states measured as harmful (−5.11% per buy).",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-08",
+      "name": "Set today’s loss limit",
+      "figma": "",
+      "note": "From the nudge’s “Set a loss limit for today” or the order pad dock. Pre-filled ₹25,000, quick amounts as pill tabs. Set limit → back to the pad with the limit shown.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-09",
+      "name": "TP/SL for this order",
+      "figma": "",
+      "note": "From the nudge’s “Add TP/SL to this order” or the TP/SL row. Target and stop-loss in %, the exit price under each.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-10",
+      "name": "Order pad · limit set",
+      "figma": "",
+      "note": "Silent help once a limit exists: “₹25,000 left of today’s loss limit” with a bar in the dock (tap to change it).",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "nudges-11",
+      "name": "Order pad · close to the limit",
+      "figma": "",
+      "note": "₹21,000 of ₹25,000 used: the bar and the line turn warning. Still no interruption.",
+      "goesTo": [],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/nudges/README.md",
+    "src/flows/nudges/copy.json",
+    "src/flows/nudges/copy.ts",
+    "src/flows/nudges/data.ts",
+    "src/flows/nudges/index.tsx",
+    "src/flows/nudges/screens/OrderPad.module.css",
+    "src/flows/nudges/screens/OrderPad.tsx",
+    "src/flows/nudges/sheets/GuardrailSheets.module.css",
+    "src/flows/nudges/sheets/GuardrailSheets.tsx",
+    "src/flows/nudges/sheets/NudgeSheet.module.css",
+    "src/flows/nudges/sheets/NudgeSheet.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx"
+  ]
+}

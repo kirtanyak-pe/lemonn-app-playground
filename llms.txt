@@ -1,0 +1,26 @@
+# Lemonn app · L3
+
+> The Lemonn trading app rebuilt flow by flow from the Figma designs with the Lemonnade V3 (L3) design system (@ `cdf73c6`). Each flow below is ONE self-contained markdown file — spec, screens, navigation and all its source — written so an AI agent can convert it to Flutter, iOS or web.
+
+Start with [CONVERT.md](https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md) (how to convert a flow), then open the flow you were given.
+
+## Flows
+
+- [DASH Ai · Trading rules](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/dash.md): Describe a trading habit; DASH builds it into a rule, backtests it, saves it. Your active rules, on / off, delete. — 27 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/dash.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash)
+- [First deposit](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/deposit.md): Add money over UPI after account setup: amount, UPI app, confirmation, receipt or failure. — 5 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/deposit.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/deposit)
+- [F&O](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/fno.md): Equity F&O home: P&L, indices, chart metrics, watchlists, Smart Options, Futures Heatmap and Smart Futures. — 33 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/fno.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/fno)
+- [Account setup](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/kyc.md): KYC after login: PAN, details and declarations, nominee, bank account and F&O activation. — 20 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/kyc.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/kyc)
+- [Login](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/login.md): Welcome, mobile number + OTP, fingerprint, PIN and email — where the app starts. — 9 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/login.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/login)
+- [Market](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/market.md): The Market tab — stock lists (all, gainers, losers, under ₹100 / ₹500) and Filters. — 8 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/market.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/market)
+- [Profile & settings](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/profile.md): Your account, app settings (biometric, dark mode, accessibility), help, and logout. — 6 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/profile.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/profile)
+- [Search](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/search.md): Search stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist. — 28 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/search.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/search)
+- [Stocks](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/stocks.md): The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas. — 8 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/stocks.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks)
+- [Overtrading nudges (playground)](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/nudges.md): Journey-aware P&L limit and TP/SL prompts: silent help on the order pad, and one nudge sheet when the revenge flag and the journey engine agree. — 11 screens · [json](https://kirtanyak-pe.github.io/lemonn-app-prototype/flows/nudges.json) · [prototype](https://kirtanyak-pe.github.io/lemonn-app-prototype/#/nudges)
+
+## Cross-flow features
+
+- [ILLIQUID contracts](https://kirtanyak-pe.github.io/lemonn-app-prototype/ILLIQUID.md): the rule, data flag, UI patterns and every place it appears (F&O option chain, asset page, Buy / Sell sheet, Gold Summary, Search).
+
+## Design system
+
+- [Lemonnade V3 for agents](https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt): every component, prop, token and rule the flows use.

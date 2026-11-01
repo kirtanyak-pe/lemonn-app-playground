@@ -1,0 +1,267 @@
+{
+  "id": "kyc",
+  "title": "Account setup",
+  "description": "KYC after login: PAN, details and declarations, nominee, bank account and F&O activation.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/kyc",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "kyc-01",
+      "name": "Start",
+      "figma": "5436:7920",
+      "note": "Arrives with the \"Email verified\" toast from Login.",
+      "goesTo": [
+        "kyc-02"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7920"
+    },
+    {
+      "id": "kyc-02",
+      "name": "PAN found",
+      "figma": "5436:7921",
+      "note": "The PAN linked to the mobile number, masked, for confirmation.",
+      "goesTo": [
+        "kyc-04",
+        "kyc-03",
+        "kyc-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7921"
+    },
+    {
+      "id": "kyc-03",
+      "name": "PAN · typed",
+      "figma": "5436:7922",
+      "note": "",
+      "goesTo": [
+        "kyc-01",
+        "kyc-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7922"
+    },
+    {
+      "id": "kyc-04",
+      "name": "Getting your details",
+      "figma": "5436:7923",
+      "note": "Moves on by itself when the three come back.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7923"
+    },
+    {
+      "id": "kyc-05",
+      "name": "Getting your details · slow network",
+      "figma": "5436:7924",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7924"
+    },
+    {
+      "id": "kyc-06",
+      "name": "Confirm details",
+      "figma": "5436:7925",
+      "note": "Confirm turns on when the declarations are agreed.",
+      "goesTo": [
+        "kyc-03",
+        "kyc-07",
+        "kyc-08",
+        "kyc-13"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7925"
+    },
+    {
+      "id": "kyc-07",
+      "name": "F&O risk disclosure",
+      "figma": "5436:7932",
+      "note": "Shown when F&O is ticked.",
+      "goesTo": [
+        "kyc-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7932"
+    },
+    {
+      "id": "kyc-08",
+      "name": "Add a nominee",
+      "figma": "5436:7926",
+      "note": "",
+      "goesTo": [
+        "kyc-06",
+        "kyc-09"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7926"
+    },
+    {
+      "id": "kyc-09",
+      "name": "Nominee · date of birth",
+      "figma": "5436:7927",
+      "note": "",
+      "goesTo": [
+        "kyc-10",
+        "kyc-08"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7927"
+    },
+    {
+      "id": "kyc-10",
+      "name": "Nominees",
+      "figma": "5436:7928",
+      "note": "",
+      "goesTo": [
+        "kyc-08",
+        "kyc-11"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7928"
+    },
+    {
+      "id": "kyc-11",
+      "name": "Confirm details · nominee added",
+      "figma": "5436:7933",
+      "note": "",
+      "goesTo": [
+        "kyc-03",
+        "kyc-07",
+        "kyc-12",
+        "kyc-13"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7933"
+    },
+    {
+      "id": "kyc-12",
+      "name": "Nominee details",
+      "figma": "5436:7931",
+      "note": "",
+      "goesTo": [
+        "kyc-11",
+        "kyc-08"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7931"
+    },
+    {
+      "id": "kyc-13",
+      "name": "Bank account found",
+      "figma": "5436:7934",
+      "note": "",
+      "goesTo": [
+        "kyc-15",
+        "kyc-14"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7934"
+    },
+    {
+      "id": "kyc-14",
+      "name": "Bank account · typed",
+      "figma": "5436:7934",
+      "note": "",
+      "goesTo": [
+        "kyc-11",
+        "kyc-15"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7934"
+    },
+    {
+      "id": "kyc-15",
+      "name": "Verifying bank (₹1)",
+      "figma": "5436:7935",
+      "note": "Penny drop. Moves on by itself.",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7935"
+    },
+    {
+      "id": "kyc-16",
+      "name": "Bank verified",
+      "figma": "5436:7936",
+      "note": "",
+      "goesTo": [
+        "kyc-17",
+        "kyc-20"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7936"
+    },
+    {
+      "id": "kyc-17",
+      "name": "Share bank statement",
+      "figma": "5436:7937",
+      "note": "",
+      "goesTo": [
+        "kyc-16",
+        "kyc-18",
+        "kyc-20"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7937"
+    },
+    {
+      "id": "kyc-18",
+      "name": "CAMSfinserv (external)",
+      "figma": "5436:7938",
+      "note": "Handoff placeholder: CAMSfinserv’s own OTP, account and consent pages (frames 5436:7939, 5436:7913, 5436:7940) are not built by Lemonn.",
+      "goesTo": [
+        "kyc-17"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7938"
+    },
+    {
+      "id": "kyc-19",
+      "name": "Statement received",
+      "figma": "5436:7941",
+      "note": "",
+      "goesTo": [
+        "kyc-20"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7941"
+    },
+    {
+      "id": "kyc-20",
+      "name": "You’re all set",
+      "figma": "5436:7951",
+      "note": "Replaces the live \"KYC already completed\" web page. Add money → First deposit.",
+      "goesTo": [
+        "deposit-01",
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7951"
+    }
+  ],
+  "files": [
+    "src/flows/kyc/README.md",
+    "src/flows/kyc/components/StageBar.tsx",
+    "src/flows/kyc/copy.json",
+    "src/flows/kyc/copy.ts",
+    "src/flows/kyc/data.ts",
+    "src/flows/kyc/index.tsx",
+    "src/flows/kyc/screens/Bank.tsx",
+    "src/flows/kyc/screens/Details.tsx",
+    "src/flows/kyc/screens/Done.tsx",
+    "src/flows/kyc/screens/Fetching.tsx",
+    "src/flows/kyc/screens/Fno.tsx",
+    "src/flows/kyc/screens/Kyc.module.css",
+    "src/flows/kyc/screens/Nominee.tsx",
+    "src/flows/kyc/screens/Pan.tsx",
+    "src/flows/kyc/screens/Start.tsx",
+    "src/flows/kyc/sheets/BankSheets.tsx",
+    "src/flows/kyc/sheets/DobSheet.tsx",
+    "src/flows/kyc/sheets/NomineeSheet.tsx",
+    "src/flows/kyc/sheets/PanFoundSheet.tsx",
+    "src/flows/kyc/sheets/RiskSheet.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/External.module.css",
+    "src/shared/ui/External.tsx",
+    "src/shared/ui/Intro.module.css",
+    "src/shared/ui/Intro.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/Spot.module.css",
+    "src/shared/ui/Spot.tsx"
+  ]
+}

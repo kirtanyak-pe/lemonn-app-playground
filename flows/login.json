@@ -1,0 +1,147 @@
+{
+  "id": "login",
+  "title": "Login",
+  "description": "Welcome, mobile number + OTP, fingerprint, PIN and email — where the app starts.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/login",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "login-01",
+      "name": "Welcome",
+      "figma": "5436:7914",
+      "note": "Slides auto-advance every 3.5 s (dots jump). Continue with CoinSwitch signs in via CoinSwitch and skips the OTP.",
+      "goesTo": [
+        "login-03",
+        "login-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7914"
+    },
+    {
+      "id": "login-02",
+      "name": "Mobile number",
+      "figma": "5436:7915",
+      "note": "Get OTP is off until 10 digits are typed.",
+      "goesTo": [
+        "login-01",
+        "login-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7915"
+    },
+    {
+      "id": "login-03",
+      "name": "Mobile number · typed",
+      "figma": "5436:7915",
+      "note": "",
+      "goesTo": [
+        "login-01",
+        "login-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7915"
+    },
+    {
+      "id": "login-04",
+      "name": "OTP",
+      "figma": "5436:7916",
+      "note": "The 6th digit verifies on its own. In the prototype 000000 is a wrong code.",
+      "goesTo": [
+        "login-03",
+        "login-06",
+        "login-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7916"
+    },
+    {
+      "id": "login-05",
+      "name": "OTP · incorrect",
+      "figma": "5436:7916",
+      "note": "Not in the live screenshots — the error state the screen needs.",
+      "goesTo": [
+        "login-03",
+        "login-06",
+        "login-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7916"
+    },
+    {
+      "id": "login-06",
+      "name": "Fingerprint unlock",
+      "figma": "5436:7917",
+      "note": "",
+      "goesTo": [
+        "login-07"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7917"
+    },
+    {
+      "id": "login-07",
+      "name": "Set PIN",
+      "figma": "5436:7918",
+      "note": "New users set the PIN, then confirm it (the live app only had \"Enter your PIN\").",
+      "goesTo": [
+        "login-09"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7918"
+    },
+    {
+      "id": "login-08",
+      "name": "Enter PIN · returning user",
+      "figma": "5436:7918",
+      "note": "Opening the app again on this phone. Goes straight into the app.",
+      "goesTo": [
+        "stocks-01",
+        "login-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7918"
+    },
+    {
+      "id": "login-09",
+      "name": "Add email",
+      "figma": "5436:7919",
+      "note": "All three choices lead to Account setup (typing the email isn’t drawn yet).",
+      "goesTo": [
+        "kyc-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7919"
+    }
+  ],
+  "files": [
+    "src/flows/login/README.md",
+    "src/flows/login/components/Dots.module.css",
+    "src/flows/login/components/Dots.tsx",
+    "src/flows/login/copy.json",
+    "src/flows/login/copy.ts",
+    "src/flows/login/data.ts",
+    "src/flows/login/index.tsx",
+    "src/flows/login/screens/Biometrics.tsx",
+    "src/flows/login/screens/Email.tsx",
+    "src/flows/login/screens/Form.module.css",
+    "src/flows/login/screens/Otp.tsx",
+    "src/flows/login/screens/Phone.tsx",
+    "src/flows/login/screens/Pin.tsx",
+    "src/flows/login/screens/Welcome.module.css",
+    "src/flows/login/screens/Welcome.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/Intro.module.css",
+    "src/shared/ui/Intro.tsx",
+    "src/shared/ui/Keyboard.module.css",
+    "src/shared/ui/Keyboard.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/Spot.module.css",
+    "src/shared/ui/Spot.tsx"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "market",
+  "title": "Market",
+  "description": "The Market tab — stock lists (all, gainers, losers, under ₹100 / ₹500) and Filters.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/market",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "market-01",
+      "name": "Market · All",
+      "figma": "",
+      "note": "The filter bar shows \"Apply filters\" until something is applied.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-02",
+      "name": "Market · Top gainers",
+      "figma": "",
+      "note": "Same layout — only the list changes.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-03",
+      "name": "Market · Top losers",
+      "figma": "",
+      "note": "",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-04",
+      "name": "Market · Under ₹100",
+      "figma": "",
+      "note": "",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-05",
+      "name": "Filters",
+      "figma": "",
+      "note": "Side tabs on the left (grey rail, the open one connected to the pane); only the open group on the right. Opens on Sort by.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-06",
+      "name": "Filters · indices",
+      "figma": "",
+      "note": "Indices open — Nifty 500 picked (one choice); its side tab shows 1. Each option says how many stocks it gives.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-07",
+      "name": "Filters · sectors (several)",
+      "figma": "",
+      "note": "Sectors open — Banking and IT picked (any number); sort and index picked too. Sectors with no stocks in Nifty 500 are off.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-08",
+      "name": "Market · filters applied",
+      "figma": "",
+      "note": "One removable chip per pick; the filter button gets a dot.",
+      "goesTo": [
+        "search-24"
+      ],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/market/README.md",
+    "src/flows/market/components/SideTabs.module.css",
+    "src/flows/market/components/SideTabs.tsx",
+    "src/flows/market/components/StockRow.module.css",
+    "src/flows/market/components/StockRow.tsx",
+    "src/flows/market/copy.json",
+    "src/flows/market/copy.ts",
+    "src/flows/market/data.ts",
+    "src/flows/market/index.tsx",
+    "src/flows/market/screens/Market.module.css",
+    "src/flows/market/screens/Market.tsx",
+    "src/flows/market/sheets/FilterSheet.module.css",
+    "src/flows/market/sheets/FilterSheet.tsx"
+  ],
+  "shared": [
+    "src/shared/assets/logos/asahiindia.png",
+    "src/shared/assets/logos/crisil.png",
+    "src/shared/assets/logos/hoec.png",
+    "src/shared/assets/logos/igil.png",
+    "src/shared/assets/logos/jindrill.png",
+    "src/shared/assets/logos/jublingrea.png",
+    "src/shared/assets/logos/oil.png",
+    "src/shared/assets/logos/sagility.png",
+    "src/shared/assets/logos/ttml.png",
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/market.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/MainNav.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx"
+  ]
+}

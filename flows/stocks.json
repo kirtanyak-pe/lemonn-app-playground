@@ -1,0 +1,164 @@
+{
+  "id": "stocks",
+  "title": "Stocks",
+  "description": "The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "stocks-01",
+      "name": "Home",
+      "figma": "",
+      "note": "Top of the page: search, indices, holdings, products, shortcuts.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-02",
+      "name": "Home · top movers & watchlists",
+      "figma": "",
+      "note": "Same page, scrolled.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-03",
+      "name": "Home · top losers",
+      "figma": "",
+      "note": "The \"Top losers\" chip picked.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-04",
+      "name": "Home · Smart Invest",
+      "figma": "",
+      "note": "Same page, scrolled: managed strategies, then the announcement.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-05",
+      "name": "Home · sectors & highlights",
+      "figma": "",
+      "note": "Same page, scrolled.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-06",
+      "name": "Home · highlights & idea baskets",
+      "figma": "",
+      "note": "Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.)",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-07",
+      "name": "Home · idea baskets & disclosure",
+      "figma": "",
+      "note": "The end of the page: the disclosure, four lines and Read More.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-08",
+      "name": "Home · DASH coach mark",
+      "figma": "5612:44075",
+      "note": "First visit after DASH launches: an L3 coach mark on the DASH pill (Figma \"Intro\" in DASH AI main flow). Got it! or the pill opens DASH.",
+      "goesTo": [
+        "search-01",
+        "profile-01",
+        "dash-02"
+      ],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/stocks/README.md",
+    "src/flows/stocks/assets/announcement-jio-ipo.jpg",
+    "src/flows/stocks/components/Discover.tsx",
+    "src/flows/stocks/components/Home.module.css",
+    "src/flows/stocks/components/Ideas.tsx",
+    "src/flows/stocks/components/Invest.tsx",
+    "src/flows/stocks/components/Overview.tsx",
+    "src/flows/stocks/components/TopBar.module.css",
+    "src/flows/stocks/components/TopBar.tsx",
+    "src/flows/stocks/copy.json",
+    "src/flows/stocks/copy.ts",
+    "src/flows/stocks/data.ts",
+    "src/flows/stocks/index.tsx",
+    "src/flows/stocks/screens/Home.module.css",
+    "src/flows/stocks/screens/Home.tsx"
+  ],
+  "shared": [
+    "src/shared/assets/logos/asahiindia.png",
+    "src/shared/assets/logos/crisil.png",
+    "src/shared/assets/logos/hoec.png",
+    "src/shared/assets/logos/igil.png",
+    "src/shared/assets/logos/jindrill.png",
+    "src/shared/assets/logos/jublingrea.png",
+    "src/shared/assets/logos/oil.png",
+    "src/shared/assets/logos/sagility.png",
+    "src/shared/assets/logos/ttml.png",
+    "src/shared/copy.ts",
+    "src/shared/data/broker.ts",
+    "src/shared/data/companies.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/market-snapshot.json",
+    "src/shared/data/market.ts",
+    "src/shared/data/portfolio.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/MainNav.tsx",
+    "src/shared/ui/Rail.module.css",
+    "src/shared/ui/Rail.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/dash/DashEntry.module.css",
+    "src/shared/ui/dash/DashEntry.tsx",
+    "src/shared/ui/dash/DashOrb.module.css",
+    "src/shared/ui/dash/DashOrb.tsx",
+    "src/shared/ui/dash/assets/leaf-back.svg",
+    "src/shared/ui/dash/assets/leaf-front.svg",
+    "src/shared/ui/dash/assets/orb-fill.svg",
+    "src/shared/ui/dash/assets/orb-ring.svg"
+  ]
+}

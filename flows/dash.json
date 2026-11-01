@@ -1,0 +1,508 @@
+{
+  "id": "dash",
+  "title": "DASH Ai · Trading rules",
+  "description": "Describe a trading habit; DASH builds it into a rule, backtests it, saves it. Your active rules, on / off, delete.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/dash",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "dash-02",
+      "name": "DASH landing",
+      "figma": "5612:81961",
+      "note": "From the DASH pill in the Stocks home top bar (stocks-01; first visit: the coach mark, stocks-08). Back returns home. Set Trading Rules opens the rules chat; Create Custom Strategy is another flow (not designed yet). ☰ opens your rules.",
+      "goesTo": [
+        "dash-03",
+        "stocks-01",
+        "dash-14",
+        "dash-20",
+        "dash-06",
+        "dash-24",
+        "fno-07"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-81961"
+    },
+    {
+      "id": "dash-28",
+      "name": "DASH home · returning user",
+      "figma": "",
+      "note": "For someone who has used DASH before (live app: rules only — here rules, indicators and strategies). No explaining again: their work first — Created with DASH (count · Manage), a sideways row of their latest indicators and rules with kind and status (tap: carry on in its chat), suggestions from what they have, and the field to ask or change anything. The prototype setting “DASH home” shows this on the landing too.",
+      "goesTo": [
+        "dash-03",
+        "stocks-01",
+        "dash-14",
+        "dash-20",
+        "dash-06",
+        "dash-24",
+        "fno-07"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-03",
+      "name": "Rules · what to set",
+      "figma": "5612:40261",
+      "note": "Figma “DASH AI - better layout” 2 (6494:30374): the chat’s empty state — the same screen as the landing and the conversation; the body pushes in from the landing while the background and the bar stay. Example rows drift sideways. A chip (or typing + Send) sends the message: it flies up into the chat as the greeting and examples fade away. History opens your rules.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40261"
+    },
+    {
+      "id": "dash-26",
+      "name": "Rules · typing",
+      "figma": "6494:30768",
+      "note": "Figma “DASH AI - better layout” 3.1 (file 9r61YQp7QQZAQovDyz8hLF): the input tapped — heading and examples fold away, the orb stays centred, the input turns green, the keyboard rises and the background ends above it (300 ms). Tap the body to go back.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-04"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=6494-30768"
+    },
+    {
+      "id": "dash-04",
+      "name": "Thinking",
+      "figma": "5612:40517",
+      "note": "Moves on by itself after 1.6 s in the prototype (the real app: when DASH replies).",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40517"
+    },
+    {
+      "id": "dash-05",
+      "name": "DASH asks the limit",
+      "figma": "5612:40650",
+      "note": "The question card takes the input’s place. Any answer (or one typed) builds the preview.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40650"
+    },
+    {
+      "id": "dash-06",
+      "name": "Rule preview",
+      "figma": "5612:40816",
+      "note": "The draft is pinned in the top bar’s bottom slot. Proceed runs the backtest; refine goes back to the question.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-05",
+        "dash-07"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40816"
+    },
+    {
+      "id": "dash-07",
+      "name": "Ready · would have saved",
+      "figma": "5612:40971",
+      "note": "Backtest: would have saved ₹18,400 in 3 months (green strip). The description opens Read more.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-10",
+        "dash-05",
+        "dash-13"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-40971"
+    },
+    {
+      "id": "dash-08",
+      "name": "Weak · would have cost profit",
+      "figma": "5612:41698",
+      "note": "Backtest: the rule would have cut ₹22,390 of profit — red glow and strip; DASH suggests improving it.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-11",
+        "dash-13",
+        "dash-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41698"
+    },
+    {
+      "id": "dash-09",
+      "name": "Ready · no backtest data",
+      "figma": "5612:41530",
+      "note": "Not enough trading history to test: a neutral strip.",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-12",
+        "dash-05",
+        "dash-13"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41530"
+    },
+    {
+      "id": "dash-10",
+      "name": "Read more · saved",
+      "figma": "5612:41133",
+      "note": "",
+      "goesTo": [
+        "dash-07"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41133"
+    },
+    {
+      "id": "dash-11",
+      "name": "Read more · cost",
+      "figma": "5612:41268",
+      "note": "Figma says ₹22,300 here and ₹22,390 on the card — one number (₹22,390) used for both.",
+      "goesTo": [
+        "dash-08"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41268"
+    },
+    {
+      "id": "dash-12",
+      "name": "Read more · no data",
+      "figma": "5612:41402",
+      "note": "",
+      "goesTo": [
+        "dash-09"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41402"
+    },
+    {
+      "id": "dash-13",
+      "name": "Rule created",
+      "figma": "5612:41875",
+      "note": "Over the ready screen it was saved from (Figma shows an older card behind it).",
+      "goesTo": [
+        "dash-29",
+        "dash-14"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-41875"
+    },
+    {
+      "id": "dash-29",
+      "name": "Rule saved · chat",
+      "figma": "",
+      "note": "Close on “Your rule is created”: back in the chat, which now knows the rule is saved — DASH says so and offers View rules (no “Yes, save it” any more).",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-10"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-14",
+      "name": "Active rules",
+      "figma": "5612:42076",
+      "note": "Switches turn a rule on / off in place. Delete asks first; Create New starts a new rule.",
+      "goesTo": [
+        "dash-02",
+        "dash-15",
+        "dash-03",
+        "dash-20",
+        "fno-07",
+        "dash-24",
+        "dash-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42076"
+    },
+    {
+      "id": "dash-15",
+      "name": "Delete rule?",
+      "figma": "5612:42250",
+      "note": "Over the current Active rules (Figma shows an older list with Active / Paused tabs behind it).",
+      "goesTo": [
+        "dash-02",
+        "dash-14",
+        "dash-16"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42250"
+    },
+    {
+      "id": "dash-16",
+      "name": "Rule deleted",
+      "figma": "5612:42455",
+      "note": "The list behind already has 3 rules.",
+      "goesTo": [
+        "dash-02",
+        "dash-17"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42455"
+    },
+    {
+      "id": "dash-17",
+      "name": "Active rules · after delete",
+      "figma": "5612:42076",
+      "note": "Not a Figma frame: the list once the sheet closes (3 rules).",
+      "goesTo": [
+        "dash-02",
+        "dash-15",
+        "dash-03",
+        "dash-20",
+        "fno-07",
+        "dash-24",
+        "dash-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/nLs24dTJdPz9A5pu3AWMbe/?node-id=5612-42076"
+    },
+    {
+      "id": "dash-30",
+      "name": "Past chats",
+      "figma": "",
+      "note": "A tall bottom sheet over DASH (here over the home): from the history button in the top bar, View all on Pick up where you left off, or a chat’s ⋮ → Past chats. Every chat by day, newest first; a row closes the sheet and opens its chat (rule → the rule preview, indicator → the ready indicator).",
+      "goesTo": [
+        "dash-03",
+        "stocks-01",
+        "dash-14",
+        "dash-20",
+        "dash-06",
+        "dash-24",
+        "fno-07"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-20",
+      "name": "Indicator · what to show",
+      "figma": "",
+      "note": "Third option on the DASH landing. Empty chat: example prompts; a chip or typed text flies up and DASH reads it.",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "dash-21",
+        "dash-22",
+        "dash-23",
+        "dash-24",
+        "dash-25",
+        "dash-27"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-21",
+      "name": "Indicator · which chart",
+      "figma": "",
+      "note": "DASH asks only what the prompt didn’t say: the chart… (only for “…on 15-min candles”; then it builds)",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "dash-21",
+        "dash-22",
+        "dash-23",
+        "dash-24",
+        "dash-25",
+        "dash-27"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-22",
+      "name": "Indicator · which timeframe",
+      "figma": "",
+      "note": "…and the timeframe. (only for “…on Nifty 50”.)",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "dash-21",
+        "dash-22",
+        "dash-23",
+        "dash-24",
+        "dash-25",
+        "dash-27"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-23",
+      "name": "Indicator · building",
+      "figma": "",
+      "note": "Version 1: the card pins above the chat; Version 2: it builds inside the chat, under DASH’s message (the “any 15-min chart” example comes straight here). It builds live: a wave, then candles with the lines drawing in, the parts as chips, three steps ticking (~3.3 s in the prototype).",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "dash-21",
+        "dash-22",
+        "dash-23",
+        "dash-24",
+        "dash-25",
+        "dash-27"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-24",
+      "name": "Indicator · ready",
+      "figma": "",
+      "note": "Preview has Modify (manual changes in chat) and Save indicator. The illustrative chart remains unchanged after a modification.",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "dash-21",
+        "dash-22",
+        "dash-23",
+        "dash-24",
+        "dash-25",
+        "dash-27"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-25",
+      "name": "Indicator · saved",
+      "figma": "",
+      "note": "Version 1: the preview card is removed. Version 2: the card stays in the chat, tagged Saved. DASH confirms the indicator is saved and View indicator opens Scalper’s active Indicators sheet with the new indicator in Your indicators.",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "fno-06"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "dash-27",
+      "name": "Indicator · saved sheet",
+      "figma": "",
+      "note": "Save indicator opens this over the chat (both versions) — the tick bursts, “Your indicator is ready to use”, a summary of it. Done closes it (the chat is saved); View indicator opens Scalper’s Indicators sheet with it under Your indicators.",
+      "goesTo": [
+        "dash-14",
+        "dash-02",
+        "fno-06",
+        "dash-25"
+      ],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/dash/CHECKLIST.md",
+    "src/flows/dash/README.md",
+    "src/flows/dash/assets/bg-gradient.png",
+    "src/flows/dash/assets/grids.svg",
+    "src/flows/dash/assets/pine-script.svg",
+    "src/flows/dash/assets/sparkle.svg",
+    "src/flows/dash/components/BuildOption.module.css",
+    "src/flows/dash/components/BuildOption.tsx",
+    "src/flows/dash/components/Chat.module.css",
+    "src/flows/dash/components/Chat.tsx",
+    "src/flows/dash/components/ChatMenu.module.css",
+    "src/flows/dash/components/ChatMenu.tsx",
+    "src/flows/dash/components/CreatePills.module.css",
+    "src/flows/dash/components/CreatePills.tsx",
+    "src/flows/dash/components/DashDock.tsx",
+    "src/flows/dash/components/DashScreen.module.css",
+    "src/flows/dash/components/DashScreen.tsx",
+    "src/flows/dash/components/FirstAsk.module.css",
+    "src/flows/dash/components/FirstAsk.tsx",
+    "src/flows/dash/components/IndicatorCard.module.css",
+    "src/flows/dash/components/IndicatorCard.tsx",
+    "src/flows/dash/components/IndicatorFullView.module.css",
+    "src/flows/dash/components/IndicatorFullView.tsx",
+    "src/flows/dash/components/MarketPicker.module.css",
+    "src/flows/dash/components/MarketPicker.tsx",
+    "src/flows/dash/components/MiniChart.module.css",
+    "src/flows/dash/components/MiniChart.tsx",
+    "src/flows/dash/components/ModeMenu.module.css",
+    "src/flows/dash/components/ModeMenu.tsx",
+    "src/flows/dash/components/PineActions.module.css",
+    "src/flows/dash/components/PineActions.tsx",
+    "src/flows/dash/components/PineStory.module.css",
+    "src/flows/dash/components/PineStory.tsx",
+    "src/flows/dash/components/QuestionCard.module.css",
+    "src/flows/dash/components/QuestionCard.tsx",
+    "src/flows/dash/components/ResumeDrafts.module.css",
+    "src/flows/dash/components/ResumeDrafts.tsx",
+    "src/flows/dash/components/RibbonTabs.module.css",
+    "src/flows/dash/components/RibbonTabs.tsx",
+    "src/flows/dash/components/RuleCard.module.css",
+    "src/flows/dash/components/RuleCard.tsx",
+    "src/flows/dash/components/RuleSummary.module.css",
+    "src/flows/dash/components/RuleSummary.tsx",
+    "src/flows/dash/components/RulesIntro.module.css",
+    "src/flows/dash/components/RulesIntro.tsx",
+    "src/flows/dash/components/SceneSwap.module.css",
+    "src/flows/dash/components/SceneSwap.tsx",
+    "src/flows/dash/components/SlidingPills.module.css",
+    "src/flows/dash/components/SlidingPills.tsx",
+    "src/flows/dash/components/SuccessBurst.module.css",
+    "src/flows/dash/components/SuccessBurst.tsx",
+    "src/flows/dash/components/askModes.ts",
+    "src/flows/dash/components/dashVersion.ts",
+    "src/flows/dash/components/edgeFade.ts",
+    "src/flows/dash/components/flyMessage.ts",
+    "src/flows/dash/components/historyFilter.ts",
+    "src/flows/dash/components/homeKeyboard.tsx",
+    "src/flows/dash/components/homeKind.ts",
+    "src/flows/dash/components/longPress.ts",
+    "src/flows/dash/components/pendingFile.ts",
+    "src/flows/dash/components/pendingMessage.ts",
+    "src/flows/dash/components/pineExport.ts",
+    "src/flows/dash/components/pineTip.ts",
+    "src/flows/dash/components/pineUpload.tsx",
+    "src/flows/dash/components/stickToBottom.ts",
+    "src/flows/dash/copy.json",
+    "src/flows/dash/copy.ts",
+    "src/flows/dash/data.ts",
+    "src/flows/dash/index.tsx",
+    "src/flows/dash/indicatorData.ts",
+    "src/flows/dash/screens/ActiveRules.module.css",
+    "src/flows/dash/screens/ActiveRules.tsx",
+    "src/flows/dash/screens/Creations.module.css",
+    "src/flows/dash/screens/Creations.tsx",
+    "src/flows/dash/screens/DashAI.module.css",
+    "src/flows/dash/screens/DashAI.tsx",
+    "src/flows/dash/screens/HomeCombined.module.css",
+    "src/flows/dash/screens/HomeCombined.tsx",
+    "src/flows/dash/screens/HomeTabs.module.css",
+    "src/flows/dash/screens/HomeTabs.tsx",
+    "src/flows/dash/screens/HomeV9.module.css",
+    "src/flows/dash/screens/HomeV9.tsx",
+    "src/flows/dash/screens/IndicatorChat.tsx",
+    "src/flows/dash/screens/Landing.module.css",
+    "src/flows/dash/screens/Landing.tsx",
+    "src/flows/dash/screens/PastChats.module.css",
+    "src/flows/dash/screens/PastChats.tsx",
+    "src/flows/dash/screens/Returning.module.css",
+    "src/flows/dash/screens/Returning.tsx",
+    "src/flows/dash/screens/ReturningV2.module.css",
+    "src/flows/dash/screens/ReturningV2.tsx",
+    "src/flows/dash/screens/RuleChat.module.css",
+    "src/flows/dash/screens/RuleChat.tsx",
+    "src/flows/dash/screens/SimpleCreationCard.module.css",
+    "src/flows/dash/screens/SimpleCreationCard.tsx",
+    "src/flows/dash/screens/homes.tsx",
+    "src/flows/dash/sheets/ChatSheets.module.css",
+    "src/flows/dash/sheets/ChatSheets.tsx",
+    "src/flows/dash/sheets/IndicatorSheets.tsx",
+    "src/flows/dash/sheets/PineUploadSheet.module.css",
+    "src/flows/dash/sheets/PineUploadSheet.tsx",
+    "src/flows/dash/sheets/RuleSheets.module.css",
+    "src/flows/dash/sheets/RuleSheets.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/TextKeyboard.module.css",
+    "src/shared/ui/TextKeyboard.tsx",
+    "src/shared/ui/dash/DashOrb.module.css",
+    "src/shared/ui/dash/DashOrb.tsx",
+    "src/shared/ui/dash/assets/leaf-back.svg",
+    "src/shared/ui/dash/assets/leaf-front.svg",
+    "src/shared/ui/dash/assets/orb-fill.svg",
+    "src/shared/ui/dash/assets/orb-ring.svg"
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "id": "profile",
+  "title": "Profile & settings",
+  "description": "Your account, app settings (biometric, dark mode, accessibility), help, and logout.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/profile",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "profile-01",
+      "name": "Profile",
+      "figma": "",
+      "note": "The live page 1:1 (scrolls: account, app settings, help, Logout). From the profile icon on Stocks home.",
+      "goesTo": [
+        "stocks-01",
+        "profile-02",
+        "login-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "profile-02",
+      "name": "Settings",
+      "figma": "",
+      "note": "Three setting cards: Biometric, Theme (Light / Dark / Auto, live), Accessibility (off).",
+      "goesTo": [
+        "profile-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "profile-03",
+      "name": "Settings · accessibility on",
+      "figma": "",
+      "note": "Accessibility on: darker colours (♿ Accessible theme) and a bigger font together; the illustration shows it.",
+      "goesTo": [
+        "profile-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "profile-04",
+      "name": "Settings · couldn’t save",
+      "figma": "",
+      "note": "A change didn’t save: error toast with Retry at the bottom; the controls show what’s stored.",
+      "goesTo": [
+        "profile-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "profile-05",
+      "name": "Settings B · Appearance row",
+      "figma": "",
+      "note": "A/B version B (Zomato-style): Appearance shows the current theme; tapping it opens the Appearance sheet.",
+      "goesTo": [
+        "profile-06",
+        "profile-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "profile-06",
+      "name": "Settings B · Appearance sheet",
+      "figma": "",
+      "note": "Light theme / Dark theme / Use device theme as radio rows; Save preference applies it.",
+      "goesTo": [
+        "profile-05",
+        "profile-01"
+      ],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/profile/README.md",
+    "src/flows/profile/components/CardRow.tsx",
+    "src/flows/profile/components/SettingCard.module.css",
+    "src/flows/profile/components/SettingCard.tsx",
+    "src/flows/profile/copy.json",
+    "src/flows/profile/copy.ts",
+    "src/flows/profile/data.ts",
+    "src/flows/profile/index.tsx",
+    "src/flows/profile/screens/Profile.module.css",
+    "src/flows/profile/screens/Profile.tsx",
+    "src/flows/profile/screens/Settings.tsx",
+    "src/flows/profile/sheets/AppearanceSheet.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/broker.ts",
+    "src/shared/data/format.ts",
+    "src/shared/data/user.ts",
+    "src/shared/prototype.ts",
+    "src/shared/textSize.ts",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx"
+  ]
+}

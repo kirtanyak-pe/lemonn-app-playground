@@ -1,0 +1,91 @@
+{
+  "id": "deposit",
+  "title": "First deposit",
+  "description": "Add money over UPI after account setup: amount, UPI app, confirmation, receipt or failure.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/deposit",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "deposit-01",
+      "name": "Add money",
+      "figma": "5436:7952",
+      "note": "The \"+\" chips add to the amount. Perks only on the first deposit.",
+      "goesTo": [
+        "kyc-20",
+        "deposit-02"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7952"
+    },
+    {
+      "id": "deposit-02",
+      "name": "Approve in UPI app (external)",
+      "figma": "5436:7954",
+      "note": "Handoff placeholder: the UPI app’s own payment sheet is not built by Lemonn.",
+      "goesTo": [
+        "deposit-05"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7954"
+    },
+    {
+      "id": "deposit-03",
+      "name": "Confirming payment",
+      "figma": "5436:7953",
+      "note": "",
+      "goesTo": [],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7953"
+    },
+    {
+      "id": "deposit-04",
+      "name": "Money added",
+      "figma": "5436:7955",
+      "note": "Start investing → the Stocks home.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7955"
+    },
+    {
+      "id": "deposit-05",
+      "name": "Payment failed",
+      "figma": "",
+      "note": "Not in the live screenshots — the failure state the flow needs.",
+      "goesTo": [
+        "deposit-02",
+        "deposit-01"
+      ],
+      "figmaUrl": ""
+    }
+  ],
+  "files": [
+    "src/flows/deposit/README.md",
+    "src/flows/deposit/copy.json",
+    "src/flows/deposit/copy.ts",
+    "src/flows/deposit/data.ts",
+    "src/flows/deposit/index.tsx",
+    "src/flows/deposit/screens/AddMoney.tsx",
+    "src/flows/deposit/screens/Deposit.module.css",
+    "src/flows/deposit/screens/Payment.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/External.module.css",
+    "src/shared/ui/External.tsx",
+    "src/shared/ui/Intro.module.css",
+    "src/shared/ui/Intro.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/Spot.module.css",
+    "src/shared/ui/Spot.tsx"
+  ]
+}

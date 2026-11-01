@@ -1,0 +1,356 @@
+{
+  "id": "search",
+  "title": "Search",
+  "description": "Search stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist.",
+  "designSystem": {
+    "name": "Lemonnade V3 (L3)",
+    "commit": "cdf73c6",
+    "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
+  },
+  "prototype": {
+    "flow": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/search",
+    "screen": "https://kirtanyak-pe.github.io/lemonn-app-prototype/#/<screen-id>"
+  },
+  "screens": [
+    {
+      "id": "search-01",
+      "name": "Stocks · before typing",
+      "figma": "4912:13308",
+      "note": "From the search field on Stocks home. Recent (last 5) and popular searches as chips, max 200 wide. Type to search; the tabs switch in place.",
+      "goesTo": [
+        "stocks-01",
+        "search-18"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13308"
+    },
+    {
+      "id": "search-24",
+      "name": "Stocks · before typing (from Market)",
+      "figma": "4912:13308",
+      "note": "Opened from the Search action on the Market tab: the same screen as search-01, but back returns to Market.",
+      "goesTo": [
+        "market-01",
+        "search-18"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13308"
+    },
+    {
+      "id": "search-02",
+      "name": "Stocks · results",
+      "figma": "4912:13483",
+      "note": "\"Bank\": 2 matching watchlists, then 8 stocks. A bookmark opens Add to watchlist; ✕ clears.",
+      "goesTo": [
+        "stocks-01",
+        "search-18"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13483"
+    },
+    {
+      "id": "search-03",
+      "name": "Stocks · only a watchlist matches",
+      "figma": "4912:13671",
+      "note": "\"Penny\": the watchlist, and \"Stocks (0)\" with nothing under it.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13671"
+    },
+    {
+      "id": "search-04",
+      "name": "Stocks · no matching watchlist",
+      "figma": "4912:13587",
+      "note": "Same results without the watchlist group.",
+      "goesTo": [
+        "stocks-01",
+        "search-18"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13587"
+    },
+    {
+      "id": "search-05",
+      "name": "Stocks · nothing found",
+      "figma": "4912:13703",
+      "note": "L3 empty state with the L3 default illustration (Figma still has the old magnifier). Clear Search empties the field.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13703"
+    },
+    {
+      "id": "search-25",
+      "name": "F&O · search from home",
+      "figma": "4912:13728",
+      "note": "From F&O home; Back returns there.",
+      "goesTo": [
+        "fno-01",
+        "search-26"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13728"
+    },
+    {
+      "id": "search-28",
+      "name": "F&O · “Gold” results (illiquid)",
+      "figma": "",
+      "note": "Typing “Gold” on the F&O tab (live app reference, 2026-10-29): MCX gold options with the gold artwork. Illiquid contracts (GOLD 135000 Put, GOLD 150000 Call) carry the ILLIQUID tag after the name; tapping the tag opens “What does illiquidity mean?”. Tapping a row opens the contract’s asset page (fno-21); an illiquid one opens the ILLIQUID asset page (fno-22).",
+      "goesTo": [
+        "fno-01",
+        "search-26"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "search-26",
+      "name": "F&O home · all Smart Options",
+      "figma": "4912:13925",
+      "note": "",
+      "goesTo": [
+        "fno-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13925"
+    },
+    {
+      "id": "search-27",
+      "name": "F&O home · all Smart Futures",
+      "figma": "4912:14019",
+      "note": "Uses the existing combined Smart Options & Futures stock list.",
+      "goesTo": [
+        "fno-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14019"
+    },
+    {
+      "id": "search-06",
+      "name": "F&O · before typing",
+      "figma": "4912:13728",
+      "note": "Recent and popular contracts, then the Smart Options & Futures lists as tiles (a long name wraps; its row grows).",
+      "goesTo": [
+        "stocks-01",
+        "search-09"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13728"
+    },
+    {
+      "id": "search-07",
+      "name": "F&O · results",
+      "figma": "4912:14199",
+      "note": "\"Bank\": watchlists (no count on this tab), then the contracts.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14199"
+    },
+    {
+      "id": "search-08",
+      "name": "F&O · nothing found",
+      "figma": "4912:13902",
+      "note": "",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13902"
+    },
+    {
+      "id": "search-09",
+      "name": "Smart Options & Futures · indices",
+      "figma": "4912:13925",
+      "note": "The ↕ pill switches Indices / Stocks; pills pick the list; Price ↕ switches the sort to Volume.",
+      "goesTo": [
+        "search-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13925"
+    },
+    {
+      "id": "search-10",
+      "name": "Smart Options & Futures · stocks",
+      "figma": "4912:14019",
+      "note": "",
+      "goesTo": [
+        "search-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14019"
+    },
+    {
+      "id": "search-11",
+      "name": "Smart Options & Futures · by volume",
+      "figma": "4912:14113",
+      "note": "Sorted by volume: each row shows its volume instead of price + change.",
+      "goesTo": [
+        "search-06"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14113"
+    },
+    {
+      "id": "search-12",
+      "name": "MF · before typing",
+      "figma": "4912:13035",
+      "note": "Recent and popular funds, then collections as tiles.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13035"
+    },
+    {
+      "id": "search-13",
+      "name": "MF · results",
+      "figma": "4912:12952",
+      "note": "\"Bank\": watchlists, then funds with 3Y returns; the 3Y Returns ↕ switcher changes the period.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-12952"
+    },
+    {
+      "id": "search-14",
+      "name": "MF · no fund matches",
+      "figma": "4912:13010",
+      "note": "Other tabs have results (\"Energy\"), this one has none: the empty state on this tab only.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13010"
+    },
+    {
+      "id": "search-15",
+      "name": "IPO · before typing",
+      "figma": "4912:13116",
+      "note": "Recent and popular IPOs, then Most Subscribed and Upcoming IPOs (View All each).",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13116"
+    },
+    {
+      "id": "search-16",
+      "name": "IPO · results",
+      "figma": "4912:13240",
+      "note": "\"Energy\": 2 IPOs with their price bands.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13240"
+    },
+    {
+      "id": "search-17",
+      "name": "IPO · nothing found",
+      "figma": "4912:13274",
+      "note": "",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13274"
+    },
+    {
+      "id": "search-18",
+      "name": "Add to watchlist",
+      "figma": "4912:14274",
+      "note": "From HDFC Bank’s bookmark. Nothing ticked yet: Save is off. The keyboard goes down while the sheet is open.",
+      "goesTo": [
+        "stocks-01",
+        "search-18",
+        "search-20",
+        "search-22",
+        "search-02"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14274"
+    },
+    {
+      "id": "search-19",
+      "name": "Add to watchlist · 2 ticked",
+      "figma": "4912:14811",
+      "note": "",
+      "goesTo": [
+        "stocks-01",
+        "search-18",
+        "search-20",
+        "search-22",
+        "search-02"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14811"
+    },
+    {
+      "id": "search-20",
+      "name": "Added · toast",
+      "figma": "4912:15015",
+      "note": "Floating L3 toast with OK; it leaves on its own (L3 timing: 6 s with an action — Figma says 2 s).",
+      "goesTo": [
+        "stocks-01",
+        "search-18",
+        "search-21"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-15015"
+    },
+    {
+      "id": "search-21",
+      "name": "Added · bookmark filled",
+      "figma": "4912:15123",
+      "note": "HDFC Bank’s bookmark is now filled with a tick.",
+      "goesTo": [
+        "stocks-01",
+        "search-18"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-15123"
+    },
+    {
+      "id": "search-22",
+      "name": "Create watchlist",
+      "figma": "4912:14650",
+      "note": "From \"+ Create\" (or the first time, when there’s no watchlist yet). The keyboard sits under the dock.",
+      "goesTo": [
+        "stocks-01",
+        "search-18",
+        "search-20"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14650"
+    },
+    {
+      "id": "search-23",
+      "name": "Add to watchlist · few lists",
+      "figma": "4912:14477",
+      "note": "Someone with 4 watchlists: the sheet is only as tall as its rows.",
+      "goesTo": [
+        "stocks-01",
+        "search-18",
+        "search-20",
+        "search-22",
+        "search-02"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-14477"
+    }
+  ],
+  "files": [
+    "src/flows/search/README.md",
+    "src/flows/search/assets/gold.png",
+    "src/flows/search/components/GroupHeader.module.css",
+    "src/flows/search/components/GroupHeader.tsx",
+    "src/flows/search/components/ResultList.module.css",
+    "src/flows/search/components/ResultList.tsx",
+    "src/flows/search/components/SearchChips.module.css",
+    "src/flows/search/components/SearchChips.tsx",
+    "src/flows/search/components/Tiles.module.css",
+    "src/flows/search/components/Tiles.tsx",
+    "src/flows/search/components/WatchlistMatches.tsx",
+    "src/flows/search/copy.json",
+    "src/flows/search/copy.ts",
+    "src/flows/search/data.ts",
+    "src/flows/search/index.tsx",
+    "src/flows/search/screens/Search.module.css",
+    "src/flows/search/screens/Search.tsx",
+    "src/flows/search/screens/Signals.module.css",
+    "src/flows/search/screens/Signals.tsx",
+    "src/flows/search/sheets/WatchlistSheets.module.css",
+    "src/flows/search/sheets/WatchlistSheets.tsx"
+  ],
+  "shared": [
+    "src/shared/copy.ts",
+    "src/shared/data/format.ts",
+    "src/shared/prototype.ts",
+    "src/shared/ui/IlliquidSheet.module.css",
+    "src/shared/ui/IlliquidSheet.tsx",
+    "src/shared/ui/Screen.module.css",
+    "src/shared/ui/Screen.tsx",
+    "src/shared/ui/Sheet.module.css",
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/TextKeyboard.module.css",
+    "src/shared/ui/TextKeyboard.tsx"
+  ]
+}
