@@ -103,10 +103,13 @@
   ],
   "files": [
     "src/flows/nudges/README.md",
+    "src/flows/nudges/components/SheetSwitcher.module.css",
+    "src/flows/nudges/components/SheetSwitcher.tsx",
     "src/flows/nudges/copy.json",
     "src/flows/nudges/copy.ts",
     "src/flows/nudges/data.ts",
     "src/flows/nudges/index.tsx",
+    "src/flows/nudges/options.ts",
     "src/flows/nudges/screens/OrderPad.module.css",
     "src/flows/nudges/screens/OrderPad.tsx",
     "src/flows/nudges/sheets/GuardrailSheets.module.css",

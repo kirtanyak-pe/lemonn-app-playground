@@ -64,7 +64,7 @@ nudges-01 ──Buy (1st time)──▶ nudge sheet ──Not now, place order�
                                  ├──Set a loss limit──▶ nudges-08 ──Set limit──▶ nudges-10
                                  └──Add TP/SL──────────▶ nudges-09 ──Save──────▶ pad, TP/SL on
 nudges-01 ──Buy (again)──▶ order placed (cap: 1 nudge per session, 2 per day, shared by every nudge)
-           (prototype setting "Show on every Buy": the nudge fires on every Buy / Sell, to demo it again)
+           (prototype setting "Show on every Buy", on by default: the nudge fires on every Buy / Sell, to demo it; off = the real cap)
 ```
 
 ### The nudge sheet (one template, every case)
@@ -87,6 +87,10 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 | 1 · Centred + bars (default) | The table above. |
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3×") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
+
+**Floating switcher (prototype only):** while the nudge is open, a small pill floats over it: grip · Layout · Case ·
+State. Each chip opens the phone's own picker; the sheet changes in place. Drag it by the grip (it remembers where,
+per browser). `components/SheetSwitcher.tsx`, options in `options.ts`. Not part of the design: don't build it.
 
 **Vibration:** two short pulses (70 · 60 · 70 ms) when the sheet opens, not when it changes; setting "Vibrate when
 it opens" (on). In the Lemonn Android app the page calls `window.LemonnApp.vibrate` (works without a tap); in a
@@ -141,9 +145,183 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-01 · tag reads "Overtrading Detected" (md), in every layout and case; Compact icon centred.
 - 2026-11-01 · the Case / Data state settings now change the sheet on every nudge screen, not only 01–02.
 - 2026-11-01 · the phone vibrates when the nudge opens (setting "Vibrate when it opens").
+- 2026-11-01 · "Show on every Buy" is on by default.
+- 2026-11-01 · floating Layout · Case · State switcher over the open nudge (prototype only, draggable).
 
 
 ## Source — this flow
+
+### `src/flows/nudges/components/SheetSwitcher.module.css`
+
+```css
+/* PROTOTYPE ONLY: the floating Layout · Case · State pill over the open nudge sheet. Tokens only. */
+
+/* Starts top-left, under the floating settings button and above the sheet; once dragged, left / top come from the
+   component. */
+.pill {
+  position: absolute;
+  z-index: var(--app-layer-fab);
+  left: var(--l3-spacing-12);
+  top: var(--l3-size-64);
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  max-width: calc(100% - var(--l3-spacing-24));
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-primary);
+  box-shadow: var(--l3-shadow-elevation-high);
+  touch-action: none;
+}
+
+.grip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  padding: 0;
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: var(--l3-content-secondary);
+  cursor: grab;
+  touch-action: none;
+}
+.grip:active { cursor: grabbing; }
+
+.chip {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  height: var(--l3-size-32);
+  padding: 0 var(--l3-spacing-08) 0 var(--l3-spacing-12);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+  white-space: nowrap;
+}
+.chip[data-wide] { flex: 0 1 auto; min-width: 0; }
+.chip > :not(.select) { pointer-events: none; }
+.value { overflow: hidden; text-overflow: ellipsis; }
+.chip[data-wide] .value { max-width: var(--l3-size-96); }
+
+/* The real control: invisible, over the whole chip, so a tap opens the phone's own picker. */
+.select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font: var(--l3-text-label-16); /* iOS zooms into a focused field under 16 */
+  cursor: pointer;
+}
+```
+
+### `src/flows/nudges/components/SheetSwitcher.tsx`
+
+```tsx
+import { useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import { createPortal } from 'react-dom'
+import { Icon } from '@l3/components/Icon'
+import { msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
+import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
+import { t } from '../copy'
+import { caseOption, layoutOption, stateOption } from '../options'
+import styles from './SheetSwitcher.module.css'
+
+type Option = typeof caseOption | typeof stateOption | typeof layoutOption
+type Spot = { x: number; y: number }
+
+const SPOT_KEY = 'nudges-switcher-spot'
+const readSpot = (): Spot | null => {
+  try { return JSON.parse(localStorage.getItem(SPOT_KEY) ?? 'null') } catch { return null }
+}
+
+/**
+ * PROTOTYPE ONLY — not part of the design. A small floating pill over the open nudge sheet: Layout · Case · State,
+ * each a tap-and-pick dropdown (the phone's own picker), so versions can be compared on a phone without opening the
+ * settings. Drag it by the grip; it remembers where it was left (this browser).
+ *
+ * The sheet makes everything inside the screen inert, so the pill is drawn just outside the screen (in the layer
+ * that holds it), over the sheet.
+ */
+export function SheetSwitcher({ open }: { open: boolean }) {
+  const { interactive } = usePreview()
+  const anchor = useRef<HTMLSpanElement>(null)
+  const [host, setHost] = useState<HTMLElement | null>(null)
+  useLayoutEffect(() => {
+    const screen = anchor.current?.closest('[data-part="page"]')?.parentElement
+    setHost(screen?.parentElement ?? null)
+  }, [])
+
+  return <>
+    <span ref={anchor} hidden />
+    {interactive && open && host && createPortal(<Pill host={host} />, host)}
+  </>
+}
+
+function Pill({ host }: { host: HTMLElement }) {
+  const pill = useRef<HTMLDivElement>(null)
+  const [spot, setSpot] = useState<Spot | null>(readSpot)
+  const grab = useRef<{ id: number; dx: number; dy: number } | null>(null)
+
+  // Keep it inside the screen (a phone turned, or a spot saved on a bigger screen).
+  const clamp = (x: number, y: number): Spot => {
+    const box = pill.current?.getBoundingClientRect()
+    const w = box?.width ?? 0
+    const h = box?.height ?? 0
+    return { x: Math.min(Math.max(0, x), host.clientWidth - w), y: Math.min(Math.max(0, y), host.clientHeight - h) }
+  }
+
+  const down = (e: PointerEvent<HTMLButtonElement>) => {
+    const box = pill.current!.getBoundingClientRect()
+    grab.current = { id: e.pointerId, dx: e.clientX - box.left, dy: e.clientY - box.top }
+    try { e.currentTarget.setPointerCapture(e.pointerId) } catch { /* the pointer is already gone */ }
+  }
+  const move = (e: PointerEvent<HTMLButtonElement>) => {
+    const g = grab.current
+    if (!g || g.id !== e.pointerId) return
+    const origin = host.getBoundingClientRect()
+    // The preview may scale the phone: convert screen pixels to the host's own.
+    const scale = origin.width / host.clientWidth || 1
+    setSpot(clamp((e.clientX - origin.left - g.dx) / scale, (e.clientY - origin.top - g.dy) / scale))
+  }
+  const up = (e: PointerEvent<HTMLButtonElement>) => {
+    if (grab.current?.id !== e.pointerId) return
+    grab.current = null
+    try { if (spot) localStorage.setItem(SPOT_KEY, JSON.stringify(spot)) } catch { /* storage off */ }
+  }
+
+  return <div ref={pill} className={styles.pill} role="group" aria-label={t('switcher.label')}
+    style={spot ? { left: spot.x, top: spot.y } : undefined}>
+    <button type="button" className={styles.grip} aria-label={t('switcher.drag')}
+      onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
+      <Icon icon={msDragIndicator} size={20} />
+    </button>
+    <Pick option={layoutOption} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
+    <Pick option={caseOption} short={(_, label) => label} wide />
+    <Pick option={stateOption} short={(v) => t('switcher.state', { state: v })} />
+  </div>
+}
+
+/** A chip showing the short value; a transparent native <select> over it opens the phone's picker with the full names. */
+function Pick({ option, short, wide }: { option: Option; short: (value: string, label: string) => string; wide?: boolean }) {
+  const value = useFlowOption('nudges', option.id, option.default)
+  const label = option.values.find((o) => o.value === value)?.label ?? value
+  return <label className={styles.chip} data-wide={wide ? '' : undefined}>
+    <span className={styles.value}>{short(value, label)}</span>
+    <Icon icon={msKeyboardArrowDown} size={16} />
+    <select className={styles.select} aria-label={option.label} value={value}
+      onChange={(e) => setFlowOption('nudges', option.id, option.default, e.target.value)}>
+      {option.values.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
+  </label>
+}
+```
 
 ### `src/flows/nudges/copy.json`
 
@@ -211,6 +389,10 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
   "option.everyBuyOff": "Off",
   "option.everyBuyOn": "On",
   "option.vibrate": "Vibrate when it opens",
+  "switcher.label": "Prototype: switch the nudge",
+  "switcher.drag": "Drag to move",
+  "switcher.layout": "Layout {n}",
+  "switcher.state": "State {state}",
   "option.actions": "Buttons",
   "option.actionsTwo": "Both guardrails",
   "option.actionsOne": "One guardrail",
@@ -423,7 +605,8 @@ export const lossNearLimit = 21000
 ```tsx
 import type { Flow, Go } from '../types'
 import { t } from './copy'
-import { lossNearLimit, nudgeCases } from './data'
+import { lossNearLimit } from './data'
+import { nudgeOptions } from './options'
 import { OrderPad } from './screens/OrderPad'
 
 /** Back to wherever the order pad was opened from; the Gold MINI asset page (fno-21) when opened directly. */
@@ -438,14 +621,7 @@ export const nudges: Flow = {
   id: 'nudges', title: 'Overtrading nudges (playground)',
   description: 'Journey-aware P&L limit and TP/SL prompts: silent help on the order pad, and one nudge sheet when the revenge flag and the journey engine agree.',
   figmaFile: '',
-  options: [
-    { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown', values: nudgeCases.map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Parameters<typeof t>[0]) })), default: 'sizeUp' },
-    { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown', values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' },
-    { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown', values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' },
-    { id: 'everyBuy', group: 'Nudge', label: t('option.everyBuy'), picker: 'toggle', values: [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }], default: 'off' },
-    { id: 'vibrate', group: 'Nudge', label: t('option.vibrate'), picker: 'toggle', values: [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }], default: 'on' },
-    { id: 'actions', group: 'Nudge', label: t('option.actions'), values: [{ value: 'one', label: t('option.actionsOne') }, { value: 'two', label: t('option.actionsTwo') }], default: 'one' },
-  ],
+  options: nudgeOptions,
   screens: [
     { id: 'nudges-01', name: 'Order pad · silent help', figma: '8671:18433', note: 'The default — no interruption. The F&O commodity order pad (fno-25) as it is, plus silent help: “Set TPSL” becomes a TP/SL row, pre-filled and on (Target +20% · Stop-loss −10%); “Set a loss limit for today” is the first line of the dock. Buy fires the nudge picked in the settings (Case, Data state), once: the shared cap is 1 per session.', render: (go) => <OrderPad nudge="options" onBack={back(go)} /> },
     { id: 'nudges-02', name: 'Nudge · from settings', figma: '', note: 'The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C and the draft’s two guardrail buttons.', render: (go) => <OrderPad nudge="options" initialSheet="nudge" onBack={back(go)} /> },
@@ -460,6 +636,33 @@ export const nudges: Flow = {
     { id: 'nudges-11', name: 'Order pad · close to the limit', figma: '', note: '₹21,000 of ₹25,000 used: the bar and the line turn warning. Still no interruption.', render: (go) => <OrderPad limit={25000} loss={lossNearLimit} onBack={back(go)} /> },
   ],
 }
+```
+
+### `src/flows/nudges/options.ts`
+
+```ts
+import { t } from './copy'
+import { nudgeCases } from './data'
+
+type Key = Parameters<typeof t>[0]
+const onOff = [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }]
+
+/**
+ * PROTOTYPE ONLY: the flow's settings (preview panel / phone settings sheet) and, for the three that change the sheet,
+ * the floating switcher over the open nudge (components/SheetSwitcher). A real app ships one version.
+ */
+export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown' as const, values: nudgeCases.map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Key) })), default: 'sizeUp' }
+export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
+export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' }
+
+export const nudgeOptions = [
+  caseOption,
+  stateOption,
+  layoutOption,
+  { id: 'everyBuy', group: 'Nudge', label: t('option.everyBuy'), picker: 'toggle' as const, values: onOff, default: 'on' },
+  { id: 'vibrate', group: 'Nudge', label: t('option.vibrate'), picker: 'toggle' as const, values: onOff, default: 'on' },
+  { id: 'actions', group: 'Nudge', label: t('option.actions'), values: [{ value: 'one', label: t('option.actionsOne') }, { value: 'two', label: t('option.actionsTwo') }], default: 'one' },
+]
 ```
 
 ### `src/flows/nudges/screens/OrderPad.module.css`
@@ -533,6 +736,7 @@ import { t } from '../copy'
 import { defaultLimit, funds, intradayCloseTime, lossToday, orderContract, prefilledTpsl, sellMargin, validities, type DataState, type NudgeCaseId, type OrderProduct, type OrderSide, type OrderType } from '../data'
 import { LossLimitSheet, TpslSheet } from '../sheets/GuardrailSheets'
 import { NudgeSheet, type NudgeLayout } from '../sheets/NudgeSheet'
+import { SheetSwitcher } from '../components/SheetSwitcher'
 import styles from './OrderPad.module.css'
 
 type Modal = { kind: 'nudge' } | { kind: 'pnl' } | { kind: 'tpsl' }
@@ -568,7 +772,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const actions = useFlowOption('nudges', 'actions', 'one') as 'one' | 'two'
   // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
   const layout = useFlowOption('nudges', 'layout', 'bars') as NudgeLayout
-  const everyBuy = useFlowOption('nudges', 'everyBuy', 'off') === 'on'
+  const everyBuy = useFlowOption('nudges', 'everyBuy', 'on') === 'on'
   const vibrate = useFlowOption('nudges', 'vibrate', 'on') === 'on'
   // A screen with a fixed case (03–09) shows it until the case or data state is changed in the settings; from then on
   // it follows the settings too, so the dropdown always changes the sheet that's open.
@@ -643,6 +847,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
 
   return <Screen top={top} bottom={dock} sheet={sheet}
     toast={toast ? <Aerobar floating type="success" heading={toast} onDismiss={() => setToast(null)} /> : undefined}>
+    <SheetSwitcher open={modal?.kind === 'nudge'} />
     <Stack gap="16" className={styles.body}>
       <Stack direction="horizontal" align="center" justify="between">
         <Tabs aria-label={t('order.type')} appearance="pill" size="md" value={type} onChange={setType} items={(['market', 'limit', 'sl'] as const).map((value) => ({ value, label: t(`order.${value}`) }))} />
