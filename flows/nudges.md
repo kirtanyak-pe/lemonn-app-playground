@@ -153,6 +153,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-02 · every sheet in this flow has 24 above its content as well as below (L3 has 16 on top); a difference from L3.
 - 2026-11-02 · Layout 1 header: Chip (✋ + label in one light-red pill, no circle; default) or Icon + tag — setting and floating switcher.
 - 2026-11-02 · Chip header: 24 above and below it; on open it pops in as ✋ alone, then opens to show "Overtrading Detected" (while the bars grow).
+- 2026-11-02 · a nudge with no bars and no consequence (giving back) keeps 24 under the headline, above the dock.
 
 
 ## Source — this flow
@@ -1024,6 +1025,10 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 .chip { display: inline-flex; align-items: center; box-sizing: border-box; height: var(--l3-size-40); min-width: var(--l3-size-40); margin-bottom: var(--l3-spacing-16); padding: 0 var(--l3-spacing-08); border-radius: var(--l3-radius-full); background: var(--l3-surface-accent-error-light); box-shadow: inset 0 0 0 1px var(--l3-border-accent-error-light); color: var(--l3-content-accent-error-default); font: var(--l3-text-label-14); animation: pop var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both; }
 .chipLabel { display: block; overflow: hidden; max-width: calc(var(--l3-size-96) * 2); padding: 0 var(--l3-spacing-08); white-space: nowrap; animation: reveal var(--l3-motion-duration-long) var(--l3-motion-easing-standard) calc(var(--l3-motion-duration-long) + var(--l3-motion-duration-short)) both; }
 @keyframes reveal { from { max-width: 0; padding: 0; opacity: 0; } to { opacity: 1; } }
+
+/* A sheet with only a header (no bars, no consequence): L3's lg header has 0 below it, so add the 24 the content
+   would have given. */
+.bare header[data-size='lg'] { padding-bottom: var(--l3-spacing-24); }
 ```
 
 ### `src/flows/nudges/sheets/NudgeSheet.tsx`
@@ -1150,7 +1155,9 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
     </Stack>
   }
 
-  return <Sheet labelledBy={id} onClose={onNotNow} className={styles.sheet} header={header} footer={footer}>{body}</Sheet>
+  // No bars and no consequence (e.g. giving back): the header ends the sheet, so it brings the 24 above the dock itself.
+  const bare = !body
+  return <Sheet labelledBy={id} onClose={onNotNow} className={bare ? `${styles.sheet} ${styles.bare}` : styles.sheet} header={header} footer={footer}>{body}</Sheet>
 }
 
 /** Two short pulses. In the Lemonn Android app the page calls its native bridge (works without a tap, and uses the
