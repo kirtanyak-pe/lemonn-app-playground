@@ -24,7 +24,7 @@
       "id": "nudges-02",
       "name": "Nudge · from settings",
       "figma": "",
-      "note": "The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C, the draft title (“Overtrading detected”) and the draft’s two guardrail buttons.",
+      "note": "The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C and the draft’s two guardrail buttons.",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -32,7 +32,7 @@
       "id": "nudges-03",
       "name": "Nudge · generic",
       "figma": "",
-      "note": "Fires with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D of any case). Box 1 “Down today” is always known.",
+      "note": "Fires on Positions with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D). No bars; the group line. Dismiss says just “Not now” (no order in hand).",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -40,7 +40,7 @@
       "id": "nudges-04",
       "name": "Nudge · size-up · A (own loss)",
       "figma": "",
-      "note": "Enough history and his last size-up lost: Box 2 is his own loss, tagged “Your past trades”, in loss red.",
+      "note": "Bars: this order vs the trade he lost (2×). Enough history and his last size-up lost: the line is his own loss, on a red strip.",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -48,7 +48,7 @@
       "id": "nudges-05",
       "name": "Nudge · orders today · B",
       "figma": "",
-      "note": "Enough history, last time didn’t lose: Box 1 is his own ratio (“3× your usual”), Box 2 the measured group line, tagged “Lemonn traders”.",
+      "note": "Bars: his usual day vs today (3×). Last time didn’t lose: the line is the group (7 in 10 lost more).",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -56,7 +56,7 @@
       "id": "nudges-06",
       "name": "Nudge · orders today · C (thin history)",
       "figma": "",
-      "note": "Too few past sessions for “your usual”: Box 1 becomes today’s raw fact (“14 orders”).",
+      "note": "Too few past sessions for “your usual”: the headline becomes today’s raw fact (“14 orders today”), no bars.",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -64,7 +64,7 @@
       "id": "nudges-07",
       "name": "Nudge · averaging down (TP/SL first)",
       "figma": "",
-      "note": "A case whose main button is TP/SL. Averaging down is one of the three states measured as harmful (−5.11% per buy).",
+      "note": "A case whose main button is TP/SL and whose fact isn’t a multiple: no bars: headline + the group line.",
       "goesTo": [],
       "figmaUrl": ""
     },

@@ -11,12 +11,12 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/nudges · machi
 | Id | Screen | Figma | Taps go to | Note |
 |---|---|---|---|---|
 | `nudges-01` | Order pad · silent help | [8671:18433]() | — | The default — no interruption. The F&O commodity order pad (fno-25) as it is, plus silent help: “Set TPSL” becomes a TP/SL row, pre-filled and on (Target +20% · Stop-loss −10%); “Set a loss limit for today” is the first line of the dock. Buy fires the nudge picked in the settings (Case, Data state), once: the shared cap is 1 per session. |
-| `nudges-02` | Nudge · from settings | — | — | The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C, the draft title (“Overtrading detected”) and the draft’s two guardrail buttons. |
-| `nudges-03` | Nudge · generic | — | — | Fires with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D of any case). Box 1 “Down today” is always known. |
-| `nudges-04` | Nudge · size-up · A (own loss) | — | — | Enough history and his last size-up lost: Box 2 is his own loss, tagged “Your past trades”, in loss red. |
-| `nudges-05` | Nudge · orders today · B | — | — | Enough history, last time didn’t lose: Box 1 is his own ratio (“3× your usual”), Box 2 the measured group line, tagged “Lemonn traders”. |
-| `nudges-06` | Nudge · orders today · C (thin history) | — | — | Too few past sessions for “your usual”: Box 1 becomes today’s raw fact (“14 orders”). |
-| `nudges-07` | Nudge · averaging down (TP/SL first) | — | — | A case whose main button is TP/SL. Averaging down is one of the three states measured as harmful (−5.11% per buy). |
+| `nudges-02` | Nudge · from settings | — | — | The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C and the draft’s two guardrail buttons. |
+| `nudges-03` | Nudge · generic | — | — | Fires on Positions with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D). No bars; the group line. Dismiss says just “Not now” (no order in hand). |
+| `nudges-04` | Nudge · size-up · A (own loss) | — | — | Bars: this order vs the trade he lost (2×). Enough history and his last size-up lost: the line is his own loss, on a red strip. |
+| `nudges-05` | Nudge · orders today · B | — | — | Bars: his usual day vs today (3×). Last time didn’t lose: the line is the group (7 in 10 lost more). |
+| `nudges-06` | Nudge · orders today · C (thin history) | — | — | Too few past sessions for “your usual”: the headline becomes today’s raw fact (“14 orders today”), no bars. |
+| `nudges-07` | Nudge · averaging down (TP/SL first) | — | — | A case whose main button is TP/SL and whose fact isn’t a multiple: no bars: headline + the group line. |
 | `nudges-08` | Set today’s loss limit | — | — | From the nudge’s “Set a loss limit for today” or the order pad dock. Pre-filled ₹25,000, quick amounts as pill tabs. Set limit → back to the pad with the limit shown. |
 | `nudges-09` | TP/SL for this order | — | — | From the nudge’s “Add TP/SL to this order” or the TP/SL row. Target and stop-loss in %, the exit price under each. |
 | `nudges-10` | Order pad · limit set | — | — | Silent help once a limit exists: “₹25,000 left of today’s loss limit” with a bar in the dock (tap to change it). |
@@ -45,12 +45,12 @@ Each screen is the order pad in one state; within a screen, sheets swap over the
 | Id | Screen | What it shows / when |
 |---|---|---|
 | `nudges-01` | Order pad · silent help | Default. TP/SL on and pre-filled, "Set a loss limit for today" in the dock. Buy fires the nudge from the settings, once. |
-| `nudges-02` | Nudge · from settings | The nudge sheet for any case (17) × data state (A / B / C), title and button variants. |
-| `nudges-03` | Nudge · generic | Nothing stands out, or the behaviour can't be scored (state D). |
-| `nudges-04` | Nudge · size-up · A | Box 2 = his own last loss. |
-| `nudges-05` | Nudge · orders today · B | Box 1 = his own ratio, Box 2 = group line. |
-| `nudges-06` | Nudge · orders today · C | Box 1 = today's raw fact. |
-| `nudges-07` | Nudge · averaging down | A TP/SL-first case. |
+| `nudges-02` | Nudge · from settings | The nudge sheet for any case (17) × data state (A / B / C) and the button variant. |
+| `nudges-03` | Nudge · generic | Fires on Positions: nothing stands out, or the behaviour can't be scored (state D). No bars. |
+| `nudges-04` | Nudge · size-up · A | Bars: the trade he lost vs this order; line = his own last loss (red strip). |
+| `nudges-05` | Nudge · orders today · B | Bars: his usual day vs today; line = the group (7 in 10 lost more). |
+| `nudges-06` | Nudge · orders today · C | No "usual" yet: headline = today's raw fact, no bars. |
+| `nudges-07` | Nudge · averaging down | A TP/SL-first case whose fact isn't a multiple: no bars. |
 | `nudges-08` | Set today's loss limit | Amount field + quick amounts. |
 | `nudges-09` | TP/SL for this order | Target / stop-loss % with exit prices. |
 | `nudges-10` | Order pad · limit set | "₹25,000 left of today's loss limit" + bar. |
@@ -63,30 +63,43 @@ nudges-01 ──Buy (1st time)──▶ nudge sheet ──Not now, place order�
                                  ├──Set a loss limit──▶ nudges-08 ──Set limit──▶ nudges-10
                                  └──Add TP/SL──────────▶ nudges-09 ──Save──────▶ pad, TP/SL on
 nudges-01 ──Buy (again)──▶ order placed (cap: 1 nudge per session, 2 per day, shared by every nudge)
+           (prototype setting "Show on every Buy": the nudge fires on every Buy / Sell, to demo it again)
 ```
 
 ### The nudge sheet (one template, every case)
 
-It interrupts an order, so it says one thing: one message, one number, one picture, two buttons.
+It opens on a trader who is mid-order, stressed and moving fast, so it reads top to bottom in one glance: ✋ stop →
+"Overtrading" (what this is) → the fact, number first (why now) → two bars, his usual vs now (the picture of "too
+much") → one consequence line (what it costs) → the guardrail, or Not now. One number, one picture, one consequence.
 
 | Slot | L3 | Content |
 |---|---|---|
-| Header | `BottomSheetHeader size="lg"` + 64 icon (warning, speed, pulses twice) | Heading = the behaviour in plain words ("Bigger bet right after a loss") |
-| Card | `Card` | Box 1: the number big (heading-28) + its label · hairline · Box 2: state A = "Lost ₹2,900" in loss red + "Last time you did this"; else the group line, with 10 people filling in red when it's a share of traders |
-| Dock | `ButtonGroup` vertical | `primary` = the case's guardrail · `secondary` "Not now, place order". Setting "Both guardrails": primary · secondary (other guardrail) · ghost Not now |
+| Header | `BottomSheetHeader size="lg"` · 64 icon (front hand, error circle, pulses twice) · `Tag sm error` "Overtrading" | Heading = the fact with its number: "3× more orders than usual today" |
+| Bars | `Card` with two 12px bars on one scale | Usual (grey, 1/ratio wide) vs now (red, full width, grows in), labels per case ("Your usual day" / "Today"), 1× / 3× at the right. Only when the fact is a multiple (12 of 17 cases) and not state C |
+| Consequence | a tinted strip, icon + one line | A: "Last time you did this, you lost ₹2,900" on the error tint · B / C: "7 in 10 traders who did this lost more by the end of the day" on grey · none when not measured |
+| Dock | `ButtonGroup` vertical | `primary` = the case's guardrail · `secondary` "Not now, place order" (on Positions: "Not now"). Setting "Both guardrails": primary · secondary (other guardrail) · ghost Not now |
 
-Motion plays once on open and is off with reduced motion. No disclaimer line for now — compliance to confirm
-whether one is needed.
+**Layouts** (prototype setting "Layout", to compare; same content and dock in each):
 
-Data states: A = own history and last time lost (Box 2 is his own loss) · B = own history, no loss (Box 2 group line)
-· C = thin history (Box 1 raw fact) · D = can't score → the generic sheet. Cases and their guardrail: `data.ts`;
-words: `copy.json` `case.<id>.*`.
+| Layout | What changes |
+|---|---|
+| 1 · Centred + bars (default) | The table above. |
+| 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3×") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
+| 3 · Compact alert | One red-tinted card (40 ✋ circle, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
+
+Motion plays once on open (icon ring, bars growing, the big number popping in) and is off with reduced motion. No disclaimer line for now —
+compliance to confirm whether one is needed.
+
+Data states: A = own history and last time lost (own loss line) · B = own history, no loss (group line) · C = thin
+history (raw fact, no bars) · D = can't score → the generic sheet. Cases: `data.ts`; words: `copy.json` `case.<id>.*`
+(headline, raw, base / now bar labels, unit for the big number).
 
 ### Data
 
-`data.ts`: `nudgeCases` (id, kind generic / revenge / moment, primary guardrail `pnl` | `tpsl`, `noHistory`), the
-sample order (`orderContract`, `funds`), pre-filled TP/SL (20% / 10%), loss-limit presets and sample loss. The API
-must provide, per nudge: case id, data state, Box 1 value, Box 2 value (own loss in A).
+`data.ts`: `nudgeCases` (id, kind, `where` order | positions, primary guardrail `pnl` | `tpsl`, `ratio`,
+`othersLostMore` %, `lastLoss` ₹, `othersVs`), values from the product team's compare file (2026-11-01); the sample
+order (`orderContract`, `funds`), pre-filled TP/SL (20% / 10%), loss-limit presets and sample loss. The API must
+provide, per nudge: case id, data state, the headline numbers, ratio, own last loss (A), group share.
 
 ### Rules & behaviour
 
@@ -98,15 +111,17 @@ must provide, per nudge: case id, data state, Box 1 value, Box 2 value (own loss
 
 ### Differences from the draft
 
-- **Heading:** the behaviour, not "Overtrading detected" (reads as an accusation; compliance open item). The draft
-  title is the "Sheet title" setting.
+- **One consequence, not two:** the draft shows "Others who did this 67% lost more" and "What it cost them ₹2,500
+  more" (or "Loss grew 1.8×"). The sheet keeps one line; the cost stat is dropped. Percentages read as "7 in 10".
+- **"Overtrading detected" → an "Overtrading" tag** over the fact: the word says what this is, the fact says why,
+  without the headline reading as an accusation (compliance open item).
+- **Behaviour box → bars:** "3× more orders than usual" is drawn as his usual vs today, so the size is seen, not read.
 - **Buttons:** one guardrail + Not now by default (one clear choice); the draft's two guardrails are the "Buttons"
-  setting.
-- **Main button colour:** L3 `primary`, not lime. In L3 lime (`brand` / `buy`) is for buying, and Buy is the button
-  right under this sheet.
-- **Illustration:** an L3 icon in a 64 circle instead of the (non-existent) Lemonn character with a placard.
-- **Box 2 tag:** says whose number it is (his own vs Lemonn traders).
-- "Not now" says what it does: "Not now, place order".
+  setting. Main button L3 `primary`, not lime (lime is Buy, right under this sheet).
+- **"Not now" says what it does:** "Not now, place order"; on Positions just "Not now".
+- **Not measured → left out:** cases the draft marks "Not measured" show no group line instead of the words.
+- **Positions:** generic, expiry and giving-back fire on Positions in the draft; the prototype shows them over the
+  order pad (no Positions page here yet), with the Positions dismiss label.
 
 ### L3 gaps
 
@@ -116,6 +131,9 @@ must provide, per nudge: case id, data state, Box 1 value, Box 2 value (own loss
 
 - 2026-10-30 · first build on the `playground` branch.
 - 2026-10-30 · nudge sheet revamp: one card (big number + proof, 10 people filling in), pulsing icon, primary + secondary dock; tags, bars, explainer and disclaimer removed to cut text.
+- 2026-11-01 · nudge sheet redesigned from the product team's 17 use cases for a one-glance read: ✋ + "Overtrading" tag, the fact as the heading, usual-vs-now bars, one consequence line; case values from their compare file; "Sheet title" setting removed.
+- 2026-11-01 · settings: "Show on every Buy" toggle (fires the nudge on every Buy / Sell); data state is a dropdown.
+- 2026-11-01 · "Layout" setting: 1 · Centred + bars, 2 · Big number, 3 · Compact alert.
 
 
 ## Source — this flow
@@ -160,11 +178,9 @@ must provide, per nudge: case id, data state, Box 1 value, Box 2 value (own loss
   "silent.limitAdd": "Set a loss limit for today",
   "silent.limitBar": "Loss used today",
   "silent.limitNear": "Close to today's loss limit",
-  "nudge.titleBrief": "Overtrading detected",
   "nudge.setPnl": "Set a loss limit for today",
   "nudge.setTpsl": "Add TP/SL to this order",
   "nudge.notNow": "Not now, place order",
-  "nudge.lastTime": "Last time you did this",
   "pnl.title": "Today's loss limit",
   "pnl.description": "When today's loss reaches this amount, new F&O orders pause until tomorrow. Open positions stay as they are.",
   "pnl.field": "Limit for today",
@@ -179,138 +195,108 @@ must provide, per nudge: case id, data state, Box 1 value, Box 2 value (own loss
   "tpsl.atPrice": "at {price}",
   "tpsl.save": "Save TP/SL",
   "tpsl.saved": "TP/SL added to this order",
-  "case.generic.name": "Generic",
-  "case.generic.heading": "A tough day so far",
-  "case.generic.box1Label": "Down today",
-  "case.generic.box1Own": "₹3,400",
-  "case.generic.box1Raw": "₹3,400",
-  "case.generic.box2Label": "Out of 100 who kept trading",
-  "case.generic.box2Value": "67 lost more",
-  "case.sizeUp.name": "1 · Size-up after a loss",
-  "case.sizeUp.heading": "Bigger bet right after a loss",
-  "case.sizeUp.box1Label": "This order vs the trade you lost",
-  "case.sizeUp.box1Own": "2× bigger",
-  "case.sizeUp.box1Raw": "2× bigger",
-  "case.sizeUp.box2Label": "Out of 100 who kept trading",
-  "case.sizeUp.box2Value": "69 lost more",
-  "case.orders.name": "2 · Orders in the session",
-  "case.orders.heading": "More orders than usual today",
-  "case.orders.box1Label": "Orders today",
-  "case.orders.box1Own": "3× your usual",
-  "case.orders.box1Raw": "14 orders",
-  "case.orders.box2Label": "Out of 100 who kept trading",
-  "case.orders.box2Value": "68 lost more",
-  "case.flips.name": "3 · CE ↔ PE flips",
-  "case.flips.heading": "Switching between calls and puts",
-  "case.flips.box1Label": "Switched sides today",
-  "case.flips.box1Own": "3 times",
-  "case.flips.box1Raw": "3 times",
-  "case.flips.box2Label": "Out of 100 who kept trading",
-  "case.flips.box2Value": "69 lost more",
-  "case.burst.name": "4 · Orders in 15 min",
-  "case.burst.heading": "Lots of orders in a short time",
-  "case.burst.box1Label": "Orders in the last 15 min",
-  "case.burst.box1Own": "4× your usual",
-  "case.burst.box1Raw": "9 orders",
-  "case.burst.box2Label": "Out of 100 who kept trading",
-  "case.burst.box2Value": "68 lost more",
-  "case.money15.name": "5 · Money in 15 min",
-  "case.money15.heading": "A lot of money in, in a short time",
-  "case.money15.box1Label": "Money put in, last 15 min",
-  "case.money15.box1Own": "3× your usual",
-  "case.money15.box1Raw": "₹48,000",
-  "case.money15.box2Label": "Out of 100 who kept trading",
-  "case.money15.box2Value": "68 lost more",
-  "case.bigOrder.name": "6 · Big order vs money",
-  "case.bigOrder.heading": "A big part of your money in one order",
-  "case.bigOrder.box1Label": "This order uses, of your money",
-  "case.bigOrder.box1Own": "60%",
-  "case.bigOrder.box1Raw": "60%",
-  "case.bigOrder.box2Label": "Out of 100 who kept trading",
-  "case.bigOrder.box2Value": "66 lost more",
-  "case.pace.name": "7 · Time between orders",
-  "case.pace.heading": "Orders coming in fast",
-  "case.pace.box1Label": "Since your last order",
-  "case.pace.box1Own": "40 seconds",
-  "case.pace.box1Raw": "40 seconds",
-  "case.pace.box2Label": "Out of 100 who kept trading",
-  "case.pace.box2Value": "70 lost more",
-  "case.strike.name": "8 · Far strike",
-  "case.strike.heading": "Strike far from the index",
-  "case.strike.box1Label": "Strike distance from NIFTY",
-  "case.strike.box1Own": "10× your usual",
-  "case.strike.box1Raw": "1,200 points",
-  "case.strike.box2Label": "Out of 100 who kept trading",
-  "case.strike.box2Value": "72 lost more",
-  "case.avgDown.name": "9 · Averaging down",
-  "case.avgDown.heading": "Buying more as it falls",
-  "case.avgDown.box1Label": "Added to a falling position",
-  "case.avgDown.box1Own": "3rd time today",
-  "case.avgDown.box1Raw": "3rd time today",
-  "case.avgDown.box2Label": "Traders who averaged down",
-  "case.avgDown.box2Value": "Lost ₹5 per ₹100",
-  "case.rareSession.name": "10 · Unusual time",
-  "case.rareSession.heading": "Trading at an unusual time for you",
-  "case.rareSession.box1Label": "You trade after 2:30 pm",
-  "case.rareSession.box1Own": "1 in 20 days",
-  "case.rareSession.box1Raw": "Rare for 9 in 10 traders",
-  "case.rareSession.box2Label": "Out of 100 who kept trading",
-  "case.rareSession.box2Value": "67 lost more",
-  "case.expiry.name": "Moment · Expiry, recovering",
-  "case.expiry.heading": "Expiry day, trying to win back a loss",
-  "case.expiry.box1Label": "Down today",
-  "case.expiry.box1Own": "₹3,400",
-  "case.expiry.box1Raw": "₹3,400",
-  "case.expiry.box2Label": "Kept trading and lost even more",
-  "case.expiry.box2Value": "2 in 3 traders",
-  "case.deposit.name": "Moment · Bigger deposit",
-  "case.deposit.heading": "Adding more money than usual",
-  "case.deposit.box1Label": "Added today",
-  "case.deposit.box1Own": "2× your usual",
-  "case.deposit.box1Raw": "₹20,000",
-  "case.deposit.box2Label": "Trades without a stop-loss",
-  "case.deposit.box2Value": "8 in 100 lost 30% or more",
-  "case.givingBack.name": "Moment · Giving back profit",
-  "case.givingBack.heading": "Giving back today's profit",
-  "case.givingBack.box1Label": "Profit given back today",
-  "case.givingBack.box1Own": "₹1,800 of ₹2,600",
-  "case.givingBack.box1Raw": "₹1,800 of ₹2,600",
-  "case.givingBack.box2Label": "Trades without a stop-loss",
-  "case.givingBack.box2Value": "8 in 100 lost 30% or more",
-  "case.fomo.name": "Moment · Missed entry",
-  "case.fomo.heading": "Chasing a move that already happened",
-  "case.fomo.box1Label": "Price since you last looked",
-  "case.fomo.box1Own": "Up 18% in 10 min",
-  "case.fomo.box1Raw": "Up 18% in 10 min",
-  "case.fomo.box2Label": "Trades without a stop-loss",
-  "case.fomo.box2Value": "8 in 100 lost 30% or more",
-  "case.returnBreak.name": "Moment · Back after a break",
-  "case.returnBreak.heading": "First trade after a break",
-  "case.returnBreak.box1Label": "Your last trade",
-  "case.returnBreak.box1Own": "23 days ago",
-  "case.returnBreak.box1Raw": "23 days ago",
-  "case.returnBreak.box2Label": "Trades without a stop-loss",
-  "case.returnBreak.box2Value": "8 in 100 lost 30% or more",
-  "case.afterWin.name": "Moment · After a winning day",
-  "case.afterWin.heading": "Trading the day after a big win",
-  "case.afterWin.box1Label": "Yesterday",
-  "case.afterWin.box1Own": "+₹6,200",
-  "case.afterWin.box1Raw": "+₹6,200",
-  "case.afterWin.box2Label": "Lost more than usual the next day",
-  "case.afterWin.box2Value": "6 in 10 traders",
-  "case.lossA": "Lost ₹2,900",
   "option.case": "Case",
   "option.state": "Data state",
   "option.stateA": "A · own loss",
   "option.stateB": "B · own, no loss",
   "option.stateC": "C · thin history",
-  "option.title": "Sheet title",
-  "option.titleBehaviour": "The behaviour",
-  "option.titleBrief": "Overtrading detected",
+  "option.everyBuy": "Show on every Buy",
+  "option.everyBuyOff": "Off",
+  "option.everyBuyOn": "On",
   "option.actions": "Buttons",
   "option.actionsTwo": "Both guardrails",
   "option.actionsOne": "One guardrail",
-  "nudge.people": "{count} in 10 traders"
+  "nudge.tag": "Overtrading",
+  "nudge.lastLoss": "Last time you did this, you lost {amount}",
+  "nudge.others": "{count} in 10 traders who did this lost more by the end of the day",
+  "nudge.othersOtherDays": "{count} in 10 traders who did this lost more than on other days",
+  "nudge.notNowPositions": "Not now",
+  "nudge.barsLabel": "{now}: {ratio}× {base}",
+  "case.generic.name": "Generic",
+  "case.generic.headline": "Down ₹2,500 today and still trading",
+  "case.sizeUp.name": "1 · Size-up after a loss",
+  "case.sizeUp.headline": "This order is 2× the one you just lost",
+  "case.sizeUp.base": "Trade you lost",
+  "case.sizeUp.now": "This order",
+  "case.sizeUp.unit": "bigger than the trade you just lost",
+  "case.orders.name": "2 · Orders in the session",
+  "case.orders.headline": "3× more orders than usual today",
+  "case.orders.raw": "14 orders today",
+  "case.orders.base": "Your usual day",
+  "case.orders.now": "Today",
+  "case.orders.unit": "more orders than usual today",
+  "case.flips.name": "3 · CE ↔ PE flips",
+  "case.flips.headline": "Switched calls ↔ puts 3× more than usual",
+  "case.flips.raw": "Switched calls ↔ puts 6 times today",
+  "case.flips.base": "Your usual day",
+  "case.flips.now": "Today",
+  "case.flips.unit": "more call ↔ put switches than usual",
+  "case.burst.name": "4 · Orders in 15 min",
+  "case.burst.headline": "4× more orders than usual in 15 min",
+  "case.burst.raw": "9 orders in the last 15 min",
+  "case.burst.base": "Usual 15 min",
+  "case.burst.now": "Last 15 min",
+  "case.burst.unit": "more orders than usual in 15 min",
+  "case.money15.name": "5 · Money in 15 min",
+  "case.money15.headline": "3× more money than usual in 15 min",
+  "case.money15.raw": "₹48,000 put in, in 15 min",
+  "case.money15.base": "Usual 15 min",
+  "case.money15.now": "Last 15 min",
+  "case.money15.unit": "more money than usual in 15 min",
+  "case.bigOrder.name": "6 · Big order vs money",
+  "case.bigOrder.headline": "This order is 4× your usual size",
+  "case.bigOrder.raw": "This order uses 60% of your money",
+  "case.bigOrder.base": "Your usual order",
+  "case.bigOrder.now": "This order",
+  "case.bigOrder.unit": "your usual order size",
+  "case.pace.name": "7 · Time between orders",
+  "case.pace.headline": "Ordering 6× faster than usual",
+  "case.pace.raw": "40 seconds between orders",
+  "case.pace.base": "Your usual pace",
+  "case.pace.now": "Now",
+  "case.pace.unit": "faster than your usual pace",
+  "case.strike.name": "8 · Far strike",
+  "case.strike.headline": "Strike 10× farther than usual",
+  "case.strike.raw": "Strike 1,200 points from NIFTY",
+  "case.strike.base": "Your usual strike",
+  "case.strike.now": "This strike",
+  "case.strike.unit": "farther than your usual strike",
+  "case.avgDown.name": "9 · Averaging down",
+  "case.avgDown.headline": "Bought more 3 times while it fell",
+  "case.rareSession.name": "10 · Unusual time",
+  "case.rareSession.headline": "Trading at a time you rarely trade",
+  "case.expiry.name": "Moment · Expiry, recovering",
+  "case.expiry.headline": "3× more trades than usual, on expiry",
+  "case.expiry.raw": "12 trades today, on expiry",
+  "case.expiry.base": "Your usual day",
+  "case.expiry.now": "Today",
+  "case.expiry.unit": "more trades than usual, on expiry",
+  "case.deposit.name": "Moment · Bigger deposit",
+  "case.deposit.headline": "Added 5× more money than usual",
+  "case.deposit.raw": "Added ₹20,000 today",
+  "case.deposit.base": "Your usual top-up",
+  "case.deposit.now": "Today",
+  "case.deposit.unit": "more money added than usual",
+  "case.givingBack.name": "Moment · Giving back profit",
+  "case.givingBack.headline": "Gave back 79% of today's profit",
+  "case.fomo.name": "Moment · Missed entry",
+  "case.fomo.headline": "Buying after it already rose 38%",
+  "case.returnBreak.name": "Moment · Back after a break",
+  "case.returnBreak.headline": "3× your usual size, after a break",
+  "case.returnBreak.raw": "First trade in 23 days, and a big one",
+  "case.returnBreak.base": "Your usual order",
+  "case.returnBreak.now": "This order",
+  "case.returnBreak.unit": "your usual size, after a break",
+  "case.afterWin.name": "Moment · After a winning day",
+  "case.afterWin.headline": "2× your usual size, after a win",
+  "case.afterWin.raw": "Big order the day after a ₹6,200 win",
+  "case.afterWin.base": "Your usual order",
+  "case.afterWin.now": "This order",
+  "case.afterWin.unit": "your usual size, after a win",
+  "option.layout": "Layout",
+  "option.layoutBars": "1 · Centred + bars",
+  "option.layoutNumber": "2 · Big number",
+  "option.layoutCompact": "3 · Compact alert"
 }
 ```
 
@@ -340,9 +326,9 @@ export type Guardrail = 'pnl' | 'tpsl'
 
 /**
  * How much of the trader's own history we can use for this case:
- * - A: enough history, and the last time he did this he lost → Box 2 is his own loss.
- * - B: enough history, but the last time didn't lose → Box 2 is the group line.
- * - C: thin history → Box 1 is today's raw fact, Box 2 the group line.
+ * - A: enough history, and the last time he did this he lost → the consequence is his own loss.
+ * - B: enough history, the last time didn't lose → the consequence is what happened to other traders.
+ * - C: thin history (no "usual" yet) → the headline is today's raw fact, no bars; the consequence as in B.
  * (D — the behaviour can't be scored — never shows its own sheet: the generic sheet fires instead.)
  */
 export type DataState = 'A' | 'B' | 'C'
@@ -357,32 +343,39 @@ export type NudgeCase = {
   /** generic: fires with the revenge flag when nothing stands out · revenge: one of the 10 inputs of the v2.5 score ·
    *  moment: a journey moment that fires without the revenge flag. */
   kind: 'generic' | 'revenge' | 'moment'
+  /** Where it fires: on the order pad (as he taps Buy / Sell) or on Positions (no order in hand). */
+  where: 'order' | 'positions'
   /** The guardrail on the main button. */
   primary: Guardrail
-  /** Box 1 needs no history (the same in A, B and C) — the six most robust cases. */
-  noHistory?: boolean
-  /** Box 2 visual: the group line as a share of traders, drawn as 10 people (≥ 0.1 only). */
-  groupShare?: number
+  /** Today vs his usual (or vs the trade he lost), drawn as two bars. None = the fact isn't a multiple. */
+  ratio?: number
+  /** Traders who did this and lost more by the end of the day (%). None = not measured → no group line. */
+  othersLostMore?: number
+  /** State A: what he lost the last time he did this (₹). None = the case has no own-history version. */
+  lastLoss?: number
+  /** The group line compares with the same traders' other days, not the end of the day. */
+  othersVs?: 'otherDays'
 }
 
+/** The 17 cases, values from the product team's compare file (2026-11-01). */
 export const nudgeCases: NudgeCase[] = [
-  { id: 'generic', kind: 'generic', primary: 'pnl', noHistory: true, groupShare: 0.67 },
-  { id: 'sizeUp', kind: 'revenge', primary: 'pnl', noHistory: true, groupShare: 0.69 },
-  { id: 'orders', kind: 'revenge', primary: 'pnl', groupShare: 0.68 },
-  { id: 'flips', kind: 'revenge', primary: 'pnl', noHistory: true, groupShare: 0.69 },
-  { id: 'burst', kind: 'revenge', primary: 'pnl', groupShare: 0.68 },
-  { id: 'money15', kind: 'revenge', primary: 'pnl', groupShare: 0.68 },
-  { id: 'bigOrder', kind: 'revenge', primary: 'tpsl', groupShare: 0.66 },
-  { id: 'pace', kind: 'revenge', primary: 'pnl', noHistory: true, groupShare: 0.7 },
-  { id: 'strike', kind: 'revenge', primary: 'tpsl', groupShare: 0.72 },
-  { id: 'avgDown', kind: 'revenge', primary: 'tpsl', noHistory: true },
-  { id: 'rareSession', kind: 'revenge', primary: 'pnl', groupShare: 0.67 },
-  { id: 'expiry', kind: 'moment', primary: 'pnl', groupShare: 0.67 },
-  { id: 'deposit', kind: 'moment', primary: 'tpsl' },
-  { id: 'givingBack', kind: 'moment', primary: 'tpsl', noHistory: true },
-  { id: 'fomo', kind: 'moment', primary: 'tpsl', noHistory: true },
-  { id: 'returnBreak', kind: 'moment', primary: 'tpsl' },
-  { id: 'afterWin', kind: 'moment', primary: 'pnl', groupShare: 0.6 },
+  { id: 'generic', kind: 'generic', where: 'positions', primary: 'pnl', othersLostMore: 67 },
+  { id: 'sizeUp', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 2, othersLostMore: 69, lastLoss: 2900 },
+  { id: 'orders', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 3, othersLostMore: 68, lastLoss: 3600 },
+  { id: 'flips', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 3, othersLostMore: 69, lastLoss: 3400 },
+  { id: 'burst', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 4, othersLostMore: 68, lastLoss: 4800 },
+  { id: 'money15', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 3, othersLostMore: 68, lastLoss: 6100 },
+  { id: 'bigOrder', kind: 'revenge', where: 'order', primary: 'tpsl', ratio: 4, othersLostMore: 66, lastLoss: 5200 },
+  { id: 'pace', kind: 'revenge', where: 'order', primary: 'pnl', ratio: 6, othersLostMore: 70, lastLoss: 2500 },
+  { id: 'strike', kind: 'revenge', where: 'order', primary: 'tpsl', ratio: 10, othersLostMore: 72, lastLoss: 1700 },
+  { id: 'avgDown', kind: 'revenge', where: 'order', primary: 'tpsl', othersLostMore: 66, lastLoss: 3900 },
+  { id: 'rareSession', kind: 'revenge', where: 'order', primary: 'pnl', othersLostMore: 67, lastLoss: 2200 },
+  { id: 'expiry', kind: 'moment', where: 'positions', primary: 'pnl', ratio: 3, othersLostMore: 66, lastLoss: 6800 },
+  { id: 'deposit', kind: 'moment', where: 'order', primary: 'pnl', ratio: 5, lastLoss: 4100 },
+  { id: 'givingBack', kind: 'moment', where: 'positions', primary: 'pnl', lastLoss: 2300 },
+  { id: 'fomo', kind: 'moment', where: 'order', primary: 'tpsl', lastLoss: 1800 },
+  { id: 'returnBreak', kind: 'moment', where: 'order', primary: 'pnl', ratio: 3, lastLoss: 9800 },
+  { id: 'afterWin', kind: 'moment', where: 'order', primary: 'tpsl', ratio: 2, othersLostMore: 60, lastLoss: 2700, othersVs: 'otherDays' },
 ]
 
 export const caseById = new Map(nudgeCases.map((c) => [c.id, c]))
@@ -439,18 +432,19 @@ export const nudges: Flow = {
   figmaFile: '',
   options: [
     { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown', values: nudgeCases.map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Parameters<typeof t>[0]) })), default: 'sizeUp' },
-    { id: 'state', group: 'Nudge', label: t('option.state'), values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' },
-    { id: 'title', group: 'Nudge', label: t('option.title'), values: [{ value: 'behaviour', label: t('option.titleBehaviour') }, { value: 'brief', label: t('option.titleBrief') }], default: 'behaviour' },
+    { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown', values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' },
+    { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown', values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' },
+    { id: 'everyBuy', group: 'Nudge', label: t('option.everyBuy'), picker: 'toggle', values: [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }], default: 'off' },
     { id: 'actions', group: 'Nudge', label: t('option.actions'), values: [{ value: 'one', label: t('option.actionsOne') }, { value: 'two', label: t('option.actionsTwo') }], default: 'one' },
   ],
   screens: [
     { id: 'nudges-01', name: 'Order pad · silent help', figma: '8671:18433', note: 'The default — no interruption. The F&O commodity order pad (fno-25) as it is, plus silent help: “Set TPSL” becomes a TP/SL row, pre-filled and on (Target +20% · Stop-loss −10%); “Set a loss limit for today” is the first line of the dock. Buy fires the nudge picked in the settings (Case, Data state), once: the shared cap is 1 per session.', render: (go) => <OrderPad nudge="options" onBack={back(go)} /> },
-    { id: 'nudges-02', name: 'Nudge · from settings', figma: '', note: 'The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C, the draft title (“Overtrading detected”) and the draft’s two guardrail buttons.', render: (go) => <OrderPad nudge="options" initialSheet="nudge" onBack={back(go)} /> },
-    { id: 'nudges-03', name: 'Nudge · generic', figma: '', note: 'Fires with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D of any case). Box 1 “Down today” is always known.', render: (go) => <OrderPad nudge={{ caseId: 'generic', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
-    { id: 'nudges-04', name: 'Nudge · size-up · A (own loss)', figma: '', note: 'Enough history and his last size-up lost: Box 2 is his own loss, tagged “Your past trades”, in loss red.', render: (go) => <OrderPad nudge={{ caseId: 'sizeUp', state: 'A' }} initialSheet="nudge" onBack={back(go)} /> },
-    { id: 'nudges-05', name: 'Nudge · orders today · B', figma: '', note: 'Enough history, last time didn’t lose: Box 1 is his own ratio (“3× your usual”), Box 2 the measured group line, tagged “Lemonn traders”.', render: (go) => <OrderPad nudge={{ caseId: 'orders', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
-    { id: 'nudges-06', name: 'Nudge · orders today · C (thin history)', figma: '', note: 'Too few past sessions for “your usual”: Box 1 becomes today’s raw fact (“14 orders”).', render: (go) => <OrderPad nudge={{ caseId: 'orders', state: 'C' }} initialSheet="nudge" onBack={back(go)} /> },
-    { id: 'nudges-07', name: 'Nudge · averaging down (TP/SL first)', figma: '', note: 'A case whose main button is TP/SL. Averaging down is one of the three states measured as harmful (−5.11% per buy).', render: (go) => <OrderPad nudge={{ caseId: 'avgDown', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-02', name: 'Nudge · from settings', figma: '', note: 'The one nudge sheet, filled by the case and data state picked in the settings. Try all 17 cases × A / B / C and the draft’s two guardrail buttons.', render: (go) => <OrderPad nudge="options" initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-03', name: 'Nudge · generic', figma: '', note: 'Fires on Positions with the revenge flag when no single behaviour stands out, or the trader is too new to compare (state D). No bars; the group line. Dismiss says just “Not now” (no order in hand).', render: (go) => <OrderPad nudge={{ caseId: 'generic', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-04', name: 'Nudge · size-up · A (own loss)', figma: '', note: 'Bars: this order vs the trade he lost (2×). Enough history and his last size-up lost: the line is his own loss, on a red strip.', render: (go) => <OrderPad nudge={{ caseId: 'sizeUp', state: 'A' }} initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-05', name: 'Nudge · orders today · B', figma: '', note: 'Bars: his usual day vs today (3×). Last time didn’t lose: the line is the group (7 in 10 lost more).', render: (go) => <OrderPad nudge={{ caseId: 'orders', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-06', name: 'Nudge · orders today · C (thin history)', figma: '', note: 'Too few past sessions for “your usual”: the headline becomes today’s raw fact (“14 orders today”), no bars.', render: (go) => <OrderPad nudge={{ caseId: 'orders', state: 'C' }} initialSheet="nudge" onBack={back(go)} /> },
+    { id: 'nudges-07', name: 'Nudge · averaging down (TP/SL first)', figma: '', note: 'A case whose main button is TP/SL and whose fact isn’t a multiple: no bars: headline + the group line.', render: (go) => <OrderPad nudge={{ caseId: 'avgDown', state: 'B' }} initialSheet="nudge" onBack={back(go)} /> },
     { id: 'nudges-08', name: 'Set today’s loss limit', figma: '', note: 'From the nudge’s “Set a loss limit for today” or the order pad dock. Pre-filled ₹25,000, quick amounts as pill tabs. Set limit → back to the pad with the limit shown.', render: (go) => <OrderPad nudge={{ caseId: 'sizeUp', state: 'A' }} initialSheet="pnl" onBack={back(go)} /> },
     { id: 'nudges-09', name: 'TP/SL for this order', figma: '', note: 'From the nudge’s “Add TP/SL to this order” or the TP/SL row. Target and stop-loss in %, the exit price under each.', render: (go) => <OrderPad nudge={{ caseId: 'avgDown', state: 'B' }} initialSheet="tpsl" onBack={back(go)} /> },
     { id: 'nudges-10', name: 'Order pad · limit set', figma: '', note: 'Silent help once a limit exists: “₹25,000 left of today’s loss limit” with a bar in the dock (tap to change it).', render: (go) => <OrderPad limit={25000} onBack={back(go)} /> },
@@ -529,7 +523,7 @@ import { Screen } from '../../../shared/ui/Screen'
 import { t } from '../copy'
 import { defaultLimit, funds, intradayCloseTime, lossToday, orderContract, prefilledTpsl, sellMargin, validities, type DataState, type NudgeCaseId, type OrderProduct, type OrderSide, type OrderType } from '../data'
 import { LossLimitSheet, TpslSheet } from '../sheets/GuardrailSheets'
-import { NudgeSheet } from '../sheets/NudgeSheet'
+import { NudgeSheet, type NudgeLayout } from '../sheets/NudgeSheet'
 import styles from './OrderPad.module.css'
 
 type Modal = { kind: 'nudge' } | { kind: 'pnl' } | { kind: 'tpsl' }
@@ -562,8 +556,10 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const c = orderContract
   const optionCase = useFlowOption('nudges', 'case', 'sizeUp') as NudgeCaseId
   const optionState = useFlowOption('nudges', 'state', 'A') as DataState
-  const title = useFlowOption('nudges', 'title', 'behaviour') as 'behaviour' | 'brief'
   const actions = useFlowOption('nudges', 'actions', 'one') as 'one' | 'two'
+  // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
+  const layout = useFlowOption('nudges', 'layout', 'bars') as NudgeLayout
+  const everyBuy = useFlowOption('nudges', 'everyBuy', 'off') === 'on'
   const fired = nudge === 'options' ? { caseId: optionCase, state: optionState } : nudge
 
   const [product, setProduct] = useState<OrderProduct>(initialProduct)
@@ -588,10 +584,10 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   </div>
 
   const place = () => { setModal(null); setToast(t('order.placed', { side: t(buy ? 'order.buy' : 'order.sell'), name: c.name, contract: c.contract })) }
-  const submit = () => { if (fired && !nudged) { setNudged(true); setModal({ kind: 'nudge' }) } else place() }
+  const submit = () => { if (fired && (!nudged || everyBuy)) { setNudged(true); setModal({ kind: 'nudge' }) } else place() }
 
   const sheet = modal?.kind === 'nudge' && fired
-    ? <NudgeSheet caseId={fired.caseId} state={fired.state} title={title} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
+    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
     : modal?.kind === 'pnl'
       ? <LossLimitSheet initial={limit ?? defaultLimit} onClose={() => setModal(null)} onSave={(amount) => { setLimit(amount); setModal(null); setToast(t('pnl.saved', { amount: inr(amount, 0) })) }} />
       : modal?.kind === 'tpsl'
@@ -731,116 +727,187 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 ```css
 /* The overtrading nudge sheet, on L3 tokens. Motion plays once on open; none with reduced motion. */
 
-/* Header icon: 64 warning circle with a soft ring that pulses twice — the one thing that says "look here". */
-.icon { position: relative; display: grid; place-items: center; width: var(--l3-size-64); height: var(--l3-size-64); border-radius: var(--l3-radius-full); background: var(--l3-surface-accent-warning-light); color: var(--l3-content-accent-warning-default); }
-.icon[data-tone='error'] { background: var(--l3-surface-accent-error-light); color: var(--l3-content-accent-error-default); }
+/* Header icon: ✋ in a 64 error circle with a soft ring that pulses twice — the one thing that says "stop, look". */
+.icon { position: relative; display: grid; place-items: center; width: var(--l3-size-64); height: var(--l3-size-64); border-radius: var(--l3-radius-full); background: var(--l3-surface-accent-error-light); color: var(--l3-content-accent-error-default); }
 .icon::after { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid currentColor; opacity: 0; animation: pulse calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-decelerate) 2 both; }
 @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
 
-/* Box 1: the fact about today, big. Box 2: why it matters. */
-.hero { font: var(--l3-text-heading-28); color: var(--l3-content-primary); }
-.proof { font: var(--l3-text-heading-16); color: var(--l3-content-primary); }
-.proof[data-tone='loss'] { color: var(--l3-content-accent-error-default); }
-.label { font: var(--l3-text-label-12); color: var(--l3-content-secondary); }
-.rule { margin: 0; border: 0; border-top: 1px solid var(--l3-border-light); }
+/* Usual vs now: two bars on one scale. Usual is neutral, now is red and grows past it. */
+.bars { display: flex; flex-direction: column; gap: var(--l3-spacing-12); margin: 0; }
+.row { display: grid; grid-template-columns: var(--l3-size-96) 1fr auto; align-items: center; gap: var(--l3-spacing-12); }
+.barLabel { font: var(--l3-text-label-12); color: var(--l3-content-secondary); }
+.barValue { min-width: var(--l3-size-32); font: var(--l3-text-heading-14); color: var(--l3-content-secondary); text-align: right; }
+.track { display: block; height: var(--l3-size-12); }
+.bar { display: block; width: var(--w); height: 100%; border-radius: var(--l3-radius-full); background: var(--l3-content-disabled); animation: grow var(--l3-motion-duration-long) var(--l3-motion-easing-decelerate) both; }
+.row[data-now] .barLabel { color: var(--l3-content-primary); }
+.row[data-now] .barValue { color: var(--l3-content-accent-error-default); font: var(--l3-text-heading-16); }
+.row[data-now] .bar { background: var(--l3-content-accent-error-default); animation-duration: calc(var(--l3-motion-duration-long) * 2); animation-delay: var(--l3-motion-duration-medium); }
+@keyframes grow { from { width: 0; } to { width: var(--w); } }
 
-/* 10 people: the share who lost more fill in red, one by one. */
-.people { display: flex; justify-content: space-between; }
-.person { display: inline-flex; color: var(--l3-content-disabled); }
-.person[data-lost] { animation: fill var(--l3-motion-duration-short) var(--l3-motion-easing-standard) both; animation-delay: calc(var(--i) * var(--l3-motion-duration-short) + var(--l3-motion-duration-long)); }
-@keyframes fill { from { color: var(--l3-content-disabled); transform: scale(0.8); } to { color: var(--l3-content-accent-error-default); transform: scale(1); } }
+/* The consequence: one line, icon + text, on a tinted strip. His own loss in error, the group line neutral. */
+.consequence { display: flex; align-items: center; gap: var(--l3-spacing-12); margin: 0; padding: var(--l3-spacing-12) var(--l3-spacing-16); border-radius: var(--l3-radius-12); background: var(--l3-surface-secondary); font: var(--l3-text-label-14); color: var(--l3-content-primary); }
+.consequence > :first-child { flex: none; color: var(--l3-content-secondary); }
+.consequence[data-tone='own'] { background: var(--l3-surface-accent-error-light); }
+.consequence[data-tone='own'] > :first-child { color: var(--l3-content-accent-error-default); }
+
+/* 2 · Big number: left-aligned, the multiple as the biggest thing on the sheet. */
+.number { padding-top: var(--l3-spacing-08); }
+.numberTag { display: inline-flex; align-items: center; gap: var(--l3-spacing-08); color: var(--l3-content-accent-error-default); }
+.hero { display: flex; flex-direction: column; gap: var(--l3-spacing-04); margin: 0; }
+.heroValue { font: var(--l3-text-heading-36); color: var(--l3-content-accent-error-default); animation: pop var(--l3-motion-duration-long) var(--l3-motion-easing-decelerate) both; transform-origin: left center; }
+.heroUnit { font: var(--l3-text-heading-20); color: var(--l3-content-primary); }
+.heroText { margin: 0; font: var(--l3-text-heading-24); color: var(--l3-content-primary); }
+@keyframes pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+
+/* 3 · Compact alert: one red-tinted card — icon, tag, the fact — the shortest sheet. */
+.compact { padding-top: var(--l3-spacing-08); }
+.alert { display: flex; align-items: flex-start; gap: var(--l3-spacing-12); padding: var(--l3-spacing-16); border: 1px solid var(--l3-content-accent-error-default); border-radius: var(--l3-radius-12); background: var(--l3-surface-accent-error-light); }
+.alertIcon { position: relative; flex: none; display: grid; place-items: center; width: var(--l3-size-40); height: var(--l3-size-40); border-radius: var(--l3-radius-full); background: var(--l3-surface-primary); color: var(--l3-content-accent-error-default); }
+.alertIcon::after { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--l3-content-accent-error-default); opacity: 0; animation: pulse calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-decelerate) 2 both; }
+.alertText { margin: 0; font: var(--l3-text-heading-18); color: var(--l3-content-primary); }
 
 @media (prefers-reduced-motion: reduce) {
-  .icon::after, .person[data-lost] { animation: none; }
-  .person[data-lost] { color: var(--l3-content-accent-error-default); }
+  .icon::after, .bar, .heroValue, .alertIcon::after { animation: none; }
 }
 ```
 
 ### `src/flows/nudges/sheets/NudgeSheet.tsx`
 
 ```tsx
-import { useId, type CSSProperties } from 'react'
+import { useId, type CSSProperties, type ReactNode } from 'react'
 import { BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
-import { msPersonFill, msSpeed } from '@l3/icons/material'
+import { Tag } from '@l3/components/Tag'
+import { msFrontHandFill, msGroupFill, msTrendingDown } from '@l3/icons/material'
+import { inr } from '../../../shared/data/format'
 import { Sheet } from '../../../shared/ui/Sheet'
+import copy from '../copy.json'
 import { t } from '../copy'
 import { caseById, type DataState, type Guardrail, type NudgeCaseId } from '../data'
 import styles from './NudgeSheet.module.css'
 
+/**
+ * Three layouts of the same content, to compare (prototype setting "Layout"):
+ * - bars: centred header (✋ 64, tag, the fact) + usual-vs-now bars + the consequence strip.
+ * - number: left-aligned; the multiple as a giant red number ("3×") with its words under it, then the strip.
+ * - compact: one red-tinted alert card (✋ 40 + tag + the fact) and the consequence under it — the shortest sheet,
+ *   so most of the order pad stays visible.
+ */
+export type NudgeLayout = 'bars' | 'number' | 'compact'
+
 export type NudgeSheetProps = {
   caseId: NudgeCaseId
   state: DataState
-  /** 'behaviour' (playground default): the plain-words behaviour is the heading · 'brief': "Overtrading detected" as
-   *  the heading and the behaviour under it (the product team's draft). */
-  title?: 'behaviour' | 'brief'
+  layout?: NudgeLayout
   /** 'one' (default): the case's guardrail (primary) + Not now (secondary) · 'two': both guardrails + Not now (ghost). */
   actions?: 'one' | 'two'
   onGuardrail: (g: Guardrail) => void
-  /** Not now: the order goes ahead. Also a scrim tap, drag down or Esc. */
+  /** Not now: the order goes ahead (on Positions: just closes). Also a scrim tap, drag down or Esc. */
   onNotNow: () => void
 }
 
 type Key = Parameters<typeof t>[0]
 
 /**
- * The overtrading nudge — ONE sheet for every case; a case only fills the slots. It interrupts an order, so it says
- * one thing: the header (pulsing icon + the behaviour in plain words), one card — the fact about today as a big
- * number (Box 1), a hairline, then why it matters (Box 2): his own last loss in red (state A) or the group line with
- * 10 people filling in — and two buttons: the guardrail (primary) and Not now (secondary).
+ * The overtrading nudge — ONE sheet for every case; a case only fills the slots. It opens on a trader who is mid-order
+ * and stressed, so it reads in one glance: ✋ stop → "Overtrading" (what this is) → the fact, number first (why now)
+ * → one consequence line (what it costs) → the guardrail, or Not now. One number, one consequence.
  * Motion plays once on open and is off with reduced motion.
  */
-export function NudgeSheet({ caseId, state, title = 'behaviour', actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
+export function NudgeSheet({ caseId, state, layout = 'bars', actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
   const id = useId()
   const nudge = caseById.get(caseId)!
   const key = (slot: string) => `case.${caseId}.${slot}` as Key
-  const behaviour = t(key('heading'))
-  const own = state === 'A'
-  const raw = state === 'C' && !nudge.noHistory
+  const has = (slot: string) => key(slot) in copy
+
+  // C (thin history): no "usual" to compare with → today's raw fact, no multiple.
+  const thin = state === 'C' && has('raw')
+  const headline = t(key(thin ? 'raw' : 'headline'))
+  const ratio = thin ? undefined : nudge.ratio
+
+  // A: his own last loss · otherwise the group line (if measured).
+  const own = state === 'A' && nudge.lastLoss !== undefined
+  const others = nudge.othersLostMore
+  const consequence = own
+    ? <Consequence tone="own" icon={msTrendingDown} text={t('nudge.lastLoss', { amount: inr(nudge.lastLoss!, 0) })} />
+    : others !== undefined
+      ? <Consequence tone="others" icon={msGroupFill} text={t(nudge.othersVs === 'otherDays' ? 'nudge.othersOtherDays' : 'nudge.others', { count: Math.round(others / 10) })} />
+      : null
+
   const other: Guardrail = nudge.primary === 'pnl' ? 'tpsl' : 'pnl'
   const label = (g: Guardrail) => t(g === 'pnl' ? 'nudge.setPnl' : 'nudge.setTpsl')
-  const heading = title === 'brief' ? t('nudge.titleBrief') : behaviour
-  const people = !own && nudge.groupShare !== undefined && nudge.groupShare >= 0.1
+  const notNow = t(nudge.where === 'positions' ? 'nudge.notNowPositions' : 'nudge.notNow')
+  const tag = <Tag size="sm" color="error">{t('nudge.tag')}</Tag>
 
-  return <Sheet labelledBy={id} onClose={onNotNow}
-    header={<BottomSheetHeader size="lg" headingId={id} heading={heading} description={title === 'brief' ? behaviour : undefined}
-      icon={<span className={styles.icon} data-tone={title === 'brief' ? 'error' : 'warning'}><Icon icon={msSpeed} size={24} /></span>} />}
-    footer={<ButtonGroup aria-label={heading} direction="vertical">
-      <Button size="lg" onClick={() => onGuardrail(nudge.primary)}>{label(nudge.primary)}</Button>
-      {actions === 'two' && <Button size="lg" variant="secondary" onClick={() => onGuardrail(other)}>{label(other)}</Button>}
-      <Button size="lg" variant={actions === 'two' ? 'ghost' : 'secondary'} onClick={onNotNow}>{t('nudge.notNow')}</Button>
-    </ButtonGroup>}>
-    <Card as="section" aria-label={behaviour}>
-      <Stack gap="16">
-        <Stack gap="04">
-          <span className={styles.hero}>{t(key(raw ? 'box1Raw' : 'box1Own'))}</span>
-          <span className={styles.label}>{t(key('box1Label'))}</span>
-        </Stack>
-        <hr className={styles.rule} />
-        <Stack gap="12">
-          {people && <People share={nudge.groupShare!} />}
-          <Stack gap="04">
-            <span className={styles.proof} data-tone={own ? 'loss' : undefined}>{own ? t('case.lossA') : t(key('box2Value'))}</span>
-            <span className={styles.label}>{own ? t('nudge.lastTime') : t(key('box2Label'))}</span>
-          </Stack>
-        </Stack>
+  const footer = <ButtonGroup aria-label={headline} direction="vertical">
+    <Button size="lg" onClick={() => onGuardrail(nudge.primary)}>{label(nudge.primary)}</Button>
+    {actions === 'two' && <Button size="lg" variant="secondary" onClick={() => onGuardrail(other)}>{label(other)}</Button>}
+    <Button size="lg" variant={actions === 'two' ? 'ghost' : 'secondary'} onClick={onNotNow}>{notNow}</Button>
+  </ButtonGroup>
+
+  let header: ReactNode
+  let body: ReactNode
+  if (layout === 'number') {
+    // 2 · Big number: the multiple is the biggest thing on the sheet; its words sit under it.
+    body = <Stack gap="24" className={styles.number}>
+      <Stack gap="12">
+        <span className={styles.numberTag}><Icon icon={msFrontHandFill} size={20} />{tag}</span>
+        {ratio !== undefined && has('unit')
+          ? <h2 id={id} className={styles.hero}><span className={styles.heroValue}>{ratio}×</span><span className={styles.heroUnit}>{t(key('unit'))}</span></h2>
+          : <h2 id={id} className={styles.heroText}>{headline}</h2>}
       </Stack>
-    </Card>
-  </Sheet>
+      {consequence}
+    </Stack>
+  } else if (layout === 'compact') {
+    // 3 · Compact alert: one red-tinted card, then the consequence — the shortest sheet.
+    body = <Stack gap="12" className={styles.compact}>
+      <div className={styles.alert}>
+        <span className={styles.alertIcon}><Icon icon={msFrontHandFill} size={20} /></span>
+        <Stack gap="04">
+          <span>{tag}</span>
+          <h2 id={id} className={styles.alertText}>{headline}</h2>
+        </Stack>
+      </div>
+      {consequence}
+    </Stack>
+  } else {
+    // 1 · Centred + bars.
+    header = <BottomSheetHeader size="lg" headingId={id} heading={headline} tag={tag}
+      icon={<span className={styles.icon}><Icon icon={msFrontHandFill} size={24} /></span>} />
+    body = (ratio !== undefined || consequence) && <Stack gap="12">
+      {ratio !== undefined && <Bars ratio={ratio} base={t(key('base'))} now={t(key('now'))} />}
+      {consequence}
+    </Stack>
+  }
+
+  return <Sheet labelledBy={id} onClose={onNotNow} header={header} footer={footer}>{body}</Sheet>
 }
 
-/** The group line as 10 people: the share who lost more fill in red, one after another. */
-function People({ share }: { share: number }) {
-  const count = Math.round(share * 10)
-  return <div className={styles.people} role="img" aria-label={t('nudge.people', { count })}>
-    {Array.from({ length: 10 }, (_, i) => <span key={i} className={styles.person} data-lost={i < count || undefined} style={{ '--i': i } as CSSProperties}>
-      <Icon icon={msPersonFill} size={20} />
-    </span>)}
-  </div>
+function Consequence({ tone, icon, text }: { tone: 'own' | 'others'; icon: typeof msGroupFill; text: string }) {
+  return <p className={styles.consequence} data-tone={tone}>
+    <Icon icon={icon} size={20} />
+    <span>{text}</span>
+  </p>
+}
+
+/** His usual vs now as two bars on one scale: the now bar runs the full width, usual is 1/ratio of it. */
+function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }) {
+  return <Card className={styles.bars} aria-label={t('nudge.barsLabel', { now, ratio, base })}>
+    <div className={styles.row}>
+      <span className={styles.barLabel}>{base}</span>
+      <span className={styles.track}><span className={styles.bar} style={{ '--w': `${100 / ratio}%` } as CSSProperties} /></span>
+      <span className={styles.barValue}>1×</span>
+    </div>
+    <div className={styles.row} data-now>
+      <span className={styles.barLabel}>{now}</span>
+      <span className={styles.track}><span className={styles.bar} style={{ '--w': '100%' } as CSSProperties} /></span>
+      <span className={styles.barValue}>{ratio}×</span>
+    </div>
+  </Card>
 }
 ```
 
