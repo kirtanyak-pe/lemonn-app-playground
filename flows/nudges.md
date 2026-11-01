@@ -84,7 +84,7 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 
 | Layout | What changes |
 |---|---|
-| 1 · Centred + bars (default) | The table above. |
+| 1 · Centred + bars (default) | The table above. Header (setting "Layout 1 header"): **Chip** (default) — no circle; one big light-red pill (pill-tab shape: full radius, 40 high, error-light fill and border) with ✋ on the left of "Overtrading Detected", then the fact · **Icon + tag** — ✋ in a 64 circle, the tag under it. |
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3X") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
 
@@ -134,6 +134,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 ### L3 gaps
 
 - No illustration for "slow down" / caution moments (the draft wants the Lemonn character).
+- No static (non-tappable) pill: Layout 1’s Chip header is drawn in the flow (NudgeSheet .chip) in the pill-tab shape with error-light tokens. A Tag with `radius-full` and a larger size would cover it.
 
 ### Changelog
 
@@ -150,6 +151,8 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-01 · the floating switcher shows on the order pad too, before the nudge fires.
 - 2026-11-02 · multipliers are written with a capital X (2X, 3X) in every layout, so the sign sits level with the number.
 - 2026-11-02 · every sheet in this flow has 24 above its content as well as below (L3 has 16 on top); a difference from L3.
+- 2026-11-02 · Layout 1 header: Chip (✋ + label in one light-red pill, no circle; default) or Icon + tag — setting and floating switcher.
+- 2026-11-02 · Chip header: 24 above and below it; on open it pops in as ✋ alone, then opens to show "Overtrading Detected" (while the bars grow).
 
 
 ## Source — this flow
@@ -208,7 +211,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
   font: var(--l3-text-label-12);
   white-space: nowrap;
 }
-.chip[data-wide] { flex: 0 1 auto; min-width: 0; }
+.chip[data-wide] { flex: 0 1 auto; min-width: var(--l3-size-64); }
 .chip > :not(.select) { pointer-events: none; }
 .value { overflow: hidden; text-overflow: ellipsis; }
 .chip[data-wide] .value { max-width: var(--l3-size-96); }
@@ -233,10 +236,10 @@ import { Icon } from '@l3/components/Icon'
 import { msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
 import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
 import { t } from '../copy'
-import { caseOption, layoutOption, stateOption } from '../options'
+import { badgeOption, caseOption, layoutOption, stateOption } from '../options'
 import styles from './SheetSwitcher.module.css'
 
-type Option = typeof caseOption | typeof stateOption | typeof layoutOption
+type Option = typeof caseOption | typeof stateOption | typeof layoutOption | typeof badgeOption
 type Spot = { x: number; y: number }
 
 const SPOT_KEY = 'nudges-switcher-spot'
@@ -246,7 +249,7 @@ const readSpot = (): Spot | null => {
 
 /**
  * PROTOTYPE ONLY — not part of the design. A small floating pill over the order pad and the open nudge sheet: Layout ·
- * Case · State,
+ * (Layout 1: Chip / Icon + tag) · Case · State,
  * each a tap-and-pick dropdown (the phone's own picker), so versions can be compared on a phone without opening the
  * settings. Drag it by the grip; it remembers where it was left (this browser).
  *
@@ -272,6 +275,7 @@ export function SheetSwitcher({ open }: { open: boolean }) {
 function Pill({ host }: { host: HTMLElement }) {
   const pill = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<Spot | null>(readSpot)
+  const layout = useFlowOption('nudges', layoutOption.id, layoutOption.default)
   const grab = useRef<{ id: number; dx: number; dy: number } | null>(null)
 
   // Keep it inside the screen (a phone turned, or a spot saved on a bigger screen).
@@ -308,6 +312,7 @@ function Pill({ host }: { host: HTMLElement }) {
       <Icon icon={msDragIndicator} size={20} />
     </button>
     <Pick option={layoutOption} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
+    {layout === 'bars' && <Pick option={badgeOption} short={(v) => t(v === 'chip' ? 'switcher.badgeChip' : 'switcher.badgeTag')} />}
     <Pick option={caseOption} short={(_, label) => label} wide />
     <Pick option={stateOption} short={(v) => t('switcher.state', { state: v })} />
   </div>
@@ -491,7 +496,12 @@ function Pick({ option, short, wide }: { option: Option; short: (value: string, 
   "option.layout": "Layout",
   "option.layoutBars": "1 · Centred + bars",
   "option.layoutNumber": "2 · Big number",
-  "option.layoutCompact": "3 · Compact alert"
+  "option.layoutCompact": "3 · Compact alert",
+  "option.badge": "Layout 1 header",
+  "option.badgeChip": "Chip (✋ in the tag)",
+  "option.badgeTag": "Icon + tag",
+  "switcher.badgeChip": "Chip",
+  "switcher.badgeTag": "Tag"
 }
 ```
 
@@ -660,10 +670,14 @@ export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'),
 export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
 export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' }
 
+/** Layout 1 only: the ✋ circle with the tag under it, or one chip (✋ inside the tag). */
+export const badgeOption = { id: 'badge', group: 'Nudge', label: t('option.badge'), picker: 'dropdown' as const, values: [{ value: 'chip', label: t('option.badgeChip') }, { value: 'tag', label: t('option.badgeTag') }], default: 'chip' }
+
 export const nudgeOptions = [
   caseOption,
   stateOption,
   layoutOption,
+  badgeOption,
   { id: 'everyBuy', group: 'Nudge', label: t('option.everyBuy'), picker: 'toggle' as const, values: onOff, default: 'on' },
   { id: 'vibrate', group: 'Nudge', label: t('option.vibrate'), picker: 'toggle' as const, values: onOff, default: 'on' },
   { id: 'actions', group: 'Nudge', label: t('option.actions'), values: [{ value: 'one', label: t('option.actionsOne') }, { value: 'two', label: t('option.actionsTwo') }], default: 'one' },
@@ -740,7 +754,7 @@ import { Screen } from '../../../shared/ui/Screen'
 import { t } from '../copy'
 import { defaultLimit, funds, intradayCloseTime, lossToday, orderContract, prefilledTpsl, sellMargin, validities, type DataState, type NudgeCaseId, type OrderProduct, type OrderSide, type OrderType } from '../data'
 import { LossLimitSheet, TpslSheet } from '../sheets/GuardrailSheets'
-import { NudgeSheet, type NudgeLayout } from '../sheets/NudgeSheet'
+import { NudgeSheet, type NudgeBadge, type NudgeLayout } from '../sheets/NudgeSheet'
 import { SheetSwitcher } from '../components/SheetSwitcher'
 import styles from './OrderPad.module.css'
 
@@ -777,6 +791,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const actions = useFlowOption('nudges', 'actions', 'one') as 'one' | 'two'
   // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
   const layout = useFlowOption('nudges', 'layout', 'bars') as NudgeLayout
+  const badge = useFlowOption('nudges', 'badge', 'chip') as NudgeBadge
   const everyBuy = useFlowOption('nudges', 'everyBuy', 'on') === 'on'
   const vibrate = useFlowOption('nudges', 'vibrate', 'on') === 'on'
   // A screen with a fixed case (03–09) shows it until the case or data state is changed in the settings; from then on
@@ -811,7 +826,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const submit = () => { if (fired && (!nudged || everyBuy)) { setNudged(true); setModal({ kind: 'nudge' }) } else place() }
 
   const sheet = modal?.kind === 'nudge' && fired
-    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} vibrate={vibrate} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
+    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} badge={badge} vibrate={vibrate} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
     : modal?.kind === 'pnl'
       ? <LossLimitSheet initial={limit ?? defaultLimit} onClose={() => setModal(null)} onSave={(amount) => { setLimit(amount); setModal(null); setToast(t('pnl.saved', { amount: inr(amount, 0) })) }} />
       : modal?.kind === 'tpsl'
@@ -995,11 +1010,20 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 .alertText { margin: 0; font: var(--l3-text-heading-18); color: var(--l3-content-primary); }
 
 @media (prefers-reduced-motion: reduce) {
-  .icon::after, .bar, .heroValue, .alertIcon::after { animation: none; }
+  .icon::after, .bar, .heroValue, .alertIcon::after, .chip, .chipLabel { animation: none; }
 }
 
 /* 24 above the content, as below it (L3's sheet has 16 on top). Same in GuardrailSheets. */
 .sheet [data-sheet-content] { padding-top: var(--l3-spacing-24); }
+
+/* Layout 1 · Chip header: ✋ + "Overtrading Detected" in one big light-red pill, shaped like an L3 pill tab (full radius,
+   40 high). Not tappable, so not a Tab; L3 has no static pill (L3 gap).
+   On open it pops in as a ✋ circle (40 × 40), then opens to reveal the label — while the bars grow — so it gets noticed.
+   The 1px edge is an inset shadow so the closed chip is a true circle. The header's own gap to the heading is 8: the
+   16 margin makes it 24 (as the header's 24 above it). */
+.chip { display: inline-flex; align-items: center; box-sizing: border-box; height: var(--l3-size-40); min-width: var(--l3-size-40); margin-bottom: var(--l3-spacing-16); padding: 0 var(--l3-spacing-08); border-radius: var(--l3-radius-full); background: var(--l3-surface-accent-error-light); box-shadow: inset 0 0 0 1px var(--l3-border-accent-error-light); color: var(--l3-content-accent-error-default); font: var(--l3-text-label-14); animation: pop var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both; }
+.chipLabel { display: block; overflow: hidden; max-width: calc(var(--l3-size-96) * 2); padding: 0 var(--l3-spacing-08); white-space: nowrap; animation: reveal var(--l3-motion-duration-long) var(--l3-motion-easing-standard) calc(var(--l3-motion-duration-long) + var(--l3-motion-duration-short)) both; }
+@keyframes reveal { from { max-width: 0; padding: 0; opacity: 0; } to { opacity: 1; } }
 ```
 
 ### `src/flows/nudges/sheets/NudgeSheet.tsx`
@@ -1029,11 +1053,15 @@ import styles from './NudgeSheet.module.css'
  *   so most of the order pad stays visible.
  */
 export type NudgeLayout = 'bars' | 'number' | 'compact'
+/** Layout 1's header: `tag` = ✋ in a 64 circle with the tag under it · `chip` = no circle, one light-red pill with ✋ on
+ *  the left of the label, inside it. */
+export type NudgeBadge = 'tag' | 'chip'
 
 export type NudgeSheetProps = {
   caseId: NudgeCaseId
   state: DataState
   layout?: NudgeLayout
+  badge?: NudgeBadge
   /** Buzz the phone once when the sheet opens (two short pulses: "stop, look"). */
   vibrate?: boolean
   /** 'one' (default): the case's guardrail (primary) + Not now (secondary) · 'two': both guardrails + Not now (ghost). */
@@ -1051,7 +1079,7 @@ type Key = Parameters<typeof t>[0]
  * → one consequence line (what it costs) → the guardrail, or Not now. One number, one consequence.
  * Motion plays once on open and is off with reduced motion.
  */
-export function NudgeSheet({ caseId, state, layout = 'bars', vibrate = true, actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
+export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vibrate = true, actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
   const id = useId()
   // On open only (switching case or layout keeps the sheet open, so it doesn't buzz again).
   useEffect(() => { if (vibrate) buzz() }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -1110,9 +1138,12 @@ export function NudgeSheet({ caseId, state, layout = 'bars', vibrate = true, act
       {consequence}
     </Stack>
   } else {
-    // 1 · Centred + bars.
-    header = <BottomSheetHeader size="lg" headingId={id} heading={headline} tag={tag}
-      icon={<span className={styles.icon}><Icon icon={msFrontHandFill} size={24} /></span>} />
+    // 1 · Centred + bars: ✋ circle over the tag, or one chip with ✋ inside it (opens from ✋ alone to show the label).
+    header = badge === 'chip'
+      ? <BottomSheetHeader size="lg" headingId={id} heading={headline}
+        tag={<span className={styles.chip}><Icon icon={msFrontHandFill} size={24} /><span className={styles.chipLabel}>{t('nudge.tag')}</span></span>} />
+      : <BottomSheetHeader size="lg" headingId={id} heading={headline} tag={tag}
+        icon={<span className={styles.icon}><Icon icon={msFrontHandFill} size={24} /></span>} />
     body = (ratio !== undefined || consequence) && <Stack gap="12">
       {ratio !== undefined && <Bars ratio={ratio} base={t(key('base'))} now={t(key('now'))} />}
       {consequence}
