@@ -40,7 +40,8 @@ about today and one reason, and offers a loss limit for the day or a TP/SL on th
 
 ### Screens
 
-Each screen is the order pad in one state; within a screen, sheets swap over the same page.
+Each screen is the order pad in one state; within a screen, sheets swap over the same page. Screens 03–09 open with
+their own case; changing Case or Data state in the settings switches the open sheet to the pick on any screen.
 
 | Id | Screen | What it shows / when |
 |---|---|---|
@@ -69,12 +70,12 @@ nudges-01 ──Buy (again)──▶ order placed (cap: 1 nudge per session, 2 p
 ### The nudge sheet (one template, every case)
 
 It opens on a trader who is mid-order, stressed and moving fast, so it reads top to bottom in one glance: ✋ stop →
-"Overtrading" (what this is) → the fact, number first (why now) → two bars, his usual vs now (the picture of "too
+"Overtrading Detected" (what this is) → the fact, number first (why now) → two bars, his usual vs now (the picture of "too
 much") → one consequence line (what it costs) → the guardrail, or Not now. One number, one picture, one consequence.
 
 | Slot | L3 | Content |
 |---|---|---|
-| Header | `BottomSheetHeader size="lg"` · 64 icon (front hand, error circle, pulses twice) · `Tag sm error` "Overtrading" | Heading = the fact with its number: "3× more orders than usual today" |
+| Header | `BottomSheetHeader size="lg"` · 64 icon (front hand, error circle, pulses twice) · `Tag md error` "Overtrading Detected" | Heading = the fact with its number: "3× more orders than usual today" |
 | Bars | `Card` with two 12px bars on one scale | Usual (grey, 1/ratio wide) vs now (red, full width, grows in), labels per case ("Your usual day" / "Today"), 1× / 3× at the right. Only when the fact is a multiple (12 of 17 cases) and not state C |
 | Consequence | a tinted strip, icon + one line | A: "Last time you did this, you lost ₹2,900" on the error tint · B / C: "7 in 10 traders who did this lost more by the end of the day" on grey · none when not measured |
 | Dock | `ButtonGroup` vertical | `primary` = the case's guardrail · `secondary` "Not now, place order" (on Positions: "Not now"). Setting "Both guardrails": primary · secondary (other guardrail) · ghost Not now |
@@ -85,7 +86,11 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 |---|---|
 | 1 · Centred + bars (default) | The table above. |
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3×") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
-| 3 · Compact alert | One red-tinted card (40 ✋ circle, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
+| 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
+
+**Vibration:** two short pulses (70 · 60 · 70 ms) when the sheet opens, not when it changes; setting "Vibrate when
+it opens" (on). In the Lemonn Android app the page calls `window.LemonnApp.vibrate` (works without a tap); in a
+browser, `navigator.vibrate` (Android Chrome, right after a tap; iPhone has none). Real app: a native warning haptic.
 
 Motion plays once on open (icon ring, bars growing, the big number popping in) and is off with reduced motion. No disclaimer line for now —
 compliance to confirm whether one is needed.
@@ -113,8 +118,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 
 - **One consequence, not two:** the draft shows "Others who did this 67% lost more" and "What it cost them ₹2,500
   more" (or "Loss grew 1.8×"). The sheet keeps one line; the cost stat is dropped. Percentages read as "7 in 10".
-- **"Overtrading detected" → an "Overtrading" tag** over the fact: the word says what this is, the fact says why,
-  without the headline reading as an accusation (compliance open item).
+- **"Overtrading Detected" is a tag** over the fact, not the headline: the tag says what this is, the fact says why.
 - **Behaviour box → bars:** "3× more orders than usual" is drawn as his usual vs today, so the size is seen, not read.
 - **Buttons:** one guardrail + Not now by default (one clear choice); the draft's two guardrails are the "Buttons"
   setting. Main button L3 `primary`, not lime (lime is Buy, right under this sheet).
@@ -134,6 +138,9 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-01 · nudge sheet redesigned from the product team's 17 use cases for a one-glance read: ✋ + "Overtrading" tag, the fact as the heading, usual-vs-now bars, one consequence line; case values from their compare file; "Sheet title" setting removed.
 - 2026-11-01 · settings: "Show on every Buy" toggle (fires the nudge on every Buy / Sell); data state is a dropdown.
 - 2026-11-01 · "Layout" setting: 1 · Centred + bars, 2 · Big number, 3 · Compact alert.
+- 2026-11-01 · tag reads "Overtrading Detected" (md), in every layout and case; Compact icon centred.
+- 2026-11-01 · the Case / Data state settings now change the sheet on every nudge screen, not only 01–02.
+- 2026-11-01 · the phone vibrates when the nudge opens (setting "Vibrate when it opens").
 
 
 ## Source — this flow
@@ -203,10 +210,11 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
   "option.everyBuy": "Show on every Buy",
   "option.everyBuyOff": "Off",
   "option.everyBuyOn": "On",
+  "option.vibrate": "Vibrate when it opens",
   "option.actions": "Buttons",
   "option.actionsTwo": "Both guardrails",
   "option.actionsOne": "One guardrail",
-  "nudge.tag": "Overtrading",
+  "nudge.tag": "Overtrading Detected",
   "nudge.lastLoss": "Last time you did this, you lost {amount}",
   "nudge.others": "{count} in 10 traders who did this lost more by the end of the day",
   "nudge.othersOtherDays": "{count} in 10 traders who did this lost more than on other days",
@@ -435,6 +443,7 @@ export const nudges: Flow = {
     { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown', values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' },
     { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown', values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' },
     { id: 'everyBuy', group: 'Nudge', label: t('option.everyBuy'), picker: 'toggle', values: [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }], default: 'off' },
+    { id: 'vibrate', group: 'Nudge', label: t('option.vibrate'), picker: 'toggle', values: [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', label: t('option.everyBuyOn') }], default: 'on' },
     { id: 'actions', group: 'Nudge', label: t('option.actions'), values: [{ value: 'one', label: t('option.actionsOne') }, { value: 'two', label: t('option.actionsTwo') }], default: 'one' },
   ],
   screens: [
@@ -560,7 +569,13 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
   const layout = useFlowOption('nudges', 'layout', 'bars') as NudgeLayout
   const everyBuy = useFlowOption('nudges', 'everyBuy', 'off') === 'on'
-  const fired = nudge === 'options' ? { caseId: optionCase, state: optionState } : nudge
+  const vibrate = useFlowOption('nudges', 'vibrate', 'on') === 'on'
+  // A screen with a fixed case (03–09) shows it until the case or data state is changed in the settings; from then on
+  // it follows the settings too, so the dropdown always changes the sheet that's open.
+  const [opened] = useState(`${optionCase}.${optionState}`)
+  const changed = `${optionCase}.${optionState}` !== opened
+  const fired = nudge === undefined ? undefined
+    : nudge === 'options' || changed ? { caseId: optionCase, state: optionState } : nudge
 
   const [product, setProduct] = useState<OrderProduct>(initialProduct)
   const [type, setType] = useState<OrderType>(initialType)
@@ -587,7 +602,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const submit = () => { if (fired && (!nudged || everyBuy)) { setNudged(true); setModal({ kind: 'nudge' }) } else place() }
 
   const sheet = modal?.kind === 'nudge' && fired
-    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
+    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} vibrate={vibrate} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
     : modal?.kind === 'pnl'
       ? <LossLimitSheet initial={limit ?? defaultLimit} onClose={() => setModal(null)} onSave={(amount) => { setLimit(amount); setModal(null); setToast(t('pnl.saved', { amount: inr(amount, 0) })) }} />
       : modal?.kind === 'tpsl'
@@ -761,7 +776,7 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 
 /* 3 · Compact alert: one red-tinted card — icon, tag, the fact — the shortest sheet. */
 .compact { padding-top: var(--l3-spacing-08); }
-.alert { display: flex; align-items: flex-start; gap: var(--l3-spacing-12); padding: var(--l3-spacing-16); border: 1px solid var(--l3-content-accent-error-default); border-radius: var(--l3-radius-12); background: var(--l3-surface-accent-error-light); }
+.alert { display: flex; align-items: center; gap: var(--l3-spacing-12); padding: var(--l3-spacing-16); border: 1px solid var(--l3-content-accent-error-default); border-radius: var(--l3-radius-12); background: var(--l3-surface-accent-error-light); }
 .alertIcon { position: relative; flex: none; display: grid; place-items: center; width: var(--l3-size-40); height: var(--l3-size-40); border-radius: var(--l3-radius-full); background: var(--l3-surface-primary); color: var(--l3-content-accent-error-default); }
 .alertIcon::after { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--l3-content-accent-error-default); opacity: 0; animation: pulse calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-decelerate) 2 both; }
 .alertText { margin: 0; font: var(--l3-text-heading-18); color: var(--l3-content-primary); }
@@ -774,7 +789,7 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 ### `src/flows/nudges/sheets/NudgeSheet.tsx`
 
 ```tsx
-import { useId, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useId, type CSSProperties, type ReactNode } from 'react'
 import { BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
@@ -803,6 +818,8 @@ export type NudgeSheetProps = {
   caseId: NudgeCaseId
   state: DataState
   layout?: NudgeLayout
+  /** Buzz the phone once when the sheet opens (two short pulses: "stop, look"). */
+  vibrate?: boolean
   /** 'one' (default): the case's guardrail (primary) + Not now (secondary) · 'two': both guardrails + Not now (ghost). */
   actions?: 'one' | 'two'
   onGuardrail: (g: Guardrail) => void
@@ -818,8 +835,10 @@ type Key = Parameters<typeof t>[0]
  * → one consequence line (what it costs) → the guardrail, or Not now. One number, one consequence.
  * Motion plays once on open and is off with reduced motion.
  */
-export function NudgeSheet({ caseId, state, layout = 'bars', actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
+export function NudgeSheet({ caseId, state, layout = 'bars', vibrate = true, actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
   const id = useId()
+  // On open only (switching case or layout keeps the sheet open, so it doesn't buzz again).
+  useEffect(() => { if (vibrate) buzz() }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const nudge = caseById.get(caseId)!
   const key = (slot: string) => `case.${caseId}.${slot}` as Key
   const has = (slot: string) => key(slot) in copy
@@ -841,7 +860,7 @@ export function NudgeSheet({ caseId, state, layout = 'bars', actions = 'one', on
   const other: Guardrail = nudge.primary === 'pnl' ? 'tpsl' : 'pnl'
   const label = (g: Guardrail) => t(g === 'pnl' ? 'nudge.setPnl' : 'nudge.setTpsl')
   const notNow = t(nudge.where === 'positions' ? 'nudge.notNowPositions' : 'nudge.notNow')
-  const tag = <Tag size="sm" color="error">{t('nudge.tag')}</Tag>
+  const tag = <Tag size="md" color="error">{t('nudge.tag')}</Tag>
 
   const footer = <ButtonGroup aria-label={headline} direction="vertical">
     <Button size="lg" onClick={() => onGuardrail(nudge.primary)}>{label(nudge.primary)}</Button>
@@ -885,6 +904,17 @@ export function NudgeSheet({ caseId, state, layout = 'bars', actions = 'one', on
   }
 
   return <Sheet labelledBy={id} onClose={onNotNow} header={header} footer={footer}>{body}</Sheet>
+}
+
+/** Two short pulses. In the Lemonn Android app the page calls its native bridge (works without a tap, and uses the
+ *  phone's haptics); in a browser, the Vibration API (Android Chrome only, and only right after a tap; iPhone: none). */
+const BUZZ = [70, 60, 70]
+function buzz() {
+  const app = (window as { LemonnApp?: { vibrate?: (pattern: string) => void } }).LemonnApp
+  try {
+    if (app?.vibrate) app.vibrate(BUZZ.join(','))
+    else navigator.vibrate?.(BUZZ)
+  } catch { /* no vibration here */ }
 }
 
 function Consequence({ tone, icon, text }: { tone: 'own' | 'others'; icon: typeof msGroupFill; text: string }) {
