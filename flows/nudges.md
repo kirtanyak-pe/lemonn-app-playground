@@ -89,7 +89,8 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
 
 **Floating switcher (prototype only):** on the order pad and over the open nudge, a small pill floats: grip · Layout · Case ·
-State. Each chip opens the phone's own picker; the sheet changes in place. Drag it by the grip (it remembers where,
+State. Each is a dropdown pill that opens its own menu (full names, the picked one ticked); a long value is cut with an
+ellipsis in the pill so the bar always fits the screen. The sheet changes in place. Drag it by the grip (it remembers where,
 per browser). `components/SheetSwitcher.tsx`, options in `options.ts`. Not part of the design: don't build it.
 
 **Vibration:** two short pulses (70 · 60 · 70 ms) when the sheet opens, not when it changes; setting "Vibrate when
@@ -154,6 +155,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-02 · Layout 1 header: Chip (✋ + label in one light-red pill, no circle; default) or Icon + tag — setting and floating switcher.
 - 2026-11-02 · Chip header: 24 above and below it; on open it pops in as ✋ alone, then opens to show "Overtrading Detected" (while the bars grow).
 - 2026-11-02 · a nudge with no bars and no consequence (giving back) keeps 24 under the headline, above the dock.
+- 2026-11-02 · Size-up after a loss is the default case and heads the case list. Floating switcher: every control is a dropdown pill with its own designed menu (no system picker); the case pill truncates so the bar never runs off the screen.
 
 
 ## Source — this flow
@@ -199,42 +201,79 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 .grip:active { cursor: grabbing; }
 
 .chip {
-  position: relative;
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-02);
   height: var(--l3-size-32);
-  padding: 0 var(--l3-spacing-08) 0 var(--l3-spacing-12);
+  padding: 0 var(--l3-spacing-04) 0 var(--l3-spacing-08);
+  border: 0;
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-primary);
   font: var(--l3-text-label-12);
   white-space: nowrap;
-}
-.chip[data-wide] { flex: 0 1 auto; min-width: var(--l3-size-64); }
-.chip > :not(.select) { pointer-events: none; }
-.value { overflow: hidden; text-overflow: ellipsis; }
-.chip[data-wide] .value { max-width: var(--l3-size-96); }
-
-/* The real control: invisible, over the whole chip, so a tap opens the phone's own picker. */
-.select {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  opacity: 0;
-  font: var(--l3-text-label-16); /* iOS zooms into a focused field under 16 */
   cursor: pointer;
 }
+.chip > svg { flex: none; transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard); }
+.chip[data-open] { box-shadow: inset 0 0 0 1px var(--l3-border-dark); }
+.chip[data-open] > svg { transform: rotate(180deg); }
+/* The short pills keep their size; the case (the long one) gives way so the bar never runs past the screen. */
+.value { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.chip:not([data-wide]) { flex: none; }
+.chip[data-wide] { min-width: var(--l3-size-64); }
+
+/* The dropdown: a floating card with the full names. */
+.menu {
+  position: absolute;
+  z-index: var(--app-layer-fab);
+  box-sizing: border-box;
+  min-width: calc(var(--l3-size-96) * 2);
+  max-width: calc(100% - var(--l3-spacing-16));
+  overflow-y: auto;
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-primary);
+  box-shadow: var(--l3-shadow-elevation-high), inset 0 0 0 1px var(--l3-border-light);
+  animation: drop var(--l3-motion-duration-short) var(--l3-motion-easing-decelerate) both;
+}
+.menuTitle {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12) var(--l3-spacing-04);
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-label-12);
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  min-height: var(--l3-size-40);
+  padding: 0 var(--l3-spacing-12);
+  border: 0;
+  border-radius: var(--l3-radius-12);
+  background: none;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-14);
+  text-align: left;
+  cursor: pointer;
+}
+.item:hover { background: var(--l3-surface-secondary); }
+.item[data-picked] { background: var(--l3-surface-secondary); }
+.itemLabel { flex: 1; }
+.item > svg { flex: none; color: var(--l3-content-accent-success-default); }
+
+@keyframes drop { from { opacity: 0; transform: translateY(calc(var(--l3-spacing-04) * -1)); } }
+@media (prefers-reduced-motion: reduce) { .menu, .chip > svg { animation: none; transition: none; } }
 ```
 
 ### `src/flows/nudges/components/SheetSwitcher.tsx`
 
 ```tsx
-import { useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Icon } from '@l3/components/Icon'
-import { msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
+import { msCheck, msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
 import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
 import { t } from '../copy'
 import { badgeOption, caseOption, layoutOption, stateOption } from '../options'
@@ -251,8 +290,8 @@ const readSpot = (): Spot | null => {
 /**
  * PROTOTYPE ONLY — not part of the design. A small floating pill over the order pad and the open nudge sheet: Layout ·
  * (Layout 1: Chip / Icon + tag) · Case · State,
- * each a tap-and-pick dropdown (the phone's own picker), so versions can be compared on a phone without opening the
- * settings. Drag it by the grip; it remembers where it was left (this browser).
+ * each a dropdown pill (its own menu, with the full names), so versions can be compared on a phone without opening the
+ * settings. A value that doesn't fit its pill is cut with an ellipsis; the menu shows it whole. Drag it by the grip; it remembers where it was left (this browser).
  *
  * The sheet makes everything inside the screen inert, so the pill is drawn just outside the screen (in the layer
  * that holds it), over the sheet.
@@ -277,6 +316,7 @@ function Pill({ host }: { host: HTMLElement }) {
   const pill = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<Spot | null>(readSpot)
   const layout = useFlowOption('nudges', layoutOption.id, layoutOption.default)
+  const [menu, setMenu] = useState<{ option: Option; chip: HTMLElement } | null>(null)
   const grab = useRef<{ id: number; dx: number; dy: number } | null>(null)
 
   // Keep it inside the screen (a phone turned, or a spot saved on a bigger screen).
@@ -289,6 +329,7 @@ function Pill({ host }: { host: HTMLElement }) {
 
   const down = (e: PointerEvent<HTMLButtonElement>) => {
     const box = pill.current!.getBoundingClientRect()
+    setMenu(null)
     grab.current = { id: e.pointerId, dx: e.clientX - box.left, dy: e.clientY - box.top }
     try { e.currentTarget.setPointerCapture(e.pointerId) } catch { /* the pointer is already gone */ }
   }
@@ -312,25 +353,79 @@ function Pill({ host }: { host: HTMLElement }) {
       onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
       <Icon icon={msDragIndicator} size={20} />
     </button>
-    <Pick option={layoutOption} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
-    {layout === 'bars' && <Pick option={badgeOption} short={(v) => t(v === 'chip' ? 'switcher.badgeChip' : 'switcher.badgeTag')} />}
-    <Pick option={caseOption} short={(_, label) => label} wide />
-    <Pick option={stateOption} short={(v) => t('switcher.state', { state: v })} />
+    <Pick option={layoutOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
+    {layout === 'bars' && <Pick option={badgeOption} menu={menu} setMenu={setMenu} short={(v) => t(v === 'chip' ? 'switcher.badgeChip' : 'switcher.badgeTag')} />}
+    <Pick option={caseOption} menu={menu} setMenu={setMenu} short={(_, label) => label} wide />
+    <Pick option={stateOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.state', { state: v })} />
+    {menu && <Menu option={menu.option} chip={menu.chip} host={host} onClose={() => setMenu(null)} />}
   </div>
 }
 
-/** A chip showing the short value; a transparent native <select> over it opens the phone's picker with the full names. */
-function Pick({ option, short, wide }: { option: Option; short: (value: string, label: string) => string; wide?: boolean }) {
+type MenuState = { option: Option; chip: HTMLElement } | null
+
+/** A dropdown pill: the short value (cut with an ellipsis when it doesn't fit) and a chevron; a tap opens the menu. */
+function Pick({ option, short, wide, menu, setMenu }: {
+  option: Option; short: (value: string, label: string) => string; wide?: boolean
+  menu: MenuState; setMenu: (menu: MenuState) => void
+}) {
   const value = useFlowOption('nudges', option.id, option.default)
   const label = option.values.find((o) => o.value === value)?.label ?? value
-  return <label className={styles.chip} data-wide={wide ? '' : undefined}>
+  const open = menu?.option.id === option.id
+  return <button type="button" className={styles.chip} data-wide={wide ? '' : undefined} data-open={open ? '' : undefined}
+    aria-haspopup="listbox" aria-expanded={open} aria-label={`${option.label}: ${label}`}
+    onClick={(e) => setMenu(open ? null : { option, chip: e.currentTarget })}>
     <span className={styles.value}>{short(value, label)}</span>
     <Icon icon={msKeyboardArrowDown} size={16} />
-    <select className={styles.select} aria-label={option.label} value={value}
-      onChange={(e) => setFlowOption('nudges', option.id, option.default, e.target.value)}>
-      {option.values.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-    </select>
-  </label>
+  </button>
+}
+
+/** The open dropdown: every value by its full name, the picked one ticked. Under its pill (above it when there's no
+ *  room), kept inside the screen; a tap outside or Escape closes it. */
+function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLElement; host: HTMLElement; onClose: () => void }) {
+  const box = useRef<HTMLDivElement>(null)
+  const value = useFlowOption('nudges', option.id, option.default)
+  const [spot, setSpot] = useState<{ left: number; top: number; maxHeight: number } | null>(null)
+
+  useLayoutEffect(() => {
+    const origin = host.getBoundingClientRect()
+    const scale = origin.width / host.clientWidth || 1
+    const at = chip.getBoundingClientRect()
+    const gap = 8
+    const width = box.current?.offsetWidth ?? 0
+    const left = Math.min(Math.max(gap, (at.left - origin.left) / scale), host.clientWidth - width - gap)
+    const below = (at.bottom - origin.top) / scale + gap
+    const above = (at.top - origin.top) / scale - gap
+    const roomBelow = host.clientHeight - below - gap
+    const height = box.current?.scrollHeight ?? 0
+    setSpot(height <= roomBelow || roomBelow >= above
+      ? { left, top: below, maxHeight: roomBelow }
+      : { left, top: Math.max(gap, above - height), maxHeight: above - gap })
+  }, [chip, host])
+
+  useEffect(() => {
+    const away = (e: Event) => {
+      const target = e.target as Node
+      if (!box.current?.contains(target) && !chip.contains(target)) onClose()
+    }
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('pointerdown', away)
+    document.addEventListener('keydown', key)
+    return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', key) }
+  }, [chip, onClose])
+
+  return createPortal(<div ref={box} className={styles.menu} role="listbox" aria-label={option.label}
+    style={spot ?? { visibility: 'hidden' }}>
+    <div className={styles.menuTitle}>{option.label}</div>
+    {option.values.map((o) => {
+      const picked = o.value === value
+      return <button key={o.value} type="button" role="option" aria-selected={picked} className={styles.item}
+        data-picked={picked ? '' : undefined}
+        onClick={() => { setFlowOption('nudges', option.id, option.default, o.value); onClose() }}>
+        <span className={styles.itemLabel}>{o.label}</span>
+        {picked && <Icon icon={msCheck} size={16} />}
+      </button>
+    })}
+  </div>, host)
 }
 ```
 
@@ -667,7 +762,8 @@ const onOff = [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', 
  * PROTOTYPE ONLY: the flow's settings (preview panel / phone settings sheet) and, for the three that change the sheet,
  * the floating switcher over the open nudge (components/SheetSwitcher). A real app ships one version.
  */
-export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown' as const, values: nudgeCases.map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Key) })), default: 'sizeUp' }
+// Size-up after a loss is the default and heads the list.
+export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown' as const, values: [...nudgeCases].sort((a, b) => Number(b.id === 'sizeUp') - Number(a.id === 'sizeUp')).map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Key) })), default: 'sizeUp' }
 export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
 export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' }
 
