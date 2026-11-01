@@ -40,7 +40,7 @@
       "id": "nudges-04",
       "name": "Nudge · size-up · A (own loss)",
       "figma": "",
-      "note": "Bars: this order vs the trade he lost (2×). Enough history and his last size-up lost: the line is his own loss, on a red strip.",
+      "note": "Bars: this order vs the trade he lost (2X). Enough history and his last size-up lost: the line is his own loss, on a red strip.",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -48,7 +48,7 @@
       "id": "nudges-05",
       "name": "Nudge · orders today · B",
       "figma": "",
-      "note": "Bars: his usual day vs today (3×). Last time didn’t lose: the line is the group (7 in 10 lost more).",
+      "note": "Bars: his usual day vs today (3X). Last time didn’t lose: the line is the group (7 in 10 lost more).",
       "goesTo": [],
       "figmaUrl": ""
     },
