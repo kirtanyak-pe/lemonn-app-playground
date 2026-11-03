@@ -95,7 +95,7 @@
       "id": "stocks-09",
       "name": "Home · US Stocks tab",
       "figma": "5756:74756",
-      "note": "The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers, Trillion Dollar Titans, Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\\",
+      "note": "The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\\",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -242,8 +242,6 @@
     "src/flows/stocks/assets/us/ftux/tsla.png",
     "src/flows/stocks/assets/us/ind-icon-off.svg",
     "src/flows/stocks/assets/us/ind-icon-on.svg",
-    "src/flows/stocks/assets/us/spark-down.svg",
-    "src/flows/stocks/assets/us/spark-up.svg",
     "src/flows/stocks/assets/us/us-icon-off.svg",
     "src/flows/stocks/assets/us/us-icon-on.svg",
     "src/flows/stocks/components/Discover.tsx",

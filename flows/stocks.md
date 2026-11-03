@@ -18,7 +18,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-06` | Home · highlights & idea baskets | — | `profile-01` | Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.) |
 | `stocks-07` | Home · idea baskets & disclosure | — | `profile-01` | The end of the page: the disclosure, four lines and Read More. |
 | `stocks-21` | Home · US tab · KYC not done | [9001:20]() | `kyc-01`, `us-stocks-74` | The US tab for a user who hasn\ |
-| `stocks-09` | Home · US Stocks tab | [5756:74756]() | — | The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers, Trillion Dollar Titans, Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\ |
+| `stocks-09` | Home · US Stocks tab | [5756:74756]() | — | The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\ |
 | `stocks-10` | Home · US Stocks tab · scrolled | — | — | Same tab, scrolled past the tabs: the compact IND / US tabs are pinned under the top bar. |
 | `stocks-11` | Home · US Stocks intro (FTUX) sheet | [5756:68986]() | `stocks-12`, `stocks-01` | First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the risk disclosure (stocks-12); ✕ → Home (stocks-01). |
 | `stocks-12` | Home · US tab · risk disclosure sheet | [5756:71475]() | `stocks-13`, `stocks-09` | The Risk disclosure (For US Stocks) sheet over the US tab. Agree and Continue submits the activation → under review (stocks-13); closing it → the tab (stocks-09). |
@@ -130,7 +130,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 ### Homepage versions (prototype option)
 
 Jojo's US Stocks design has nine versions of the home (`designs/lemonn-us-stocks-design.html`, its "Homepage version"
-switch). Here they are the flow option **Homepage version** (`homeVersion`, default V8, a floating card beside every
+switch). Here they are the flow option **Homepage version** (`homeVersion`, default V12, a floating card beside every
 Home screen); `components/homeVersions.ts` lists them and `screens/Home.tsx` reads the choice. Only the top of the page
 changes — the feeds are the same. (V1, the current homepage with no switch, is no longer in the list. V2–V6 and V9, archived
 for a while, are back in the picker.)
@@ -280,6 +280,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Homepage version: V12 · Two homes · switch in top bar is the default (was V8).
+- 2026-11-03 — US tab: Top Movers use the Trillion Dollar Titans card (logo, name, symbol, arrow, sparkline; price and day change at the foot, as movers have no market cap), up to eight in one row that scrolls sideways. Each card's graph is the stock's real last month of daily closes (snapshot) plus today's ticking price — a line over a fill fading from full at the top to clear at the bottom (hand-made SVG: L3 Sparkline is fixed at 64×24). A new cap or filter brings its cards in from the right, one after another. The Trillion Dollar Titans section is removed (Mega Cap movers already cover it).
 - 2026-11-03 — Prototype only, on a phone (the app mode): a floating, draggable settings pill over every Home screen (`components/HomeSwitcher`, copied from the nudges flow's SheetSwitcher) — US Stocks activation · USD wallet · US holdings · Homepage version · Header, each a dropdown with the full names. Hidden on a laptop, where these settings already float beside the phone mockup.
 - 2026-11-03 — One IND ↔ US switch in every version: the two top cards are one carousel track (IND left, US right, the
   other card just off screen). A swipe on the card drags the track, so the other market's card slides into view beside
@@ -19646,40 +19648,6 @@ h��ha�E�  @����=O������S��m���㡦8�
 </svg>
 ```
 
-### `src/flows/stocks/assets/us/spark-down.svg`
-
-```tsx
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="146.748" height="36.68" viewBox="0 0 146.748 36.68" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Group 2147226374">
-<path id="Vector 2362" d="M2.91557 28.1688L1.00506 30.1861C0.359684 30.8676 0 31.7705 0 32.7091C0 34.8496 1.82474 36.5356 3.95855 36.3667L141.601 25.4738C144.085 25.2773 146 23.2046 146 20.7134V13.4372C146 11.5888 143.715 10.7205 142.488 12.1022C141.889 12.7761 140.915 12.9689 140.105 12.5741L134.679 9.9302C133.708 9.45697 132.56 9.52753 131.654 10.1161C131.24 10.3852 130.768 10.5506 130.276 10.5985L121.344 11.4691C120.841 11.5182 120.333 11.4268 119.878 11.205C119.013 10.7835 117.99 10.8463 117.183 11.3706L116.695 11.6881C115.28 12.6074 113.427 12.4752 112.157 11.3644L102.722 3.11092C101.43 1.98095 99.7719 1.35815 98.0556 1.35815C94.7279 1.35815 90.6709 3.21218 87.3645 3.58765C86.544 3.68082 85.6007 3.7349 84.5196 3.7349C82.94 3.7349 74.9815 7.04117 74.506 8.54741L73.4482 11.8981C73.1957 12.6981 72.4537 13.2419 71.6148 13.2419H63.5777C62.5812 13.2419 61.6062 13.5309 60.7706 14.0739C58.7655 15.3768 56.1274 15.1287 54.4003 13.4749L50.4409 9.68333C48.5444 7.86727 45.8898 7.07485 43.3081 7.55416L41.1011 7.96392C40.4615 8.08267 39.8007 7.95124 39.2552 7.59679C38.4886 7.09865 37.5133 7.05139 36.7021 7.47307L36.4648 7.59644C35.7826 7.95109 34.9901 8.02989 34.2514 7.81655L33.8655 7.70511C32.0265 7.174 30.0689 8.01979 29.1953 9.72293L25.4742 16.9768L19.5647 27.2241C19.3582 27.5821 18.8109 27.4356 18.8109 27.0223C18.8109 26.9026 18.7578 26.7891 18.666 26.7124L17.0521 25.364C15.8579 24.3664 14.261 23.995 12.7493 24.3634L12.2785 24.4781C11.4272 24.6856 10.6559 25.1396 10.0615 25.7834L7.53421 28.5205C6.88725 29.2211 5.75688 29.1386 5.21849 28.3515C4.68444 27.5707 3.56604 27.4819 2.91557 28.1688Z" fill="url(#paint0_linear_0_4)"/>
-<path id="Vector 2361" d="M1.04688 31.291L3.9911 28.1738C4.6477 27.4786 5.77872 27.5683 6.31758 28.3582C6.86082 29.1546 8.00394 29.238 8.65697 28.5288L11.21 25.7564C11.8098 25.1052 12.5885 24.6456 13.4485 24.4355L13.9166 24.3211C15.4476 23.9471 17.0652 24.3239 18.2734 25.3359L19.9438 26.7353C20.0086 26.7895 20.046 26.8697 20.046 26.9541C20.046 27.2724 20.4881 27.352 20.5991 27.0537L24.268 17.1929L28.0297 9.84021C28.9098 8.11986 30.8864 7.26542 32.7426 7.80292L33.1328 7.91591C33.879 8.132 34.6798 8.05221 35.3687 7.69312L35.608 7.56838C36.4272 7.14136 37.4131 7.1892 38.1871 7.69353C38.7379 8.05238 39.4057 8.18546 40.0519 8.06516L42.2809 7.65021C44.8875 7.16498 47.5681 7.96642 49.4806 9.80275L53.4848 13.6474C55.2275 15.3207 57.8938 15.5716 59.9181 14.2527C60.7617 13.7031 61.7468 13.4104 62.7537 13.4104H70.8691C71.717 13.4104 72.4668 12.8604 72.7214 12.0517L73.7951 8.64137C74.2735 7.12188 82.3112 3.78243 83.9042 3.78243C84.9987 3.78243 85.9533 3.72741 86.7833 3.63265C90.1206 3.25166 94.2141 1.37543 97.5731 1.37543C99.308 1.37543 100.984 2.00619 102.288 3.15019L111.819 11.5097C113.1 12.6336 114.973 12.7673 116.401 11.8369L116.895 11.5151C117.71 10.9845 118.743 10.9209 119.616 11.3476C120.076 11.5722 120.589 11.6648 121.098 11.615L130.118 10.7334C130.615 10.6849 131.093 10.5174 131.511 10.245C132.425 9.64904 133.586 9.57762 134.567 10.0569L136.593 11.0472C139.451 12.4437 142.89 11.7625 144.999 9.38179L146 8.25258" stroke-width="2" stroke="#E5505F" style="stroke:#E5505F;stroke:color(display-p3 0.8980 0.3137 0.3725);stroke-opacity:1;"/>
-</g>
-<defs>
-<linearGradient id="paint0_linear_0_4" x1="69.2598" y1="-21.5436" x2="76.5787" y2="25.9461" gradientUnits="userSpaceOnUse">
-<stop stop-color="#E5505F" style="stop-color:#E5505F;stop-color:color(display-p3 0.8980 0.3137 0.3725);stop-opacity:1;"/>
-<stop offset="1" stop-color="#E5505F" stop-opacity="0" style="stop-color:none;stop-opacity:0;"/>
-</linearGradient>
-</defs>
-</svg>
-```
-
-### `src/flows/stocks/assets/us/spark-up.svg`
-
-```tsx
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="146.733" height="36.6842" viewBox="0 0 146.733 36.6842" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Group 2147226374">
-<path id="Vector 2363" d="M3.32818 27.7363L0.273888 30.9618C0.0980158 31.1475 0 31.3936 0 31.6493V35.6019C0 36.1853 0.49733 36.6448 1.0789 36.5988L145.079 25.2015C145.599 25.1603 146 24.7263 146 24.2046V10.7812C146 9.86152 144.863 9.42949 144.252 10.117L141.979 12.6763C141.681 13.0116 141.196 13.1076 140.793 12.9111L133.623 9.41643C133.307 9.26263 132.934 9.28556 132.64 9.47686L131.229 10.3937C131.095 10.4812 130.941 10.535 130.781 10.5505L120.855 11.5182C120.671 11.5361 120.486 11.5027 120.32 11.4218L118.992 10.7747C118.677 10.6209 118.304 10.6439 118.009 10.8352L114.938 12.8313C114.562 13.0751 114.071 13.0401 113.734 12.7455L101.001 1.60566C100.818 1.4462 100.584 1.3583 100.342 1.3583H93.1615C92.6919 1.3583 92.2662 1.69874 91.9264 2.02285C91.0989 2.81224 88.9861 3.73533 84.5196 3.73533C83.5912 3.73533 82.7732 3.67266 82.0541 3.56223C80.9237 3.38866 75.5948 5.09875 75.2506 6.18934L73.2446 12.5444C73.1133 12.9605 72.7273 13.2434 72.291 13.2434H62.3473C62.1538 13.2434 61.9646 13.2995 61.8024 13.405L58.0125 15.8679C57.6233 16.1208 57.1112 16.0727 56.7759 15.7516L47.7904 7.14607C47.558 6.92347 47.2326 6.82634 46.9162 6.88509L40.4975 8.07691C40.2454 8.12371 39.985 8.07191 39.77 7.93221L38.5036 7.10922C38.2015 6.91288 37.8171 6.89425 37.4974 7.06046L35.7568 7.9654C35.5291 8.08379 35.2646 8.11009 35.018 8.03888L31.4908 7.02008C31.0311 6.88732 30.5418 7.09872 30.3235 7.52442L25.4742 16.9788L19.5647 27.2271C19.3582 27.5852 18.8109 27.4387 18.8109 27.0254C18.8109 26.9057 18.7578 26.7922 18.666 26.7154L15.5407 24.1041C15.297 23.9005 14.9712 23.8247 14.6627 23.8999L11.2663 24.7276C11.075 24.7742 10.9018 24.8762 10.7683 25.0208L7.12184 28.9704C6.68598 29.4425 5.92438 29.3869 5.56167 28.8565L4.87972 27.8594C4.51993 27.3333 3.7664 27.2735 3.32818 27.7363Z" fill="url(#paint0_linear_0_9)"/>
-<path id="Vector 2361" d="M2.9396 29.5263L6.27129 26.1537C6.70746 25.7122 7.43628 25.7705 7.79674 26.2757L8.49078 27.2485C8.85423 27.7579 9.59096 27.8121 10.0251 27.3614L13.6727 23.5743C13.8065 23.4354 13.9777 23.3381 14.1655 23.2943L17.5714 22.4986C17.8702 22.4288 18.1845 22.5001 18.424 22.6919L21.5859 25.2244C21.6521 25.2774 21.6907 25.3576 21.6907 25.4424C21.6907 25.7515 22.1183 25.8318 22.2304 25.5438L25.8576 16.2232L30.6887 7.19472C30.9094 6.78231 31.3865 6.57797 31.8373 6.70278L35.3844 7.68483C35.6223 7.75071 35.8762 7.72623 36.0972 7.6161L37.858 6.73863C38.1689 6.58369 38.5379 6.60119 38.8328 6.78486L40.1158 7.58413C40.3256 7.71483 40.5764 7.76319 40.8198 7.71987L47.2468 6.57599C47.5537 6.52136 47.8686 6.61301 48.0983 6.82386L57.0703 15.0603C57.4012 15.3641 57.8941 15.41 58.2753 15.1725L62.0753 12.8054C62.2339 12.7065 62.4171 12.6541 62.604 12.6541H72.5326C72.9644 12.6541 73.3474 12.377 73.4824 11.9669L75.4732 5.92128C75.8287 4.8418 80.9985 3.20554 82.1211 3.38292C82.8705 3.50133 83.7305 3.56912 84.7151 3.56912C89.1435 3.56912 91.2508 2.69657 92.085 1.94503C92.4313 1.633 92.8585 1.29786 93.3247 1.29786H100.498C100.733 1.29786 100.961 1.38062 101.141 1.53162L113.849 12.1881C114.18 12.4661 114.653 12.4994 115.02 12.2707L118.111 10.3453C118.398 10.1664 118.756 10.1448 119.063 10.2881L120.409 10.9169C120.57 10.9921 120.748 11.0231 120.925 11.0065L130.837 10.0804C130.991 10.0659 131.141 10.0157 131.272 9.93351L132.695 9.04741C132.982 8.86849 133.34 8.84696 133.647 8.9902L140.828 12.3454C141.222 12.5293 141.69 12.4379 141.985 12.1191L146 7.78716" stroke-width="2" stroke="#37AD75" style="stroke:#37AD75;stroke:color(display-p3 0.2157 0.6784 0.4588);stroke-opacity:1;"/>
-</g>
-<defs>
-<linearGradient id="paint0_linear_0_9" x1="61.6596" y1="-22.1358" x2="68.3382" y2="27.9359" gradientUnits="userSpaceOnUse">
-<stop stop-color="#0F9958" style="stop-color:#0F9958;stop-color:color(display-p3 0.0588 0.6000 0.3451);stop-opacity:1;"/>
-<stop offset="1" stop-color="#0F9958" stop-opacity="0" style="stop-color:#0F9958;stop-opacity:0;"/>
-</linearGradient>
-</defs>
-</svg>
-```
-
 ### `src/flows/stocks/assets/us/us-icon-off.svg`
 
 ```tsx
@@ -22601,7 +22569,7 @@ export const homeVersions: HomeVersion[] = [
 // Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13.
 
 /** The version shown until one is picked (and in place of an archived pick). */
-export const DEFAULT_HOME_VERSION: HomeVersionId = 'v8'
+export const DEFAULT_HOME_VERSION: HomeVersionId = 'v12'
 
 /** The versions the "Homepage version" picker offers. */
 export const activeHomeVersions = homeVersions.filter((v) => !v.archived)
@@ -23286,54 +23254,6 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   }
 }
 
-.rowCard[data-interactive] {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--l3-spacing-10);
-  border-radius: var(--l3-radius-12); /* the L3 card radius */
-}
-
-.rowText {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--l3-spacing-02);
-  min-width: 0;
-}
-
-.rowName {
-  color: var(--l3-content-primary);
-  font: var(--l3-text-heading-12);
-}
-
-.rowSub {
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-label-12);
-}
-
-.rowPrice {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--l3-spacing-02);
-}
-
-.rowValue {
-  color: var(--l3-content-primary);
-  font: var(--l3-text-label-12);
-}
-
-.rowChange {
-  color: var(--l3-content-accent-indicator-down-default);
-  font: var(--l3-text-heading-12);
-}
-
-.rowChange[data-up] {
-  color: var(--l3-content-accent-indicator-up-default);
-}
-
-/* ---- Trillion Dollar Titans ---- */
-/* FLAG: raw px sizing of a Card */
 .titan[data-interactive] {
   flex: none;
   gap: var(--l3-spacing-10);
@@ -23374,12 +23294,52 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 .spark {
   display: block;
   width: 146px; /* FLAG: raw px */
-  height: 36.684px; /* FLAG: raw px */
+  height: 36px; /* FLAG: raw px */
   margin-top: var(--l3-spacing-02);
+  overflow: visible;
+  --line: var(--l3-border-accent-indicator-down-default);
+  --fill: var(--l3-surface-accent-indicator-down-light);
 }
 
-.spark[data-flip] {
-  scale: -1 1;
+.spark[data-up] {
+  --line: var(--l3-border-accent-indicator-up-default);
+  --fill: var(--l3-surface-accent-indicator-up-light);
+}
+
+.sparkLine {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.sparkFadeTop {
+  stop-color: var(--fill);
+  stop-opacity: 1;
+}
+
+.sparkFadeBottom {
+  stop-color: var(--fill);
+  stop-opacity: 0;
+}
+
+/* Top Movers: a new cap or filter brings its cards in from the right, one after another. */
+.row > .titan[data-interactive] {
+  animation: moverIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
+}
+/* One after another (FLAG: raw 40 ms stagger step; L3 Card takes no style, so no --i). */
+.row > .titan[data-interactive]:nth-child(2) { animation-delay: 40ms; }
+.row > .titan[data-interactive]:nth-child(3) { animation-delay: 80ms; }
+.row > .titan[data-interactive]:nth-child(4) { animation-delay: 120ms; }
+.row > .titan[data-interactive]:nth-child(n + 5) { animation-delay: 160ms; }
+
+@keyframes moverIn {
+  from { opacity: 0; translate: var(--l3-spacing-24) 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row > .titan[data-interactive] { animation: none; }
 }
 
 .titanFoot {
@@ -23548,11 +23508,11 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 ```tsx
 // The US Stocks tab's feed: the activation card for the user's state (activate / under review / failed / activated /
-// money ready; none once they hold US stocks), shortcuts, Top Movers, Trillion Dollar Titans, Brands You Know, Heatmap
+// money ready; none once they hold US stocks), shortcuts, Top Movers, Brands You Know, Heatmap
 // and themes. Ported from the
 // US Stocks prototype's Home (src/flows/us-stocks/screens/home/UsHome.tsx), rebuilt with L3 layout blocks.
 // FLAG: hand-made chips, titan / brand cards' insides, heatmap tiles and logo stacks — see UsHome.module.css.
-import { useState, type CSSProperties } from 'react'
+import { useId, useState, type CSSProperties } from 'react'
 import { Avatar } from '@l3/components/Avatar'
 import { Card } from '@l3/components/Card'
 import { Grid } from '@l3/components/Grid'
@@ -23564,7 +23524,7 @@ import { Tabs } from '@l3/components/Tabs'
 import { msChevronRight, msUnfoldMore } from '@l3/icons/material'
 import { handToMarket } from '../../../../shared/data/marketHandoff'
 import { useLiveQuote } from '../../../../shared/data/live'
-import { usLogo, viewUsStock } from '../../../../shared/data/usStocks'
+import { usLogo, usQuote, viewUsStock } from '../../../../shared/data/usStocks'
 import { Usd, useUsd } from '../../../../shared/money'
 import { usShortcuts } from '../../data'
 import { t } from '../../copy'
@@ -23577,10 +23537,7 @@ import {
   heatmapIndices,
   moverFilters,
   moversFor,
-  sparkDown,
-  sparkUp,
   themes,
-  titans,
   usStock,
   type CapValue,
   type UsState,
@@ -23622,14 +23579,9 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
     onStock?.(sym)
   }
   // "View all" opens the app's Market page on the US list with this rail's choice: Top Movers → its list (gainers /
-  // losers; the other movers have no Market list, so All) and the cap picked here; Trillion Dollar Titans → mega caps,
-  // biggest first; a theme → the US list (Market has no theme filter yet).
+  // losers; the other movers have no Market list, so All) and the cap picked here; a theme → the US list (Market has no theme filter yet).
   const openMarketForMovers = () => {
     handToMarket({ market: 'us', tab: filter === 'gainers' || filter === 'losers' ? filter : 'all', filters: { cap: [`us-${cap}`] } })
-    onMarket?.()
-  }
-  const openMarketForTitans = () => {
-    handToMarket({ market: 'us', tab: 'all', filters: { cap: ['us-mega'], sort: 'mcap-desc' } })
     onMarket?.()
   }
   const openMarketForThemes = () => {
@@ -23661,35 +23613,15 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
               className={styles.chipTabs}
             />
           </Stack>
-          <Inset paddingInline="16" paddingBlock="00">
-            <Stack gap="08">
-              {moversFor(cap, filter).map((m) => <MoverRow key={m.sym} mover={m} onOpen={open} />)}
-            </Stack>
-          </Inset>
+          {/* FLAG: hand-made sideways scroller of fixed-width cards (L3 has no carousel; src/shared/ui Rail sizes by count, not by width).
+              Keyed by the cap and filter: a new pick starts the rail at its first card and the cards slide in one after another. */}
+          <div key={`${cap}-${filter}`} className={styles.scroller} role="region" aria-label={t('us.movers.railLabel')}>
+            <div className={styles.row} data-gap="16">
+              {moversFor(cap, filter).map((m) => <MoverCard key={m.sym} mover={m} onOpen={open} />)}
+            </div>
+          </div>
         </Stack>
       </div>
-
-      <Stack as="section" gap="12" aria-label={t('us.titans.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.titans.title')} action={{ type: 'view-all', onClick: openMarketForTitans }} /></Inset>
-        {/* FLAG: hand-made sideways scroller of fixed-width cards (L3 has no carousel; src/shared/ui Rail sizes by count, not by width) */}
-        <div className={styles.scroller} role="region" aria-label={t('us.titans.railLabel')}>
-          <div className={styles.row} data-gap="16">
-            {titans.map((titan) => (
-              <Card key={titan.sym} onClick={() => open(titan.sym)} surface="default" className={styles.titan}>
-                <span className={styles.titanHead}>
-                  <Avatar src={usLogo(titan.sym)} initials={titan.sym} size={24} />
-                  <span className={styles.titanName}>
-                    <b>{titan.name}</b>
-                    <span>{titan.sym}</span>
-                  </span>
-                  <span className={styles.titanArrow}><Icon icon={msChevronRight} size={16} /></span>
-                </span>
-                <TitanFoot sym={titan.sym} cap={titan.cap} />
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Stack>
 
       <Stack as="section" gap="16" aria-label={t('us.brands.title')}>
         <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.brands.title')} action={{ type: 'view-all', onClick: () => {} }} /></Inset>
@@ -23764,8 +23696,36 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
   )
 }
 
-/** A Top Movers row: the stock's real price and day change, ticking (live.ts). */
-function MoverRow({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string) => void }) {
+/**
+ * The card's graph: the stock's real daily closes over the last month (snapshot) and today's ticking price, as a line
+ * over a soft fill that fades from full at the top to nothing at the bottom; green for a gainer, red for a loser.
+ * FLAG: hand-made SVG — L3 Sparkline is fixed at 64×24 (no width / height); same maths and colours, card-wide (146×36).
+ */
+function MonthLine({ closes, up }: { closes: number[]; up: boolean }) {
+  const w = 146
+  const h = 36
+  const hi = Math.max(...closes)
+  const lo = Math.min(...closes)
+  const points = closes.map((v, i) => `${((i * w) / Math.max(1, closes.length - 1)).toFixed(1)} ${(2 + ((hi - v) / (hi - lo || 1)) * (h - 4)).toFixed(1)}`)
+  const line = `M${points.join(' L')}`
+  const fade = useId()
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className={styles.spark} data-up={up || undefined} aria-hidden="true">
+      <defs>
+        <linearGradient id={fade} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" className={styles.sparkFadeTop} />
+          <stop offset="1" className={styles.sparkFadeBottom} />
+        </linearGradient>
+      </defs>
+      <path d={`${line} L${w} ${h} L0 ${h} Z`} fill={`url(#${fade})`} />
+      <path d={line} className={styles.sparkLine} />
+    </svg>
+  )
+}
+
+/** A Top Movers card (the old Trillion Dollar Titans card): logo, name and symbol, a sparkline, then the stock's real
+ *  price and day change, ticking (live.ts). */
+function MoverCard({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string) => void }) {
   const stock = usStock(mover.sym, mover.name)
   const live = useLiveQuote(mover.sym, stock.price, stock.change)
   // A gainer stays a gainer (and a loser a loser) while it ticks: the list was picked by today's direction.
@@ -23773,33 +23733,21 @@ function MoverRow({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string) 
   const pct = Math.max(0.01, up ? live.changePct : -live.changePct)
   const usd = useUsd()
   return (
-    <Card onClick={() => onOpen(mover.sym)} className={styles.rowCard} aria-label={`${mover.name}, ${usd(live.price)}, ${sign(up)}${pct.toFixed(2)}%`}>
-      <Avatar src={usLogo(mover.sym)} initials={mover.sym} size={24} />
-      <span className={styles.rowText}>
-        <span className={styles.rowName}>{mover.name}</span>
-        <span className={styles.rowSub}>{mover.sym}</span>
+    <Card onClick={() => onOpen(mover.sym)} surface="default" className={styles.titan} aria-label={`${mover.name}, ${usd(live.price)}, ${sign(up)}${pct.toFixed(2)}%`}>
+      <span className={styles.titanHead}>
+        <Avatar src={usLogo(mover.sym)} initials={mover.sym} size={24} />
+        <span className={styles.titanName}>
+          <b>{mover.name}</b>
+          <span>{mover.sym}</span>
+        </span>
+        <span className={styles.titanArrow}><Icon icon={msChevronRight} size={16} /></span>
       </span>
-      <span className={styles.rowPrice}>
-        <span className={styles.rowValue}><Usd value={live.price} align="end" /></span>
-        <span className={styles.rowChange} data-up={up || undefined}>{sign(up)}{pct.toFixed(2)}%</span>
+      <MonthLine closes={[...(usQuote(mover.sym)?.closes ?? []), live.price]} up={up} />
+      <span className={styles.titanFoot}>
+        <Usd value={live.price} layout="inline" />
+        <span className={styles.titanChange} data-up={up || undefined}>{sign(up)}{pct.toFixed(2)}%</span>
       </span>
     </Card>
-  )
-}
-
-/** A titan card's sparkline and foot: market cap (sample) and the real day change, ticking. */
-function TitanFoot({ sym, cap }: { sym: string; cap: string }) {
-  const stock = usStock(sym)
-  const live = useLiveQuote(sym, stock.price, stock.change)
-  const up = live.changePct >= 0
-  return (
-    <>
-      <img src={up ? sparkUp : sparkDown} alt="" className={styles.spark} data-flip={!up || undefined} />
-      <span className={styles.titanFoot}>
-        <Usd text={cap} layout="inline" />
-        <span className={styles.titanChange} data-up={up || undefined}>{formatPct(live.changePct)}</span>
-      </span>
-    </>
   )
 }
 ```
@@ -23983,7 +23931,7 @@ const movers: Record<CapValue, Mover[]> = {
   ],
 }
 
-/** The (up to) five movers of a cap bucket for a filter, from their real day change and range: gainers = biggest rises,
+/** The (up to) eight movers (two rows of four cards) of a cap bucket for a filter, from their real day change and range: gainers = biggest rises,
  *  losers = biggest falls, most active = highest volume, 52W high / low = closest to it. */
 export function moversFor(cap: CapValue, filter: MoverFilter): MoverToday[] {
   const today = movers[cap].map((m) => ({ ...m, change: usStock(m.sym).change, q: usQuote(m.sym) }))
@@ -23993,25 +23941,8 @@ export function moversFor(cap: CapValue, filter: MoverFilter): MoverToday[] {
     : filter === 'losers' ? today.filter((m) => m.change < 0).sort((a, b) => a.change - b.change)
     : filter === 'active' ? today.sort((a, b) => (b.q?.volume ?? 0) - (a.q?.volume ?? 0))
     : today.sort((a, b) => near(filter)(a) - near(filter)(b))
-  return sorted.slice(0, 5).map(({ sym, name, change }) => ({ sym, name, up: change >= 0 }))
+  return sorted.slice(0, 8).map(({ sym, name, change }) => ({ sym, name, up: change >= 0 }))
 }
-
-// ---- Trillion Dollar Titans ----
-
-/** A titan card: the day change comes from the snapshot (`usStock(sym)`); the market cap is a sample (Yahoo's free
- *  endpoint has no caps). */
-export type Titan = { sym: string; name: string; cap: string }
-
-export const titans: Titan[] = [
-  { sym: 'NVDA', name: 'NVIDIA', cap: '$4.52T' },
-  { sym: 'MSFT', name: 'Microsoft', cap: '$3.89T' },
-  { sym: 'AAPL', name: 'Apple', cap: '$3.81T' },
-  { sym: 'GOOGL', name: 'Alphabet', cap: '$3.04T' },
-  { sym: 'AMZN', name: 'Amazon', cap: '$2.42T' },
-  { sym: 'META', name: 'Meta', cap: '$1.89T' },
-  { sym: 'AVGO', name: 'Broadcom', cap: '$1.62T' },
-  { sym: 'TSLA', name: 'Tesla', cap: '$1.43T' },
-]
 
 // ---- Brands You Know (two rows) ----
 
@@ -24055,10 +23986,6 @@ export const themes: { id: 'trending' | 'leveraged' | 'dividend' | 'parking'; lo
   { id: 'dividend', logos: ['KO', 'JNJ', 'XOM'], more: '+4' },
   { id: 'parking', logos: ['JPM', 'V', 'MA'], more: '+24' },
 ]
-
-/** Sparkline artwork under each Titan (up / down). Illustration — keeps its own colours. */
-export { default as sparkUp } from '../../assets/us/spark-up.svg'
-export { default as sparkDown } from '../../assets/us/spark-down.svg'
 ```
 
 ### `src/flows/stocks/components/us/sheets/ActivationApprovedSheet.tsx`
@@ -25063,6 +24990,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.benefit.kyc.text": "No new account or KYC needed",
   "us.movers.title": "Top Movers",
   "us.movers.tabsLabel": "Top movers filter",
+  "us.movers.railLabel": "Top movers, swipe for more",
   "us.movers.gainers": "Top Gainers",
   "us.movers.losers": "Top Losers",
   "us.movers.active": "Most Active",
@@ -25073,8 +25001,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.cap.mid": "Mid Cap",
   "us.cap.small": "Small Cap",
   "us.cap.switch": "{cap}, tap to switch",
-  "us.titans.title": "Trillion Dollar Titans",
-  "us.titans.railLabel": "Trillion dollar companies",
   "us.brands.title": "Brands You Know",
   "us.brands.railLabel": "Brands",
   "us.heatmap.title": "Heatmap",
@@ -25434,7 +25360,7 @@ export const stocks: Flow = {
     { id: 'stocks-06', hidden: true, name: 'Home · highlights & idea baskets', figma: '', note: 'Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.)', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="highlights" /> },
     { id: 'stocks-07', hidden: true, name: 'Home · idea baskets & disclosure', figma: '', note: 'The end of the page: the disclosure, four lines and Read More.', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="more" /> },
     { id: 'stocks-21', hidden: true, name: 'Home · US tab · KYC not done', badge: 'new', badgeNote: 'Not in Jojo\'s Figma: a user whose Lemonn KYC isn\'t complete', figma: '9001:20', group: 'us-activate', note: 'The US tab for a user who hasn\'t finished their Lemonn (Indian) KYC: US Stocks can\'t be activated yet, so the card asks for KYC first. Complete KYC → the KYC flow (kyc-01). A US stock opens its page with Complete KYC in place of Activate (us-stocks-74). Everything else on the tab is as for a not-activated user (stocks-09).', tab: true, render: (go) => usHome(go, 'kyc', { onActivateUs: () => go('kyc-01'), onUsStock: () => go('us-stocks-74') }) },
-    { id: 'stocks-09', hidden: true, name: 'Home · US Stocks tab', figma: '5756:74756', group: 'us-activate', note: 'The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers, Trillion Dollar Titans, Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\'s own Stocks home.', tab: true, render: (go) => usHome(go, 'activate') },
+    { id: 'stocks-09', hidden: true, name: 'Home · US Stocks tab', figma: '5756:74756', group: 'us-activate', note: 'The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\'s own Stocks home.', tab: true, render: (go) => usHome(go, 'activate') },
     { id: 'stocks-10', hidden: true, name: 'Home · US Stocks tab · scrolled', figma: '', note: 'Same tab, scrolled past the tabs: the compact IND / US tabs are pinned under the top bar.', tab: true, render: (go) => usHome(go, 'activate', { scrollTo: 'movers' }) },
     { id: 'stocks-11', name: 'Home · US Stocks intro (FTUX) sheet', figma: '5756:68986', group: 'ftux', note: 'First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the risk disclosure (stocks-12); ✕ → Home (stocks-01).', tab: true, render: (go) => <Home {...chrome(go)} {...usNav(go)} sheet={<UsFtuxSheet onActivate={() => go('stocks-12')} onClose={() => go('stocks-01')} />} /> },
     { id: 'stocks-12', name: 'Home · US tab · risk disclosure sheet', figma: '5756:71475', group: 'us-activate', note: 'The Risk disclosure (For US Stocks) sheet over the US tab. Agree and Continue submits the activation → under review (stocks-13); closing it → the tab (stocks-09).', tab: true, render: (go) => usHome(go, 'activate', { sheet: <RiskDisclosureSheet onAgree={() => go('stocks-13')} onClose={() => go('stocks-09')} /> }) },
