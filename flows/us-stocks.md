@@ -151,6 +151,8 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — **Analyst Ratings ring has gaps between its arcs:** Buy, Hold and Sell are drawn from their shares (78.13 / 18.75 / 3.12%), starting at the top, with a small gap between each one like the Allocation donut. Before, three fixed overlapping paths.
+- 2026-11-03 — **Key Holders drawn like the ETF's Allocation:** a donut with the biggest holder's share in the middle (47.24% Institutions) and the legend beside it, in place of four progress bars. One component for both, `ShareDonut` in `screens/etf/EtfHoldings.tsx`.
 - 2026-11-03 — **Portfolio Positions are F&O only:** the Indian / US tabs are gone (F&O is Indian; US buys land in Holdings), the empty state's Explore F&O opens the F&O tab (fno-01). US positions and Position Details (us-stocks-80) are no longer reached from Portfolio. **US holding card** presses (scale to `motion/scale/press-default`) and hovers like a clickable L3 Card. **Orders:** the All orders · Stocks · ETFs picker steps on each tap (no sheet); order cards have no shadow, border only (L3 gap: a clickable Card has no shadow-free option — `OrderCard.module.css`); the USD / IND pill is one width (`size/80`), so switching doesn't move the Open / History pills.
 - 2026-11-03 — **Orders & Positions: review fixes.** Sample orders tell one story (sells only of the NVDA the user holds, today's executed buys match Positions, weekday dates, 1:30 AM close before 1 Nov); Back from Order / Position Details returns to the US Orders / Positions tab (new preview screens us-stocks-91, 92) with the list as it was.
 - 2026-11-03 — **Orders & Positions for US Stocks** (from the F&O "Positions & orders" design): Open / History order lists with picker, filters and empty states; Order Details for all eight statuses with the status timeline, cancel sheet and per-status dock (preview screens us-stocks-79, 81–90); US positions on the Positions tab and Position Details (us-stocks-80). See "Orders & Positions".
@@ -23126,23 +23128,6 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   padding: 0;
 }
 
-.holder {
-  gap: var(--l3-spacing-08);
-  flex-direction: column;
-  display: flex;
-}
-
-.holderName {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.holderBar {
-  align-items: center;
-  gap: var(--l3-spacing-12);
-  display: flex;
-}
-
 .financials {
   border-radius: var(--l3-radius-12);
   background: var(--l3-surface-primary);
@@ -23484,16 +23469,23 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   );
 }
 
-.arcRed {
-  fill: var(--l3-surface-accent-indicator-down-default);
+/* One arc per rating (butt ends, gaps come from the dash lengths, as in the ETF Allocation donut). */
+.ring .arc {
+  fill: none;
+  stroke-width: 5px; /* FLAG: raw px (svg units) */
+  stroke-linecap: butt;
 }
 
-.arcYellow {
-  fill: var(--l3-surface-accent-warning-default);
+.ring .arc[data-tone='up'] {
+  stroke: var(--l3-surface-accent-indicator-up-default);
 }
 
-.arcGreen {
-  fill: var(--l3-surface-accent-indicator-up-default);
+.ring .arc[data-tone='warning'] {
+  stroke: var(--l3-surface-accent-warning-default);
+}
+
+.ring .arc[data-tone='down'] {
+  stroke: var(--l3-surface-accent-indicator-down-default);
 }
 
 .rateCard .gauge strong,
@@ -24355,15 +24347,24 @@ export function PeerTable({ stock, onOpen }: { stock: UsStock; onOpen: (peer: { 
 ### `src/flows/us-stocks/screens/activation/components/RatingRing.tsx`
 
 ```tsx
-// The rating gauge's ring: a disc with three arcs (sell red, hold yellow, buy green) drawn as raw SVG paths.
-// FLAG: hand-drawn gauge — L3 has no rating gauge; arcs are raw path data.
+// The rating gauge's ring: a disc with one arc per rating (buy green, hold yellow, sell red), sized by its share and
+// starting at the top, with a small gap between arcs — the same way the ETF page's Allocation donut is drawn.
+// FLAG: hand-drawn gauge — L3 has no rating gauge; arcs are raw SVG circles.
+import { RATINGS } from '../data'
 import styles from '../StockPage.module.css'
 
-const ARC_RED = 'M7.02433 12.5424C11.2093 6.86631 16.9586 2.55802 23.5445 0.129517C24.7125 -0.301152 25.9716 0.383166 26.3283 1.57576V1.57576C26.6851 2.76835 26.0038 4.0167 24.8397 4.45783C19.1891 6.59921 14.2574 10.3283 10.6526 15.2175C6.60067 20.7132 4.4446 27.3769 4.50927 34.2045C4.57394 41.0321 6.85585 47.6537 11.0112 53.0716C15.1665 58.4895 20.9701 62.4102 27.5474 64.2428C34.1248 66.0754 41.1196 65.7207 47.4779 63.2322C53.8361 60.7436 59.2134 56.256 62.7993 50.4456C66.3853 44.6351 67.9857 37.8166 67.3594 31.0175C66.8022 24.9686 64.5094 19.2266 60.7803 14.4718C60.0121 13.4923 60.0744 12.0715 60.9965 11.2352V11.2352C61.9186 10.3989 63.3501 10.4643 64.1271 11.4369C68.5083 16.9211 71.2014 23.5817 71.8482 30.604C72.5642 38.3764 70.7347 46.1709 66.6354 52.8131C62.5362 59.4552 56.3892 64.5852 49.1208 67.43C41.8524 70.2747 33.8564 70.6802 26.3375 68.5852C18.8186 66.4903 12.1843 62.0084 7.43421 55.815C2.6841 49.6215 0.0755437 42.0521 0.0016158 34.2472C-0.0723121 26.4422 2.39239 18.8247 7.02433 12.5424Z'
-const ARC_YELLOW = 'M16.3895 3.22342C15.6661 2.21037 14.2533 1.97017 13.2875 2.75551C7.84137 7.18397 3.79494 13.1205 1.67121 19.8452C-0.679327 27.2882 -0.547218 35.2934 2.04763 42.6547C4.64249 50.016 9.5595 56.3346 16.0578 60.6583C22.556 64.9821 30.2835 67.0767 38.0758 66.6267C45.8681 66.1766 53.303 63.2062 59.2603 58.1631C65.2175 53.12 69.3744 46.2773 71.1045 38.6662C72.8346 31.0551 72.0442 23.0879 68.8523 15.965C65.9685 9.52953 61.2655 4.09834 55.3458 0.326344C54.296 -0.34258 52.9202 0.0586743 52.3183 1.14827V1.14827C51.7163 2.23787 52.117 3.60246 53.1607 4.28076C58.2276 7.57354 62.2546 12.2651 64.7386 17.8084C67.5308 24.0394 68.2222 31.0089 66.7088 37.667C65.1953 44.3251 61.559 50.3109 56.3477 54.7225C51.1364 59.1342 44.6324 61.7326 37.8159 62.1263C30.9993 62.52 24.2395 60.6877 18.5549 56.9053C12.8703 53.123 8.56902 47.5956 6.29909 41.1561C4.02916 34.7165 3.91359 27.7137 5.9698 21.2028C7.79912 15.4103 11.2592 10.2863 15.9133 6.43207C16.872 5.6381 17.1129 4.23647 16.3895 3.22342V3.22342Z'
-const ARC_GREEN = 'M0.746204 43.2357C-0.682164 36.3298 -0.0476931 29.1734 2.54447 22.6502C3.00417 21.4934 4.35449 21.0135 5.48029 21.5447V21.5447C6.60609 22.0759 7.07995 23.4168 6.63065 24.5777C4.44955 30.2131 3.93027 36.3741 5.16063 42.3227C6.54358 49.0091 10.0622 55.0649 15.1862 59.5776C20.3103 64.0903 26.7621 66.8154 33.5697 67.3423C40.3772 67.8693 47.1716 66.1695 52.9291 62.499C58.6865 58.8286 63.0951 53.3864 65.4905 46.9925C67.8859 40.5985 68.1384 33.5993 66.2099 27.0494C64.2815 20.4995 60.2765 14.7538 54.7984 10.678C49.9249 7.05203 44.1204 4.92255 38.0909 4.52143C36.8488 4.4388 35.8332 3.44328 35.8268 2.19849V2.19849C35.8204 0.953692 36.8253 -0.0679537 38.0681 0.00353769C45.0759 0.406671 51.8314 2.85182 57.4893 7.06139C63.7514 11.7205 68.3297 18.2887 70.5343 25.7762C72.7388 33.2636 72.4502 41.2648 69.7119 48.5739C66.9735 55.8831 61.9339 62.1043 55.3523 66.3001C48.7707 70.496 41.0038 72.4391 33.2218 71.8368C25.4398 71.2344 18.0644 68.1192 12.2069 62.9605C6.34937 57.8018 2.32712 50.8792 0.746204 43.2357Z'
+const RING = { r: 32, gap: 2 }
 
 export function RatingRing() {
+  const length = 2 * Math.PI * RING.r
+  const total = RATINGS.reduce((sum, r) => sum + r.value, 0)
+  let start = 0
+  const arcs = RATINGS.map((r) => {
+    const size = (r.value / total) * length
+    const arc = { tone: r.tone, label: r.label, dash: Math.max(size - RING.gap, 0.5), offset: -start }
+    start += size
+    return arc
+  })
   return (
     <svg className={styles.ring} viewBox="0 0 72 72" aria-hidden="true">
       <defs>
@@ -24373,9 +24374,21 @@ export function RatingRing() {
         </linearGradient>
       </defs>
       <circle cx="36" cy="36" r="34" fill="url(#rating-disc)" className={styles.ringTrack} />
-      <path d={ARC_RED} transform="translate(0 2.0952)" className={styles.arcRed} />
-      <path d={ARC_YELLOW} transform="translate(0 5.3136)" className={styles.arcYellow} />
-      <path d={ARC_GREEN} className={styles.arcGreen} />
+      {/* Rotated a quarter turn so the first arc (Buy) starts at 12 o'clock and runs clockwise. */}
+      <g transform="rotate(-90 36 36)">
+        {arcs.map((a) => (
+          <circle
+            key={a.label}
+            cx="36"
+            cy="36"
+            r={RING.r}
+            className={styles.arc}
+            data-tone={a.tone}
+            strokeDasharray={`${a.dash} ${length - a.dash}`}
+            strokeDashoffset={a.offset}
+          />
+        ))}
+      </g>
     </svg>
   )
 }
@@ -24770,6 +24783,7 @@ import { useUsNav } from '../../nav'
 import { usQuote } from '../../../../shared/data/usStocks'
 import { Usd, formatUsd, useUsd } from '../../../../shared/money'
 import { setCurrentEtf } from '../etf/currentEtf'
+import { ShareDonut } from '../etf/EtfHoldings'
 import { LevTag } from '../etf/parts'
 import { COMPANY_PROFILES } from './companyProfiles'
 import { PeerTable } from './components/PeerTable'
@@ -25024,24 +25038,14 @@ export function Peers({ stock }: { stock: UsStock }) {
   )
 }
 
-/** Key Holders: who holds the stock, for the latest quarter only (no quarter picker, 3 Nov). */
+/** Key Holders: who holds the stock, for the latest quarter only (no quarter picker, 3 Nov). Drawn like the ETF
+ *  page's Allocation (3 Nov): a donut with the biggest holder in the middle, the legend beside it. */
 export function KeyHolders() {
+  const parts = HOLDERS[QUARTERS[0]].map(([name, pct]) => ({ name, weight: pct }))
   return (
     <section className={styles.section}>
       <SectionTitle title="Key Holders" />
-      <div className={styles.panel} data-gap="16">
-        {HOLDERS[QUARTERS[0]].map(([name, pct]) => (
-          <div className={styles.holder} key={name}>
-            <span className={styles.holderName}>{name}</span>
-            <div className={styles.holderBar}>
-              <span className={styles.track} data-size="10">
-                <span className={styles.fill} style={{ width: `${pct}%` }} />
-              </span>
-              <span className={styles.ratingValue}>{pct.toFixed(2)}%</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <ShareDonut parts={parts} of="the shares" legendLabel="Who holds the shares" format={(n) => `${n.toFixed(2)}%`} />
     </section>
   )
 }
@@ -30964,21 +30968,27 @@ const SECTOR_COLOURS = ['discover', 'purple', 'teal', 'zing']
 /** The donut's size (viewBox units): radius and ring width; a small gap between the parts. */
 const RING = { r: 42, width: 10, gap: 2 }
 
+/** One part of a donut: its name and share (%). "Other" is drawn grey, last. */
+export type DonutPart = { name: string; weight: number }
+
 /**
- * The "Allocation" block (3 Nov, after the stock page's Analyst Ratings card): a donut split by sector — the biggest
- * sector's share and name in the middle — and beside it the legend, one sector a row: colour dot, name, share; "Other"
- * last in grey. (Before: one thin stacked bar over a two-column legend — harder to read.)
+ * A share donut card: the biggest part's share and name in the middle, the legend beside it (dot, name, share).
+ * Used by the ETF page's Allocation and the stock page's Key Holders, so both read the same.
  * FLAG: hand-drawn donut (raw SVG circles) — L3 has no pie / donut chart.
  */
-export function Allocation({ etf }: { etf: Etf }) {
-  const sectors = sectorsFor(etf)
-  if (sectors.length === 0) return null
+export function ShareDonut({ parts: items, of, legendLabel, format = (n) => `${n}%` }: {
+  parts: DonutPart[]
+  /** What the shares are of, for screen readers ("the fund", "the shares"). */
+  of: string
+  legendLabel: string
+  format?: (weight: number) => string
+}) {
   const colour = (name: string, i: number) => (name === 'Other' ? 'other' : SECTOR_COLOURS[i % SECTOR_COLOURS.length])
-  const total = sectors.reduce((sum, s) => sum + s.weight, 0)
+  const total = items.reduce((sum, s) => sum + s.weight, 0)
   const length = 2 * Math.PI * RING.r
-  const biggest = sectors.filter((s) => s.name !== 'Other').sort((a, b) => b.weight - a.weight)[0] ?? sectors[0]
+  const biggest = items.filter((s) => s.name !== 'Other').sort((a, b) => b.weight - a.weight)[0] ?? items[0]
   let start = 0
-  const parts = sectors.map((s, i) => {
+  const parts = items.map((s, i) => {
     const size = (s.weight / total) * length
     const part = { ...s, colour: colour(s.name, i), dash: Math.max(size - RING.gap, 0.5), offset: -start }
     start += size
@@ -30986,7 +30996,7 @@ export function Allocation({ etf }: { etf: Etf }) {
   })
   return (
     <div className={styles.allocCard}>
-      <div className={styles.donut} role="img" aria-label={`Biggest sector: ${biggest.name}, ${biggest.weight}% of the fund`}>
+      <div className={styles.donut} role="img" aria-label={`Biggest: ${biggest.name}, ${format(biggest.weight)} of ${of}`}>
         <svg viewBox="0 0 100 100" aria-hidden="true">
           {parts.map((p) => (
             <circle
@@ -31001,20 +31011,30 @@ export function Allocation({ etf }: { etf: Etf }) {
             />
           ))}
         </svg>
-        <strong>{biggest.weight}%</strong>
+        <strong>{format(biggest.weight)}</strong>
         <span>{biggest.name}</span>
       </div>
-      <ul className={styles.donutLegend} aria-label="Share of the fund by sector">
+      <ul className={styles.donutLegend} aria-label={legendLabel}>
         {parts.map((p) => (
-          <li key={p.name} aria-label={`${p.name}, ${p.weight}% of the ETF`}>
+          <li key={p.name} aria-label={`${p.name}, ${format(p.weight)} of ${of}`}>
             <span className={styles.dot} data-colour={p.colour} aria-hidden="true" />
             <span className={styles.sectorName}>{p.name}</span>
-            <span className={styles.sectorWeight}>{p.weight}%</span>
+            <span className={styles.sectorWeight}>{format(p.weight)}</span>
           </li>
         ))}
       </ul>
     </div>
   )
+}
+
+/**
+ * The "Allocation" block (3 Nov, after the stock page's Analyst Ratings card): the fund split by sector as a
+ * `ShareDonut`, "Other" last in grey. (Before: one thin stacked bar over a two-column legend — harder to read.)
+ */
+export function Allocation({ etf }: { etf: Etf }) {
+  const sectors = sectorsFor(etf)
+  if (sectors.length === 0) return null
+  return <ShareDonut parts={sectors} of="the fund" legendLabel="Share of the fund by sector" />
 }
 ```
 
