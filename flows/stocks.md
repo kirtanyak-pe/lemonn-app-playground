@@ -295,6 +295,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Themes overview card simplified: no chart and no $100 line — the theme's name over its one-line description, and on the right its return under an L3 Select switcher (↕, Small, subtle) that steps 1Y → 3Y → 1M on each tap.
 - 2026-11-03 — Themes page: flat (underline) tabs with icons instead of pills; switching theme slides the body sideways (a tap slides the new theme in from its side), and a left / right swipe on the body drags it and moves to the next / previous theme (the flow's `useSwipeBetween`, rubber-band at the ends). The overview card starts with the theme's name instead of logos.
 - 2026-11-03 — Themes (stocks-23 … 28): each theme pill has an icon (AI memory chip, Big Tech devices, Dividend paid, EV car, Health cross, Dollar parking savings). The top is one overview card instead of the text bar + returns card: logos and stock count, a one-line description, “$100 put in 3 years ago” → today’s value with an L3 area Chart (sample monthly path), then 1M · 1Y · 3Y. The stocks sit under an “All stocks” SectionHeader; the returns note and disclaimer moved to one footnote at the end. Analyst pick cards: no 8 gap between head and footer.
 - 2026-11-03 — Themes page (stocks-23…28): pills have icons (AI chip, devices, paid, electric car, health cross, savings). The top is one overview card — the theme's name + stock count, a one-line description, “$100 put in 3 years ago” → today in big type with an L3 area Chart from $100 to now, then 1M · 1Y · 3Y. The Aerobar description, the Returns title and the $100 sentence are gone. Stocks sit under an “All stocks” SectionHeader; the returns note and disclaimer are one footnote at the end. Content starts 24 below the tabs.
@@ -25554,10 +25555,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.themes.period.1m": "1M",
   "us.themes.period.1y": "1Y",
   "us.themes.period.3y": "3Y",
-  "us.themes.growthLabel": "$100 put in 3 years ago",
-  "us.themes.growthChart": "$100 in {name}, 3 years",
-  "us.themes.chartStart": "3Y ago",
-  "us.themes.chartNow": "Now",
+  "us.themes.periodSwitch": "Return period, tap to change",
   "us.themes.allStocks": "All stocks",
   "us.themes.footnote": "Returns treat all its stocks in equal amounts. Past returns don’t guarantee future returns. The securities are quoted as an example, not as a recommendation.",
   "us.themes.back": "Back",
@@ -26873,36 +26871,21 @@ function initials(name: string) {
 ### `src/flows/stocks/screens/ThemePage.module.css`
 
 ```css
-/* The theme overview card: name + stock count, the one-line description, $100 → today, the chart and the returns. */
+/* The theme overview card: name over its one-line description, the return (with its period switcher) on the right. */
+.about {
+  flex: 1;
+  min-width: 0;
+}
+
 .name {
   margin: 0;
   font: var(--l3-text-heading-18);
   color: var(--l3-content-primary);
 }
 
-.count {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-}
-
 .desc {
   margin: 0;
   font: var(--l3-text-description-14);
-  color: var(--l3-content-secondary);
-}
-
-.growthLabel {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-.worth {
-  font: var(--l3-text-heading-24);
-  color: var(--l3-content-primary);
-}
-
-.period {
-  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -26929,27 +26912,26 @@ function initials(name: string) {
 // and the next (or previous) theme in (the stocks flow's `useSwipeBetween`). A theme card on Home opens it on that theme (one
 // screen per theme: stocks-23 AI & chips … 28 Dollar parking); "View all" opens it on the first.
 // Under the tabs, for the picked theme, two sections:
-// 1. About it, told in a picture more than words — one card: its name and stock count, a one-line description, what
-//    $100 put in 3 years ago is worth now (a line chart from $100 to today), and its 1M · 1Y · 3Y returns.
+// 1. About it, kept short — one card: its name and a one-line description, its return on the right (1Y; an L3 Select
+//    switcher above it steps to 3Y and 1M).
 // 2. "All stocks": its stocks as list cards.
 // The fine print (how returns are counted, not a recommendation) closes the page.
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Card } from '@l3/components/Card'
-import { Chart, type ChartCandle } from '@l3/components/Chart'
-import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { PriceChange } from '@l3/components/PriceChange'
 import { Section } from '@l3/components/Section'
 import { SectionHeader } from '@l3/components/SectionHeader'
+import { Select } from '@l3/components/Select'
 import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
 import { msDevices, msElectricCar, msHealthCross, msMemory, msPaid, msSavings } from '@l3/icons/material'
 import { usePreview } from '../../../shared/prototype'
 import { useLiveQuote } from '../../../shared/data/live'
 import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
-import { Usd, useUsd } from '../../../shared/money'
+import { Usd } from '../../../shared/money'
 import { Screen } from '../../../shared/ui/Screen'
 import { StockListCard } from '../../../shared/ui/StockListCard'
 import { t } from '../copy'
@@ -26976,71 +26958,38 @@ const THEME_ICONS: Record<ThemeId, string> = {
   parking: msSavings,
 }
 
-/**
- * Sample path of $100 over 36 months to what it's worth today (`end`): steady compounding with a gentle wobble, so the
- * chart reads like a real history. Monthly points, oldest first, as line-chart candles (only `close` is drawn).
- */
-function growthPath(end: number): ChartCandle[] {
-  const months = 36
-  return Array.from({ length: months + 1 }, (_, i) => {
-    const trend = 100 * Math.pow(end / 100, i / months)
-    const wobble = i === 0 || i === months ? 0 : 0.05 * Math.sin(i * 0.9) + 0.03 * Math.sin(i * 2.3)
-    const close = trend * (1 + wobble)
-    return { open: close, high: close, low: close, close }
-  })
-}
-
 function ThemeStock({ sym, onOpen }: { sym: string; onOpen: (sym: string) => void }) {
   const stock = usStock(sym)
   const live = useLiveQuote(sym, stock.price, stock.change)
   return <StockListCard symbol={sym} name={stock.name} logoUrl={usLogo(sym)} price={<Usd value={live.price} layout="inline" />} changePct={live.changePct} onOpen={() => onOpen(sym)} />
 }
 
-/** About the theme: name + count, one line on what it is, $100 → today as a chart, and its returns. */
+/** The return periods the switcher steps through, starting on 1Y. */
+const PERIODS = ['1y', '3y', '1m'] as const
+type Period = (typeof PERIODS)[number]
+
+/**
+ * About the theme, kept short: its name and one line on what it is, with its return on the right. The period above the
+ * return is an L3 Select switcher (↕): each tap steps 1Y → 3Y → 1M.
+ */
 function ThemeOverview({ id }: { id: ThemeId }) {
   const theme = themeById(id)
-  const usd = useUsd()
-  const worth = 100 * (1 + theme.returns['3y'] / 100)
-  const periods = [
-    { key: '1m' as const, pct: themeMonthReturn(theme.symbols) },
-    { key: '1y' as const, pct: theme.returns['1y'] },
-    { key: '3y' as const, pct: theme.returns['3y'] },
-  ]
+  const [period, setPeriod] = useState<Period>('1y')
+  const pct = period === '1m' ? themeMonthReturn(theme.symbols) : theme.returns[period]
+  const next = () => setPeriod(PERIODS[(PERIODS.indexOf(period) + 1) % PERIODS.length])
   return (
     <Card aria-label={t(`us.theme.${id}`)}>
-      <Stack gap="16">
-        <Stack gap="08">
-          <Stack direction="horizontal" align="center" justify="between" gap="08">
-            <h3 className={styles.name}>{t(`us.theme.${id}`)}</h3>
-            <span className={styles.count}>{t('us.themes.stocks', { count: theme.symbols.length })}</span>
-          </Stack>
+      <Stack direction="horizontal" align="center" gap="16">
+        <Stack gap="04" className={styles.about}>
+          <h3 className={styles.name}>{t(`us.theme.${id}`)}</h3>
           <p className={styles.desc}>{t(`us.theme.${id}.desc`)}</p>
         </Stack>
-        <Stack gap="04">
-          <span className={styles.growthLabel}>{t('us.themes.growthLabel')}</span>
-          <Stack direction="horizontal" align="center" gap="08">
-            <span className={styles.worth}><Usd value={worth} layout="inline" /></span>
-            <PriceChange value={theme.returns['3y']} size="md" />
-          </Stack>
+        <Stack gap="04" align="end">
+          <Select size="sm" subtle icon="swap" onClick={next} aria-label={t('us.themes.periodSwitch')}>
+            {t(`us.themes.period.${period}`)}
+          </Select>
+          <PriceChange value={pct} size="lg" />
         </Stack>
-        <Chart
-          type="area"
-          data={growthPath(worth)}
-          showVolume={false}
-          showGrid={false}
-          showLastPrice={false}
-          timeLabels={[t('us.themes.chartStart'), '', '', t('us.themes.chartNow')]}
-          format={(v) => usd(v)}
-          label={t('us.themes.growthChart', { name: t(`us.theme.${id}`) })}
-        />
-        <Grid columns={3} gap="12">
-          {periods.map((period) => (
-            <Stack key={period.key} gap="04">
-              <span className={styles.period}>{t(`us.themes.period.${period.key}`)}</span>
-              <PriceChange value={period.pct} size="lg" />
-            </Stack>
-          ))}
-        </Grid>
       </Stack>
     </Card>
   )
