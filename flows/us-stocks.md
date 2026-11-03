@@ -151,6 +151,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — **Portfolio Positions are F&O only:** the Indian / US tabs are gone (F&O is Indian; US buys land in Holdings), the empty state's Explore F&O opens the F&O tab (fno-01). US positions and Position Details (us-stocks-80) are no longer reached from Portfolio. **US holding card** presses (scale to `motion/scale/press-default`) and hovers like a clickable L3 Card. **Orders:** the All orders · Stocks · ETFs picker steps on each tap (no sheet); order cards have no shadow, border only (L3 gap: a clickable Card has no shadow-free option — `OrderCard.module.css`); the USD / IND pill is one width (`size/80`), so switching doesn't move the Open / History pills.
 - 2026-11-03 — **Orders & Positions: review fixes.** Sample orders tell one story (sells only of the NVDA the user holds, today's executed buys match Positions, weekday dates, 1:30 AM close before 1 Nov); Back from Order / Position Details returns to the US Orders / Positions tab (new preview screens us-stocks-91, 92) with the list as it was.
 - 2026-11-03 — **Orders & Positions for US Stocks** (from the F&O "Positions & orders" design): Open / History order lists with picker, filters and empty states; Order Details for all eight statuses with the status timeline, cancel sheet and per-status dock (preview screens us-stocks-79, 81–90); US positions on the Positions tab and Position Details (us-stocks-80). See "Orders & Positions".
 - 2026-11-03 — **Portfolio opens on Holdings; the US holding opens its stock page.** Tapping the NVDA row goes to NVIDIA's page in its Your Holdings state. Both screens now read one sample holding (`NVDA_HOLDING` in data.ts: 12 shares at $172.50, valued at the live price), so Portfolio's row and P&L card show the same numbers as the stock page. Indian holdings stay non-tappable (no Indian stock page in the prototype).
@@ -22440,7 +22441,7 @@ export const registry: UsScreenEntry[] = [
   { figma: '5796:92301', tab: 'portfolio', id: 'us-stocks-06', badge: 'changed', badgeNote: "Empty states: L3 Empty state with its default illustration, centred", section: 'entry', name: "E4 · Portfolio · US market banner · live", note: "Portfolio after 8 PM IST. Banner turns LIVE till 2:30 AM IST." },
   { figma: '9001:30', tab: 'portfolio', id: 'us-stocks-77', hidden: true, badge: 'new', badgeNote: "Not in Figma: where Home's US holdings card goes", section: 'entry', name: "Portfolio · Holdings · US", note: "Home's US holdings card opens Portfolio on Holdings with the US Stocks P&L card upfront and the US Stocks tab picked (the same page as the Portfolio tab, opened on its US side)." },
   { figma: '9001:31', tab: 'portfolio', id: 'us-stocks-91', badge: 'new', badgeNote: "Orders · US, from the F&O Positions & orders design", section: 'entry', name: "Portfolio · Orders · US", note: "Portfolio on its Orders tab, USD side: Open (n) / History (n), the All orders / Stocks / ETFs picker and Filters. A card opens Order Details (us-stocks-79), whose back returns here." },
-  { figma: '9001:32', tab: 'portfolio', id: 'us-stocks-92', badge: 'new', badgeNote: "US positions, from the F&O Positions & orders design", section: 'entry', name: "Portfolio · Positions · US", note: "Portfolio on Positions, US Stocks: today's trades before they settle into Holdings. A card opens Position Details (us-stocks-80), whose back returns here." },
+  { figma: '9001:32', tab: 'portfolio', id: 'us-stocks-92', badge: 'new', badgeNote: "Positions: F&O only, no Indian / US tabs", section: 'entry', name: "Portfolio · Positions", note: "Portfolio on Positions. Positions are F&O only (Indian), so there are no Indian / US tabs: market indices, Your positions and its empty state; Explore F&O opens the F&O tab (fno-01). Position Details (us-stocks-80) is no longer reached from here." },
   { figma: '5796:88163', tab: 'mutualFund', id: 'us-stocks-07', section: 'entry', name: "E5 · Mutual Fund home · US banner", note: "Mutual Fund home with a US Stocks on Lemonn banner." },
   { figma: '5826:93627', id: 'us-stocks-13', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'ftux', name: "S03 · Stock page", note: "The US stock page in the user status picked in the prototype settings (User status): KYC pending → Complete KYC (as us-stocks-74); not activated, under review or failed → Activate US Stocks in place of Buy / Sell; activated → Buy / Sell (us-stocks-31), with Your Holdings when the user holds NVDA (us-stocks-32). Home, Search and Market open this page." },
   { figma: '9001:10', id: 'us-stocks-74', hidden: true, badge: 'new', badgeNote: "Not in Jojo's Figma: a user whose Lemonn KYC isn't done", section: 'ftux', name: "Stock page · KYC not done", note: "Stock page for a user whose Lemonn (Indian) KYC isn't complete: US Stocks can't be activated yet, so the button is Complete KYC (→ the KYC flow, kyc-01) in place of Activate. Back → the US tab with the KYC card (stocks-21)." },
@@ -27215,6 +27216,13 @@ button.hold {
 .screen [role='tablist'][data-appearance='underline'] > [role='tab'] {
   box-shadow: inset 0 -1px 0 var(--l3-border-intense);
 }
+
+/* A tappable holding (US: opens its stock page) presses and hovers like a clickable L3 Card. */
+button.hold { cursor: pointer; transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard); }
+button.hold:active { transform: scale(var(--l3-motion-scale-press-default)); }
+@media (hover: hover) {
+  button.hold:hover { background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover)); }
+}
 ```
 
 ### `src/flows/us-stocks/screens/entry/PortfolioScreen.tsx`
@@ -27252,8 +27260,7 @@ import { sortIcon } from './icons'
 import { Usd } from '../../../../shared/money'
 import { useUsMarketSnapshot } from '../../../../shared/data/usStocks'
 import { useUsJourney, type UsJourney } from '../../../../shared/userStatus'
-import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME, STOCKS_HOME_ENTRY, WALLET, WALLET_US } from './ids'
-import { UsPositions, UsPositionsEmpty } from '../orders/UsPositions'
+import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME, STOCKS_HOME_ENTRY, WALLET, WALLET_US, FNO_HOME } from './ids'
 import { holdingsSummary, marketIndices, portfolioTabs, sortedHoldings, usHoldingNow, type Holding, type PortfolioTab } from './portfolioData'
 import { SortSheet, type SortValue } from './sheets/SortSheet'
 import styles from './PortfolioScreen.module.css'
@@ -27411,19 +27418,7 @@ export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialM
         <section key={tab} className={styles.sheet} data-section={tab} ref={swipe.contentRef}>
           {tab === 'positions' && (
             <>
-              {/* Indian Stocks / US Stocks, as on Holdings (the same `market`). US = today's US positions (3 Nov). */}
-              <Tabs
-                appearance="underline"
-                width="fill"
-                aria-label="Positions market"
-                items={[
-                  { value: 'in', label: 'Indian Stocks', iconLeft: <Icon icon={asset('assets/home/ind-icon-on.svg')} size={16} /> },
-                  { value: 'us', label: 'US Stocks', iconLeft: <Icon icon={asset('assets/home/us-icon-on.svg')} size={16} /> },
-                ]}
-                value={market}
-                onChange={(value) => setMarket(value as HoldingsMarket)}
-                className={styles.marketTabs}
-              />
+              {/* Positions are F&O only, and F&O is Indian: no Indian / US tabs here (3 Nov). */}
               <div className={styles.sheetHead}>
                 <h2 className={styles.sectionTitle}>Your positions</h2>
                 <button type="button" className={styles.sort}>
@@ -27431,15 +27426,7 @@ export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialM
                   <MaskImg src={entryPath('portfolio/refresh.svg')} w={12} />
                 </button>
               </div>
-              {market === 'us' && journey === 'holding' ? (
-                <UsPositions />
-              ) : market === 'us' && usActive ? (
-                <UsPositionsEmpty onExplore={() => go(STOCKS_HOME)} />
-              ) : market === 'us' ? (
-                <EmptyWallet title={usEmptyState.title} text={usEmptyState.text} button={usEmptyState.button} onClick={() => go(usEmptyState.to)} />
-              ) : (
-                <EmptyWallet title="Build Wealth Daily" text="Seems like you don’t have any positions right now" button="Explore F&O" />
-              )}
+              <EmptyWallet title="Build Wealth Daily" text="Seems like you don’t have any positions right now" button="Explore F&O" onClick={() => go(FNO_HOME)} />
             </>
           )}
           {tab === 'holdings' && (
@@ -28443,6 +28430,9 @@ export function MaskImg({ src, w, h = w, className }: { src: string; w: number; 
   color: var(--l3-content-primary);
   background: 0 0;
   flex: none;
+  /* One width for IND and USD, so switching doesn't move the Open / History pills (3 Nov). */
+  width: var(--l3-size-80);
+  justify-content: center;
 }
 
 .switcher[data-size]:hover span {
@@ -28578,7 +28568,7 @@ import { useUsNav } from '../../../nav'
 import { historyOrders, openOrder, openOrders, type UsOrder } from '../../orders/data'
 import { OrderCard } from '../../orders/OrderCard'
 import { NO_FILTERS, OrderFilterSheet, applyFilters, filterCount, type OrderFilters } from '../../orders/OrderFilterSheet'
-import { ORDER_KIND_LABEL, OrderKindSheet, type OrderKind } from '../../orders/OrderKindSheet'
+import { ORDER_KIND_LABEL, type OrderKind } from '../../orders/OrderKindSheet'
 import styles from './OrdersTab.module.css'
 
 type OrderTab = 'open' | 'sip' | 'history'
@@ -28688,6 +28678,8 @@ function useUsOrderLists(): Record<UsList, UsOrder[]> {
   return journey === 'holding' ? { open: openOrders, history: historyOrders } : { open: [], history: [] }
 }
 
+/** The picker is a switcher, as the USD / INR one: each tap steps All orders → Stocks → ETFs (no sheet, 3 Nov). */
+const nextKind = (kind: OrderKind): OrderKind => (kind === 'all' ? 'stock' : kind === 'stock' ? 'etf' : 'all')
 const ofKind = (orders: UsOrder[], kind: OrderKind) => (kind === 'all' ? orders : orders.filter((o) => o.kind === kind))
 /** The count on a tab: its orders of the picked kind (before filters, as the picker narrows the whole tab). */
 const countOf = (orders: UsOrder[], kind: OrderKind) => ofKind(orders, kind).length
@@ -28709,7 +28701,7 @@ function UsOrders({
   onFilters: (filters: OrderFilters) => void
 }) {
   const { go } = useUsNav()
-  const [sheet, setSheet] = useState<'kind' | 'filters' | null>(null)
+  const [sheet, setSheet] = useState<'filters' | null>(null)
   // A fresh filter sheet each time it opens (its picks start from the applied filters), kept while it closes.
   const [filterRun, setFilterRun] = useState(0)
   const narrowed = ofKind(orders, kind)
@@ -28753,10 +28745,8 @@ function UsOrders({
           appearance="pill"
           size="sm"
           iconRight={<Icon icon={lmSwitchArrowVertical} />}
-          aria-haspopup="dialog"
-          aria-expanded={sheet === 'kind'}
-          aria-label={`Showing ${ORDER_KIND_LABEL[kind]}. Change`}
-          onClick={() => setSheet('kind')}
+          aria-label={`Showing ${ORDER_KIND_LABEL[kind]}, tap for ${ORDER_KIND_LABEL[nextKind(kind)]}`}
+          onClick={() => onKind(nextKind(kind))}
         >
           {ORDER_KIND_LABEL[kind]}
         </Tab>
@@ -28778,15 +28768,6 @@ function UsOrders({
         </Tab>
       </Stack>
       {content}
-      <OrderKindSheet
-        open={sheet === 'kind'}
-        value={kind}
-        onPick={(next) => {
-          onKind(next)
-          setSheet(null)
-        }}
-        onClose={() => setSheet(null)}
-      />
       <OrderFilterSheet
         key={filterRun}
         open={sheet === 'filters'}
@@ -29333,6 +29314,8 @@ export const northIcon = symbolPath('M440-160v-487L216-423l-56-57 320-320 320 32
 export const STOCKS_HOME = '5796:91576'
 /** The Stocks flow's Home (the Stocks tab, IND). Its US tab follows the user status. */
 export const STOCKS_HOME_ENTRY = 'stocks-01'
+/** The F&O tab (F&O flow, Equity home) — where Positions' Explore F&O goes. */
+export const FNO_HOME = 'fno-01'
 /** Wallet, US tab (follows the user status). */
 export const WALLET_US = '5852:99057'
 /** Activation / KYC screens in other flows (prototype ids). */
@@ -34224,6 +34207,10 @@ export function CancelOrderSheet({ open, order, onKeep, onCancel }: { open: bool
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
+
+/* No shadow (3 Nov): border only, still pressing like a clickable Card. L3 gap: a clickable Card has no shadow-free
+   bordered option, so the elevation is dropped here (keeps the Card's own border). */
+.card.card { box-shadow: var(--card-border); }
 ```
 
 ### `src/flows/us-stocks/screens/orders/OrderCard.tsx`
@@ -34279,6 +34266,7 @@ export function OrderCard({ order, onOpen }: { order: UsOrder; onOpen: () => voi
   const side = order.side === 'buy' ? 'Buy' : 'Sell'
   return (
     <Card
+      className={styles.card}
       onClick={onOpen}
       aria-label={`${side} ${order.sym}, ${TYPE_LABEL[order.type]} order, ${status.label}. Open order details`}
     >
