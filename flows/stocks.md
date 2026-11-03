@@ -30,7 +30,9 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-17` | Home · US tab · activated · holding | [5826:92885]() | — | US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet. |
 | `stocks-19` | Home · US tab · under review · Contact Support | [5776:80202]() | — | Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\ |
 | `stocks-20` | Home · US tab · money on the way | [5796:86490]() | `us-stocks-28` | After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\ |
-| `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13`, `us-stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
+| `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
+| `stocks-29` | Top analyst picks · Stocks | — | `us-stocks-13` | The US tab\ |
+| `stocks-30` | Top analyst picks · History | — | `us-stocks-13` | The same page on History: the track record (picks closed, how many reached their target, the average return), then each closed pick — dates, its return (green / red) and a Target hit / Exited early tag. A row opens its US stock page. |
 
 ## Spec (README.md)
 
@@ -71,7 +73,8 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 | `stocks-18` | Home · activation submitted sheet | Under-review US tab + the **"US Stocks activation under review"** sheet (5756:73797). Okay / close → `stocks-13` |
 | `stocks-21` | Home · US tab · KYC not done | **Not in Figma.** The user's Lemonn (Indian) KYC isn't complete, so US Stocks can't be activated: blue card "Complete your KYC first", Complete KYC → `kyc-01`; a US stock → `us-stocks-74` (Complete KYC); wallet → `us-stocks-53` |
 | `stocks-22` | Home · US tab · activation approved sheet | **Not in Figma.** Activated US tab + the **"US Stocks is active"** sheet (success spot), the moment the review is approved. Add Money to US wallet → `us-stocks-20`; Later / close → `stocks-15` |
-| `stocks-23` … `28` | Theme page (one screen per theme; 24–28 hidden) | **Not in Figma.** A theme of Explore by themes: Actionbar (back + theme name) · intro (logo stack, name, description, disclaimer) · the theme's stocks · More themes rail. Ids by theme: 23 AI & chips · 24 Big Tech · 25 Dividend payers · 26 EV & clean energy · 27 Healthcare leaders · 28 Dollar parking |
+| `stocks-23` … `28` | Themes page (one screen per opening theme; 24–28 hidden) | **Not in Figma.** Every theme of Explore by themes on one page, like the ETFs page: Actionbar (back + "Themes") with the themes as pill tabs in its bottom slot · description + disclaimer · Returns card (1M · 1Y · 3Y, what $100 from 3 years ago is worth) · the theme's stocks. Opens on: 23 AI & chips (also View all) · 24 Big Tech · 25 Dividend payers · 26 EV & clean energy · 27 Healthcare leaders · 28 Dollar parking |
+| `stocks-29` · `30` | Top analyst picks · Stocks / History | **Not in Figma**: built from the live app's Trade Ideas page (phone screenshots, 3 Nov) without its F&O tab. The US tab's Top analyst picks View all (header and under the list) opens it. Actionbar: back + title, flat (underline) tabs **Stocks · History** in its bottom slot (the live app has pills). Stocks: a card per pick — logo, name over LTP, the average target over the rating tag (Strong Buy green / Buy grey); under a hairline, Expected profit +x% and "94% of 66 recommend" (live app: entry range + Not in range, Potential profit, TP · SL). History: closed picks grouped by closing day (Today, Yesterday, then "30 Oct 2026") — logo, name over entry → exit price, the return (green / red) over "Target hit in 24 days" / "Exited in 9 days". Signed % with no ▲ / ▼ (L3 PriceChange). A card or row → `us-stocks-13`; back → the US tab |
 
 `stocks-01 … 08` are the **IN Stocks** tab. Screens 09–18 are the **US Stocks** tab in each state of the user's US Stocks activation; they come from the US Stocks flow's Home (designed by a teammate, Figma file `8HEY699cTPiWiQeAVX3122`), which now uses this page — his frames map here through `FIGMA_IN_OTHER_FLOWS` in `src/flows/us-stocks/nav.tsx`. `stocks-09` Activate US Stocks → `stocks-12` (was `us-stocks-14`); a US stock on a not-activated state → `us-stocks-13` (stock page, Activate).
 
@@ -122,19 +125,18 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
      rows (logo, name, symbol, price, change); a row opens the US stock page (`us-stocks-13`).
    - **Trillion Dollar Titans:** eight 170-wide cards (logo, name, sparkline, market cap, change); View all → Market,
      mega caps, biggest first.
-   - **Brands You Know:** two rows of brand cards (logo, name, market cap).
+   - **Brands You Know:** two rows of brand cards, as Top Movers' cards on the India tab (logo, name, today's price, today's move).
    - **Explore by themes:** a sideways rail (about 1.4 cards across, the next one peeks in) of six big theme cards. Each is an
      L3 Card: a 3 × 2 collage of real logos (Avatar 40), the name (Label 16), a two-line description (Description 12) and
-     "N stocks" with a chevron. Tapping one opens that theme's page (`stocks-23` … `28`, below). Leveraged ETFs is not a theme for now.
-   - **Theme page** (`screens/ThemePage.tsx`): the Actionbar holds only back and the theme name (L2, Heading 14); the
-     explanation is its own section below the bar: overlapping logos (up to 6 and "+n"), the name (Heading 20), the
-     description (Description 14, secondary) and "The securities are quoted as an example, not as a recommendation."
-     (Description 12, tertiary). Then the theme's 6 to 8 stocks as `StockListCard`s, 12 apart (live price, day change);
-     a stock → its US stock page (`us-stocks-13`, `viewUsStock` first). Last, "More themes": the same big cards in a rail,
-     every theme except this one; a card → that theme's screen (pushes forward), so the loop never ends. Back returns to the screen before.
+     its 1Y return, "N stocks" with a chevron. Tapping one opens the Themes page on that theme (`stocks-23` … `28`, below); the section's View all opens it on the first. Leveraged ETFs is not a theme for now.
+   - **Themes page** (`screens/ThemePage.tsx`), laid out like the ETFs page: the Actionbar holds back and "Themes" with
+     every theme as a pill tab in its bottom slot (sticky, scrolls sideways), so switching theme never leaves the page.
+     Under the tabs, for the picked theme: its description and the disclaimer in a flat Aerobar, the Returns card, then
+     its 6 to 8 stocks as `StockListCard`s, 12 apart (live price, day change); a stock → its US stock page (`us-stocks-13`,
+     `viewUsStock` first). Back returns to the screen before.
      Themes: AI & chips, Big Tech, Dividend payers, EV & clean energy, Healthcare leaders, Dollar parking (steady large
      caps, since ETFs have no logos in the shared assets yet). Symbols are in `themes` (`components/us/data.ts`); name and
-     description are copy `us.theme.<id>` / `.desc`. The theme is chosen by the screen id (`themeScreenId(id)`), no params.
+     description are copy `us.theme.<id>` / `.desc`. The opening theme is chosen by the screen id (`themeScreenId(id)`); the tabs switch in place.
 6. **Main navbar:** Stocks (selected) · Market · Portfolio · Mutual Fund · F&O.
 
 ### Homepage versions (prototype option)
@@ -294,7 +296,12 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 ### Changelog
 
 - 2026-11-03 — US tab shortcuts are Analysis · ETFs · Watchlist · Referral again, as on the IND tab (Fractional and Market hours removed; their icons stay in assets/shortcuts, unused).
-- 2026-11-03 — US tab: Top analyst picks is a list by default — four stock rows (logo · symbol over name; the recommendation, green / red, over "7D" and the real 7-day move); View all → Market, in the header and as a tertiary Small button (flat, chevron) under the four rows. The cards with the 7-day line stay as the "Analyst picks: Cards" option.
+- 2026-11-03 — Top analyst picks page (`stocks-29` / `30`): View all on the US tab's picks opens it instead of Market. Flat tabs Stocks (full breakdown per pick) and History (track record + closed picks). Sample data in `components/us/data.ts` (`analystPicks` ratings / picked on, `closedPicks`).
+- 2026-11-03 — Top analyst picks page rebuilt from the live Trade Ideas screenshots: Stocks cards (LTP, average target + rating, expected profit · % recommend under a hairline) and History grouped by day (Today / Yesterday / date) with entry → exit and "Target hit in N days". Track record card, intros and progress bars removed. `closedPicks` now has an ISO `closedOn` + `days` held; `PICKS_TODAY` is the sample's today.
+- 2026-11-03 — US tab, Brands You Know: cards laid out like the India tab's Top Movers cards — logo 48, name, today's price (live, `<Usd>`), today's move (PriceChange). Market cap dropped from the card and from `brandRows`.
+- 2026-11-03 — Themes page: one page for every theme, like ETFs — "Themes" in the Actionbar with the themes as pill tabs below it; a theme card opens it on that theme, Explore by themes' View all on the first. The More themes rail is gone.
+- 2026-11-03 — Explore by themes shows returns: each theme card has its 1Y return (green / red) above "N stocks ›"; the theme page (`stocks-23` …) has a Returns card under the description — 1M (real, equal-weight from the snapshot's month of closes, `themeMonthReturn`), 1Y and 3Y (sample, `themes[].returns`), "$100 put in these stocks 3 years ago would be $X today" and a past-returns note.
+- 2026-11-03 — US tab: Top analyst picks is a list by default — four rows (logo · the company name over "94% of analysts recommend" (sample share rating it Buy / Strong Buy); on the right the expected profit — the analysts' 12-month target over today's price, sample, always positive — bold green over "Expected profit"); View all → Market, in the header and as a tertiary Small button (flat, chevron) under the four rows. The cards with the 7-day line stay as the "Analyst picks: Cards" option.
 - 2026-11-03 — US tab: the heatmap section is titled "Heatmap" (was "Sectors"). Pill tabs at least 48 wide now come from L3 (tabs 1.14.0, pin 4afbde2).
 - 2026-11-03 — US tab: Top analyst picks (after Top Movers) and the Sectors heatmap (after Brands You Know) are back, from jojo. A pick card is the Top Movers card: its line and "7D" are the real last 7 days (snapshot closes to the ticking price), the recommendation is a sample. Sectors: S&P 500 / Nasdaq 100 / Dow Jones switcher, cap chip, sector pills, nine live tiles, biggest rise top left.
 - 2026-11-03 — Home states are one page: moving between them (activation submitted → under review → approved sheet, money on the way, ready) no longer slides; only the card or sheet changes. Contact Support (under review after a day) opens an email to support@lemonn.co, no longer the risk disclosure (that shows once, when activating).
@@ -22673,6 +22680,17 @@ export const homeVersion = (id: string) =>
   -webkit-line-clamp: 2;
 }
 
+.return {
+  display: flex;
+  align-items: baseline;
+  gap: var(--l3-spacing-04);
+}
+
+.returnLabel {
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+
 .foot {
   display: flex;
   align-items: center;
@@ -22715,12 +22733,13 @@ export const homeVersion = (id: string) =>
 ### `src/flows/stocks/components/us/ThemeCard.tsx`
 
 ```tsx
-// A theme's card (Explore by themes on the US tab, "More themes" on the theme page): a compact card, about 2 across —
-// overlapping logos (LogoStack), the theme's name, a two-line description and "N stocks ›".
+// A theme's card (Explore by themes on the US tab): a compact card, about 2 across —
+// overlapping logos (LogoStack), the theme's name, a two-line description, then its 1-year return and "N stocks ›".
 // FLAG: L3 has no logo stack / group: the overlap and the "+n" disc are hand-made (ThemeCard.module.css).
 import { Avatar } from '@l3/components/Avatar'
 import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
+import { PriceChange } from '@l3/components/PriceChange'
 import { Stack } from '@l3/components/Stack'
 import { msChevronRight } from '@l3/icons/material'
 import { Rail } from '../../../../shared/ui/Rail'
@@ -22734,12 +22753,16 @@ type Theme = (typeof themes)[number]
 export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeId) => void }) {
   const name = t(`us.theme.${theme.id}`)
   return (
-    <Card onClick={() => onOpen(theme.id)} surface="default" className={styles.card} aria-label={`${name}, ${t('us.themes.stocks', { count: theme.symbols.length })}`}>
+    <Card onClick={() => onOpen(theme.id)} surface="default" className={styles.card} aria-label={t('us.themes.cardLabel', { name, pct: theme.returns['1y'].toFixed(1), count: theme.symbols.length })}>
       <Stack gap="12">
         <LogoStack symbols={theme.symbols} max={3} />
         <span className={styles.text}>
           <span className={styles.name}>{name}</span>
           <span className={styles.desc}>{t(`us.theme.${theme.id}.desc`)}</span>
+        </span>
+        <span className={styles.return}>
+          <span className={styles.returnLabel}>{t('us.themes.return1y')}</span>
+          <PriceChange value={theme.returns['1y']} size="md" />
         </span>
         <span className={styles.foot}>
           <span>{t('us.themes.stocks', { count: theme.symbols.length })}</span>
@@ -22750,11 +22773,11 @@ export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeI
   )
 }
 
-/** The rail of theme cards (about 2.2 across so the third one peeks in). `except` leaves the theme being read out. */
-export function ThemeRail({ onOpen, except }: { onOpen: (id: ThemeId) => void; except?: ThemeId }) {
+/** The rail of theme cards (about 2.2 across so the third one peeks in). */
+export function ThemeRail({ onOpen }: { onOpen: (id: ThemeId) => void }) {
   return (
     <Rail label={t('us.themes.railLabel')} visible={2.2}>
-      {themes.filter((theme) => theme.id !== except).map((theme) => <ThemeCard key={theme.id} theme={theme} onOpen={onOpen} />)}
+      {themes.map((theme) => <ThemeCard key={theme.id} theme={theme} onOpen={onOpen} />)}
     </Rail>
   )
 }
@@ -23560,26 +23583,29 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   gap: var(--l3-spacing-12);
 }
 
+/* A brand card: as Top Movers' cards on the India tab (Home.module.css .cardStack) — logo 48, name, price, move. */
 .brand[data-interactive] {
   flex: none;
-  gap: var(--l3-spacing-16);
   width: 132px; /* FLAG: raw px */
 }
 
-.brandText {
+.brandStack {
   display: flex;
   flex-direction: column;
   gap: var(--l3-spacing-08);
 }
 
 .brandName {
+  overflow: hidden;
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-description-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.brandCap {
-  color: var(--l3-content-primary);
+.brandPrice {
   font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
 }
 
 /* ---- Explore by themes ---- */
@@ -23657,22 +23683,11 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   color: var(--l3-content-accent-error-default);
 }
 
-/* Top analyst picks, list view: the consensus where the price goes (Label 14, green / red), "7D" + the move under it. */
-.pickRating {
+/* Top analyst picks, list view: the expected profit on the right in Label 14 (bold, green: always positive) over
+   "Expected profit". */
+.pickMove {
   font: var(--l3-text-label-14);
   color: var(--l3-content-accent-success-default);
-}
-
-.pickRating[data-tone='down'] {
-  color: var(--l3-content-accent-error-default);
-}
-
-.pickWeek {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
 }
 
 /* ---- Sectors heatmap ---- */
@@ -23754,10 +23769,10 @@ import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { ListCell } from '@l3/components/ListCell'
-import { PriceChange } from '@l3/components/PriceChange'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
+import { PriceChange } from '@l3/components/PriceChange'
 import { msChevronRight } from '@l3/icons/material'
 import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { handToMarket } from '../../../../shared/data/marketHandoff'
@@ -23772,12 +23787,14 @@ import {
   analystPicks,
   type AnalystPick,
   brandRows,
+  type Brand,
   capBuckets,
   formatPct,
   heatSectors,
   heatStrength,
   heatmapIndices,
   sectorSymbols,
+  themes,
   type HeatSector,
   moverFilters,
   moversFor,
@@ -23806,13 +23823,15 @@ type UsHomeProps = {
   onTheme?: (id: ThemeId) => void
   /** The ETFs shortcut → the ETF list (Regular / Leveraged). */
   onEtfs?: () => void
+  /** Top analyst picks' View all (header and under the list) → the Top analyst picks page (Stocks / History). */
+  onPicks?: () => void
   /** The activation card on top (default). The two-homes versions show it in the summary instead (screens/Home). */
   card?: boolean
 }
 
 const sign = (up: boolean) => (up ? '+' : '-')
 
-export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, card = true }: UsHomeProps) {
+export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, onPicks, card = true }: UsHomeProps) {
   const [filter, setFilter] = useState<MoverFilter>('gainers')
   const [cap, setCap] = useState<CapValue>('mega')
   // Top analyst picks: a list (default, so it doesn't read as a second Top Movers rail) or the cards (prototype option).
@@ -23879,14 +23898,14 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
       </div>
 
       <Stack as="section" gap="16" aria-label={t('us.picks.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.picks.title')} action={{ type: 'view-all', onClick: openMarket }} /></Inset>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.picks.title')} action={{ type: 'view-all', onClick: () => onPicks?.() }} /></Inset>
         {picksView === 'list' ? (
           <Inset paddingInline="16" paddingBlock="00">
             <Stack gap="12">
               {analystPicks.slice(0, PICKS_IN_LIST).map((pick) => <PickRow key={pick.sym} pick={pick} onOpen={open} />)}
               {/* The rest of the picks: a tertiary View all closing the list (L3 Button rule). Small, flat and with a chevron
                   (the user's call, 3 Nov — an exception to Large buttons). */}
-              <Button variant="tertiary" size="sm" raised="none" fullWidth iconRight={<Icon icon={msChevronRight} />} onClick={openMarket}>{t('us.picks.viewAll')}</Button>
+              <Button variant="tertiary" size="sm" raised="none" fullWidth iconRight={<Icon icon={msChevronRight} />} onClick={() => onPicks?.()}>{t('us.picks.viewAll')}</Button>
             </Stack>
           </Inset>
         ) : (
@@ -23905,13 +23924,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
             {brandRows.map((row, r) => (
               <div key={r} className={styles.row} data-gap="12">
                 {row.map((brand) => (
-                  <Card key={brand.sym} onClick={() => open(brand.sym)} surface="default" className={styles.brand}>
-                    <Avatar src={usLogo(brand.sym)} initials={brand.sym} size={40} />
-                    <span className={styles.brandText}>
-                      <span className={styles.brandName}>{brand.name}</span>
-                      <span className={styles.brandCap}><Usd text={brand.cap} layout="inline" /></span>
-                    </span>
-                  </Card>
+                  <BrandCard key={brand.sym} brand={brand} onOpen={open} />
                 ))}
               </div>
             ))}
@@ -23952,7 +23965,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
       </Stack>
 
       <Stack as="section" gap="16" aria-label={t('us.themes.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.title')} /></Inset>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.title')} action={{ type: 'view-all', onClick: () => onTheme?.(themes[0].id) }} /></Inset>
         <ThemeRail onOpen={(id) => onTheme?.(id)} />
       </Stack>
     </>
@@ -24011,6 +24024,22 @@ function MoverCard({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string)
   )
 }
 
+/** A Brands You Know card, laid out like Top Movers' cards on the India tab: logo, name, today's price, today's move. */
+function BrandCard({ brand, onOpen }: { brand: Brand; onOpen: (sym: string) => void }) {
+  const stock = usStock(brand.sym, brand.name)
+  const live = useLiveQuote(brand.sym, stock.price, stock.change)
+  return (
+    <Card onClick={() => onOpen(brand.sym)} surface="default" className={styles.brand}>
+      <span className={styles.brandStack}>
+        <Avatar src={usLogo(brand.sym)} initials={brand.sym.slice(0, 2)} size={48} label={brand.name} />
+        <span className={styles.brandName}>{brand.name}</span>
+        <span className={styles.brandPrice}><Usd value={live.price} layout="inline" /></span>
+        <PriceChange value={live.changePct} size="sm" />
+      </span>
+    </Card>
+  )
+}
+
 /** How many picks the list shows (View all → the rest on Market). */
 const PICKS_IN_LIST = 4
 
@@ -24026,10 +24055,9 @@ function usePickWeek(pick: AnalystPick) {
 const pickLabel = (pick: AnalystPick, weekPct: number) =>
   t('us.picks.label', { name: pick.name, sym: pick.sym, rating: pick.rating, direction: weekPct >= 0 ? 'up' : 'down', pct: Math.abs(weekPct).toFixed(2) })
 
-/** A Top analyst picks row (the list view): the stock row recipe (logo · symbol over name), with the analysts'
- *  consensus where the price goes and the real 7-day move under it. */
+/** A Top analyst picks row (the list view): logo · the company name over "94% of analysts recommend", and on the right
+ *  the expected profit (bold, green — always positive) over "Expected profit". */
 function PickRow({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) => void }) {
-  const { weekPct } = usePickWeek(pick)
   return (
     <ListCell
       variant="card"
@@ -24037,11 +24065,11 @@ function PickRow({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) =>
       onClick={() => onOpen(pick.sym)}
       iconLeft={<Avatar src={usLogo(pick.sym)} initials={pick.sym.slice(0, 2)} size={40} label={pick.name} />}
       labelSize="14"
-      label={pick.sym}
-      description={pick.name}
-      trailing={<span className={styles.pickRating} data-tone={pick.rating === 'Sell' ? 'down' : 'up'}>{pick.rating}</span>}
-      caption={<span className={styles.pickWeek}>{t('us.picks.week')}<PriceChange value={weekPct} size="sm" /></span>}
-      aria-label={pickLabel(pick, weekPct)}
+      label={pick.name}
+      description={t('us.picks.analysts', { pct: pick.analystsPct })}
+      trailing={<span className={styles.pickMove}>{formatPct(pick.expectedProfit)}</span>}
+      caption={t('us.picks.expectedProfit')}
+      aria-label={t('us.picks.rowLabel', { name: pick.name, sym: pick.sym, analysts: pick.analystsPct, pct: pick.expectedProfit.toFixed(1) })}
     />
   )
 }
@@ -24373,20 +24401,21 @@ export function moversFor(cap: CapValue, filter: MoverFilter): MoverToday[] {
 
 // ---- Brands You Know (two rows) ----
 
-export type Brand = { sym: string; name: string; cap: string }
+/** A brand card: the logo, name, today's price and move come from the US snapshot (live-ticking). */
+export type Brand = { sym: string; name: string }
 
 export const brandRows: Brand[][] = [
   [
-    { sym: 'NKE', name: 'Nike', cap: '$95B' },
-    { sym: 'MCD', name: 'McDonald’s', cap: '$215B' },
-    { sym: 'KO', name: 'Coca-Cola', cap: '$300B' },
-    { sym: 'SBUX', name: 'Starbucks', cap: '$98B' },
+    { sym: 'NKE', name: 'Nike' },
+    { sym: 'MCD', name: 'McDonald’s' },
+    { sym: 'KO', name: 'Coca-Cola' },
+    { sym: 'SBUX', name: 'Starbucks' },
   ],
   [
-    { sym: 'NFLX', name: 'Netflix', cap: '$520B' },
-    { sym: 'V', name: 'Visa', cap: '$660B' },
-    { sym: 'UBER', name: 'Uber', cap: '$190B' },
-    { sym: 'PEP', name: 'PepsiCo', cap: '$200B' },
+    { sym: 'NFLX', name: 'Netflix' },
+    { sym: 'V', name: 'Visa' },
+    { sym: 'UBER', name: 'Uber' },
+    { sym: 'PEP', name: 'PepsiCo' },
   ],
 ]
 
@@ -24397,17 +24426,60 @@ export const heatStrength = (pct: number) => Math.min(1, 0.55 + (Math.abs(pct) /
 
 // ---- Top analyst picks (US Stocks design, 2 Nov; from jojo) ----
 
-/** The analysts' consensus (sample). The card is the Top Movers card: logo · name · the last 7 days' line, then
- *  "Recommendation" and "7D" (the real 7-day move, from the snapshot's closes). */
-export type AnalystPick = { sym: string; name: string; rating: 'Strong Buy' | 'Buy' | 'Sell' }
+/** The analysts' consensus (sample). Home shows four as a list (or all as cards); "View all" opens the Top analyst
+ *  picks page (stocks-29), with the full breakdown and the closed picks. */
+export type AnalystPick = {
+  sym: string
+  name: string
+  rating: 'Strong Buy' | 'Buy' | 'Sell'
+  /** Expected profit, % (sample): the analysts' average 12-month target over today's price. Always positive — a pick. */
+  expectedProfit: number
+  /** Share of the analysts covering it who rate it Buy or Strong Buy, % (= ratings: strong buy + buy over all). */
+  analystsPct: number
+  /** How the analysts covering it rate it (sample counts). */
+  ratings: { strongBuy: number; buy: number; hold: number; sell: number }
+  /** When it became a pick. */
+  pickedOn: string
+}
 export const analystPicks: AnalystPick[] = [
-  { sym: 'AMZN', name: 'Amazon', rating: 'Strong Buy' },
-  { sym: 'NVDA', name: 'NVIDIA', rating: 'Strong Buy' },
-  { sym: 'MSFT', name: 'Microsoft', rating: 'Strong Buy' },
-  { sym: 'AVGO', name: 'Broadcom', rating: 'Strong Buy' },
-  { sym: 'META', name: 'Meta', rating: 'Buy' },
-  { sym: 'UBER', name: 'Uber', rating: 'Buy' },
+  { sym: 'AMZN', name: 'Amazon', rating: 'Strong Buy', expectedProfit: 18.6, analystsPct: 94, ratings: { strongBuy: 46, buy: 16, hold: 4, sell: 0 }, pickedOn: '28 Oct 2026' },
+  { sym: 'NVDA', name: 'NVIDIA', rating: 'Strong Buy', expectedProfit: 24.3, analystsPct: 91, ratings: { strongBuy: 44, buy: 14, hold: 5, sell: 1 }, pickedOn: '21 Oct 2026' },
+  { sym: 'MSFT', name: 'Microsoft', rating: 'Strong Buy', expectedProfit: 15.2, analystsPct: 89, ratings: { strongBuy: 36, buy: 14, hold: 6, sell: 0 }, pickedOn: '14 Oct 2026' },
+  { sym: 'AVGO', name: 'Broadcom', rating: 'Strong Buy', expectedProfit: 21.7, analystsPct: 88, ratings: { strongBuy: 28, buy: 9, hold: 5, sell: 0 }, pickedOn: '7 Oct 2026' },
+  { sym: 'META', name: 'Meta', rating: 'Buy', expectedProfit: 12.4, analystsPct: 82, ratings: { strongBuy: 30, buy: 20, hold: 9, sell: 2 }, pickedOn: '30 Sep 2026' },
+  { sym: 'UBER', name: 'Uber', rating: 'Buy', expectedProfit: 19.8, analystsPct: 79, ratings: { strongBuy: 25, buy: 17, hold: 10, sell: 1 }, pickedOn: '23 Sep 2026' },
 ]
+
+/** How many analysts cover a pick. */
+export const analystCount = (pick: AnalystPick) => pick.ratings.strongBuy + pick.ratings.buy + pick.ratings.hold + pick.ratings.sell
+
+/** A pick that has closed (sample): bought at `entry`, closed at `exit` on `closedOn` (ISO date) after `days` days — at
+ *  its target, or exited early when the analysts dropped it. The return is (exit − entry) / entry. Newest first. */
+export type ClosedPick = {
+  sym: string
+  name: string
+  closedOn: string
+  days: number
+  entry: number
+  exit: number
+  outcome: 'target' | 'exited'
+}
+export const closedPicks: ClosedPick[] = [
+  { sym: 'V', name: 'Visa', closedOn: '2026-11-03', days: 24, entry: 318.4, exit: 344.1, outcome: 'target' },
+  { sym: 'COST', name: 'Costco', closedOn: '2026-11-03', days: 18, entry: 912.5, exit: 878.3, outcome: 'exited' },
+  { sym: 'CRM', name: 'Salesforce', closedOn: '2026-11-03', days: 41, entry: 268.5, exit: 301.2, outcome: 'target' },
+  { sym: 'JPM', name: 'JPMorgan Chase', closedOn: '2026-11-02', days: 33, entry: 241.1, exit: 268.9, outcome: 'target' },
+  { sym: 'AAPL', name: 'Apple', closedOn: '2026-10-30', days: 52, entry: 228.4, exit: 262.7, outcome: 'target' },
+  { sym: 'TSLA', name: 'Tesla', closedOn: '2026-10-30', days: 9, entry: 248.2, exit: 221.4, outcome: 'exited' },
+  { sym: 'NFLX', name: 'Netflix', closedOn: '2026-10-28', days: 61, entry: 980, exit: 1152, outcome: 'target' },
+  { sym: 'GOOGL', name: 'Alphabet', closedOn: '2026-10-28', days: 45, entry: 171.2, exit: 198.6, outcome: 'target' },
+]
+
+/** The sample's "today", for History's Today / Yesterday headings. */
+export const PICKS_TODAY = '2026-11-03'
+
+/** A closed pick's return, %. */
+export const closedReturn = (pick: ClosedPick) => ((pick.exit - pick.entry) / pick.entry) * 100
 
 // ---- Sectors heatmap (US Stocks design, 2 Nov; from jojo) ----
 
@@ -24438,21 +24510,33 @@ export const sectorSymbols = (sector: HeatSector, capIndex: number) => {
 
 export type ThemeId = 'ai' | 'bigtech' | 'dividend' | 'ev' | 'health' | 'parking'
 
+/** A theme's return, %, over 1 and 3 years: all its stocks in equal amounts (sample — the snapshot has one month of closes). */
+export type ThemeReturns = { '1y': number; '3y': number }
+
 /**
  * A theme (the old app's "idea"): its stocks, in the order the theme page lists them. Name and description are copy
  * (`us.theme.<id>`, `us.theme.<id>.desc`); every symbol is in the US snapshot with a logo, so prices and logos are real.
  * Leveraged ETFs are off for now (no theme), "Dollar parking" is steady large caps to hold dollars in (ETFs have the ETFs shortcut).
  */
-export const themes: { id: ThemeId; symbols: string[] }[] = [
-  { id: 'ai', symbols: ['NVDA', 'AMD', 'AVGO', 'MU', 'QCOM', 'INTC', 'PLTR', 'ORCL'] },
-  { id: 'bigtech', symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NFLX', 'ADBE', 'CRM'] },
-  { id: 'dividend', symbols: ['KO', 'JNJ', 'XOM', 'PEP', 'PG', 'CVX', 'ABBV', 'MRK'] },
-  { id: 'ev', symbols: ['TSLA', 'RIVN', 'NIO', 'LCID', 'F', 'GM', 'PLUG', 'CHPT'] },
-  { id: 'health', symbols: ['LLY', 'JNJ', 'UNH', 'ABBV', 'MRK', 'PFE'] },
-  { id: 'parking', symbols: ['JPM', 'V', 'MA', 'WMT', 'COST', 'MCD', 'PG', 'HD'] },
+export const themes: { id: ThemeId; symbols: string[]; returns: ThemeReturns }[] = [
+  { id: 'ai', symbols: ['NVDA', 'AMD', 'AVGO', 'MU', 'QCOM', 'INTC', 'PLTR', 'ORCL'], returns: { '1y': 48.6, '3y': 212.4 } },
+  { id: 'bigtech', symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NFLX', 'ADBE', 'CRM'], returns: { '1y': 27.3, '3y': 96.8 } },
+  { id: 'dividend', symbols: ['KO', 'JNJ', 'XOM', 'PEP', 'PG', 'CVX', 'ABBV', 'MRK'], returns: { '1y': 9.4, '3y': 24.1 } },
+  { id: 'ev', symbols: ['TSLA', 'RIVN', 'NIO', 'LCID', 'F', 'GM', 'PLUG', 'CHPT'], returns: { '1y': -18.2, '3y': -41.5 } },
+  { id: 'health', symbols: ['LLY', 'JNJ', 'UNH', 'ABBV', 'MRK', 'PFE'], returns: { '1y': 6.1, '3y': 38.7 } },
+  { id: 'parking', symbols: ['JPM', 'V', 'MA', 'WMT', 'COST', 'MCD', 'PG', 'HD'], returns: { '1y': 16.8, '3y': 52.3 } },
 ]
 
 export const themeById = (id: ThemeId) => themes.find((theme) => theme.id === id)!
+
+/** A theme's 1-month return, %: its stocks in equal amounts, from the snapshot's month of closes (real). */
+export const themeMonthReturn = (symbols: string[]) => {
+  const moves = symbols.flatMap((sym) => {
+    const closes = usQuote(sym)?.closes ?? []
+    return closes.length > 1 ? [(closes[closes.length - 1] - closes[0]) / closes[0]] : []
+  })
+  return moves.length ? (moves.reduce((sum, m) => sum + m, 0) / moves.length) * 100 : 0
+}
 
 /** The theme the theme page (stocks-23 …) shows is one screen per theme: `themeScreenId`. */
 export const themeScreenId = (id: ThemeId) => `stocks-${23 + themes.findIndex((theme) => theme.id === id)}`
@@ -25476,9 +25560,17 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.brands.railLabel": "Brands",
   "us.support.subject": "US Stocks activation still under review",
   "us.themes.title": "Explore by themes",
+  "us.themes.pageTitle": "Themes",
   "us.themes.railLabel": "Themes",
-  "us.themes.more": "More themes",
   "us.themes.stocks": "{count} stocks",
+  "us.themes.return1y": "1Y",
+  "us.themes.cardLabel": "{name}: {pct}% in 1 year, {count} stocks",
+  "us.themes.returns": "Returns",
+  "us.themes.period.1m": "1M",
+  "us.themes.period.1y": "1Y",
+  "us.themes.period.3y": "3Y",
+  "us.themes.growth": "$100 put in these stocks 3 years ago would be {value} today.",
+  "us.themes.returnsNote": "All its stocks in equal amounts. Past returns don’t guarantee future returns.",
   "us.themes.disclaimer": "The securities are quoted as an example, not as a recommendation.",
   "us.themes.back": "Back",
   "us.theme.ai": "AI & chips",
@@ -25590,6 +25682,26 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.picks.recommendation": "Recommendation",
   "us.picks.week": "7D",
   "us.picks.viewAll": "View all",
+  "us.picks.expectedProfit": "Expected profit",
+  "us.picks.analysts": "{pct}% of analysts recommend",
+  "us.picks.rowLabel": "{name}, {sym}: {analysts}% of analysts recommend it; expected profit {pct}%",
+  "picksPage.title": "Top analyst picks",
+  "picksPage.back": "Back",
+  "picksPage.tabsLabel": "Analyst picks",
+  "picksPage.tab.stocks": "Stocks",
+  "picksPage.tab.history": "History",
+  "picksPage.ltp": "LTP",
+  "picksPage.expectedProfit": "Expected profit",
+  "picksPage.analysts": "{pct}% of {total} recommend",
+  "picksPage.rating.strongBuy": "Strong Buy",
+  "picksPage.rating.buy": "Buy",
+  "picksPage.cardLabel": "{name}: {rating}, expected profit {pct}%, recommended by {analysts}% of {total} analysts",
+  "picksPage.outcome.target": "Target hit in {days} days",
+  "picksPage.outcome.exited": "Exited in {days} days",
+  "picksPage.today": "Today",
+  "picksPage.yesterday": "Yesterday",
+  "picksPage.closedLabel": "{name}: return {pct}%, {outcome}",
+  "picksPage.disclaimer": "Analyst views are shown for information only and aren’t advice from Lemonn. Expected profit isn’t guaranteed.",
   "us.picks.label": "{name}, {sym}: recommendation {rating}; {direction} {pct}% in the last 7 days",
   "us.sectors.tabsLabel": "Sector",
   "us.sectors.all": "All",
@@ -25763,6 +25875,7 @@ import { t } from './copy'
 import { activeHomeVersions, DEFAULT_HOME_VERSION } from './components/homeVersions'
 import { themes, themeScreenId, type ThemeId, type UsState } from './components/us/data'
 import { ThemePage } from './screens/ThemePage'
+import { AnalystPicksPage } from './screens/AnalystPicksPage'
 import { setUsJourney, useUsJourney } from '../../shared/userStatus'
 import { ActivationApprovedSheet } from './components/us/sheets/ActivationApprovedSheet'
 import { ActivationSubmittedSheet } from './components/us/sheets/ActivationSubmittedSheet'
@@ -25770,7 +25883,7 @@ import { RiskDisclosureSheet } from './components/us/sheets/RiskDisclosureSheet'
 import { UsFtuxSheet } from './components/us/sheets/UsFtuxSheet'
 
 /** The US tab's taps, by screen id: Activate US Stocks → the risk disclosure sheet (stocks-12), a stock → its page (not activated, in the US Stocks flow), View all / a theme → Market on the US list. */
-const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71') })
+const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71'), onUsPicks: () => go('stocks-29') })
 
 /** The top bar and navbar taps every Home screen shares. */
 /** Search from the Home field: the Stocks tab on IND, the US tab on US (search-29). */
@@ -25880,19 +25993,247 @@ export const stocks: Flow = {
     { id: 'stocks-19', hidden: true, name: 'Home · US tab · under review · Contact Support', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Under review · Contact Support)', figma: '5776:80202', group: 'us-review', note: 'Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\'s Contact Support state (us-stocks-57).', tab: true, render: (go) => usHome(go, 'support', stateTaps(go, 'support')) },
     { id: 'stocks-20', hidden: true, name: 'Home · US tab · money on the way', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Money on the way)', figma: '5796:86490', note: 'After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\'s transfer in progress (us-stocks-28). In the prototype it moves on to "money ready" (stocks-16) by itself after 2 s, as in his prototype.', tab: true, render: (go) => usHome(go, 'onTheWay', { onActivateUs: () => go('us-stocks-28'), autoNext: 'stocks-16' }) },
     { id: 'stocks-18', name: 'Home · activation submitted sheet', figma: '5756:73797', group: 'us-review', note: 'The under-review US tab with the "US Stocks activation under review" sheet (we\'ll let you know as soon as it\'s active). Okay → the under-review Home (stocks-13). Reached from Confirm details in the US Stocks flow.', tab: true, render: (go) => usHome(go, 'review', { sheet: <ActivationSubmittedSheet onOkay={() => go('stocks-13')} /> }) },
+    { id: 'stocks-29', name: 'Top analyst picks · Stocks', badge: 'new', badgeNote: 'Not in Figma: the page View all opens (user brief, 3 Nov)', figma: '', group: 'analyst-picks', note: 'The US tab\'s Top analyst picks, View all (in the header and under the list). Actionbar: back + title, flat tabs Stocks · History in its bottom slot (they stay put). Stocks: a card per pick — expected profit (always positive, green), "62 of 66 analysts recommend" with a progress bar, current price against the average target, the Strong Buy · Buy · Hold · Sell split and the date it was picked; tapping a card opens its US stock page (us-stocks-13). Back → the US tab.', tab: false, render: (go: Go) => <AnalystPicksPage onStock={() => go('us-stocks-13')} /> },
+    { id: 'stocks-30', name: 'Top analyst picks · History', badge: 'new', badgeNote: 'Not in Figma: the History tab (user brief, 3 Nov)', figma: '', group: 'analyst-picks', note: 'The same page on History: the track record (picks closed, how many reached their target, the average return), then each closed pick — dates, its return (green / red) and a Target hit / Exited early tag. A row opens its US stock page.', tab: false, render: (go: Go) => <AnalystPicksPage tab="history" onStock={() => go('us-stocks-13')} /> },
     ...themes.map((theme, i) => ({
       id: themeScreenId(theme.id),
       hidden: i > 0,
       ...(i === 0 ? { badge: 'new' as const, badgeNote: 'Not in Jojo\'s Figma: a theme of Explore by themes' } : {}),
-      name: `Theme · ${t(`us.theme.${theme.id}`)}`,
+      name: `Themes · ${t(`us.theme.${theme.id}`)}`,
       figma: '',
       note: i === 0
-        ? 'A theme from Explore by themes (the old app\'s Invest in Ideas, reworked): the Actionbar has only back and the theme name; below it the logo stack, name, description and the "quoted as an example" disclaimer; then the theme\'s stocks (StockListCard, 12 apart) and More themes, a rail of the other themes. A stock → its US stock page (us-stocks-13); a theme card → that theme\'s screen (stocks-24 … 28, one screen per theme, pushed forward); back → the screen before.'
-        : `The ${t(`us.theme.${theme.id}`)} theme page (same layout as stocks-23).`,
+        ? 'Themes: every theme of Explore by themes on one page, like the ETFs page. Actionbar: back + "Themes", the themes as pill tabs in its bottom slot (they stay put; switching theme stays on the page). For the picked theme: description + "quoted as an example" disclaimer, a Returns card (1M real from the snapshot, 1Y / 3Y sample, what $100 from 3 years ago is worth), then its stocks (StockListCard, 12 apart). Home\'s View all opens it on AI & chips, a theme card on that theme. A stock → its US stock page (us-stocks-13); back → the screen before.'
+        : `Themes, opened on ${t(`us.theme.${theme.id}`)} (that theme\'s card on Home). Same page as stocks-23.`,
       tab: false,
-      render: (go: Go) => <ThemePage theme={theme.id} onStock={() => go('us-stocks-13')} onTheme={(next) => go(themeScreenId(next))} />,
+      render: (go: Go) => <ThemePage theme={theme.id} onStock={() => go('us-stocks-13')} />,
     })),
   ],
+}
+```
+
+### `src/flows/stocks/screens/AnalystPicksPage.module.css`
+
+```css
+/* Top analyst picks page (stocks-29 / 30). */
+
+.disclaimer {
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}
+
+/* A pick card's head: name over its LTP, then the average target over the rating at the end. */
+.name {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+
+.title {
+  overflow: hidden;
+  font: var(--l3-text-label-16);
+  color: var(--l3-content-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-tertiary);
+}
+
+.end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--l3-spacing-04);
+}
+
+.target {
+  font: var(--l3-text-label-16);
+  color: var(--l3-content-primary);
+}
+
+/* The card's bottom row, under a hairline: expected profit · analysts who recommend it. */
+.footer {
+  border-top: 1px solid var(--l3-border-light);
+}
+
+/* 12 so both halves stay on one line at 360 wide. */
+.meta {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+  white-space: nowrap;
+}
+
+/* History: the day a group of picks closed. */
+.day {
+  margin: 0;
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-tertiary);
+}
+```
+
+### `src/flows/stocks/screens/AnalystPicksPage.tsx`
+
+```tsx
+// stocks-29 / 30: Top analyst picks — the page Home's "View all" (US tab) opens. Built from the live app's Trade Ideas
+// page (phone screenshots, 3 Nov), without its F&O tab. The Actionbar carries back + the title, with flat (underline)
+// tabs Stocks · History in its bottom slot, so they stay put while the page scrolls.
+// Stocks: one card per pick — name over its LTP, the analysts' average target over their rating; under a hairline, the
+// expected profit and how many analysts recommend it (Trade Ideas: entry range + "Not in range", potential profit, TP · SL).
+// History: closed picks grouped by the day they closed (Today, Yesterday, then the date) — name over entry → exit price,
+// the return over "Target hit in 24 days" / "Exited in 9 days".
+// Differences from the screenshots (L3 wins): signed % with no ▲ / ▼ arrows (PriceChange), flat tabs instead of pills.
+import { useState } from 'react'
+import { Actionbar } from '@l3/components/Actionbar'
+import { Avatar } from '@l3/components/Avatar'
+import { Card } from '@l3/components/Card'
+import { Inset } from '@l3/components/Inset'
+import { ListCell } from '@l3/components/ListCell'
+import { PriceChange } from '@l3/components/PriceChange'
+import { Stack } from '@l3/components/Stack'
+import { Tabs } from '@l3/components/Tabs'
+import { Tag } from '@l3/components/Tag'
+import { usePreview } from '../../../shared/prototype'
+import { useLiveQuote } from '../../../shared/data/live'
+import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
+import { Usd } from '../../../shared/money'
+import { Screen } from '../../../shared/ui/Screen'
+import { t } from '../copy'
+import { analystCount, analystPicks, closedPicks, closedReturn, PICKS_TODAY, usStock, type AnalystPick, type ClosedPick } from '../components/us/data'
+import styles from './AnalystPicksPage.module.css'
+
+export type PicksTab = 'stocks' | 'history'
+
+type AnalystPicksPageProps = {
+  /** The tab it opens on (stocks-29: Stocks, stocks-30: History). */
+  tab?: PicksTab
+  /** A pick was tapped (already remembered with `viewUsStock`) → its US stock page. */
+  onStock?: (sym: string) => void
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+/** An ISO date (2026-10-30) as days since 1970, so two dates subtract to a number of days. */
+const dayNumber = (iso: string) => {
+  const [y, m, d] = iso.split('-').map(Number)
+  return Date.UTC(y, m - 1, d) / 86_400_000
+}
+
+/** History's heading for a closing day: Today, Yesterday, or "30 Oct 2026". */
+function dayHeading(iso: string) {
+  const daysAgo = dayNumber(PICKS_TODAY) - dayNumber(iso)
+  if (daysAgo === 0) return t('picksPage.today')
+  if (daysAgo === 1) return t('picksPage.yesterday')
+  const [y, m, d] = iso.split('-').map(Number)
+  return `${d} ${MONTHS[m - 1]} ${y}`
+}
+
+/** One open pick. Tapping it opens the stock. */
+function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) => void }) {
+  const stock = usStock(pick.sym, pick.name)
+  const live = useLiveQuote(pick.sym, stock.price, stock.change)
+  // The average target is fixed by the analysts; the expected profit is measured from the snapshot price.
+  const target = stock.price * (1 + pick.expectedProfit / 100)
+  const total = analystCount(pick)
+  return (
+    <Card
+      padding="none"
+      onClick={() => onOpen(pick.sym)}
+      aria-label={t('picksPage.cardLabel', { name: pick.name, rating: pick.rating, pct: pick.expectedProfit.toFixed(2), analysts: pick.analystsPct, total })}
+    >
+      <Inset padding="12">
+        <Stack direction="horizontal" align="center" gap="12">
+          <Avatar src={usLogo(pick.sym)} initials={pick.sym.slice(0, 2)} size={40} />
+          <span className={styles.name}>
+            <span className={styles.title}>{pick.name}</span>
+            <span className={styles.sub}>{t('picksPage.ltp')} <Usd value={live.price} layout="inline" /></span>
+          </span>
+          <span className={styles.end}>
+            <span className={styles.target}><Usd value={target} layout="inline" /></span>
+            <Tag variant="secondary" color={pick.rating === 'Strong Buy' ? 'success' : 'neutral'}>{t(`picksPage.rating.${pick.rating === 'Strong Buy' ? 'strongBuy' : 'buy'}`)}</Tag>
+          </span>
+        </Stack>
+      </Inset>
+      <div className={styles.footer}>
+        <Inset padding="12">
+          <Stack direction="horizontal" align="center" justify="between" gap="08">
+            <span className={styles.meta}>
+              {t('picksPage.expectedProfit')} <PriceChange value={pick.expectedProfit} size="sm" />
+            </span>
+            <span className={styles.meta}>{t('picksPage.analysts', { pct: pick.analystsPct, total })}</span>
+          </Stack>
+        </Inset>
+      </div>
+    </Card>
+  )
+}
+
+/** One closed pick: name over entry → exit price, the return over how it closed and after how long. */
+function ClosedRow({ pick, onOpen }: { pick: ClosedPick; onOpen: (sym: string) => void }) {
+  const ret = closedReturn(pick)
+  const outcome = t(`picksPage.outcome.${pick.outcome}`, { days: pick.days })
+  return (
+    <ListCell
+      variant="card"
+      raised={false}
+      onClick={() => onOpen(pick.sym)}
+      iconLeft={<Avatar src={usLogo(pick.sym)} initials={pick.sym.slice(0, 2)} size={40} label={pick.name} />}
+      labelSize="16"
+      label={pick.name}
+      description={<><Usd value={pick.entry} layout="inline" /> → <Usd value={pick.exit} layout="inline" /></>}
+      trailing={<PriceChange value={ret} size="lg" />}
+      caption={outcome}
+      aria-label={t('picksPage.closedLabel', { name: pick.name, outcome, pct: ret.toFixed(2) })}
+    />
+  )
+}
+
+/** History: closed picks under a heading per closing day (the data is newest first). */
+function History({ onOpen }: { onOpen: (sym: string) => void }) {
+  const days = [...new Set(closedPicks.map((p) => p.closedOn))]
+  return (
+    <Stack gap="24">
+      {days.map((day) => (
+        <Stack key={day} gap="12">
+          <h3 className={styles.day}>{dayHeading(day)}</h3>
+          {closedPicks.filter((p) => p.closedOn === day).map((pick) => <ClosedRow key={pick.sym} pick={pick} onOpen={onOpen} />)}
+        </Stack>
+      ))}
+    </Stack>
+  )
+}
+
+export function AnalystPicksPage({ tab: initialTab = 'stocks', onStock }: AnalystPicksPageProps) {
+  const { back, go } = usePreview()
+  const [tab, setTab] = useState<PicksTab>(initialTab)
+  const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
+  const tabs = (['stocks', 'history'] as const).map((value) => ({ value, label: t(`picksPage.tab.${value}`) }))
+  return (
+    <Screen
+      top={
+        <Actionbar
+          title={t('picksPage.title')}
+          headingLevel={2}
+          onBack={() => { if (!back?.()) go('stocks-09') }}
+          backLabel={t('picksPage.back')}
+          bottom={<Tabs appearance="underline" width="fill" aria-label={t('picksPage.tabsLabel')} items={tabs} value={tab} onChange={(v) => setTab(v as PicksTab)} />}
+        />
+      }
+    >
+      <Inset paddingInline="16" paddingBlock="16">
+        <Stack gap="16">
+          {tab === 'stocks'
+            ? <Stack gap="12">{analystPicks.map((pick) => <PickCard key={pick.sym} pick={pick} onOpen={open} />)}</Stack>
+            : <History onOpen={open} />}
+          <p className={styles.disclaimer}>{t('picksPage.disclaimer')}</p>
+        </Stack>
+      </Inset>
+    </Screen>
+  )
 }
 ```
 
@@ -26182,6 +26523,8 @@ type Props = {
   onUsTheme?: (id: ThemeId) => void
   /** The US tab's ETFs shortcut → the ETF list. */
   onUsEtfs?: () => void
+  /** US tab, Top analyst picks' View all → the Top analyst picks page. */
+  onUsPicks?: () => void
   /** Prototype: after 2 s go on to this screen (the under-review Home moves on to "activated" by itself). */
   autoNext?: string
   /** A sheet over the page: the US Stocks intro, the risk disclosure, "activation submitted". */
@@ -26196,7 +26539,7 @@ type Props = {
  * products; and on the rounded sheet over it, the feed: shortcuts, top movers, watchlists, Smart Invest (brand tint),
  * an announcement (the campaign's artwork), sectors, highlights, idea baskets and the broker's disclosure.
  */
-export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsTheme, onUsEtfs, autoNext, sheet }: Props) {
+export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsPicks, autoNext, sheet }: Props) {
   useAutoAdvance(autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
   // The design version (the prototype's "Homepage version" option): where the IND / US switch sits and how it looks.
@@ -26500,7 +26843,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
             </Stack>
           ) : (
             <Stack key="us" gap="32" data-market-part style={{ '--stk-gap': 'var(--l3-spacing-28)' } as CSSProperties}>
-              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} />
+              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} onPicks={onUsPicks} />
             </Stack>
           )}
         </div>
@@ -26539,36 +26882,77 @@ function initials(name: string) {
   --ab-surface: var(--l3-surface-default);
   --ab-border: var(--l3-border-light);
 }
+
+/* The returns card: a small title, the periods (label over a signed %), the $100 line and the note. */
+.returnsTitle {
+  margin: 0;
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-primary);
+}
+
+.period {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.growth {
+  margin: 0;
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-primary);
+}
+
+.note {
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}
+
+/* The theme tabs, fixed under the title (Actionbar bottom), as the ETFs page's filter row: 12 above and below, 16 from
+   the edges; the pills scroll on their own, with room for their raised shadow. */
+.tabsRow {
+  min-width: 0;
+  padding-block: var(--l3-spacing-12);
+}
+
+.tabs {
+  margin-block: calc(-1 * var(--l3-spacing-04));
+  padding: var(--l3-spacing-04) var(--l3-spacing-16);
+}
 ```
 
 ### `src/flows/stocks/screens/ThemePage.tsx`
 
 ```tsx
-// stocks-23 … 28: one theme of "Explore by themes" — the old app's "Invest in Ideas" page, reworked. The Actionbar carries
-// back + the theme's name (the only title); under it the description and the disclaimer in a flat bordered Aerobar, then
-// the stocks, then the other themes in a rail so the loop goes on.
+// stocks-23 … 28: Themes — every theme of "Explore by themes" on one page, laid out like the ETFs page (us-stocks-71).
+// The Actionbar carries back + "Themes" with the themes as pill tabs in its bottom slot, so they stay put while the page
+// scrolls and switching theme never leaves the page. A theme card on Home opens it on that theme (one screen per theme:
+// stocks-23 AI & chips … 28 Dollar parking); "View all" opens it on the first.
+// Under the tabs, for the picked theme: its description and the disclaimer in a flat bordered Aerobar, its returns (1M
+// from the snapshot, 1Y / 3Y sample, and what $100 put in 3 years ago is worth now), then its stocks.
+import { useState } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Aerobar } from '@l3/components/Aerobar'
+import { Card } from '@l3/components/Card'
+import { Grid } from '@l3/components/Grid'
 import { Inset } from '@l3/components/Inset'
-import { SectionHeader } from '@l3/components/SectionHeader'
+import { PriceChange } from '@l3/components/PriceChange'
 import { Stack } from '@l3/components/Stack'
+import { Tabs } from '@l3/components/Tabs'
 import { usePreview } from '../../../shared/prototype'
 import { useLiveQuote } from '../../../shared/data/live'
 import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
-import { Usd } from '../../../shared/money'
+import { Usd, useUsd } from '../../../shared/money'
 import { Screen } from '../../../shared/ui/Screen'
 import { StockListCard } from '../../../shared/ui/StockListCard'
 import { t } from '../copy'
-import { themeById, usStock, type ThemeId } from '../components/us/data'
-import { ThemeRail } from '../components/us/ThemeCard'
+import { themeById, themeMonthReturn, themes, usStock, type ThemeId } from '../components/us/data'
 import styles from './ThemePage.module.css'
 
 type ThemePageProps = {
+  /** The theme it opens on (the card that was tapped; View all → the first). */
   theme: ThemeId
   /** A stock was tapped (already remembered with `viewUsStock`) → its page. */
   onStock?: (sym: string) => void
-  /** A card in "More themes" → that theme's page. */
-  onTheme?: (id: ThemeId) => void
   /** Back (the screen before, wherever the page was opened from). */
   onBack?: () => void
 }
@@ -26579,34 +26963,73 @@ function ThemeStock({ sym, onOpen }: { sym: string; onOpen: (sym: string) => voi
   return <StockListCard symbol={sym} name={stock.name} logoUrl={usLogo(sym)} price={<Usd value={live.price} layout="inline" />} changePct={live.changePct} onOpen={() => onOpen(sym)} />
 }
 
-export function ThemePage({ theme: id, onStock, onTheme, onBack }: ThemePageProps) {
-  const { back, go } = usePreview()
+/** The theme's returns: 1M · 1Y · 3Y side by side, then what $100 put in 3 years ago is worth today. */
+function ThemeReturns({ id }: { id: ThemeId }) {
   const theme = themeById(id)
-  const name = t(`us.theme.${id}`)
-  const goBack = onBack ?? (() => { if (!back?.()) go('stocks-01') })
-  const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
+  const usd = useUsd()
+  const periods = [
+    { key: '1m' as const, pct: themeMonthReturn(theme.symbols) },
+    { key: '1y' as const, pct: theme.returns['1y'] },
+    { key: '3y' as const, pct: theme.returns['3y'] },
+  ]
   return (
-    <Screen top={<Actionbar title={name} headingLevel={2} onBack={goBack} backLabel={t('us.themes.back')} />}>
-      <Inset paddingInline="00" paddingBlock="16">
-      <Stack gap="24">
-        <Inset paddingInline="16" paddingBlock="00">
-          <Stack gap="16">
-            <Aerobar
-              floating
-              placement="inline"
-              className={styles.about}
-              icon={false}
-              heading={t(`us.theme.${id}.desc`)}
-              paragraph={t('us.themes.disclaimer')}
-            />
-            <Stack gap="12">{theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}</Stack>
-          </Stack>
-        </Inset>
-        <Stack as="section" gap="16" aria-label={t('us.themes.more')}>
-          <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.more')} /></Inset>
-          <ThemeRail except={id} onOpen={(next) => onTheme?.(next)} />
-        </Stack>
+    <Card aria-label={t('us.themes.returns')}>
+      <Stack gap="12">
+        <h3 className={styles.returnsTitle}>{t('us.themes.returns')}</h3>
+        <Grid columns={3} gap="12">
+          {periods.map((period) => (
+            <Stack key={period.key} gap="04">
+              <span className={styles.period}>{t(`us.themes.period.${period.key}`)}</span>
+              <PriceChange value={period.pct} size="lg" />
+            </Stack>
+          ))}
+        </Grid>
+        <p className={styles.growth}>{t('us.themes.growth', { value: usd(100 * (1 + theme.returns['3y'] / 100)) })}</p>
+        <p className={styles.note}>{t('us.themes.returnsNote')}</p>
       </Stack>
+    </Card>
+  )
+}
+
+export function ThemePage({ theme: initialTheme, onStock, onBack }: ThemePageProps) {
+  const { back, go } = usePreview()
+  const [id, setId] = useState<ThemeId>(initialTheme)
+  const theme = themeById(id)
+  const goBack = onBack ?? (() => { if (!back?.()) go('stocks-09') })
+  const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
+  const tabs = themes.map((item) => ({ value: item.id, label: t(`us.theme.${item.id}`) }))
+  return (
+    <Screen
+      top={
+        <Actionbar
+          title={t('us.themes.pageTitle')}
+          headingLevel={2}
+          onBack={goBack}
+          backLabel={t('us.themes.back')}
+          bottom={
+            <div className={styles.tabsRow}>
+              <Tabs appearance="pill" aria-label={t('us.themes.railLabel')} className={styles.tabs} items={tabs} value={id} onChange={(v) => setId(v as ThemeId)} />
+            </div>
+          }
+        />
+      }
+    >
+      {/* Keyed by the theme: a new pick starts its content fresh. */}
+      <Inset key={id} paddingInline="16" paddingBlock="16">
+        <Stack gap="16">
+          <Aerobar
+            floating
+            placement="inline"
+            className={styles.about}
+            icon={false}
+            heading={t(`us.theme.${id}.desc`)}
+            paragraph={t('us.themes.disclaimer')}
+          />
+          <ThemeReturns id={id} />
+          <Stack gap="12" aria-label={t('us.themes.stocks', { count: theme.symbols.length })}>
+            {theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}
+          </Stack>
+        </Stack>
       </Inset>
     </Screen>
   )

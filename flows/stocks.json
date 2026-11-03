@@ -208,7 +208,26 @@
       "figma": "5756:73797",
       "note": "The under-review US tab with the \"US Stocks activation under review\" sheet (we\\",
       "goesTo": [
-        "stocks-13",
+        "stocks-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-29",
+      "name": "Top analyst picks · Stocks",
+      "figma": "",
+      "note": "The US tab\\",
+      "goesTo": [
+        "us-stocks-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-30",
+      "name": "Top analyst picks · History",
+      "figma": "",
+      "note": "The same page on History: the track record (picks closed, how many reached their target, the average return), then each closed pick — dates, its return (green / red) and a Target hit / Exited early tag. A row opens its US stock page.",
+      "goesTo": [
         "us-stocks-13"
       ],
       "figmaUrl": ""
@@ -280,6 +299,8 @@
     "src/flows/stocks/copy.ts",
     "src/flows/stocks/data.ts",
     "src/flows/stocks/index.tsx",
+    "src/flows/stocks/screens/AnalystPicksPage.module.css",
+    "src/flows/stocks/screens/AnalystPicksPage.tsx",
     "src/flows/stocks/screens/Home.module.css",
     "src/flows/stocks/screens/Home.tsx",
     "src/flows/stocks/screens/ThemePage.module.css",
