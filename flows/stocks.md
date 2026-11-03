@@ -280,6 +280,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Prototype only, on a phone (the app mode): a floating, draggable settings pill over every Home screen (`components/HomeSwitcher`, copied from the nudges flow's SheetSwitcher) — US Stocks activation · USD wallet · US holdings · Homepage version · Header, each a dropdown with the full names. Hidden on a laptop, where these settings already float beside the phone mockup.
 - 2026-11-03 — One IND ↔ US switch in every version: the two top cards are one carousel track (IND left, US right, the
   other card just off screen). A swipe on the card drags the track, so the other market's card slides into view beside
   it; a tap on the tabs or V13's market button slides the track across the same way — so the card shows it can be
@@ -20315,6 +20316,304 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
 }
 ```
 
+### `src/flows/stocks/components/HomeSwitcher.module.css`
+
+```css
+/* PROTOTYPE ONLY: the floating User status · Version · Header pill over the Home (phone app mode). Copied from the nudges flow's SheetSwitcher. Tokens only. */
+
+/* Starts top-left, under the floating settings button and above the sheet; once dragged, left / top come from the
+   component. */
+.pill {
+  position: absolute;
+  z-index: var(--app-layer-fab);
+  left: var(--l3-spacing-12);
+  top: var(--l3-size-64);
+  width: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  max-width: calc(100% - var(--l3-spacing-24));
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-24);
+  background: var(--l3-surface-primary);
+  box-shadow: var(--l3-shadow-elevation-high);
+  touch-action: none;
+}
+
+.grip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  padding: 0;
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: var(--l3-content-secondary);
+  cursor: grab;
+  touch-action: none;
+}
+.grip:active { cursor: grabbing; }
+
+.chip {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  height: var(--l3-size-32);
+  padding: 0 var(--l3-spacing-04) 0 var(--l3-spacing-08);
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chip > svg { flex: none; transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard); }
+.chip[data-open] { box-shadow: inset 0 0 0 1px var(--l3-border-dark); }
+.chip[data-open] > svg { transform: rotate(180deg); }
+/* Every pill keeps its size; one too long for the row is cut with an ellipsis (the menu shows it whole). */
+.value { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* The dropdown: a floating card with the full names. */
+.menu {
+  position: absolute;
+  z-index: var(--app-layer-fab);
+  box-sizing: border-box;
+  min-width: calc(var(--l3-size-96) * 2);
+  max-width: calc(100% - var(--l3-spacing-16));
+  overflow-y: auto;
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-primary);
+  box-shadow: var(--l3-shadow-elevation-high), inset 0 0 0 1px var(--l3-border-light);
+  animation: drop var(--l3-motion-duration-short) var(--l3-motion-easing-decelerate) both;
+}
+.menuTitle {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12) var(--l3-spacing-04);
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-label-12);
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  min-height: var(--l3-size-40);
+  padding: 0 var(--l3-spacing-12);
+  border: 0;
+  border-radius: var(--l3-radius-12);
+  background: none;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-14);
+  text-align: left;
+  cursor: pointer;
+}
+.item:hover { background: var(--l3-surface-secondary); }
+.item[data-picked] { background: var(--l3-surface-secondary); }
+.itemLabel { flex: 1; }
+.item > svg { flex: none; color: var(--l3-content-accent-success-default); }
+
+@keyframes drop { from { opacity: 0; transform: translateY(calc(var(--l3-spacing-04) * -1)); } }
+@media (prefers-reduced-motion: reduce) { .menu, .chip > svg { animation: none; transition: none; } }
+```
+
+### `src/flows/stocks/components/HomeSwitcher.tsx`
+
+```tsx
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from 'react'
+import { createPortal } from 'react-dom'
+import { Icon } from '@l3/components/Icon'
+import { msCheck, msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
+import type { FlowOption } from '../../types'
+import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
+import { USER_STATUS, userStatusOptions, type UsActivation, type UsHoldings, type UsWallet } from '../../../shared/userStatus'
+import { activeHomeVersions, DEFAULT_HOME_VERSION } from './homeVersions'
+import { t } from '../copy'
+import styles from './HomeSwitcher.module.css'
+
+type Spot = { x: number; y: number }
+/** One pill: the option, whose settings it is (a flow id, or the app's user status) and its short text. */
+type Item = { owner: string; option: FlowOption; short: (value: string, label: string) => string }
+
+const SPOT_KEY = 'stocks-home-switcher-spot'
+const readSpot = (): Spot | null => {
+  try { return JSON.parse(localStorage.getItem(SPOT_KEY) ?? 'null') } catch { return null }
+}
+
+// The same test the preview uses to run as the app itself (preview/Preview.tsx phoneQuery): a phone, or the app
+// installed on one. On a laptop these settings already float beside the phone mockup (an option's `floatOn`).
+const phoneQuery = '(max-width: 767px), ((display-mode: standalone) and (pointer: coarse)), ((display-mode: fullscreen) and (pointer: coarse))'
+const usePhone = () =>
+  useSyncExternalStore(
+    (onChange) => { const m = window.matchMedia(phoneQuery); m.addEventListener('change', onChange); return () => m.removeEventListener('change', onChange) },
+    () => window.matchMedia(phoneQuery).matches,
+  )
+
+const userStatus = (id: string) => userStatusOptions.find((o) => o.id === id)!
+const homeVersionOption: FlowOption = {
+  id: 'homeVersion', label: 'Homepage version', default: DEFAULT_HOME_VERSION,
+  values: activeHomeVersions.map((v) => ({ value: v.id, label: `${v.id.toUpperCase()} · ${v.name}` })),
+}
+const headerOption: FlowOption = {
+  id: 'header', label: 'Header', default: 'page',
+  values: [{ value: 'page', label: 'Holdings on page' }, { value: 'card', label: 'Holdings in card' }],
+}
+
+// The pills, in order. User status first (each one only while the one before has the listed values, as in the panel),
+// then the Home's own settings.
+const items: Item[] = [
+  { owner: USER_STATUS, option: userStatus('us'), short: (v) => t(`switcher.us.${v as UsActivation}`) },
+  { owner: USER_STATUS, option: userStatus('usWallet'), short: (v) => t(`switcher.wallet.${v as UsWallet}`) },
+  { owner: USER_STATUS, option: userStatus('usHoldings'), short: (v) => t(`switcher.holdings.${v as UsHoldings}`) },
+  { owner: 'stocks', option: homeVersionOption, short: (v) => v.toUpperCase() },
+  { owner: 'stocks', option: headerOption, short: (v) => t(`switcher.header.${v as 'page' | 'card'}`) },
+]
+
+/**
+ * PROTOTYPE ONLY — not part of the design. On a phone (the prototype running as the app), a small floating pill over
+ * the Home: US Stocks activation · USD wallet · US holdings · Homepage version · Header, each a dropdown pill (its own
+ * menu, with the full names), so states and versions can be switched without opening the settings. Drag it by the
+ * grip; it remembers where it was left (this browser). Copied from the nudges flow's SheetSwitcher.
+ *
+ * A sheet makes everything inside the screen inert, so the pill is drawn just outside the screen (in the layer that
+ * holds it), over any sheet.
+ */
+export function HomeSwitcher() {
+  const { interactive } = usePreview()
+  const phone = usePhone()
+  const anchor = useRef<HTMLSpanElement>(null)
+  const [host, setHost] = useState<HTMLElement | null>(null)
+  useLayoutEffect(() => {
+    const screen = anchor.current?.closest('[data-part="page"]')?.parentElement
+    setHost(screen?.parentElement ?? null)
+  }, [])
+
+  return <>
+    <span ref={anchor} hidden />
+    {interactive && phone && host && createPortal(<Pill host={host} />, host)}
+  </>
+}
+
+type MenuState = { item: Item; chip: HTMLElement } | null
+
+function Pill({ host }: { host: HTMLElement }) {
+  const pill = useRef<HTMLDivElement>(null)
+  const [spot, setSpot] = useState<Spot | null>(readSpot)
+  const [menu, setMenu] = useState<MenuState>(null)
+  const grab = useRef<{ id: number; dx: number; dy: number } | null>(null)
+  const us = useFlowOption(USER_STATUS, 'us', userStatus('us').default)
+  const wallet = useFlowOption(USER_STATUS, 'usWallet', userStatus('usWallet').default)
+  const status: Record<string, string> = { us, usWallet: wallet }
+  const shown = items.filter(({ option }) => !option.showIf || Object.entries(option.showIf).every(([id, values]) => values.includes(status[id])))
+
+  // Keep it inside the screen (a phone turned, or a spot saved on a bigger screen).
+  const clamp = (x: number, y: number): Spot => {
+    const box = pill.current?.getBoundingClientRect()
+    const w = box?.width ?? 0
+    const h = box?.height ?? 0
+    return { x: Math.min(Math.max(0, x), host.clientWidth - w), y: Math.min(Math.max(0, y), host.clientHeight - h) }
+  }
+
+  const down = (e: PointerEvent<HTMLButtonElement>) => {
+    const box = pill.current!.getBoundingClientRect()
+    setMenu(null)
+    grab.current = { id: e.pointerId, dx: e.clientX - box.left, dy: e.clientY - box.top }
+    try { e.currentTarget.setPointerCapture(e.pointerId) } catch { /* the pointer is already gone */ }
+  }
+  const move = (e: PointerEvent<HTMLButtonElement>) => {
+    const g = grab.current
+    if (!g || g.id !== e.pointerId) return
+    const origin = host.getBoundingClientRect()
+    const scale = origin.width / host.clientWidth || 1
+    setSpot(clamp((e.clientX - origin.left - g.dx) / scale, (e.clientY - origin.top - g.dy) / scale))
+  }
+  const up = (e: PointerEvent<HTMLButtonElement>) => {
+    if (grab.current?.id !== e.pointerId) return
+    grab.current = null
+    try { if (spot) localStorage.setItem(SPOT_KEY, JSON.stringify(spot)) } catch { /* storage off */ }
+  }
+
+  return <div ref={pill} className={styles.pill} role="group" aria-label={t('switcher.label')}
+    style={spot ? { left: spot.x, top: spot.y } : undefined}>
+    <button type="button" className={styles.grip} aria-label={t('switcher.drag')}
+      onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
+      <Icon icon={msDragIndicator} size={20} />
+    </button>
+    {shown.map((item) => <Pick key={item.option.id} item={item} menu={menu} setMenu={setMenu} />)}
+    {menu && <Menu item={menu.item} chip={menu.chip} host={host} onClose={() => setMenu(null)} />}
+  </div>
+}
+
+/** A dropdown pill: the short value (cut with an ellipsis when it doesn't fit) and a chevron; a tap opens the menu. */
+function Pick({ item, menu, setMenu }: { item: Item; menu: MenuState; setMenu: (menu: MenuState) => void }) {
+  const { owner, option, short } = item
+  const value = useFlowOption(owner, option.id, option.default)
+  const label = option.values.find((o) => o.value === value)?.label ?? value
+  const open = menu?.item.option.id === option.id
+  return <button type="button" className={styles.chip} data-open={open ? '' : undefined}
+    aria-haspopup="listbox" aria-expanded={open} aria-label={`${option.label}: ${label}`}
+    onClick={(e) => setMenu(open ? null : { item, chip: e.currentTarget })}>
+    <span className={styles.value}>{short(value, label)}</span>
+    <Icon icon={msKeyboardArrowDown} size={16} />
+  </button>
+}
+
+/** The open dropdown: every value by its full name, the picked one ticked. Under its pill (above it when there's no
+ *  room), kept inside the screen; a tap outside or Escape closes it. */
+function Menu({ item, chip, host, onClose }: { item: Item; chip: HTMLElement; host: HTMLElement; onClose: () => void }) {
+  const { owner, option } = item
+  const box = useRef<HTMLDivElement>(null)
+  const value = useFlowOption(owner, option.id, option.default)
+  const [spot, setSpot] = useState<{ left: number; top: number; maxHeight: number } | null>(null)
+
+  useLayoutEffect(() => {
+    const origin = host.getBoundingClientRect()
+    const scale = origin.width / host.clientWidth || 1
+    const at = chip.getBoundingClientRect()
+    const gap = 8
+    const width = box.current?.offsetWidth ?? 0
+    const left = Math.min(Math.max(gap, (at.left - origin.left) / scale), host.clientWidth - width - gap)
+    const below = (at.bottom - origin.top) / scale + gap
+    const above = (at.top - origin.top) / scale - gap
+    const roomBelow = host.clientHeight - below - gap
+    const height = box.current?.scrollHeight ?? 0
+    setSpot(height <= roomBelow || roomBelow >= above
+      ? { left, top: below, maxHeight: roomBelow }
+      : { left, top: Math.max(gap, above - height), maxHeight: above - gap })
+  }, [chip, host])
+
+  useEffect(() => {
+    const away = (e: Event) => {
+      const target = e.target as Node
+      if (!box.current?.contains(target) && !chip.contains(target)) onClose()
+    }
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('pointerdown', away)
+    document.addEventListener('keydown', key)
+    return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', key) }
+  }, [chip, onClose])
+
+  return createPortal(<div ref={box} className={styles.menu} role="listbox" aria-label={option.label}
+    style={spot ?? { visibility: 'hidden' }}>
+    <div className={styles.menuTitle}>{option.label}</div>
+    {option.values.map((o) => {
+      const picked = o.value === value
+      return <button key={o.value} type="button" role="option" aria-selected={picked} className={styles.item}
+        data-picked={picked ? '' : undefined}
+        onClick={() => { setFlowOption(owner, option.id, option.default, o.value); onClose() }}>
+        <span className={styles.itemLabel}>{o.label}</span>
+        {picked && <Icon icon={msCheck} size={16} />}
+      </button>
+    })}
+  </div>, host)
+}
+```
+
 ### `src/flows/stocks/components/Ideas.tsx`
 
 ```tsx
@@ -24858,7 +25157,22 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "switchGuide.captionTrade": "Trade from $1, even a part of a share",
   "switchGuide.fraction": "0.25 share · $1 minimum",
   "switchGuide.buy": "Buy",
-  "switchGuide.bought": "Bought 0.25 {sym}"
+  "switchGuide.bought": "Bought 0.25 {sym}",
+  "switcher.label": "Home prototype settings",
+  "switcher.drag": "Drag to move",
+  "switcher.us.kyc": "US · KYC pending",
+  "switcher.us.off": "US · Not activated",
+  "switcher.us.review": "US · Under review",
+  "switcher.us.support": "US · Contact support",
+  "switcher.us.failed": "US · Failed",
+  "switcher.us.active": "US · Activated",
+  "switcher.wallet.empty": "Wallet · $0",
+  "switcher.wallet.onTheWay": "Wallet · On the way",
+  "switcher.wallet.funded": "Wallet · Funded",
+  "switcher.holdings.none": "No holdings",
+  "switcher.holdings.some": "Holds NVDA",
+  "switcher.header.page": "Header · page",
+  "switcher.header.card": "Header · card"
 }
 ```
 
@@ -25388,6 +25702,7 @@ import { HoldingsSummary, HoldingsSwitcher, IndexStrip, ProductCards, type Holdi
 import { MarketSwitch, MarketTabs, PinnedMarketTabs, type Market } from '../components/MarketTabs'
 import { DEFAULT_HOME_VERSION, homeVersion, type HomeVersion } from '../components/homeVersions'
 import { MarketSwitchGuide } from '../components/MarketSwitchGuide'
+import { HomeSwitcher } from '../components/HomeSwitcher'
 import { TopBar } from '../components/TopBar'
 import { activatedStates, inKycCard, usIndices, type UsState } from '../components/us/data'
 import { UsActivationCard } from '../components/us/UsActivationCard'
@@ -25698,6 +26013,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
       </div>
       {/* Holds the top bar's place at the top of the page (the bar itself hangs from the sticky header above). */}
       <div ref={spacer} className={styles.spacer} aria-hidden="true" />
+      <HomeSwitcher />
       <Stack ref={page} className={styles.flatCards}>
         {version.place === 'top' && !twoHomes && <MarketSwitchFor version={version} value={tab} onChange={(next) => switchTo(next, true)} />}
         {/* The page's one index marquee: sticky under the top bar, and up to the very top while the top bar is away. */}

@@ -248,6 +248,8 @@
     "src/flows/stocks/assets/us/us-icon-on.svg",
     "src/flows/stocks/components/Discover.tsx",
     "src/flows/stocks/components/Home.module.css",
+    "src/flows/stocks/components/HomeSwitcher.module.css",
+    "src/flows/stocks/components/HomeSwitcher.tsx",
     "src/flows/stocks/components/Ideas.tsx",
     "src/flows/stocks/components/Invest.tsx",
     "src/flows/stocks/components/MarketSwitchGuide.module.css",
