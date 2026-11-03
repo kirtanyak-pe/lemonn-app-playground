@@ -295,6 +295,10 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Themes page: flat (underline) tabs with icons instead of pills; switching theme slides the body sideways (a tap slides the new theme in from its side), and a left / right swipe on the body drags it and moves to the next / previous theme (the flow's `useSwipeBetween`, rubber-band at the ends). The overview card starts with the theme's name instead of logos.
+- 2026-11-03 — Themes (stocks-23 … 28): each theme pill has an icon (AI memory chip, Big Tech devices, Dividend paid, EV car, Health cross, Dollar parking savings). The top is one overview card instead of the text bar + returns card: logos and stock count, a one-line description, “$100 put in 3 years ago” → today’s value with an L3 area Chart (sample monthly path), then 1M · 1Y · 3Y. The stocks sit under an “All stocks” SectionHeader; the returns note and disclaimer moved to one footnote at the end. Analyst pick cards: no 8 gap between head and footer.
+- 2026-11-03 — Themes page (stocks-23…28): pills have icons (AI chip, devices, paid, electric car, health cross, savings). The top is one overview card — the theme's name + stock count, a one-line description, “$100 put in 3 years ago” → today in big type with an L3 area Chart from $100 to now, then 1M · 1Y · 3Y. The Aerobar description, the Returns title and the $100 sentence are gone. Stocks sit under an “All stocks” SectionHeader; the returns note and disclaimer are one footnote at the end. Content starts 24 below the tabs.
+- 2026-11-03 — Top analyst picks (stocks-29 / 30): pick cards have no shadow (border only), content starts 24 below the tabs. **L3 gap:** a clickable Card always has elevation-low — no prop to turn it off, so the page overrides it.
 - 2026-11-03 — US tab shortcuts are Analysis · ETFs · Watchlist · Referral again, as on the IND tab (Fractional and Market hours removed; their icons stay in assets/shortcuts, unused).
 - 2026-11-03 — Top analyst picks page (`stocks-29` / `30`): View all on the US tab's picks opens it instead of Market. Flat tabs Stocks (full breakdown per pick) and History (track record + closed picks). Sample data in `components/us/data.ts` (`analystPicks` ratings / picked on, `closedPicks`).
 - 2026-11-03 — Top analyst picks page rebuilt from the live Trade Ideas screenshots: Stocks cards (LTP, average target + rating, expected profit · % recommend under a hairline) and History grouped by day (Today / Yesterday / date) with entry → exit and "Target hit in N days". Track record card, intros and progress bars removed. `closedPicks` now has an ISO `closedOn` + `days` held; `PICKS_TODAY` is the sample's today.
@@ -25550,9 +25554,12 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.themes.period.1m": "1M",
   "us.themes.period.1y": "1Y",
   "us.themes.period.3y": "3Y",
-  "us.themes.growth": "$100 put in these stocks 3 years ago would be {value} today.",
-  "us.themes.returnsNote": "All its stocks in equal amounts. Past returns don’t guarantee future returns.",
-  "us.themes.disclaimer": "The securities are quoted as an example, not as a recommendation.",
+  "us.themes.growthLabel": "$100 put in 3 years ago",
+  "us.themes.growthChart": "$100 in {name}, 3 years",
+  "us.themes.chartStart": "3Y ago",
+  "us.themes.chartNow": "Now",
+  "us.themes.allStocks": "All stocks",
+  "us.themes.footnote": "Returns treat all its stocks in equal amounts. Past returns don’t guarantee future returns. The securities are quoted as an example, not as a recommendation.",
   "us.themes.back": "Back",
   "us.theme.ai": "AI & chips",
   "us.theme.ai.desc": "The companies that design the chips and software behind the AI boom.",
@@ -25994,6 +26001,14 @@ export const stocks: Flow = {
   color: var(--l3-content-secondary);
 }
 
+/* Pick cards are tappable but flat on the page: border only, no shadow. Their head and footer bring their own 12
+   padding, so the card's 8 row gap goes too (it doubled the space above the hairline).
+   L3 gap: a clickable Card always adds elevation-low and has no prop to turn it off. */
+.card.card[data-interactive] {
+  gap: 0;
+  box-shadow: var(--card-border);
+}
+
 /* A pick card's head: name over its LTP, then the average target over the rating at the end. */
 .name {
   display: flex;
@@ -26114,6 +26129,7 @@ function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) =
   return (
     <Card
       padding="none"
+      className={styles.card}
       onClick={() => onOpen(pick.sym)}
       aria-label={t('picksPage.cardLabel', { name: pick.name, rating: pick.rating, pct: pick.expectedProfit.toFixed(2), analysts: pick.analystsPct, total })}
     >
@@ -26196,7 +26212,7 @@ export function AnalystPicksPage({ tab: initialTab = 'stocks', onStock }: Analys
         />
       }
     >
-      <Inset paddingInline="16" paddingBlock="16">
+      <Inset paddingInline="16" paddingBlock="24">
         <Stack gap="16">
           {tab === 'stocks'
             ? <Stack gap="12">{analystPicks.map((pick) => <PickCard key={pick.sym} pick={pick} onOpen={open} />)}</Stack>
@@ -26857,19 +26873,31 @@ function initials(name: string) {
 ### `src/flows/stocks/screens/ThemePage.module.css`
 
 ```css
-/*
- * The theme's description: an L3 Aerobar, floating inline (rounded, flat), on the page surface with a light border
- * instead of its tinted surface. FLAG: L3 Aerobar has no neutral surface-default look — set through its own variables.
- */
-.about.about {
-  --ab-surface: var(--l3-surface-default);
-  --ab-border: var(--l3-border-light);
+/* The theme overview card: name + stock count, the one-line description, $100 → today, the chart and the returns. */
+.name {
+  margin: 0;
+  font: var(--l3-text-heading-18);
+  color: var(--l3-content-primary);
 }
 
-/* The returns card: a small title, the periods (label over a signed %), the $100 line and the note. */
-.returnsTitle {
+.count {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.desc {
   margin: 0;
-  font: var(--l3-text-label-14);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+.growthLabel {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.worth {
+  font: var(--l3-text-heading-24);
   color: var(--l3-content-primary);
 }
 
@@ -26878,28 +26906,16 @@ function initials(name: string) {
   color: var(--l3-content-secondary);
 }
 
-.growth {
-  margin: 0;
-  font: var(--l3-text-description-14);
-  color: var(--l3-content-primary);
-}
-
-.note {
+/* How returns are counted and that it's not a recommendation, under the stocks. */
+.footnote {
   margin: 0;
   font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
-/* The theme tabs, fixed under the title (Actionbar bottom), as the ETFs page's filter row: 12 above and below, 16 from
-   the edges; the pills scroll on their own, with room for their raised shadow. */
-.tabsRow {
-  min-width: 0;
-  padding-block: var(--l3-spacing-12);
-}
-
-.tabs {
-  margin-block: calc(-1 * var(--l3-spacing-04));
-  padding: var(--l3-spacing-04) var(--l3-spacing-16);
+/* The sliding body (a swipe drags it sideways): fills the page so a swipe can start anywhere under the tabs. */
+.body {
+  min-height: 100%;
 }
 ```
 
@@ -26907,20 +26923,29 @@ function initials(name: string) {
 
 ```tsx
 // stocks-23 … 28: Themes — every theme of "Explore by themes" on one page, laid out like the ETFs page (us-stocks-71).
-// The Actionbar carries back + "Themes" with the themes as pill tabs in its bottom slot, so they stay put while the page
-// scrolls and switching theme never leaves the page. A theme card on Home opens it on that theme (one screen per theme:
-// stocks-23 AI & chips … 28 Dollar parking); "View all" opens it on the first.
-// Under the tabs, for the picked theme: its description and the disclaimer in a flat bordered Aerobar, its returns (1M
-// from the snapshot, 1Y / 3Y sample, and what $100 put in 3 years ago is worth now), then its stocks.
-import { useState } from 'react'
+// The Actionbar carries back + "Themes" with the themes as flat (underline) tabs, each with its icon, in its bottom slot,
+// so they stay put while the page scrolls and switching theme never leaves the page. Switching slides the body sideways:
+// a tap slides the new theme in from its side; a left / right swipe on the body drags it with the finger, slides it out
+// and the next (or previous) theme in (the stocks flow's `useSwipeBetween`). A theme card on Home opens it on that theme (one
+// screen per theme: stocks-23 AI & chips … 28 Dollar parking); "View all" opens it on the first.
+// Under the tabs, for the picked theme, two sections:
+// 1. About it, told in a picture more than words — one card: its name and stock count, a one-line description, what
+//    $100 put in 3 years ago is worth now (a line chart from $100 to today), and its 1M · 1Y · 3Y returns.
+// 2. "All stocks": its stocks as list cards.
+// The fine print (how returns are counted, not a recommendation) closes the page.
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
-import { Aerobar } from '@l3/components/Aerobar'
 import { Card } from '@l3/components/Card'
+import { Chart, type ChartCandle } from '@l3/components/Chart'
 import { Grid } from '@l3/components/Grid'
+import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { PriceChange } from '@l3/components/PriceChange'
+import { Section } from '@l3/components/Section'
+import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
+import { msDevices, msElectricCar, msHealthCross, msMemory, msPaid, msSavings } from '@l3/icons/material'
 import { usePreview } from '../../../shared/prototype'
 import { useLiveQuote } from '../../../shared/data/live'
 import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
@@ -26928,6 +26953,7 @@ import { Usd, useUsd } from '../../../shared/money'
 import { Screen } from '../../../shared/ui/Screen'
 import { StockListCard } from '../../../shared/ui/StockListCard'
 import { t } from '../copy'
+import { neighbour, useSwipeBetween } from '../components/useSwipeBetween'
 import { themeById, themeMonthReturn, themes, usStock, type ThemeId } from '../components/us/data'
 import styles from './ThemePage.module.css'
 
@@ -26940,25 +26966,73 @@ type ThemePageProps = {
   onBack?: () => void
 }
 
+/** Each theme's icon on its pill. */
+const THEME_ICONS: Record<ThemeId, string> = {
+  ai: msMemory,
+  bigtech: msDevices,
+  dividend: msPaid,
+  ev: msElectricCar,
+  health: msHealthCross,
+  parking: msSavings,
+}
+
+/**
+ * Sample path of $100 over 36 months to what it's worth today (`end`): steady compounding with a gentle wobble, so the
+ * chart reads like a real history. Monthly points, oldest first, as line-chart candles (only `close` is drawn).
+ */
+function growthPath(end: number): ChartCandle[] {
+  const months = 36
+  return Array.from({ length: months + 1 }, (_, i) => {
+    const trend = 100 * Math.pow(end / 100, i / months)
+    const wobble = i === 0 || i === months ? 0 : 0.05 * Math.sin(i * 0.9) + 0.03 * Math.sin(i * 2.3)
+    const close = trend * (1 + wobble)
+    return { open: close, high: close, low: close, close }
+  })
+}
+
 function ThemeStock({ sym, onOpen }: { sym: string; onOpen: (sym: string) => void }) {
   const stock = usStock(sym)
   const live = useLiveQuote(sym, stock.price, stock.change)
   return <StockListCard symbol={sym} name={stock.name} logoUrl={usLogo(sym)} price={<Usd value={live.price} layout="inline" />} changePct={live.changePct} onOpen={() => onOpen(sym)} />
 }
 
-/** The theme's returns: 1M · 1Y · 3Y side by side, then what $100 put in 3 years ago is worth today. */
-function ThemeReturns({ id }: { id: ThemeId }) {
+/** About the theme: name + count, one line on what it is, $100 → today as a chart, and its returns. */
+function ThemeOverview({ id }: { id: ThemeId }) {
   const theme = themeById(id)
   const usd = useUsd()
+  const worth = 100 * (1 + theme.returns['3y'] / 100)
   const periods = [
     { key: '1m' as const, pct: themeMonthReturn(theme.symbols) },
     { key: '1y' as const, pct: theme.returns['1y'] },
     { key: '3y' as const, pct: theme.returns['3y'] },
   ]
   return (
-    <Card aria-label={t('us.themes.returns')}>
-      <Stack gap="12">
-        <h3 className={styles.returnsTitle}>{t('us.themes.returns')}</h3>
+    <Card aria-label={t(`us.theme.${id}`)}>
+      <Stack gap="16">
+        <Stack gap="08">
+          <Stack direction="horizontal" align="center" justify="between" gap="08">
+            <h3 className={styles.name}>{t(`us.theme.${id}`)}</h3>
+            <span className={styles.count}>{t('us.themes.stocks', { count: theme.symbols.length })}</span>
+          </Stack>
+          <p className={styles.desc}>{t(`us.theme.${id}.desc`)}</p>
+        </Stack>
+        <Stack gap="04">
+          <span className={styles.growthLabel}>{t('us.themes.growthLabel')}</span>
+          <Stack direction="horizontal" align="center" gap="08">
+            <span className={styles.worth}><Usd value={worth} layout="inline" /></span>
+            <PriceChange value={theme.returns['3y']} size="md" />
+          </Stack>
+        </Stack>
+        <Chart
+          type="area"
+          data={growthPath(worth)}
+          showVolume={false}
+          showGrid={false}
+          showLastPrice={false}
+          timeLabels={[t('us.themes.chartStart'), '', '', t('us.themes.chartNow')]}
+          format={(v) => usd(v)}
+          label={t('us.themes.growthChart', { name: t(`us.theme.${id}`) })}
+        />
         <Grid columns={3} gap="12">
           {periods.map((period) => (
             <Stack key={period.key} gap="04">
@@ -26967,8 +27041,6 @@ function ThemeReturns({ id }: { id: ThemeId }) {
             </Stack>
           ))}
         </Grid>
-        <p className={styles.growth}>{t('us.themes.growth', { value: usd(100 * (1 + theme.returns['3y'] / 100)) })}</p>
-        <p className={styles.note}>{t('us.themes.returnsNote')}</p>
       </Stack>
     </Card>
   )
@@ -26980,7 +27052,39 @@ export function ThemePage({ theme: initialTheme, onStock, onBack }: ThemePagePro
   const theme = themeById(id)
   const goBack = onBack ?? (() => { if (!back?.()) go('stocks-09') })
   const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
-  const tabs = themes.map((item) => ({ value: item.id, label: t(`us.theme.${item.id}`) }))
+  const order = themes.map((item) => item.id)
+  const tabs = themes.map((item) => ({ value: item.id, label: t(`us.theme.${item.id}`), iconLeft: <Icon icon={THEME_ICONS[item.id]} /> }))
+
+  // The body that slides, and the side the next theme comes in from (1: from the right, -1: from the left).
+  const body = useRef<HTMLDivElement>(null)
+  const comingFrom = useRef<1 | -1 | 0>(0)
+  const swipe = useSwipeBetween({
+    page: id,
+    canGo: (direction) => neighbour(order, id, direction) !== null,
+    onSwitch: (direction) => {
+      const next = neighbour(order, id, direction)
+      if (!next) return
+      comingFrom.current = direction
+      setId(next)
+    },
+    slides: () => (body.current ? [body.current] : []),
+    fades: () => [],
+  })
+  // A tap on a tab: the new theme slides in from its side (no slide-out first, so it answers at once).
+  const pick = (next: ThemeId) => {
+    if (next === id) return
+    comingFrom.current = order.indexOf(next) > order.indexOf(id) ? 1 : -1
+    setId(next)
+  }
+  // Runs after the swipe hook has reset the body: the new theme glides in from where the old one left.
+  useLayoutEffect(() => {
+    const from = comingFrom.current
+    comingFrom.current = 0
+    const el = body.current
+    if (!from || !el || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    el.animate([{ translate: `${from * el.offsetWidth}px 0` }, { translate: '0 0' }], { duration: 280, easing: 'cubic-bezier(0.2, 0, 0, 1)' })
+  }, [id])
+
   return (
     <Screen
       top={
@@ -26989,31 +27093,25 @@ export function ThemePage({ theme: initialTheme, onStock, onBack }: ThemePagePro
           headingLevel={2}
           onBack={goBack}
           backLabel={t('us.themes.back')}
-          bottom={
-            <div className={styles.tabsRow}>
-              <Tabs appearance="pill" aria-label={t('us.themes.railLabel')} className={styles.tabs} items={tabs} value={id} onChange={(v) => setId(v as ThemeId)} />
-            </div>
-          }
+          bottom={<Tabs appearance="underline" aria-label={t('us.themes.railLabel')} items={tabs} value={id} onChange={(v) => pick(v as ThemeId)} />}
         />
       }
     >
-      {/* Keyed by the theme: a new pick starts its content fresh. */}
-      <Inset key={id} paddingInline="16" paddingBlock="16">
-        <Stack gap="16">
-          <Aerobar
-            floating
-            placement="inline"
-            className={styles.about}
-            icon={false}
-            heading={t(`us.theme.${id}.desc`)}
-            paragraph={t('us.themes.disclaimer')}
-          />
-          <ThemeReturns id={id} />
-          <Stack gap="12" aria-label={t('us.themes.stocks', { count: theme.symbols.length })}>
-            {theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}
+      <div ref={(el) => { body.current = el; swipe.bind(el) }} className={styles.body}>
+        {/* Keyed by the theme: a new pick starts its content fresh. */}
+        <Inset key={id} paddingInline="16" paddingBlock="24">
+          <Stack gap="32">
+            <ThemeOverview id={id} />
+            <Section gap="16">
+              <SectionHeader title={t('us.themes.allStocks')} description={t('us.themes.stocks', { count: theme.symbols.length })} headingLevel={3} />
+              <Stack gap="12">
+                {theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}
+              </Stack>
+            </Section>
+            <p className={styles.footnote}>{t('us.themes.footnote')}</p>
           </Stack>
-        </Stack>
-      </Inset>
+        </Inset>
+      </div>
     </Screen>
   )
 }
