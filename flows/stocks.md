@@ -19892,16 +19892,11 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
   }
 }
 
-/* The round "→" that says the whole block opens Portfolio. */
-.roundArrow {
-  display: grid;
+/* The caret (no container) that says the whole block opens Portfolio. */
+.caret {
+  display: inline-flex;
   flex: none;
-  place-items: center;
-  width: var(--l3-size-40);
-  height: var(--l3-size-40);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-primary);
-  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low);
+  color: var(--l3-content-primary);
 }
 
 /* ---- Small cards (products, movers, sectors) ---- */
@@ -21649,7 +21644,7 @@ import { PriceChange } from '@l3/components/PriceChange'
 import { Stack } from '@l3/components/Stack'
 import { Select } from '@l3/components/Select'
 import { Tag } from '@l3/components/Tag'
-import { msArrowForward, msChevronRight } from '@l3/icons/material'
+import { msChevronRight } from '@l3/icons/material'
 import { liveQuote, useLiveTick } from '../../../shared/data/live'
 import { indices, type MarketIndex } from '../../../shared/data/market'
 import { holdings } from '../../../shared/data/portfolio'
@@ -21721,7 +21716,7 @@ export function HoldingsSummary({ onOpen, us = false, overall = false, label: la
           </span>
           {us && !overall && <InrEquivalent usd={usValue} />}
         </span>
-        <span className={styles.roundArrow} aria-hidden="true"><Icon icon={msArrowForward} /></span>
+        <span className={styles.caret} aria-hidden="true"><Icon icon={msChevronRight} /></span>
       </span>
     </Card>
   )
