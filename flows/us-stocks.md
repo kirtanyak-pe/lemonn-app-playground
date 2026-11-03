@@ -113,6 +113,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — ETF catalogue: nine more funds for Stocks home's Discover ETFs (FXI, CQQQ, DXJ, HEWJ, SCJ, FEZ, EZU, IEUR, FLKR; real prices from the snapshot, sample expense / size / holdings). The ETF page also reads the shared `viewUsStock`, so a fund opened from another flow shows.
 - 2026-11-03 — Wallet status bar (deposit in progress, withdrawal pending …) is now the L3 Aerobar, full width (edge to edge), warning tint — no more hand-made `PendingBanner` CSS. The deposit bar is tappable (chevron) and opens “Why it takes 1–2 days” (`sheets/DepositProgressSheet`, L3 Steps: Paid → Sent to US → Ready to trade); withdrawals keep their Ghost action (View / Cancel). Money in progress means a bank is linked, so the “Add a bank account” bar never shows with it (`useLinkedBanks` counts one when the US wallet isn't empty). Text that was tertiary is now secondary (tertiary is for placeholders only). **L3 gap:** Aerobar's paragraph is secondary at 60% (≈ tertiary) — can't change it here.
 - 2026-11-03 — ETF list (us-stocks-71): the Regular tab's filters are fixed at the top with the tabs (Actionbar bottom), as one bar. First a switcher chip (Country ⇄ Sector, like Top Movers' cap chip on Home) and a divider, then that filter's chips: countries with flags, or sectors (Broad market · Technology · Financials · Healthcare · Energy · Industrials; switching starts at All). Every regular ETF has a `sector`; two sector funds added (XLF, XLV).
 - 2026-11-03 — Bank accounts (User status → Bank accounts): the add-money bank row has a chevron that opens “Pay from” (us-stocks-76: pick a bank, add another → deposit-12); no bank → us-stocks-75 (“Add bank account”). The wallet with no bank shows an “Add a bank account to deposit or withdraw” bar, Deposit opens the no-bank add money, Withdraw is off. “Add $X” carries the ₹ it costs in small type: “Add $1,000 (₹86,950)”.
@@ -30556,12 +30557,21 @@ export function EtfPreviousScreen({ backdrop }: { backdrop?: boolean }) {
 ```ts
 // The ETF being looked at: whoever opens the ETF page (the ETFs list, the stock page's Related ETFs) sets it first
 // with setCurrentEtf(sym), the page reads it. Defaults to SPY (the page opened straight from the screen list).
-// An unknown symbol falls back to SPY.
+// An unknown symbol falls back to SPY. Other flows (Stocks home's Discover ETFs) can't import this: they remember the
+// symbol with the shared `viewUsStock`, which this reads too — so both always point at the last ETF opened.
+import { viewedUsStock, viewUsStock } from '../../../../shared/data/usStocks'
 import { etfFor, type Etf } from './data'
 
 let current: Etf = etfFor('SPY')
-export const setCurrentEtf = (sym: string) => { current = etfFor(sym) }
-export const getCurrentEtf = (): Etf => current
+export const setCurrentEtf = (sym: string) => {
+  current = etfFor(sym)
+  viewUsStock(sym)
+}
+export const getCurrentEtf = (): Etf => {
+  const viewed = viewedUsStock()
+  if (viewed && viewed !== current.sym && etfFor(viewed).sym === viewed) current = etfFor(viewed)
+  return current
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/data.ts`
@@ -30622,6 +30632,16 @@ export const ETFS: Etf[] = [
   { sym: 'EWJ', name: 'iShares MSCI Japan ETF', description: 'Large and mid-size Japanese companies', tracks: 'MSCI Japan', kind: 'normal', country: 'Japan', sector: 'Broad market', price: 74.6, change: 0.44, expense: 0.49, aum: '$24B', holdings: weights(['MUFG', 4.7], ['TM', 3.3], ['TOELY', 3.1], ['SMFG', 3.0], ['ATEYY', 3.0], ['HTHIY', 2.9]) },
   { sym: 'VGK', name: 'Vanguard FTSE Europe ETF', description: 'Large and mid-size companies across Europe', tracks: 'FTSE Developed Europe All Cap', kind: 'normal', country: 'Europe', sector: 'Broad market', price: 78.1, change: 0.12, expense: 0.06, aum: '$37B', holdings: weights(['ASML', 4.5], ['HSBC', 2.2], ['RHHBY', 1.9], ['SHEL', 1.8], ['NVS', 1.7], ['AZN', 1.6]) },
   { sym: 'EWY', name: 'iShares MSCI South Korea ETF', description: 'Large and mid-size South Korean companies', tracks: 'MSCI Korea 25/50', kind: 'normal', country: 'Korea', sector: 'Broad market', price: 72.3, change: 0.87, expense: 0.59, aum: '$26B', holdings: weights(['HXSCF', 23.7], ['SSNLF', 22.8], ['SKSQF', 3.1], ['SMSEF', 2.7], ['KB', 1.9]) },
+  // Added for Stocks home's Discover ETFs (four per region). Sample expense, size and holdings; price and change are real (snapshot).
+  { sym: 'FXI', name: 'iShares China Large-Cap ETF', description: 'The 50 biggest Chinese companies listed in Hong Kong', tracks: 'FTSE China 50', kind: 'normal', country: 'China', sector: 'Broad market', price: 33.3, change: -0.6, expense: 0.74, aum: '$6.8B', holdings: weights(['TCEHY', 9.6], ['BABA', 8.9], ['MPNGY', 7.2], ['CICHY', 5.4], ['XIACY', 4.8], ['IDCBY', 3.9]) },
+  { sym: 'CQQQ', name: 'Invesco China Technology ETF', description: 'Chinese tech companies, from chips to apps', tracks: 'FTSE China Incl A 25% Technology', kind: 'normal', country: 'China', sector: 'Technology', price: 38.4, change: -0.8, expense: 0.65, aum: '$1.1B', holdings: weights(['TCEHY', 9.1], ['BABA', 8.4], ['PDD', 7.6], ['XIACY', 6.2], ['NTES', 4.4], ['BIDU', 3.6]) },
+  { sym: 'DXJ', name: 'WisdomTree Japan Hedged Equity Fund', description: 'Japanese exporters, protected from swings in the yen', tracks: 'WisdomTree Japan Hedged Equity', kind: 'normal', country: 'Japan', sector: 'Broad market', price: 59.2, change: 0.6, expense: 0.48, aum: '$3.9B', holdings: weights(['TM', 4.6], ['MUFG', 4.2], ['SMFG', 3.1], ['HTHIY', 2.6], ['SNE', 2.4], ['TOELY', 2.2]) },
+  { sym: 'HEWJ', name: 'iShares Currency Hedged MSCI Japan ETF', description: 'Large and mid-size Japanese companies, protected from swings in the yen', tracks: 'MSCI Japan 100% Hedged to USD', kind: 'normal', country: 'Japan', sector: 'Broad market', price: 62.5, change: 0.5, expense: 0.5, aum: '$0.4B', holdings: weights(['MUFG', 4.7], ['TM', 3.3], ['TOELY', 3.1], ['SMFG', 3.0], ['ATEYY', 3.0], ['HTHIY', 2.9]) },
+  { sym: 'SCJ', name: 'iShares MSCI Japan Small-Cap ETF', description: 'Smaller Japanese companies', tracks: 'MSCI Japan Small Cap', kind: 'normal', country: 'Japan', sector: 'Broad market', price: 106.2, change: 0.4, expense: 0.5, aum: '$0.2B', holdings: weights(['SMTOY', 0.6], ['IIJIY', 0.5], ['NPSCY', 0.5], ['KAJMY', 0.4], ['TKOMY', 0.4]) },
+  { sym: 'FEZ', name: 'SPDR EURO STOXX 50 ETF', description: 'The 50 biggest companies in the Eurozone', tracks: 'EURO STOXX 50', kind: 'normal', country: 'Europe', sector: 'Broad market', price: 65.4, change: 0.2, expense: 0.29, aum: '$4.6B', holdings: weights(['ASML', 8.6], ['SAP', 6.1], ['SIEGY', 4.3], ['LVMUY', 3.7], ['ALIZY', 3.3], ['TTE', 3.1]) },
+  { sym: 'EZU', name: 'iShares MSCI Eurozone ETF', description: 'Large and mid-size companies of the countries that use the euro', tracks: 'MSCI EMU', kind: 'normal', country: 'Europe', sector: 'Broad market', price: 65.5, change: 0.2, expense: 0.51, aum: '$7.9B', holdings: weights(['ASML', 6.2], ['SAP', 4.4], ['SIEGY', 3.0], ['LVMUY', 2.6], ['ALIZY', 2.4], ['SNY', 2.0]) },
+  { sym: 'IEUR', name: 'iShares Core MSCI Europe ETF', description: 'Companies of every size across Europe', tracks: 'MSCI Europe IMI', kind: 'normal', country: 'Europe', sector: 'Broad market', price: 75.1, change: 0.1, expense: 0.09, aum: '$6.5B', holdings: weights(['ASML', 3.9], ['NVO', 2.4], ['SAP', 2.3], ['NSRGY', 2.1], ['AZN', 1.9], ['HSBC', 1.8]) },
+  { sym: 'FLKR', name: 'Franklin FTSE South Korea ETF', description: 'Large and mid-size South Korean companies, at a low cost', tracks: 'FTSE South Korea Capped', kind: 'normal', country: 'Korea', sector: 'Broad market', price: 30.1, change: 0.8, expense: 0.09, aum: '$0.2B', holdings: weights(['SSNLF', 24.1], ['HXSCF', 11.4], ['SKSQF', 3.0], ['KB', 2.6], ['SMSEF', 2.4]) },
   { sym: 'TQQQ', name: 'ProShares UltraPro QQQ', description: 'Aims for 3x the Nasdaq-100\'s daily move', tracks: 'Nasdaq-100', kind: 'leveraged', side: 'long', lev: '3x', country: 'US', price: 104.2, change: 1.58, expense: 0.78, aum: '$38B', holdings: NASDAQ },
   { sym: 'SQQQ', name: 'ProShares UltraPro Short QQQ', description: 'Aims for 3x the opposite of the Nasdaq-100\'s daily move', tracks: 'Nasdaq-100', kind: 'leveraged', side: 'short', lev: '3x', country: 'US', price: 15.6, change: -1.6, expense: 0.94, aum: '$2.1B', holdings: NASDAQ },
   { sym: 'SOXL', name: 'Direxion Daily Semiconductor Bull 3X Shares', description: 'Aims for 3x the daily move of 30 big chip stocks', tracks: 'ICE Semiconductor', kind: 'leveraged', side: 'long', lev: '3x', country: 'US', price: 38.9, change: 5.42, expense: 0.75, aum: '$24B', holdings: SEMIS },
@@ -30676,7 +30696,7 @@ const ISSUERS: Record<string, Issuer> = {
 }
 const ISSUER_OF: Record<string, string> = {
   SPY: 'spdr', XLE: 'spdr', XLF: 'spdr', XLV: 'spdr', QQQ: 'invesco', VTI: 'vanguard', VGK: 'vanguard', SMH: 'vaneck', ITA: 'ishares', INDA: 'ishares',
-  MCHI: 'ishares', EWJ: 'ishares', EWY: 'ishares', BOTZ: 'globalx', UFO: 'procure', EPI: 'wisdomtree', KWEB: 'kraneshares',
+  MCHI: 'ishares', EWJ: 'ishares', EWY: 'ishares', FXI: 'ishares', HEWJ: 'ishares', SCJ: 'ishares', EZU: 'ishares', IEUR: 'ishares', CQQQ: 'invesco', DXJ: 'wisdomtree', FEZ: 'spdr', BOTZ: 'globalx', UFO: 'procure', EPI: 'wisdomtree', KWEB: 'kraneshares',
   TQQQ: 'proshares', SQQQ: 'proshares', SOXL: 'direxion', SOXS: 'direxion', SPXL: 'direxion', SPXS: 'direxion',
   NVDL: 'graniteshares', NVD: 'graniteshares', SGOV: 'ishares', SHV: 'ishares', BIL: 'spdr',
 }
@@ -30688,7 +30708,7 @@ export const issuerLogo = (sym: string) => {
 export const issuerName = (sym: string) => ISSUERS[ISSUER_OF[sym]]?.name
 
 // Number of holdings of the big index funds (the leveraged ones list only what the sample has).
-const HOLDING_COUNT: Record<string, string> = { SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', XLF: '72', XLV: '60', EWJ: '186', MCHI: '558' }
+const HOLDING_COUNT: Record<string, string> = { SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', XLF: '72', XLV: '60', EWJ: '186', MCHI: '558', FXI: '50', CQQQ: '148', DXJ: '434', HEWJ: '186', SCJ: '772', FEZ: '50', EZU: '221', IEUR: '1,009', FLKR: '153' }
 
 /** Everything the ETF page shows beyond the catalogue row: the day's range, 52-week range, NAV, yield and events. */
 export function detailsFor(etf: Etf) {
@@ -51452,7 +51472,7 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
 ```json
 {
  "source": "Yahoo Finance (public chart endpoint)",
- "fetchedAt": "2026-11-03T03:57:59.833Z",
+ "fetchedAt": "2026-11-03T10:12:30.415Z",
  "symbols": [
   "AAL",
   "AAPL",
@@ -51486,6 +51506,7 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "COLM",
   "COST",
   "CPRI",
+  "CQQQ",
   "CRM",
   "CROX",
   "CRWD",
@@ -51497,6 +51518,7 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "DDOG",
   "DELL",
   "DIS",
+  "DXJ",
   "EB",
   "EBAY",
   "ELF",
@@ -51504,9 +51526,13 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "ETSY",
   "EWJ",
   "EWY",
+  "EZU",
   "F",
+  "FEZ",
   "FIVE",
+  "FLKR",
   "FUBO",
+  "FXI",
   "GAP",
   "GE",
   "GM",
@@ -51514,11 +51540,12 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "GOOGL",
   "GPRO",
   "HAS",
-  "HBI",
   "HD",
+  "HEWJ",
   "HOG",
   "HOOD",
   "IBM",
+  "IEUR",
   "INDA",
   "INTC",
   "IRBT",
@@ -51571,6 +51598,7 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "RIG",
   "RIVN",
   "SBUX",
+  "SCJ",
   "SHAK",
   "SHOP",
   "SIRI",
@@ -51605,7 +51633,6 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "V",
   "VFC",
   "VGK",
-  "VSCO",
   "VTI",
   "WEN",
   "WFC",
@@ -51613,6 +51640,8 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
   "WMT",
   "WOOF",
   "XLE",
+  "XLF",
+  "XLV",
   "XOM",
   "YETI",
   "ZM"
@@ -52834,6 +52863,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     20.05
    ]
   },
+  "CQQQ": {
+   "name": "Invesco China Technology ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 38.5,
+   "open": 38.57,
+   "prevClose": 37.78,
+   "change": 0.72,
+   "changePct": 1.91,
+   "dayHigh": 39.06,
+   "dayLow": 38.5,
+   "high52": 58.92,
+   "low52": 37.58,
+   "volume": 1193652,
+   "closes": [
+    45.05,
+    45.03,
+    44.44,
+    43.07,
+    43.88,
+    42.98,
+    43.09,
+    42,
+    41.98,
+    41.09,
+    40.99,
+    41.53,
+    41.11,
+    39.93,
+    40.26,
+    40.03,
+    39.49,
+    39.79,
+    38.74,
+    37.78,
+    38.5
+   ]
+  },
   "CRM": {
    "name": "Salesforce, Inc.",
    "exchange": "NYSE",
@@ -53252,6 +53319,60 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     113.11
    ]
   },
+  "DXJ": {
+   "name": "WisdomTree Japan Hedged Equity Fund",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 58.89,
+   "open": 58.76,
+   "prevClose": 58.39,
+   "change": 0.5,
+   "changePct": 0.86,
+   "dayHigh": 59.38,
+   "dayLow": 58.73,
+   "high52": 61.55,
+   "low52": 44.75,
+   "volume": 510806,
+   "closes": [
+    61.16,
+    61.29,
+    60.67,
+    60.22,
+    60.71,
+    60.67,
+    60.6,
+    60.09,
+    59.83,
+    59.8,
+    59.86,
+    60.01,
+    60,
+    59.02,
+    58.64,
+    59.17,
+    59.89,
+    59.46,
+    59.59,
+    58.39,
+    58.89
+   ]
+  },
+  "EB": {
+   "name": null,
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": null,
+   "open": null,
+   "prevClose": null,
+   "change": null,
+   "changePct": null,
+   "dayHigh": null,
+   "dayLow": null,
+   "high52": null,
+   "low52": null,
+   "volume": null,
+   "closes": []
+  },
   "EBAY": {
    "name": "eBay Inc.",
    "exchange": "NASDAQ",
@@ -53480,6 +53601,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     151.62
    ]
   },
+  "EZU": {
+   "name": "iShares MSCI Eurozone ETF",
+   "exchange": "Cboe US",
+   "type": "ETF",
+   "price": 65.71,
+   "open": 65.45,
+   "prevClose": 65.16,
+   "change": 0.55,
+   "changePct": 0.84,
+   "dayHigh": 66.26,
+   "dayLow": 65.45,
+   "high52": 72.2,
+   "low52": 59.92,
+   "volume": 1588642,
+   "closes": [
+    66.79,
+    67,
+    65.9,
+    65.63,
+    65.88,
+    65.61,
+    65.88,
+    65.33,
+    66.02,
+    65.82,
+    65.13,
+    65.62,
+    66.08,
+    65.04,
+    64.63,
+    64.93,
+    65.59,
+    65.72,
+    66.23,
+    65.16,
+    65.71
+   ]
+  },
   "F": {
    "name": "Ford Motor Company",
    "exchange": "NYSE",
@@ -53516,6 +53675,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     12.36,
     12.25,
     12.6
+   ]
+  },
+  "FEZ": {
+   "name": "State Street SPDR EURO STOXX 50 ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 65.39,
+   "open": 65.54,
+   "prevClose": 65.03,
+   "change": 0.36,
+   "changePct": 0.55,
+   "dayHigh": 65.94,
+   "dayLow": 65.34,
+   "high52": 72.36,
+   "low52": 59.57,
+   "volume": 1431505,
+   "closes": [
+    66.74,
+    66.79,
+    65.8,
+    65.57,
+    65.92,
+    65.59,
+    65.77,
+    65.37,
+    66.05,
+    65.85,
+    65.11,
+    65.61,
+    66.12,
+    65.06,
+    64.56,
+    64.76,
+    65.37,
+    65.5,
+    66.05,
+    65.03,
+    65.39
    ]
   },
   "FIVE": {
@@ -53556,6 +53753,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     238.97
    ]
   },
+  "FLKR": {
+   "name": "Franklin FTSE South Korea ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 49.99,
+   "open": 52.15,
+   "prevClose": 50.42,
+   "change": -0.43,
+   "changePct": -0.85,
+   "dayHigh": 52.27,
+   "dayLow": 49.99,
+   "high52": 72.49,
+   "low52": 29.06,
+   "volume": 644083,
+   "closes": [
+    62.68,
+    61.26,
+    60.37,
+    57.99,
+    58.36,
+    56.03,
+    54.89,
+    52.81,
+    51.61,
+    49.94,
+    51.94,
+    51.16,
+    51.77,
+    49.45,
+    50.15,
+    50.45,
+    51.86,
+    54.59,
+    53.18,
+    50.42,
+    49.99
+   ]
+  },
   "FUBO": {
    "name": "FuboTV Inc.",
    "exchange": "NYSE",
@@ -53592,6 +53827,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     7.96,
     7.62,
     7.61
+   ]
+  },
+  "FXI": {
+   "name": "iShares China Large-Cap ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 33.21,
+   "open": 33.1,
+   "prevClose": 33.08,
+   "change": 0.13,
+   "changePct": 0.39,
+   "dayHigh": 33.42,
+   "dayLow": 33.09,
+   "high52": 41.22,
+   "low52": 31.19,
+   "volume": 20630515,
+   "closes": [
+    33.85,
+    33.77,
+    33.42,
+    33.45,
+    34.24,
+    34.14,
+    34.17,
+    33.86,
+    34.26,
+    33.84,
+    33.53,
+    33.51,
+    32.94,
+    32.45,
+    32.31,
+    32.51,
+    32.5,
+    32.46,
+    32.69,
+    33.08,
+    33.21
    ]
   },
   "GAP": {
@@ -53898,6 +54171,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     341.15
    ]
   },
+  "HEWJ": {
+   "name": "iShares Currency Hedged MSCI Japan ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 62.54,
+   "open": 62.68,
+   "prevClose": 62.44,
+   "change": 0.1,
+   "changePct": 0.16,
+   "dayHigh": 63.16,
+   "dayLow": 62.54,
+   "high52": 67.27,
+   "low52": 51.98,
+   "volume": 66242,
+   "closes": [
+    66.78,
+    66.82,
+    66.15,
+    65.58,
+    66.09,
+    65.87,
+    65.59,
+    64.61,
+    64.35,
+    63.91,
+    64.27,
+    64.42,
+    64.61,
+    63.2,
+    62.87,
+    63.38,
+    63.73,
+    64.01,
+    63.98,
+    62.44,
+    62.54
+   ]
+  },
   "HOG": {
    "name": "Harley-Davidson, Inc.",
    "exchange": "NYSE",
@@ -54012,6 +54323,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     252.51
    ]
   },
+  "IEUR": {
+   "name": "iShares Core MSCI Europe ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 74.79,
+   "open": 74.71,
+   "prevClose": 74.4,
+   "change": 0.39,
+   "changePct": 0.52,
+   "dayHigh": 75.16,
+   "dayLow": 74.72,
+   "high52": 78.9,
+   "low52": 66.45,
+   "volume": 772780,
+   "closes": [
+    73.31,
+    73.58,
+    72.7,
+    72.58,
+    73.1,
+    72.84,
+    73.3,
+    73.05,
+    74.05,
+    74.09,
+    73.36,
+    74.01,
+    74.3,
+    73.71,
+    73.3,
+    73.49,
+    73.91,
+    74.1,
+    74.85,
+    74.4,
+    74.79
+   ]
+  },
   "INDA": {
    "name": "iShares MSCI India ETF",
    "exchange": "Cboe US",
@@ -54087,6 +54436,22 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     65.76,
     59.97
    ]
+  },
+  "IRBT": {
+   "name": null,
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": null,
+   "open": null,
+   "prevClose": null,
+   "change": null,
+   "changePct": null,
+   "dayHigh": null,
+   "dayLow": null,
+   "high52": null,
+   "low52": null,
+   "volume": null,
+   "closes": []
   },
   "ITA": {
    "name": "iShares U.S. Aerospace & Defense ETF",
@@ -55950,6 +56315,44 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     104.4
    ]
   },
+  "SCJ": {
+   "name": "iShares MSCI Japan Small-Cap ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 105.98,
+   "open": 105.9,
+   "prevClose": 105.3,
+   "change": 0.68,
+   "changePct": 0.65,
+   "dayHigh": 106.49,
+   "dayLow": 105.98,
+   "high52": 111.44,
+   "low52": 88.54,
+   "volume": 7552,
+   "closes": [
+    110.65,
+    110.89,
+    110.19,
+    109.26,
+    110.03,
+    109.72,
+    110.02,
+    108.56,
+    108.07,
+    108.32,
+    107.75,
+    107.43,
+    107.55,
+    106.89,
+    106.25,
+    106.77,
+    107.76,
+    106.79,
+    106.78,
+    105.3,
+    105.98
+   ]
+  },
   "SHAK": {
    "name": "Shake Shack Inc.",
    "exchange": "NYSE",
@@ -57486,6 +57889,82 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
     67.25
    ]
   },
+  "XLF": {
+   "name": "State Street Financial Select Sector SPDR ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 57.56,
+   "open": 56.96,
+   "prevClose": 56.51,
+   "change": 1.05,
+   "changePct": 1.86,
+   "dayHigh": 57.7,
+   "dayLow": 56.88,
+   "high52": 58.6,
+   "low52": 47.67,
+   "volume": 41200451,
+   "closes": [
+    53.88,
+    54.01,
+    53.75,
+    54.23,
+    54.73,
+    55.05,
+    54.82,
+    54.52,
+    55.27,
+    55.52,
+    55.06,
+    55.72,
+    56.04,
+    56.65,
+    55.9,
+    56.02,
+    55.88,
+    56.13,
+    56.94,
+    56.51,
+    57.56
+   ]
+  },
+  "XLV": {
+   "name": "State Street Health Care Select Sector SPDR ETF",
+   "exchange": "NYSE ARCA",
+   "type": "ETF",
+   "price": 184.6,
+   "open": 184.69,
+   "prevClose": 184.87,
+   "change": -0.27,
+   "changePct": -0.15,
+   "dayHigh": 185.54,
+   "dayLow": 183.38,
+   "high52": 187.99,
+   "low52": 141.97,
+   "volume": 14062650,
+   "closes": [
+    167.37,
+    167.09,
+    168.81,
+    168.16,
+    170.81,
+    171.99,
+    169.66,
+    173.96,
+    177.19,
+    176.71,
+    175.65,
+    179.82,
+    178.94,
+    181.3,
+    179.28,
+    179.28,
+    179.18,
+    179.72,
+    184.04,
+    184.87,
+    184.6
+   ]
+  },
   "XOM": {
    "name": "ExxonMobil Holdings Corporation",
    "exchange": "NYSE",
@@ -57642,11 +58121,11 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
  "fx": {
   "usdInr": {
    "symbol": "USDINR=X",
-   "price": 94.75,
+   "price": 94.74,
    "open": 94.89,
    "prevClose": 94.9,
-   "change": -0.15,
-   "changePct": -0.16,
+   "change": -0.16,
+   "changePct": -0.17,
    "dayHigh": 94.89,
    "dayLow": 94.6,
    "high52": 97.05,
