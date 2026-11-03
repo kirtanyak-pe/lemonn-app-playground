@@ -1,6 +1,6 @@
 # Flow: Stocks (`stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `5bf6176` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `9448ca7` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.
 
@@ -30,7 +30,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-17` | Home · US tab · activated · holding | [5826:92885]() | — | US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet. |
 | `stocks-19` | Home · US tab · under review · Contact Support | [5776:80202]() | — | Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\ |
 | `stocks-20` | Home · US tab · money on the way | [5796:86490]() | `us-stocks-28` | After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\ |
-| `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
+| `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13`, `us-stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
 
 ## Spec (README.md)
 
@@ -59,7 +59,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 | `stocks-05` | Home · sectors & highlights | Sectors · Highlights (Mutual funds, F&O) |
 | `stocks-06` | Home · highlights & idea baskets | Highlights (Mutual Funds, F&O) · Invest in Ideas |
 | `stocks-07` | Home · idea baskets & disclosure | Invest in ideas (baskets) · the broker's regulatory line |
-| `stocks-09` | Home · US Stocks tab | The **US Stocks** tab (user has not activated US Stocks): US indices · Activate US Stocks card · shortcuts · Top Movers · Trillion Dollar Titans · Brands You Know · Heatmap · Explore by themes |
+| `stocks-09` | Home · US Stocks tab | The **US Stocks** tab (user has not activated US Stocks): US indices · Activate US Stocks card · shortcuts · Top Movers · Trillion Dollar Titans · Brands You Know · Explore by themes |
 | `stocks-10` | Home · US Stocks tab · scrolled | Same tab scrolled past the tabs: the compact IND / US tabs are pinned under the top bar |
 | `stocks-11` | Home · US Stocks intro (FTUX) sheet | IND tab + the **US Stocks intro (FTUX) sheet**, first launch after release (Figma 5756:68986). Activate US Stocks → `stocks-12`; ✕ → `stocks-01` |
 | `stocks-12` | Home · US tab · risk disclosure sheet | US tab + the **Risk disclosure** sheet (5756:71475). Agree and Continue → `stocks-13`; close → `stocks-09` |
@@ -71,6 +71,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 | `stocks-18` | Home · activation submitted sheet | Under-review US tab + the **"US Stocks activation under review"** sheet (5756:73797). Okay / close → `stocks-13` |
 | `stocks-21` | Home · US tab · KYC not done | **Not in Figma.** The user's Lemonn (Indian) KYC isn't complete, so US Stocks can't be activated: blue card "Complete your KYC first", Complete KYC → `kyc-01`; a US stock → `us-stocks-74` (Complete KYC); wallet → `us-stocks-53` |
 | `stocks-22` | Home · US tab · activation approved sheet | **Not in Figma.** Activated US tab + the **"US Stocks is active"** sheet (success spot), the moment the review is approved. Add Money to US wallet → `us-stocks-20`; Later / close → `stocks-15` |
+| `stocks-23` … `28` | Theme page (one screen per theme; 24–28 hidden) | **Not in Figma.** A theme of Explore by themes: Actionbar (back + theme name) · intro (logo stack, name, description, disclaimer) · the theme's stocks · More themes rail. Ids by theme: 23 AI & chips · 24 Big Tech · 25 Dividend payers · 26 EV & clean energy · 27 Healthcare leaders · 28 Dollar parking |
 
 `stocks-01 … 08` are the **IN Stocks** tab. Screens 09–18 are the **US Stocks** tab in each state of the user's US Stocks activation; they come from the US Stocks flow's Home (designed by a teammate, Figma file `8HEY699cTPiWiQeAVX3122`), which now uses this page — his frames map here through `FIGMA_IN_OTHER_FLOWS` in `src/flows/us-stocks/nav.tsx`. `stocks-09` Activate US Stocks → `stocks-12` (was `us-stocks-14`); a US stock on a not-activated state → `us-stocks-13` (stock page, Activate).
 
@@ -122,9 +123,18 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
    - **Trillion Dollar Titans:** eight 170-wide cards (logo, name, sparkline, market cap, change); View all → Market,
      mega caps, biggest first.
    - **Brands You Know:** two rows of brand cards (logo, name, market cap).
-   - **Heatmap:** an "Index" switcher, index pills (S&P 500 / Nasdaq 100 / Dow Jones) and nine tiles whose colour
-     strength follows the day change; prices drift every 1.2 s (made up).
-   - **Explore by themes:** four theme cards (overlapping logos + "+n"); tapping one opens Market's US list.
+   - **Explore by themes:** a sideways rail (about 1.4 cards across, the next one peeks in) of six big theme cards. Each is an
+     L3 Card: a 3 × 2 collage of real logos (Avatar 40), the name (Label 16), a two-line description (Description 12) and
+     "N stocks" with a chevron. Tapping one opens that theme's page (`stocks-23` … `28`, below). Leveraged ETFs is not a theme for now.
+   - **Theme page** (`screens/ThemePage.tsx`): the Actionbar holds only back and the theme name (L2, Heading 14); the
+     explanation is its own section below the bar: overlapping logos (up to 6 and "+n"), the name (Heading 20), the
+     description (Description 14, secondary) and "The securities are quoted as an example, not as a recommendation."
+     (Description 12, tertiary). Then the theme's 6 to 8 stocks as `StockListCard`s, 12 apart (live price, day change);
+     a stock → its US stock page (`us-stocks-13`, `viewUsStock` first). Last, "More themes": the same big cards in a rail,
+     every theme except this one; a card → that theme's screen (pushes forward), so the loop never ends. Back returns to the screen before.
+     Themes: AI & chips, Big Tech, Dividend payers, EV & clean energy, Healthcare leaders, Dollar parking (steady large
+     caps, since ETFs have no logos in the shared assets yet). Symbols are in `themes` (`components/us/data.ts`); name and
+     description are copy `us.theme.<id>` / `.desc`. The theme is chosen by the screen id (`themeScreenId(id)`), no params.
 6. **Main navbar:** Stocks (selected) · Market · Portfolio · Mutual Fund · F&O.
 
 ### Homepage versions (prototype option)
@@ -271,14 +281,17 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 - **Activation card blue** — Figma surface/accent/blue #dee9fe has no L3 semantic surface (us-stock light is #eff4fe): local token `--app-surface-kyc-card`, mixed from the us-stock accent.
 - **Market cards carousel** — no L3 carousel: `components/MarketCards.tsx` is a hand-made scroll-snap track (IND and US top cards, full width, 16 apart), with a mouse drag for the desktop preview.
 - **US tab hand-made bits** (marked `FLAG` in `components/us/`): activation card + carousel dots, cap chip, Titan / brand
-  card insides and logo stacks, heatmap tiles; a few raw px kept from the US Stocks prototype (card widths, sparkline).
+  card insides and logo stacks; a few raw px kept from the US Stocks prototype (card widths, sparkline).
 - **US company logos** are PNGs in `src/shared/assets/us-logos` (L3 has Indian logos only); the sparkline, benefit and
   tab icons are SVG illustrations in `assets/us/` with their own colours.
+- **Logo stack / group** — L3 has no overlapping Avatar group: the theme page's stack and "+n" disc are hand-made (`components/us/ThemeCard.module.css`, FLAG). The theme cards' sideways row is `Rail` (below).
 - **Rail / carousel:** no sideways-scrolling row in L3 — `Rail` (src/shared/ui) stands in.
 - **Actionbar leading avatar** (profile on the left of the search field).
 - **Illustrations** for shortcuts, highlights and campaigns — `Spot` slots stand in.
 
 ### Changelog
+
+- 2026-11-03 — Explore by themes is a rail of big theme cards (logo collage, name, description, "N stocks ›") instead of a 2-column grid of small ones, and each opens a new theme page (`stocks-23` … `28`): back + name in the Actionbar, the explanation (logo stack, description, disclaimer) in its own section, the stocks as StockListCards, then More themes. Six themes, with real US tickers (leveraged ETFs stays out). Reworked from the old app's "Invest in Ideas" (references/2026-11-03/home): its dark header with back, title, description and disclaimer all in the bar area is split so the bar stays light; the stock list leads straight after the intro; the idea cards at the end are the More themes rail. Differences: no dark hero, cards show their logos as a collage, not a 3 × 2 tile grid of a fixed size, themes are static samples.
 
 - 2026-11-03 — US logos are full-colour (the mark on its brand colour, edge to edge: Uber and Netflix on black, Visa on blue), fetched from TradingView's public logos by `npm run us:logos` into `src/shared/assets/us-logos/*.svg`; `usLogo` prefers them over the old PNGs (white marks on transparent). They fill the L3 Avatar, so its grey fill no longer shows — only its border. Still PNG (no TradingView logo): EB, IRBT, SNBR. New logos for RIVN, LAZR, PLUG, OPEN (were initials). ETFs unchanged.
 - 2026-11-03 — US Top Movers: cards 150 wide (graph 126) with a 12 gap, so a third card peeks in and the row reads as swipeable. The cap chip (Mega / Large / Mid / Small Cap) uses the app's switch icon (`lmSwitchArrowVertical`, as on the market picker).
@@ -316,6 +329,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 - 2026-11-03 — Text follows L3's three roles. Section titles are the L3 SectionHeader's Heading 14 again (the screen's 16 Label one-off is gone). Numbers are Label, never Description: movers' % change (up and down now match, Label 12), brands' market cap, heatmap symbol / % / price (Label 12 / 14 / 10), the theme stack's +N, counts ("12 Stocks"), and the transfer step's amount. Names in cards are Labels, not Headings: movers' name Label 14 over the symbol in Description 12 (as in ListCell), theme name Label 14, the activation card's lock line Label 12. Logos: L3 Avatar 1.1.0, one 1px edge and no grey fill.
 - 2026-11-03 — Top Movers has a bigger universe: 24–36 real stocks per cap (was 10), so a filter shows up to 15 cards (was 8). Gainers / losers only list stocks that really rose / fell today, so a one-sided day can leave fewer (today: 8 mid-cap losers). New symbols are in the US snapshot and have TradingView logos. Movers cards show only the name, on one line, cut with an ellipsis (no symbol), so every card is the same height. The phone pill can be slid into the left or right edge, where it tucks away as a small tab; a tap brings it out next to the tab and a tap elsewhere tucks it back. The app's second floating button (the flow's settings gear) is gone; those settings are in the prototype settings sheet.
 - 2026-11-03 — Tapping IND / US switches at once (it used to slide the page out first, which read as a ~1 s lag on phones); a swipe still slides. The phone pill starts tucked into the right edge. Price changes show their +/− sign only, never an arrow too.
+- 2026-11-03 — Once the page scrolls, the top bar turns surface/default (was surface/primary). The card that holds the holdings is surface/primary (the holdings row inside has no fill). For now the Stocks home (stocks-01) opens on the US tab. The status bar, top bar and marquee band change colour in the same frame (no fades). The US tab's Heatmap section is archived (archive/us-home-heatmap).
 - 2026-11-02 — The US tab screens (stocks-09, 10, 13–17, 19–21) float the "US Stocks activation" switcher beside the
   phone: arriving sets the user status to the screen's own state, and a pick shows that state in place.
 - 2026-11-02 — Homepage versions **V2, V3, V4, V5, V6 and V7 archived** (`archived: true` in
@@ -21790,12 +21804,12 @@ export function ShortcutArt({ art }: { art: Art }) {
   background: var(--l3-surface-secondary);
   position: sticky;
   height: var(--l3-size-64);
-  transition: background-color var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
 }
 
-/* Scrolled: the bar leaves the summary's grey for surface/primary. */
+/* Scrolled: the bar leaves the summary's grey for surface/default (the page under it) — at once, with no fade, so the
+ * status bar, the bar and the marquee band change together. */
 .bar[data-scrolled] {
-  background: var(--l3-surface-primary);
+  background: var(--l3-surface-default);
 }
 
 .bar > :is(.profile, .search, .wallet, .market) {
@@ -22628,6 +22642,141 @@ export const homeVersion = (id: string) =>
   activeHomeVersions.find((v) => v.id === id) ?? activeHomeVersions.find((v) => v.id === DEFAULT_HOME_VERSION)!
 ```
 
+### `src/flows/stocks/components/us/ThemeCard.module.css`
+
+```css
+/* Theme cards and the logo stack (FLAG: hand-made, L3 has no logo group). */
+.card {
+  height: 100%;
+}
+
+.collage {
+  justify-items: start;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+}
+
+.name {
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-16);
+}
+
+.desc {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+}
+
+.stack {
+  display: flex;
+  align-items: center;
+}
+
+.stackLogo {
+  display: inline-flex;
+  flex: none;
+  margin-right: calc(-1 * var(--l3-spacing-08));
+  border-radius: var(--l3-radius-full);
+  box-shadow: 0 0 0 2px var(--l3-surface-default); /* ring that separates the overlapping logos */
+}
+
+.stackMore {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--l3-size-40);
+  height: var(--l3-size-40);
+  margin-left: var(--l3-spacing-08);
+  border: 1px solid var(--l3-border-intense);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-tertiary);
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+}
+```
+
+### `src/flows/stocks/components/us/ThemeCard.tsx`
+
+```tsx
+// A theme's big card (Explore by themes on the US tab, "More themes" on the theme page): a 3 × 2 collage of real logos,
+// the theme's name, a two-line description and "N stocks ›". Also LogoStack, the overlapping logos of the theme page's intro.
+// FLAG: L3 has no logo stack / group: the overlap and the "+n" disc are hand-made (ThemeCard.module.css).
+import { Avatar } from '@l3/components/Avatar'
+import { Card } from '@l3/components/Card'
+import { Grid } from '@l3/components/Grid'
+import { Icon } from '@l3/components/Icon'
+import { Stack } from '@l3/components/Stack'
+import { msChevronRight } from '@l3/icons/material'
+import { Rail } from '../../../../shared/ui/Rail'
+import { usLogo } from '../../../../shared/data/usStocks'
+import { t } from '../../copy'
+import { themes, type ThemeId } from './data'
+import styles from './ThemeCard.module.css'
+
+type Theme = (typeof themes)[number]
+
+export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeId) => void }) {
+  const name = t(`us.theme.${theme.id}`)
+  return (
+    <Card onClick={() => onOpen(theme.id)} surface="default" className={styles.card} aria-label={`${name}, ${t('us.themes.stocks', { count: theme.symbols.length })}`}>
+      <Stack gap="16">
+        <Grid columns={3} gap="12" className={styles.collage}>
+          {theme.symbols.slice(0, 6).map((sym) => <Avatar key={sym} src={usLogo(sym)} initials={sym} size={40} />)}
+        </Grid>
+        <span className={styles.text}>
+          <span className={styles.name}>{name}</span>
+          <span className={styles.desc}>{t(`us.theme.${theme.id}.desc`)}</span>
+        </span>
+        <span className={styles.foot}>
+          <span>{t('us.themes.stocks', { count: theme.symbols.length })}</span>
+          <Icon icon={msChevronRight} size={16} />
+        </span>
+      </Stack>
+    </Card>
+  )
+}
+
+/** The rail of theme cards (about 1.4 across so the next one peeks in). `except` leaves the theme being read out. */
+export function ThemeRail({ onOpen, except }: { onOpen: (id: ThemeId) => void; except?: ThemeId }) {
+  return (
+    <Rail label={t('us.themes.railLabel')} visible={1.4}>
+      {themes.filter((theme) => theme.id !== except).map((theme) => <ThemeCard key={theme.id} theme={theme} onOpen={onOpen} />)}
+    </Rail>
+  )
+}
+
+/** Overlapping logos (up to 6) and a "+n" disc for the rest. */
+export function LogoStack({ symbols, max = 6 }: { symbols: string[]; max?: number }) {
+  const rest = symbols.length - max
+  return (
+    <span className={styles.stack} aria-hidden="true">
+      {symbols.slice(0, max).map((sym) => (
+        <span key={sym} className={styles.stackLogo}><Avatar src={usLogo(sym)} initials={sym} size={40} /></span>
+      ))}
+      {rest > 0 && <span className={styles.stackMore}>+{rest}</span>}
+    </span>
+  )
+}
+```
+
 ### `src/flows/stocks/components/us/TransferProgress.tsx`
 
 ```tsx
@@ -22762,7 +22911,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   const track = slides.length > 1 ? [...slides, slides[0]] : slides
 
   return (
-    <section className={styles.card} data-tone={spec.tone} aria-labelledby={holdings ? undefined : titleId}>
+    <section className={styles.card} data-tone={spec.tone} data-holdings={holdings ? true : undefined} aria-labelledby={holdings ? undefined : titleId}>
       {holdings ? <div className={styles.cardHoldings}>{holdings}</div> : (
       <div className={styles.info}>
         <span className={styles.infoText}>
@@ -22830,7 +22979,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
                 <TransferSafeLine />
               </Stack>
             ) : spec.cta && (
-              <Button variant="primary" size="lg" fullWidth iconRight={spec.arrow ? <Icon icon={msArrowForward} size={20} /> : undefined} onClick={onCta}>
+              <Button variant={spec.money ? 'brand' : 'primary'} size="lg" fullWidth iconRight={spec.arrow ? <Icon icon={msArrowForward} size={20} /> : undefined} onClick={onCta}>
                 {t(spec.cta)}
               </Button>
             )}
@@ -22846,7 +22995,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 ```css
 /*
- * Stocks home, US Stocks tab: activation card, Top Movers, Titans, Brands, Heatmap, Themes. Ported from the US Stocks
+ * Stocks home, US Stocks tab: activation card, Top Movers, Titans, Brands, Themes. Ported from the US Stocks
  * prototype's UsHome.module.css. The page layout is the L3 blocks (Stack / Inset / Grid) in UsHome.tsx; what's here is
  * the hand-made insides. Tokens only; the raw px that remain are marked FLAG (his, kept as they were).
  */
@@ -22884,6 +23033,11 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 .card[data-tone='neutral'] {
   --card-bg: var(--l3-surface-default);
   --card-border: var(--l3-border-light);
+}
+
+/* A card that shows the holdings (Stocks home, both tabs) is surface/primary; the holdings row inside has no fill. */
+.card[data-holdings] {
+  --card-bg: var(--l3-surface-primary);
 }
 
 /* The header card's holdings (they bring their own 16 inline). */
@@ -23432,73 +23586,6 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   font: var(--l3-text-label-12);
 }
 
-/* ---- Heatmap ---- */
-.heatTabs > [role='tab'][data-appearance][aria-selected='false'] {
-  --tab-surface: var(--l3-surface-default);
-  box-shadow: inset 0 0 0 1px var(--tab-border);
-}
-
-.heatmap {
-  overflow: hidden;
-  border-radius: var(--l3-radius-12);
-}
-
-/* FLAG: hand-made heatmap tile (button) instead of L3 Card */
-.tile {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--l3-spacing-02);
-  height: 72px; /* FLAG: raw px */
-  padding: var(--l3-spacing-10) 0 0;
-  border: 0;
-  background: var(--l3-surface-primary);
-  color: var(--l3-content-primary);
-  cursor: pointer;
-}
-
-.tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--l3-surface-accent-indicator-down-default);
-  opacity: var(--heat);
-  transition: opacity 0.9s var(--l3-motion-easing-standard), background-color 0.9s var(--l3-motion-easing-standard);
-}
-
-.tile::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 0 0.5px var(--l3-border-light); /* hairline */
-  pointer-events: none;
-}
-
-.tile[data-up]::before {
-  background: var(--l3-surface-accent-indicator-up-default);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tile::before {
-    transition: none;
-  }
-}
-
-.tileSym {
-  font: var(--l3-text-label-12);
-}
-
-.tileChange {
-  font: var(--l3-text-label-14);
-}
-
-.tilePrice {
-  font: var(--l3-text-label-10);
-}
-
 /* ---- Explore by themes ---- */
 .theme[data-interactive] {
   gap: var(--l3-spacing-16);
@@ -23550,14 +23637,13 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 ```tsx
 // The US Stocks tab's feed: the activation card for the user's state (activate / under review / failed / activated /
-// money ready; none once they hold US stocks), shortcuts, Top Movers, Brands You Know, Heatmap
+// money ready; none once they hold US stocks), shortcuts, Top Movers, Brands You Know
 // and themes. Ported from the
 // US Stocks prototype's Home (src/flows/us-stocks/screens/home/UsHome.tsx), rebuilt with L3 layout blocks.
-// FLAG: hand-made chips, titan / brand cards' insides, heatmap tiles and logo stacks — see UsHome.module.css.
-import { useId, useState, type CSSProperties } from 'react'
+// FLAG: hand-made chips, titan / brand cards' insides and logo stacks — see UsHome.module.css.
+import { useId, useState } from 'react'
 import { Avatar } from '@l3/components/Avatar'
 import { Card } from '@l3/components/Card'
-import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { SectionHeader } from '@l3/components/SectionHeader'
@@ -23575,20 +23661,17 @@ import { Shortcuts } from '../Discover'
 import {
   brandRows,
   capBuckets,
-  formatPct,
-  heatStrength,
-  heatmapIndices,
   moverFilters,
   moversFor,
-  themes,
   usStock,
   type CapValue,
+  type ThemeId,
   type UsState,
   type MoverFilter,
   type MoverToday,
 } from './data'
+import { ThemeRail } from './ThemeCard'
 import { UsActivationCard } from './UsActivationCard'
-import { useLiveHeatmap } from './useLiveHeatmap'
 import styles from './UsHome.module.css'
 
 type UsHomeProps = {
@@ -23600,6 +23683,8 @@ type UsHomeProps = {
   onStock?: (sym: string) => void
   /** "View all" / a theme was tapped (Market has been handed what to open on) → the Market page. */
   onMarket?: () => void
+  /** A theme card was tapped → that theme's page. */
+  onTheme?: (id: ThemeId) => void
   /** The ETFs shortcut → the ETF list (Regular / Leveraged). */
   onEtfs?: () => void
   /** The activation card on top (default). The two-homes versions show it in the summary instead (screens/Home). */
@@ -23608,11 +23693,9 @@ type UsHomeProps = {
 
 const sign = (up: boolean) => (up ? '+' : '-')
 
-export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onEtfs, card = true }: UsHomeProps) {
+export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, card = true }: UsHomeProps) {
   const [filter, setFilter] = useState<MoverFilter>('gainers')
   const [cap, setCap] = useState<CapValue>('mega')
-  const [index, setIndex] = useState<(typeof heatmapIndices)[number]>('sp')
-  const heat = useLiveHeatmap()
 
   const cycleCap = () => setCap(capBuckets[(capBuckets.indexOf(cap) + 1) % capBuckets.length])
   const capName = t(`us.cap.${cap}`)
@@ -23622,13 +23705,9 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
     onStock?.(sym)
   }
   // "View all" opens the app's Market page on the US list with this rail's choice: Top Movers → its list (gainers /
-  // losers; the other movers have no Market list, so All) and the cap picked here; a theme → the US list (Market has no theme filter yet).
+  // losers; the other movers have no Market list, so All) and the cap picked here.
   const openMarketForMovers = () => {
     handToMarket({ market: 'us', tab: filter === 'gainers' || filter === 'losers' ? filter : 'all', filters: { cap: [`us-${cap}`] } })
-    onMarket?.()
-  }
-  const openMarketForThemes = () => {
-    handToMarket({ market: 'us', tab: 'all' })
     onMarket?.()
   }
 
@@ -23687,53 +23766,9 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
         </div>
       </Stack>
 
-      <Stack as="section" gap="16" aria-label={t('us.heatmap.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.heatmap.title')} action={{ type: 'switcher', label: t('us.heatmap.index'), onClick: () => {}, 'aria-label': t('us.heatmap.indexLabel') }} /></Inset>
-        <Inset paddingInline="16" paddingBlock="00">
-          <Tabs
-            appearance="pill"
-            aria-label={t('us.heatmap.tabsLabel')}
-            items={heatmapIndices.map((value) => ({ value, label: t(`us.heatmap.${value}`) }))}
-            value={index}
-            onChange={(v) => setIndex(v as (typeof heatmapIndices)[number])}
-            className={styles.heatTabs}
-          />
-        </Inset>
-        {/* FLAG: heatmap tiles are hand-made buttons with computed colour strength; real prices, ticking with live.ts */}
-        <Inset paddingInline="16" paddingBlock="00">
-          <Grid columns={3} gap="00" className={styles.heatmap}>
-            {heat.map((tile) => (
-              <button key={tile.sym} type="button" className={styles.tile} data-up={tile.pct >= 0 || undefined} style={{ '--heat': heatStrength(tile.pct) } as CSSProperties} onClick={() => open(tile.sym)}>
-                <span className={styles.tileSym}>{tile.sym}</span>
-                <span className={styles.tileChange}>{formatPct(tile.pct)}</span>
-                <span className={styles.tilePrice}><Usd value={tile.price} layout="inline" /></span>
-              </button>
-            ))}
-          </Grid>
-        </Inset>
-      </Stack>
-
-      <Stack as="section" gap="12" aria-label={t('us.themes.title')}>
+      <Stack as="section" gap="16" aria-label={t('us.themes.title')}>
         <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.title')} /></Inset>
-        <Inset paddingInline="16" paddingBlock="00">
-          <Grid columns={2} gap="12">
-            {themes.map((theme) => (
-              <Card key={theme.id} onClick={openMarketForThemes} surface="default" padding="none" className={styles.theme}>
-                <span className={styles.themeHead}>
-                  <span>{t(`us.theme.${theme.id}`)}</span>
-                  <span className={styles.titanArrow}><Icon icon={msChevronRight} size={16} /></span>
-                </span>
-                {/* FLAG: hand-made overlapping logo stack instead of L3 Avatar group */}
-                <span className={styles.stack}>
-                  {theme.logos.map((sym) => (
-                    <span key={sym} className={styles.stackLogo}><Avatar src={usLogo(sym)} initials={sym} size={24} /></span>
-                  ))}
-                  <span className={styles.stackMore}>{theme.more}</span>
-                </span>
-              </Card>
-            ))}
-          </Grid>
-        </Inset>
+        <ThemeRail onOpen={(id) => onTheme?.(id)} />
       </Stack>
     </>
   )
@@ -23860,6 +23895,8 @@ export type CardSpec = {
   slides?: Benefit[]
   /** The button ends with an arrow. */
   arrow?: boolean
+  /** The CTA moves money (add money): brand colour, the app's rule for transaction buttons. */
+  money?: boolean
   /** The line over the benefits, with a lock ("Start to unlock exclusive benefits"); `unlocked`: an open lock. */
   lockLine?: CopyKey
   unlocked?: boolean
@@ -23891,7 +23928,7 @@ export const cardSpecs: Record<Exclude<UsState, 'holding'>, CardSpec> = {
   review: { tone: 'honey', title: 'us.review.title', subtitle: 'us.review.subtitle', icon: 'hourglass', lockLine: 'us.lock.soon', slides: lockedBenefits },
   support: { tone: 'honey', title: 'us.review.title', subtitle: 'us.review.subtitle', cta: 'us.support.cta', icon: 'hourglass', lockLine: 'us.lock.soon', slides: lockedBenefits },
   failed: { tone: 'red', title: 'us.failed.title', subtitle: 'us.failed.subtitle', cta: 'us.failed.cta', icon: 'error', lockLine: 'us.lock.activate', slides: lockedBenefits },
-  activated: { tone: 'green', title: 'us.activated.title', subtitle: 'us.activated.subtitle', cta: 'us.activated.cta', lockLine: 'us.lock.open', unlocked: true, slides: [benefit('stocks'), benefit('fractional'), benefit('evening')] },
+  activated: { tone: 'green', title: 'us.activated.title', subtitle: 'us.activated.subtitle', cta: 'us.activated.cta', money: true, lockLine: 'us.lock.open', unlocked: true, slides: [benefit('stocks'), benefit('fractional'), benefit('evening')] },
   onTheWay: { tone: 'honey', title: 'us.onTheWay.title', subtitle: 'us.onTheWay.subtitle', cta: 'us.onTheWay.cta', icon: 'clock', transfer: true },
   ready: { tone: 'green', title: 'us.ready.title', subtitle: 'us.ready.subtitle', cta: 'us.ready.cta', icon: 'check', arrow: true },
 }
@@ -24101,29 +24138,31 @@ export const brandRows: Brand[][] = [
   ],
 ]
 
-// ---- Heatmap ----
-
-/** The index the heatmap shows. Labels: copy `us.heatmap.<value>`. */
-export const heatmapIndices: ('sp' | 'ndx' | 'dow')[] = ['sp', 'ndx', 'dow']
-
-export type HeatValue = { sym: string; pct: number; price: number }
-/** The nine heatmap tiles. Their change % and price are the snapshot's, ticking with live.ts (useLiveHeatmap). */
-export const heatSymbols = ['NVDA', 'AMD', 'AVGO', 'TSLA', 'MU', 'LULU', 'META', 'SLB', 'UNH']
-
 export const formatPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
 export const formatUsd = (n: number) => `$${n.toFixed(2)}`
-/** Tile colour strength: 0.55 at flat up to 1 at ±3%. */
-export const heatStrength = (pct: number) => Math.min(1, 0.55 + (Math.abs(pct) / 3) * 0.45)
 
 // ---- Explore by themes ----
 
-/** Each theme shows three company logos overlapping and a "+n" disc. Names: copy `us.theme.<id>`. (The prototype used placeholder thumbnails; these are real US tickers.) */
-export const themes: { id: 'trending' | 'leveraged' | 'dividend' | 'parking'; logos: string[]; more: string }[] = [
-  { id: 'trending', logos: ['NVDA', 'TSLA', 'PLTR'], more: '+4' },
-  { id: 'leveraged', logos: ['AMD', 'MU', 'AVGO'], more: '+4' },
-  { id: 'dividend', logos: ['KO', 'JNJ', 'XOM'], more: '+4' },
-  { id: 'parking', logos: ['JPM', 'V', 'MA'], more: '+24' },
+export type ThemeId = 'ai' | 'bigtech' | 'dividend' | 'ev' | 'health' | 'parking'
+
+/**
+ * A theme (the old app's "idea"): its stocks, in the order the theme page lists them. Name and description are copy
+ * (`us.theme.<id>`, `us.theme.<id>.desc`); every symbol is in the US snapshot with a logo, so prices and logos are real.
+ * Leveraged ETFs are off for now (no theme), "Dollar parking" is steady large caps to hold dollars in (ETFs have the ETFs shortcut).
+ */
+export const themes: { id: ThemeId; symbols: string[] }[] = [
+  { id: 'ai', symbols: ['NVDA', 'AMD', 'AVGO', 'MU', 'QCOM', 'INTC', 'PLTR', 'ORCL'] },
+  { id: 'bigtech', symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NFLX', 'ADBE', 'CRM'] },
+  { id: 'dividend', symbols: ['KO', 'JNJ', 'XOM', 'PEP', 'PG', 'CVX', 'ABBV', 'MRK'] },
+  { id: 'ev', symbols: ['TSLA', 'RIVN', 'NIO', 'LCID', 'F', 'GM', 'PLUG', 'CHPT'] },
+  { id: 'health', symbols: ['LLY', 'JNJ', 'UNH', 'ABBV', 'MRK', 'PFE'] },
+  { id: 'parking', symbols: ['JPM', 'V', 'MA', 'WMT', 'COST', 'MCD', 'PG', 'HD'] },
 ]
+
+export const themeById = (id: ThemeId) => themes.find((theme) => theme.id === id)!
+
+/** The theme the theme page (stocks-23 …) shows is one screen per theme: `themeScreenId`. */
+export const themeScreenId = (id: ThemeId) => `stocks-${23 + themes.findIndex((theme) => theme.id === id)}`
 ```
 
 ### `src/flows/stocks/components/us/sheets/ActivationApprovedSheet.tsx`
@@ -24152,7 +24191,7 @@ export function ActivationApprovedSheet({ onAddMoney, onLater }: { onAddMoney?: 
       header={<BottomSheetHeader size="lg" headingId={id} icon={<Spot icon={msCheckCircle} tone="success" size="md" />} heading={t('us.approved.title')} description={t('us.approved.description')} />}
       footer={
         <ButtonGroup aria-label={t('us.approved.actions')}>
-          <Button size="lg" onClick={onAddMoney}>{t('us.approved.addMoney')}</Button>
+          <Button variant="brand" size="lg" onClick={onAddMoney}>{t('us.approved.addMoney')}</Button>
           <Button size="lg" variant="secondary" onClick={onLater}>{t('us.approved.later')}</Button>
         </ButtonGroup>
       }
@@ -24799,23 +24838,6 @@ export function useAutoSlide(count: number, { every = 3000, slideMs = 500, still
 }
 ```
 
-### `src/flows/stocks/components/us/useLiveHeatmap.ts`
-
-```ts
-import { liveQuote, useLiveTick } from '../../../../shared/data/live'
-import { heatSymbols, usStock, type HeatValue } from './data'
-
-/** The heatmap's tiles: each stock's real price and day change (the US snapshot), moving every 2 s with live.ts. */
-export function useLiveHeatmap(): HeatValue[] {
-  const at = useLiveTick()
-  return heatSymbols.map((sym) => {
-    const stock = usStock(sym)
-    const live = liveQuote(sym, stock.price, stock.change, at)
-    return { sym, pct: live.changePct, price: live.price }
-  })
-}
-```
-
 ### `src/flows/stocks/components/useSwipeBetween.ts`
 
 ```ts
@@ -25141,18 +25163,24 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.cap.switch": "{cap}, tap to switch",
   "us.brands.title": "Brands You Know",
   "us.brands.railLabel": "Brands",
-  "us.heatmap.title": "Heatmap",
-  "us.heatmap.index": "Index",
-  "us.heatmap.indexLabel": "Index, tap to switch",
-  "us.heatmap.tabsLabel": "Heatmap index",
-  "us.heatmap.sp": "S&P 500",
-  "us.heatmap.ndx": "Nasdaq 100",
-  "us.heatmap.dow": "Dow Jones",
   "us.themes.title": "Explore by themes",
-  "us.theme.trending": "Trending",
-  "us.theme.leveraged": "Leveraged ETFs",
-  "us.theme.dividend": "Dividend Stocks",
-  "us.theme.parking": "Dollar Parking",
+  "us.themes.railLabel": "Themes",
+  "us.themes.more": "More themes",
+  "us.themes.stocks": "{count} stocks",
+  "us.themes.disclaimer": "The securities are quoted as an example, not as a recommendation.",
+  "us.themes.back": "Back",
+  "us.theme.ai": "AI & chips",
+  "us.theme.ai.desc": "The companies that design the chips and software behind the AI boom.",
+  "us.theme.bigtech": "Big Tech",
+  "us.theme.bigtech.desc": "The giants you use every day: phones, search, shopping, streaming and cloud.",
+  "us.theme.dividend": "Dividend payers",
+  "us.theme.dividend.desc": "Steady, established companies with a record of paying shareholders.",
+  "us.theme.ev": "EV & clean energy",
+  "us.theme.ev.desc": "Carmakers and energy firms betting on electric driving and charging.",
+  "us.theme.health": "Healthcare leaders",
+  "us.theme.health.desc": "Drugmakers and insurers that serve a growing, ageing world.",
+  "us.theme.parking": "Dollar parking",
+  "us.theme.parking.desc": "Large, steady businesses to hold your dollars in while you wait for ideas.",
   "us.benefit.stocks.tag": "5,000+",
   "us.benefit.stocks.text": "US stocks and ETFs",
   "us.benefit.evening.tag": "Evening",
@@ -25396,8 +25424,10 @@ import type { Flow } from '../types'
 import { goToTab } from '../../shared/ui/MainNav'
 import type { Go } from '../types'
 import { Home } from './screens/Home'
+import { t } from './copy'
 import { activeHomeVersions, DEFAULT_HOME_VERSION } from './components/homeVersions'
-import type { UsState } from './components/us/data'
+import { themes, themeScreenId, type ThemeId, type UsState } from './components/us/data'
+import { ThemePage } from './screens/ThemePage'
 import { setUsJourney, useUsJourney } from '../../shared/userStatus'
 import { ActivationApprovedSheet } from './components/us/sheets/ActivationApprovedSheet'
 import { ActivationSubmittedSheet } from './components/us/sheets/ActivationSubmittedSheet'
@@ -25405,7 +25435,7 @@ import { RiskDisclosureSheet } from './components/us/sheets/RiskDisclosureSheet'
 import { UsFtuxSheet } from './components/us/sheets/UsFtuxSheet'
 
 /** The US tab's taps, by screen id: Activate US Stocks → the risk disclosure sheet (stocks-12), a stock → its page (not activated, in the US Stocks flow), View all / a theme → Market on the US list. */
-const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsEtfs: () => go('us-stocks-71') })
+const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71') })
 
 /** The top bar and navbar taps every Home screen shares. */
 /** Search from the Home field: the Stocks tab on IND, the US tab on US (search-29). */
@@ -25452,7 +25482,7 @@ const stateTaps = (go: Go, usState: UsState): Partial<ComponentProps<typeof Home
 function HomeInState({ go }: { go: Go }) {
   const usState: UsState = useUsJourney()
   const wallet = usState === 'kyc' || usState === 'activate' ? 'us-stocks-53' : 'us-stocks-54'
-  return <Home usState={usState} {...chrome(go)} {...usNav(go)} {...stateTaps(go, usState)} onUsStock={() => go('us-stocks-13')} onWallet={() => go(wallet)} />
+  return <Home market="us" usState={usState} {...chrome(go)} {...usNav(go)} {...stateTaps(go, usState)} onUsStock={() => go('us-stocks-13')} onWallet={() => go(wallet)} />
 }
 
 /**
@@ -25512,6 +25542,18 @@ export const stocks: Flow = {
     { id: 'stocks-19', hidden: true, name: 'Home · US tab · under review · Contact Support', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Under review · Contact Support)', figma: '5776:80202', group: 'us-review', note: 'Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\'s Contact Support state (us-stocks-57).', tab: true, render: (go) => usHome(go, 'support') },
     { id: 'stocks-20', hidden: true, name: 'Home · US tab · money on the way', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Money on the way)', figma: '5796:86490', note: 'After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\'s transfer in progress (us-stocks-28). In the prototype it moves on to "money ready" (stocks-16) by itself after 2 s, as in his prototype.', tab: true, render: (go) => usHome(go, 'onTheWay', { onActivateUs: () => go('us-stocks-28'), autoNext: 'stocks-16' }) },
     { id: 'stocks-18', name: 'Home · activation submitted sheet', figma: '5756:73797', group: 'us-review', note: 'The under-review US tab with the "US Stocks activation under review" sheet (we\'ll let you know as soon as it\'s active). Okay → the under-review Home (stocks-13). Reached from Confirm details in the US Stocks flow.', tab: true, render: (go) => usHome(go, 'review', { sheet: <ActivationSubmittedSheet onOkay={() => go('stocks-13')} /> }) },
+    ...themes.map((theme, i) => ({
+      id: themeScreenId(theme.id),
+      hidden: i > 0,
+      ...(i === 0 ? { badge: 'new' as const, badgeNote: 'Not in Jojo\'s Figma: a theme of Explore by themes' } : {}),
+      name: `Theme · ${t(`us.theme.${theme.id}`)}`,
+      figma: '',
+      note: i === 0
+        ? 'A theme from Explore by themes (the old app\'s Invest in Ideas, reworked): the Actionbar has only back and the theme name; below it the logo stack, name, description and the "quoted as an example" disclaimer; then the theme\'s stocks (StockListCard, 12 apart) and More themes, a rail of the other themes. A stock → its US stock page (us-stocks-13); a theme card → that theme\'s screen (stocks-24 … 28, one screen per theme, pushed forward); back → the screen before.'
+        : `The ${t(`us.theme.${theme.id}`)} theme page (same layout as stocks-23).`,
+      tab: false,
+      render: (go: Go) => <ThemePage theme={theme.id} onStock={() => go('us-stocks-13')} onTheme={(next) => go(themeScreenId(next))} />,
+    })),
   ],
 }
 ```
@@ -25667,10 +25709,10 @@ export const stocks: Flow = {
   translate: 0 0;
 }
 
-/* One slow, smooth curve for every part, so they move as one. */
+/* One slow, smooth curve for every part, so they move as one. Colours don't fade: the band turns white at once, with
+ * the top bar and the status bar. */
 .header[data-animate] .topBar,
 .marquee[data-animate],
-.marquee[data-animate] .band,
 .marquee[data-animate] .pinnedTabs > * {
   transition-duration: var(--l3-motion-duration-long);
   transition-timing-function: var(--l3-motion-easing-standard);
@@ -25682,14 +25724,9 @@ export const stocks: Flow = {
   transition-property: translate;
 }
 
-.marquee[data-animate] .band {
-  transition-property: background-color, box-shadow;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .header[data-animate] .topBar,
   .marquee[data-animate],
-  .marquee[data-animate] .band,
   .marquee[data-animate] .pinnedTabs > * {
     transition: none;
   }
@@ -25713,7 +25750,6 @@ export const stocks: Flow = {
 .stickySwitch[data-look='pill'] [role='tablist'][data-appearance='pill-group'] {
   background: var(--l3-surface-default);
   box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px hairline */
-  transition: background-color var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
 }
 
 .marquee:not([data-state='top']) .stickySwitch[data-look='pill'] [role='tablist'][data-appearance='pill-group'] {
@@ -25764,7 +25800,7 @@ import { DEFAULT_HOME_VERSION, homeVersion, type HomeVersion } from '../componen
 import { MarketSwitchGuide } from '../components/MarketSwitchGuide'
 import { HomeSwitcher } from '../components/HomeSwitcher'
 import { TopBar } from '../components/TopBar'
-import { activatedStates, inKycCard, usIndices, type UsState } from '../components/us/data'
+import { activatedStates, inKycCard, usIndices, type ThemeId, type UsState } from '../components/us/data'
 import { UsActivationCard } from '../components/us/UsActivationCard'
 import { UsHome } from '../components/us/UsHome'
 import { neighbour, useSwipeBetween } from '../components/useSwipeBetween'
@@ -25804,6 +25840,8 @@ type Props = {
   onUsStock?: (sym: string) => void
   /** US tab: "View all" / a theme (Market was handed what to open on) → the Market page. */
   onUsMarket?: () => void
+  /** A theme card on the US tab → the theme's page. */
+  onUsTheme?: (id: ThemeId) => void
   /** The US tab's ETFs shortcut → the ETF list. */
   onUsEtfs?: () => void
   /** Prototype: after 2 s go on to this screen (the under-review Home moves on to "activated" by itself). */
@@ -25820,7 +25858,7 @@ type Props = {
  * products; and on the rounded sheet over it, the feed: shortcuts, top movers, watchlists, Smart Invest (brand tint),
  * an announcement (the campaign's artwork), sectors, highlights, idea baskets and the broker's disclosure.
  */
-export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsEtfs, autoNext, sheet }: Props) {
+export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsTheme, onUsEtfs, autoNext, sheet }: Props) {
   useAutoAdvance(autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
   // The design version (the prototype's "Homepage version" option): where the IND / US switch sits and how it looks.
@@ -26124,7 +26162,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
             </Stack>
           ) : (
             <Stack key="us" gap="32" data-market-part style={{ '--stk-gap': 'var(--l3-spacing-28)' } as CSSProperties}>
-              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onEtfs={onUsEtfs} />
+              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} />
             </Stack>
           )}
         </div>
@@ -26149,6 +26187,97 @@ function MarketSwitchFor({ version, value, onChange }: { version: HomeVersion; v
 /** "Rohan Mehta" → "RM": the profile's initials. */
 function initials(name: string) {
   return name.split(' ').map((part) => part.charAt(0)).join('').slice(0, 2).toUpperCase()
+}
+```
+
+### `src/flows/stocks/screens/ThemePage.module.css`
+
+```css
+.name {
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-20);
+}
+
+.desc {
+  margin: 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-14);
+}
+
+.disclaimer {
+  margin: 0;
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-description-12);
+}
+```
+
+### `src/flows/stocks/screens/ThemePage.tsx`
+
+```tsx
+// stocks-23 … 28: one theme of "Explore by themes" — the old app's "Invest in Ideas" page, reworked. The Actionbar has
+// only back + the theme's name; the explanation (logo stack, name, description, disclaimer) is a section below it, then
+// the stocks, then the other themes in a rail so the loop goes on.
+import { Actionbar } from '@l3/components/Actionbar'
+import { Inset } from '@l3/components/Inset'
+import { SectionHeader } from '@l3/components/SectionHeader'
+import { Stack } from '@l3/components/Stack'
+import { usePreview } from '../../../shared/prototype'
+import { useLiveQuote } from '../../../shared/data/live'
+import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
+import { Usd } from '../../../shared/money'
+import { Screen } from '../../../shared/ui/Screen'
+import { StockListCard } from '../../../shared/ui/StockListCard'
+import { t } from '../copy'
+import { themeById, usStock, type ThemeId } from '../components/us/data'
+import { LogoStack, ThemeRail } from '../components/us/ThemeCard'
+import styles from './ThemePage.module.css'
+
+type ThemePageProps = {
+  theme: ThemeId
+  /** A stock was tapped (already remembered with `viewUsStock`) → its page. */
+  onStock?: (sym: string) => void
+  /** A card in "More themes" → that theme's page. */
+  onTheme?: (id: ThemeId) => void
+  /** Back (the screen before, wherever the page was opened from). */
+  onBack?: () => void
+}
+
+function ThemeStock({ sym, onOpen }: { sym: string; onOpen: (sym: string) => void }) {
+  const stock = usStock(sym)
+  const live = useLiveQuote(sym, stock.price, stock.change)
+  return <StockListCard symbol={sym} name={stock.name} logoUrl={usLogo(sym)} price={<Usd value={live.price} layout="inline" />} changePct={live.changePct} onOpen={() => onOpen(sym)} />
+}
+
+export function ThemePage({ theme: id, onStock, onTheme, onBack }: ThemePageProps) {
+  const { back, go } = usePreview()
+  const theme = themeById(id)
+  const name = t(`us.theme.${id}`)
+  const goBack = onBack ?? (() => { if (!back?.()) go('stocks-01') })
+  const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
+  return (
+    <Screen top={<Actionbar title={name} headingLevel={2} onBack={goBack} backLabel={t('us.themes.back')} />}>
+      <Inset paddingInline="00" paddingBlock="16">
+      <Stack gap="24">
+        <Inset paddingInline="16" paddingBlock="00">
+          <Stack as="header" gap="12">
+            <LogoStack symbols={theme.symbols} />
+            <h2 className={styles.name}>{name}</h2>
+            <p className={styles.desc}>{t(`us.theme.${id}.desc`)}</p>
+            <p className={styles.disclaimer}>{t('us.themes.disclaimer')}</p>
+          </Stack>
+        </Inset>
+        <Inset paddingInline="16" paddingBlock="00">
+          <Stack gap="12">{theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}</Stack>
+        </Inset>
+        <Stack as="section" gap="16" aria-label={t('us.themes.more')}>
+          <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.more')} /></Inset>
+          <ThemeRail except={id} onOpen={(next) => onTheme?.(next)} />
+        </Stack>
+      </Stack>
+      </Inset>
+    </Screen>
+  )
 }
 ```
 
@@ -48648,6 +48777,15 @@ export const bankAccount: BankAccount = {
   type: 'Savings',
   branch: 'Andheri West, Mumbai',
 }
+
+/** A linked bank account as the money screens show it: the bank's logo symbol (companies.ts) and the last 4 digits. */
+export type LinkedBank = BankAccount & { id: string; logoSymbol: string; last4: string; primary?: boolean }
+
+/** The user's linked bank accounts, primary first. "User status → Bank accounts" picks how many the prototype shows. */
+export const linkedBanks: LinkedBank[] = [
+  { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
+  { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
+]
 ```
 
 ### `src/shared/money.module.css`
@@ -49512,6 +49650,82 @@ export function Spot({ icon, tone = 'brand', size = 'lg' }: { icon: string; tone
 }
 ```
 
+### `src/shared/ui/StockListCard.module.css`
+
+```css
+/* Price (Label 14, matching the symbol) over the day's change, right-aligned (numbers are Label, never Description). */
+.price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--l3-spacing-02);
+  white-space: nowrap;
+}
+
+.value {
+  font: var(--l3-text-label-14);
+}
+```
+
+### `src/shared/ui/StockListCard.tsx`
+
+```tsx
+import type { ReactNode } from 'react'
+import { Avatar } from '@l3/components/Avatar'
+import { ListCell } from '@l3/components/ListCell'
+import { PriceChange } from '@l3/components/PriceChange'
+import styles from './StockListCard.module.css'
+
+type StockListCardProps = {
+  /** Ticker, e.g. "RELIANCE" or "QQQ" (L3 Label 14, one line). */
+  symbol: string
+  /** Company or fund name (L3 Description 12, one line with "…"). */
+  name: string
+  /** Logo image URL (a square image; ETFs pass their issuer logo on its plate). Without one the Avatar shows `initials`. Always the L3 Avatar at 40, so every list looks the same. */
+  logoUrl?: string
+  initials?: string
+  /** A small Tag after the symbol, e.g. "3x Long" (ListCell's label suffix). */
+  tag?: ReactNode
+  /** The price, already formatted by the caller: `<Usd value>` for US, `inr()` for India. */
+  price: ReactNode
+  /** The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). */
+  changePct: number
+  /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
+  onOpen?: () => void
+  'aria-label'?: string
+}
+
+/**
+ * The one stock row of the app, as a card — the Market list's style, used wherever stocks or ETFs are listed:
+ * logo · symbol over name · price over the day's change. Long lists show it flat (border only, no shadow).
+ *
+ * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
+ */
+export function StockListCard({ symbol, name, logoUrl, initials, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+  return (
+    <ListCell
+      variant="card"
+      as={onOpen ? 'button' : undefined}
+      raised={false}
+      iconLeft={<Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      labelSuffix={tag || undefined}
+      labelSuffixTone="neutral"
+      labelSize="14"
+      label={symbol}
+      description={name}
+      trailing={
+        <span className={styles.price}>
+          <span className={styles.value}>{price}</span>
+          <PriceChange value={changePct} size="sm" />
+        </span>
+      }
+      onClick={onOpen}
+      aria-label={rest['aria-label']}
+    />
+  )
+}
+```
+
 ### `src/shared/userStatus.ts`
 
 ```ts
@@ -49522,6 +49736,7 @@ export function Spot({ icon, tone = 'brand', size = 'lg' }: { icon: string; tone
 // In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
 import type { FlowOption } from '../flows/types'
 import { setFlowOption, useFlowOption } from './prototype'
+import { linkedBanks, type LinkedBank } from './data/user'
 
 /** The settings' owner in the preview (as a flow id: where the picks are remembered). */
 export const USER_STATUS = 'app'
@@ -49530,12 +49745,16 @@ export type KycStatus = 'done' | 'pending'
 export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
 export type UsWallet = 'empty' | 'onTheWay' | 'funded'
 export type UsHoldings = 'none' | 'some'
+export type BankLinks = 'none' | 'one' | 'two'
 
 /**
  * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
  * its US tab screens (each one sets the status to its own state on arrival, then follows a pick), a US stock page and
  * the wallet's US tab.
  */
+/** The add-money screens and the wallet: the bank row and its sheet change with the user's linked banks. */
+const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54']
+
 const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
 
 /** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
@@ -49577,12 +49796,21 @@ export const userStatusOptions: FlowOption[] = [
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },
+  {
+    // Bank accounts linked to Lemonn (KYC adds the first). None = the add-money screens ask for one first.
+    id: 'banks',
+    group: 'User status',
+    label: 'Bank accounts',
+    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }],
+    default: 'two',
+    floatOn: BANK_SCREENS,
+  },
 ]
 
 const option = (id: string) => userStatusOptions.find((o) => o.id === id)!
 const useStatus = (id: string) => useFlowOption(USER_STATUS, id, option(id).default)
 
-export type UserStatus = { kyc: KycStatus; us: UsActivation; usWallet: UsWallet; usHoldings: UsHoldings }
+export type UserStatus = { kyc: KycStatus; us: UsActivation; usWallet: UsWallet; usHoldings: UsHoldings; banks: BankLinks }
 
 /** The user status as picked (settings under one that's off keep their last pick). KYC comes from the activation list. */
 export function useUserStatus(): UserStatus {
@@ -49592,7 +49820,14 @@ export function useUserStatus(): UserStatus {
     us,
     usWallet: useStatus('usWallet') as UsWallet,
     usHoldings: useStatus('usHoldings') as UsHoldings,
+    banks: useStatus('banks') as BankLinks,
   }
+}
+
+/** The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). */
+export function useLinkedBanks(): LinkedBank[] {
+  const banks = useStatus('banks') as BankLinks
+  return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
 }
 
 /**

@@ -4,7 +4,7 @@
   "description": "Add money over UPI after account setup: amount, UPI app, confirmation, receipt or failure.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "5bf6176",
+    "commit": "9448ca7",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -16,12 +16,67 @@
       "id": "deposit-01",
       "name": "Add money",
       "figma": "5436:7952",
-      "note": "The \"+\" chips add to the amount. Perks only on the first deposit.",
-      "goesTo": [
-        "kyc-20",
-        "deposit-02"
-      ],
+      "note": "First deposit, ₹1,000 typed. One big amount on the app keypad (L3 has none, drawn locally); \"+\" chips add to it. Perks only on the first deposit. Groww-style layout, not the busy live screen.",
+      "goesTo": [],
       "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7952"
+    },
+    {
+      "id": "deposit-06",
+      "name": "Add money · empty",
+      "figma": "",
+      "note": "Nothing typed: amount in grey, limits under it, the button is off.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-07",
+      "name": "Add money · below minimum",
+      "figma": "",
+      "note": "₹50: the line under the amount turns red (\"Minimum ₹100\"), the button is off.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-08",
+      "name": "Add money · above maximum",
+      "figma": "",
+      "note": "₹6,00,000: red \"Maximum ₹5,00,000 via UPI. Use net banking for more\", the button is off.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-09",
+      "name": "Add money · from the wallet",
+      "figma": "",
+      "note": "Opened by Deposit on the INR wallet: no first-deposit perks, ₹1,100.00 available; after the receipt, Done goes back to the wallet.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-10",
+      "name": "Add money · no bank account",
+      "figma": "",
+      "note": "No bank linked (User status → Bank accounts: None): the bank row and the button ask to add one first → Add bank account.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-11",
+      "name": "Add money · change bank",
+      "figma": "",
+      "note": "The bank row (chevron) opens \"Pay from\": the linked banks as radio rows, picking one closes it; \"Add another bank account\" → Add bank account.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-12",
+      "name": "Add bank account",
+      "figma": "",
+      "note": "From the bank row or \"Pay from\" — the ₹ and the US add money both come here. Verify (₹1 name check) goes back to the add money it came from.",
+      "goesTo": [
+        "deposit-09"
+      ],
+      "figmaUrl": ""
     },
     {
       "id": "deposit-02",
@@ -45,20 +100,17 @@
       "id": "deposit-04",
       "name": "Money added",
       "figma": "5436:7955",
-      "note": "Start investing → the Stocks home.",
-      "goesTo": [
-        "stocks-01"
-      ],
+      "note": "First deposit: Start investing → the Stocks home. Opened from the wallet: Done → the wallet. (The prototype remembers the entry; a screen opened straight from the list assumes the first deposit.)",
+      "goesTo": [],
       "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5436-7955"
     },
     {
       "id": "deposit-05",
       "name": "Payment failed",
       "figma": "",
-      "note": "Not in the live screenshots — the failure state the flow needs.",
+      "note": "Not in the live screenshots — the failure state the flow needs. Change payment method returns to the Add money screen it came from.",
       "goesTo": [
-        "deposit-02",
-        "deposit-01"
+        "deposit-02"
       ],
       "figmaUrl": ""
     }
@@ -69,14 +121,21 @@
     "src/flows/deposit/copy.ts",
     "src/flows/deposit/data.ts",
     "src/flows/deposit/index.tsx",
+    "src/flows/deposit/screens/AddBank.tsx",
     "src/flows/deposit/screens/AddMoney.tsx",
     "src/flows/deposit/screens/Deposit.module.css",
     "src/flows/deposit/screens/Payment.tsx"
   ],
   "shared": [
     "src/shared/copy.ts",
+    "src/shared/data/companies.ts",
     "src/shared/data/format.ts",
+    "src/shared/data/market-snapshot.json",
+    "src/shared/data/user.ts",
     "src/shared/prototype.ts",
+    "src/shared/ui/AmountEntry.module.css",
+    "src/shared/ui/AmountEntry.tsx",
+    "src/shared/ui/BankPicker.tsx",
     "src/shared/ui/External.module.css",
     "src/shared/ui/External.tsx",
     "src/shared/ui/Intro.module.css",
@@ -86,6 +145,7 @@
     "src/shared/ui/Sheet.module.css",
     "src/shared/ui/Sheet.tsx",
     "src/shared/ui/Spot.module.css",
-    "src/shared/ui/Spot.tsx"
+    "src/shared/ui/Spot.tsx",
+    "src/shared/userStatus.ts"
   ]
 }

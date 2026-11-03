@@ -1,6 +1,6 @@
 # Flow: Market (`market`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `5bf6176` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `9448ca7` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.
 
@@ -23333,6 +23333,52 @@ export const viewUsStock = (symbol: string) => { viewed = symbol }
 export const viewedUsStock = () => viewed
 ```
 
+### `src/shared/data/user.ts`
+
+```ts
+// The sample user every flow uses. FICTIONAL — the live screenshots contain a real customer's details; never copy them.
+export type User = {
+  name: string
+  fatherName: string
+  mobile: string
+  email: string
+  pan: string
+  dob: string
+  occupation: string
+  maritalStatus: string
+}
+
+export const user: User = {
+  name: 'Rohan Mehta',
+  fatherName: 'Suresh Mehta',
+  mobile: '9876543210',
+  email: 'rohan.mehta@gmail.com',
+  pan: 'ABCPM1234K',
+  dob: '14 Aug 1996',
+  occupation: 'Private sector',
+  maritalStatus: 'Single',
+}
+
+export type BankAccount = { bank: string; accountNumber: string; ifsc: string; type: 'Savings' | 'Current'; branch: string }
+
+export const bankAccount: BankAccount = {
+  bank: 'HDFC Bank',
+  accountNumber: '50100234567821',
+  ifsc: 'HDFC0001234',
+  type: 'Savings',
+  branch: 'Andheri West, Mumbai',
+}
+
+/** A linked bank account as the money screens show it: the bank's logo symbol (companies.ts) and the last 4 digits. */
+export type LinkedBank = BankAccount & { id: string; logoSymbol: string; last4: string; primary?: boolean }
+
+/** The user's linked bank accounts, primary first. "User status → Bank accounts" picks how many the prototype shows. */
+export const linkedBanks: LinkedBank[] = [
+  { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
+  { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
+]
+```
+
 ### `src/shared/money.module.css`
 
 ```css
@@ -24093,6 +24139,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, tag, price, cha
 // In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
 import type { FlowOption } from '../flows/types'
 import { setFlowOption, useFlowOption } from './prototype'
+import { linkedBanks, type LinkedBank } from './data/user'
 
 /** The settings' owner in the preview (as a flow id: where the picks are remembered). */
 export const USER_STATUS = 'app'
@@ -24101,12 +24148,16 @@ export type KycStatus = 'done' | 'pending'
 export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
 export type UsWallet = 'empty' | 'onTheWay' | 'funded'
 export type UsHoldings = 'none' | 'some'
+export type BankLinks = 'none' | 'one' | 'two'
 
 /**
  * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
  * its US tab screens (each one sets the status to its own state on arrival, then follows a pick), a US stock page and
  * the wallet's US tab.
  */
+/** The add-money screens and the wallet: the bank row and its sheet change with the user's linked banks. */
+const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54']
+
 const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
 
 /** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
@@ -24148,12 +24199,21 @@ export const userStatusOptions: FlowOption[] = [
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },
+  {
+    // Bank accounts linked to Lemonn (KYC adds the first). None = the add-money screens ask for one first.
+    id: 'banks',
+    group: 'User status',
+    label: 'Bank accounts',
+    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }],
+    default: 'two',
+    floatOn: BANK_SCREENS,
+  },
 ]
 
 const option = (id: string) => userStatusOptions.find((o) => o.id === id)!
 const useStatus = (id: string) => useFlowOption(USER_STATUS, id, option(id).default)
 
-export type UserStatus = { kyc: KycStatus; us: UsActivation; usWallet: UsWallet; usHoldings: UsHoldings }
+export type UserStatus = { kyc: KycStatus; us: UsActivation; usWallet: UsWallet; usHoldings: UsHoldings; banks: BankLinks }
 
 /** The user status as picked (settings under one that's off keep their last pick). KYC comes from the activation list. */
 export function useUserStatus(): UserStatus {
@@ -24163,7 +24223,14 @@ export function useUserStatus(): UserStatus {
     us,
     usWallet: useStatus('usWallet') as UsWallet,
     usHoldings: useStatus('usHoldings') as UsHoldings,
+    banks: useStatus('banks') as BankLinks,
   }
+}
+
+/** The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). */
+export function useLinkedBanks(): LinkedBank[] {
+  const banks = useStatus('banks') as BankLinks
+  return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
 }
 
 /**

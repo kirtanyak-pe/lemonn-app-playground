@@ -1,6 +1,6 @@
 # Flow: F&O (`fno`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `5bf6176` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `9448ca7` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 Equity F&O home: P&L, indices, chart metrics, watchlists, Smart Options, Futures Heatmap and Smart Futures.
 
@@ -1668,8 +1668,8 @@ export function AssetPage({ asset, onBack, onChain, onScalper, onOrder }: Props)
   const dock = <ButtonGroup aria-label={`${asset.name} ${asset.contract}`} direction={asset.illiquid ? 'vertical' : 'horizontal'}>
     {asset.illiquid && <button type="button" className={styles.illiquidNote} onClick={() => setExplain(true)}>{t('asset.illiquidNote')}<Icon icon={msInfo} size={16} /></button>}
     {asset.illiquid
-      ? <div className={styles.pair}><Button variant="brand" disabled>{t('asset.buy')}</Button><Button variant="secondary" disabled>{t('asset.sell')}</Button></div>
-      : <><Button variant="brand" onClick={() => onOrder('buy')}>{t('asset.buy')}</Button><Button variant="secondary" onClick={() => onOrder('sell')}>{t('asset.sell')}</Button></>}
+      ? <div className={styles.pair}><Button variant="buy" disabled>{t('asset.buy')}</Button><Button variant="sell" disabled>{t('asset.sell')}</Button></div>
+      : <><Button variant="buy" onClick={() => onOrder('buy')}>{t('asset.buy')}</Button><Button variant="sell" onClick={() => onOrder('sell')}>{t('asset.sell')}</Button></>}
   </ButtonGroup>
 
   return <Screen
@@ -1946,8 +1946,8 @@ export function ContractSheet({ contract, onAsset, onIlliquid, onBuy, onSell, on
     footer={<ButtonGroup aria-label={t('contractSheet.label', { name: contract.name })} direction={contract.illiquid ? 'vertical' : 'horizontal'}>
       {contract.illiquid && <button type="button" className={styles.note} onClick={onIlliquid}>{t('asset.illiquidNote')}<Icon icon={msInfo} size={16} /></button>}
       {contract.illiquid
-        ? <div className={styles.pair}><Button variant="brand" disabled onClick={onBuy}>{t('asset.buy')}</Button><Button variant="secondary" disabled onClick={onSell}>{t('asset.sell')}</Button></div>
-        : <><Button variant="brand" onClick={onBuy}>{t('asset.buy')}</Button><Button variant="secondary" onClick={onSell}>{t('asset.sell')}</Button></>}
+        ? <div className={styles.pair}><Button variant="buy" disabled onClick={onBuy}>{t('asset.buy')}</Button><Button variant="sell" disabled onClick={onSell}>{t('asset.sell')}</Button></div>
+        : <><Button variant="buy" onClick={onBuy}>{t('asset.buy')}</Button><Button variant="sell" onClick={onSell}>{t('asset.sell')}</Button></>}
     </ButtonGroup>}>
     <div className={styles.body}>
       <div className={styles.row}>
@@ -4329,7 +4329,7 @@ export function Scalper({ onBack, createdIndicator, openIndicators, initialIndic
           />
           <div className={styles.order}>
             <div className={styles.side}>
-              <Button variant="brand" size="md" fullWidth className={styles.buy}>{t('scalper.buy')}</Button>
+              <Button variant="buy" size="md" fullWidth className={styles.buy}>{t('scalper.buy')}</Button>
               <span className={styles.req}>{t('scalper.required', { amount: '₹7,059.75' })}</span>
             </div>
             <div className={styles.qty}>
@@ -4337,7 +4337,7 @@ export function Scalper({ onBack, createdIndicator, openIndicators, initialIndic
               <span className={styles.funds}>{t('scalper.funds', { amount: '₹-39.96' })}</span>
             </div>
             <div className={styles.side}>
-              <Button variant="secondary" size="md" fullWidth className={styles.sell}>{t('scalper.sell')}</Button>
+              <Button variant="sell" size="md" fullWidth className={styles.sell}>{t('scalper.sell')}</Button>
               <span className={styles.req}>{t('scalper.required', { amount: '₹1,57,436.49' })}</span>
             </div>
           </div>
@@ -5316,6 +5316,15 @@ export const bankAccount: BankAccount = {
   type: 'Savings',
   branch: 'Andheri West, Mumbai',
 }
+
+/** A linked bank account as the money screens show it: the bank's logo symbol (companies.ts) and the last 4 digits. */
+export type LinkedBank = BankAccount & { id: string; logoSymbol: string; last4: string; primary?: boolean }
+
+/** The user's linked bank accounts, primary first. "User status → Bank accounts" picks how many the prototype shows. */
+export const linkedBanks: LinkedBank[] = [
+  { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
+  { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
+]
 ```
 
 ### `src/shared/prototype.ts`
