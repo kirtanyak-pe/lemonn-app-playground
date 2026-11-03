@@ -4,7 +4,7 @@
   "description": "The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "cdf73c6",
+    "commit": "bd9340d",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -15,13 +15,9 @@
     {
       "id": "stocks-01",
       "name": "Home",
-      "figma": "",
-      "note": "Top of the page: search, indices, holdings, products, shortcuts.",
-      "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
-      ],
+      "figma": "5714:64982",
+      "note": "The Stocks home in the user status picked in the prototype settings (User status: US Stocks activation — Lemonn KYC pending → … → Activated —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to.",
+      "goesTo": [],
       "figmaUrl": ""
     },
     {
@@ -30,9 +26,7 @@
       "figma": "",
       "note": "Same page, scrolled.",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
@@ -42,9 +36,7 @@
       "figma": "",
       "note": "The \"Top losers\" chip picked.",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
@@ -54,9 +46,7 @@
       "figma": "",
       "note": "Same page, scrolled: managed strategies, then the announcement.",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
@@ -66,9 +56,7 @@
       "figma": "",
       "note": "Same page, scrolled.",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
@@ -78,9 +66,7 @@
       "figma": "",
       "note": "Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.)",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
@@ -90,21 +76,139 @@
       "figma": "",
       "note": "The end of the page: the disclosure, four lines and Read More.",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "profile-01"
       ],
       "figmaUrl": ""
     },
     {
-      "id": "stocks-08",
-      "name": "Home · DASH coach mark",
-      "figma": "5612:44075",
-      "note": "First visit after DASH launches: an L3 coach mark on the DASH pill (Figma \"Intro\" in DASH AI main flow). Got it! or the pill opens DASH.",
+      "id": "stocks-21",
+      "name": "Home · US tab · KYC not done",
+      "figma": "9001:20",
+      "note": "The US tab for a user who hasn\\",
       "goesTo": [
-        "search-01",
-        "profile-01",
-        "dash-02"
+        "kyc-01",
+        "us-stocks-74"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-09",
+      "name": "Home · US Stocks tab",
+      "figma": "5756:74756",
+      "note": "The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers, Trillion Dollar Titans, Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\\",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-10",
+      "name": "Home · US Stocks tab · scrolled",
+      "figma": "",
+      "note": "Same tab, scrolled past the tabs: the compact IND / US tabs are pinned under the top bar.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-11",
+      "name": "Home · US Stocks intro (FTUX) sheet",
+      "figma": "5756:68986",
+      "note": "First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the risk disclosure (stocks-12); ✕ → Home (stocks-01).",
+      "goesTo": [
+        "stocks-12",
+        "stocks-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-12",
+      "name": "Home · US tab · risk disclosure sheet",
+      "figma": "5756:71475",
+      "note": "The Risk disclosure (For US Stocks) sheet over the US tab. Agree and Continue submits the activation → under review (stocks-13); closing it → the tab (stocks-09).",
+      "goesTo": [
+        "stocks-13",
+        "stocks-09"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-13",
+      "name": "Home · US tab · activation under review",
+      "figma": "5756:75539",
+      "note": "US tab, activation under review (honey card, up to 1 working day). In the prototype it moves on to \"activated\" (stocks-15) by itself after 2 s; the wallet opens the wallet with the review banner.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-22",
+      "name": "Home · US tab · activation approved sheet",
+      "figma": "9001:21",
+      "note": "The review is approved: the activated US tab with the \"US Stocks is active\" sheet (success spot). Add Money to US wallet → the $0 USD wallet (us-stocks-20); Later or closing → the activated Home (stocks-15). The under-review Home (stocks-13) moves here by itself after 2 s.",
+      "goesTo": [
+        "us-stocks-20",
+        "stocks-15"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-14",
+      "name": "Home · US tab · activation failed",
+      "figma": "5776:81034",
+      "note": "US tab, activation failed (PAN could not be verified): red card, Retry Activation → the risk disclosure (stocks-12).",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-15",
+      "name": "Home · US tab · activated · add money",
+      "figma": "5776:81870",
+      "note": "US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too.",
+      "goesTo": [
+        "us-stocks-20"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-16",
+      "name": "Home · US tab · money ready",
+      "figma": "5796:87332",
+      "note": "Money reached the US wallet: a \"Your money is ready\" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59).",
+      "goesTo": [
+        "stocks-17"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-17",
+      "name": "Home · US tab · activated · holding",
+      "figma": "5826:92885",
+      "note": "US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-19",
+      "name": "Home · US tab · under review · Contact Support",
+      "figma": "5776:80202",
+      "note": "Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\\",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-20",
+      "name": "Home · US tab · money on the way",
+      "figma": "5796:86490",
+      "note": "After paying on the bank page: the honey \"Money on the way\" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\\",
+      "goesTo": [
+        "us-stocks-28"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "stocks-18",
+      "name": "Home · activation submitted sheet",
+      "figma": "5756:73797",
+      "note": "The under-review US tab with the \"US Stocks activation under review\" sheet (we\\",
+      "goesTo": [
+        "stocks-13"
       ],
       "figmaUrl": ""
     }
@@ -112,13 +216,65 @@
   "files": [
     "src/flows/stocks/README.md",
     "src/flows/stocks/assets/announcement-jio-ipo.jpg",
+    "src/flows/stocks/assets/flags/india.svg",
+    "src/flows/stocks/assets/flags/us.svg",
+    "src/flows/stocks/assets/in/benefit-brokerage.svg",
+    "src/flows/stocks/assets/in/benefit-dash.svg",
+    "src/flows/stocks/assets/in/benefit-mtf.svg",
+    "src/flows/stocks/assets/shortcuts/analysis.svg",
+    "src/flows/stocks/assets/shortcuts/etf.svg",
+    "src/flows/stocks/assets/shortcuts/fractional.svg",
+    "src/flows/stocks/assets/shortcuts/hours.svg",
+    "src/flows/stocks/assets/shortcuts/ipo.svg",
+    "src/flows/stocks/assets/shortcuts/referral.svg",
+    "src/flows/stocks/assets/shortcuts/watchlist.svg",
+    "src/flows/stocks/assets/us/benefit-bolt.svg",
+    "src/flows/stocks/assets/us/ftux/bloom-blue.svg",
+    "src/flows/stocks/assets/us/ftux/bloom-red.svg",
+    "src/flows/stocks/assets/us/ftux/flag-ghost.png",
+    "src/flows/stocks/assets/us/ftux/flag-mask-ghost.svg",
+    "src/flows/stocks/assets/us/ftux/flag-mask-main.svg",
+    "src/flows/stocks/assets/us/ftux/flag.webp",
+    "src/flows/stocks/assets/us/ftux/mark-aapl.svg",
+    "src/flows/stocks/assets/us/ftux/mark-googl.svg",
+    "src/flows/stocks/assets/us/ftux/mark-msft.svg",
+    "src/flows/stocks/assets/us/ftux/mark-nvda.svg",
+    "src/flows/stocks/assets/us/ftux/tsla.png",
+    "src/flows/stocks/assets/us/ind-icon-off.svg",
+    "src/flows/stocks/assets/us/ind-icon-on.svg",
+    "src/flows/stocks/assets/us/spark-down.svg",
+    "src/flows/stocks/assets/us/spark-up.svg",
+    "src/flows/stocks/assets/us/us-icon-off.svg",
+    "src/flows/stocks/assets/us/us-icon-on.svg",
     "src/flows/stocks/components/Discover.tsx",
     "src/flows/stocks/components/Home.module.css",
     "src/flows/stocks/components/Ideas.tsx",
     "src/flows/stocks/components/Invest.tsx",
+    "src/flows/stocks/components/MarketSwitchGuide.module.css",
+    "src/flows/stocks/components/MarketSwitchGuide.tsx",
+    "src/flows/stocks/components/MarketTabs.module.css",
+    "src/flows/stocks/components/MarketTabs.tsx",
     "src/flows/stocks/components/Overview.tsx",
+    "src/flows/stocks/components/ShortcutArt.tsx",
     "src/flows/stocks/components/TopBar.module.css",
     "src/flows/stocks/components/TopBar.tsx",
+    "src/flows/stocks/components/UsIntroStory.module.css",
+    "src/flows/stocks/components/UsIntroStory.tsx",
+    "src/flows/stocks/components/homeVersions.ts",
+    "src/flows/stocks/components/us/TransferProgress.tsx",
+    "src/flows/stocks/components/us/UsActivationCard.tsx",
+    "src/flows/stocks/components/us/UsHome.module.css",
+    "src/flows/stocks/components/us/UsHome.tsx",
+    "src/flows/stocks/components/us/data.ts",
+    "src/flows/stocks/components/us/sheets/ActivationApprovedSheet.tsx",
+    "src/flows/stocks/components/us/sheets/ActivationSubmittedSheet.tsx",
+    "src/flows/stocks/components/us/sheets/RiskDisclosureSheet.tsx",
+    "src/flows/stocks/components/us/sheets/UsFtuxSheet.module.css",
+    "src/flows/stocks/components/us/sheets/UsFtuxSheet.tsx",
+    "src/flows/stocks/components/us/sheets/UsSheets.module.css",
+    "src/flows/stocks/components/us/useAutoSlide.ts",
+    "src/flows/stocks/components/us/useLiveHeatmap.ts",
+    "src/flows/stocks/components/useSwipeBetween.ts",
     "src/flows/stocks/copy.json",
     "src/flows/stocks/copy.ts",
     "src/flows/stocks/data.ts",
@@ -140,10 +296,16 @@
     "src/shared/data/broker.ts",
     "src/shared/data/companies.ts",
     "src/shared/data/format.ts",
+    "src/shared/data/live.ts",
     "src/shared/data/market-snapshot.json",
     "src/shared/data/market.ts",
+    "src/shared/data/marketHandoff.ts",
     "src/shared/data/portfolio.ts",
+    "src/shared/data/us-market-snapshot.json",
+    "src/shared/data/usStocks.ts",
     "src/shared/data/user.ts",
+    "src/shared/money.module.css",
+    "src/shared/money.tsx",
     "src/shared/prototype.ts",
     "src/shared/ui/MainNav.tsx",
     "src/shared/ui/Rail.module.css",
@@ -152,13 +314,8 @@
     "src/shared/ui/Screen.tsx",
     "src/shared/ui/Sheet.module.css",
     "src/shared/ui/Sheet.tsx",
-    "src/shared/ui/dash/DashEntry.module.css",
-    "src/shared/ui/dash/DashEntry.tsx",
-    "src/shared/ui/dash/DashOrb.module.css",
-    "src/shared/ui/dash/DashOrb.tsx",
-    "src/shared/ui/dash/assets/leaf-back.svg",
-    "src/shared/ui/dash/assets/leaf-front.svg",
-    "src/shared/ui/dash/assets/orb-fill.svg",
-    "src/shared/ui/dash/assets/orb-ring.svg"
+    "src/shared/ui/Spot.module.css",
+    "src/shared/ui/Spot.tsx",
+    "src/shared/userStatus.ts"
   ]
 }

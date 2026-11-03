@@ -4,7 +4,7 @@
   "description": "Your account, app settings (biometric, dark mode, accessibility), help, and logout.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "cdf73c6",
+    "commit": "bd9340d",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {

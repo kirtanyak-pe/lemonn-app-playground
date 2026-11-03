@@ -1,10 +1,10 @@
 {
   "id": "market",
   "title": "Market",
-  "description": "The Market tab — stock lists (all, gainers, losers, under ₹100 / ₹500) and Filters.",
+  "description": "The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "cdf73c6",
+    "commit": "bd9340d",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -18,7 +18,8 @@
       "figma": "",
       "note": "The filter bar shows \"Apply filters\" until something is applied.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -28,7 +29,8 @@
       "figma": "",
       "note": "Same layout — only the list changes.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -38,7 +40,8 @@
       "figma": "",
       "note": "",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -48,7 +51,8 @@
       "figma": "",
       "note": "",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -58,7 +62,8 @@
       "figma": "",
       "note": "Side tabs on the left (grey rail, the open one connected to the pane); only the open group on the right. Opens on Sort by.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -68,7 +73,8 @@
       "figma": "",
       "note": "Indices open — Nifty 500 picked (one choice); its side tab shows 1. Each option says how many stocks it gives.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -78,7 +84,8 @@
       "figma": "",
       "note": "Sectors open — Banking and IT picked (any number); sort and index picked too. Sectors with no stocks in Nifty 500 are off.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     },
@@ -88,7 +95,30 @@
       "figma": "",
       "note": "One removable chip per pick; the filter button gets a dot.",
       "goesTo": [
-        "search-24"
+        "search-24",
+        "us-stocks-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-09",
+      "name": "Market · US stocks",
+      "figma": "",
+      "note": "The picker left of the tabs is on US: $ prices, US logos; tapping a stock opens its US stock page (us-stocks-13, which follows the user status).",
+      "goesTo": [
+        "search-24",
+        "us-stocks-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "market-10",
+      "name": "Market · US · S&P 500 filter",
+      "figma": "",
+      "note": "US list with the S&P 500 index applied (the US Stocks flow\\",
+      "goesTo": [
+        "search-24",
+        "us-stocks-13"
       ],
       "figmaUrl": ""
     }
@@ -119,8 +149,14 @@
     "src/shared/assets/logos/sagility.png",
     "src/shared/assets/logos/ttml.png",
     "src/shared/copy.ts",
+    "src/shared/data/companies.ts",
     "src/shared/data/format.ts",
+    "src/shared/data/live.ts",
+    "src/shared/data/market-snapshot.json",
     "src/shared/data/market.ts",
+    "src/shared/data/marketHandoff.ts",
+    "src/shared/data/us-market-snapshot.json",
+    "src/shared/data/usStocks.ts",
     "src/shared/prototype.ts",
     "src/shared/ui/MainNav.tsx",
     "src/shared/ui/Screen.module.css",

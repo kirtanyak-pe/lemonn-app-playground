@@ -1,10 +1,10 @@
 {
   "id": "search",
   "title": "Search",
-  "description": "Search stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist.",
+  "description": "Search stocks, US stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "cdf73c6",
+    "commit": "bd9340d",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -75,6 +75,36 @@
         "stocks-01"
       ],
       "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=4912-13703"
+    },
+    {
+      "id": "search-29",
+      "name": "US · before typing",
+      "figma": "5796:89230",
+      "note": "From the search field on Stocks home’s US tab, or Search on the US Portfolio. Recent and popular US stocks as chips (a chip searches for that company), then US collections as tiles. Back returns to where Search was opened.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": "https://www.figma.com/design/sG24GPizTdwbMBxLm0IpTA/?node-id=5796-89230"
+    },
+    {
+      "id": "search-30",
+      "name": "US · results",
+      "figma": "",
+      "note": "\"N\": US stocks by name or ticker, with $ prices. A row opens that stock’s US stock page.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "search-31",
+      "name": "US · nothing found",
+      "figma": "",
+      "note": "No US stock matches: L3 empty state with Clear search.",
+      "goesTo": [
+        "stocks-01"
+      ],
+      "figmaUrl": ""
     },
     {
       "id": "search-25",
@@ -343,6 +373,8 @@
   "shared": [
     "src/shared/copy.ts",
     "src/shared/data/format.ts",
+    "src/shared/data/us-market-snapshot.json",
+    "src/shared/data/usStocks.ts",
     "src/shared/prototype.ts",
     "src/shared/ui/IlliquidSheet.module.css",
     "src/shared/ui/IlliquidSheet.tsx",
