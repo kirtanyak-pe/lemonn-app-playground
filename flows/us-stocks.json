@@ -4,7 +4,7 @@
   "description": "Activate US Stocks, add money to the USD wallet, buy and sell, withdraw (teammate import, under review).",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "c592c0d",
+    "commit": "5bf6176",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -99,6 +99,18 @@
     "src/flows/us-stocks/assets/etf/invesco.png",
     "src/flows/us-stocks/assets/etf/ishares.png",
     "src/flows/us-stocks/assets/etf/kraneshares.png",
+    "src/flows/us-stocks/assets/etf/logos/direxion.svg",
+    "src/flows/us-stocks/assets/etf/logos/globalx.svg",
+    "src/flows/us-stocks/assets/etf/logos/graniteshares.svg",
+    "src/flows/us-stocks/assets/etf/logos/invesco.svg",
+    "src/flows/us-stocks/assets/etf/logos/ishares.svg",
+    "src/flows/us-stocks/assets/etf/logos/kraneshares.svg",
+    "src/flows/us-stocks/assets/etf/logos/procure.svg",
+    "src/flows/us-stocks/assets/etf/logos/proshares.svg",
+    "src/flows/us-stocks/assets/etf/logos/spdr.svg",
+    "src/flows/us-stocks/assets/etf/logos/vaneck.svg",
+    "src/flows/us-stocks/assets/etf/logos/vanguard.svg",
+    "src/flows/us-stocks/assets/etf/logos/wisdomtree.svg",
     "src/flows/us-stocks/assets/etf/price-line-1d.svg",
     "src/flows/us-stocks/assets/etf/procure.png",
     "src/flows/us-stocks/assets/etf/proshares.png",
@@ -239,13 +251,23 @@
     "src/flows/us-stocks/screens/wallet/sheets/WithdrawalRequestsSheet.tsx"
   ],
   "shared": [
+    "src/shared/assets/flags/china.svg",
+    "src/shared/assets/flags/europe.svg",
+    "src/shared/assets/flags/india.svg",
+    "src/shared/assets/flags/japan.svg",
+    "src/shared/assets/flags/korea.svg",
+    "src/shared/assets/flags/us.svg",
     "src/shared/data/live.ts",
     "src/shared/data/us-market-snapshot.json",
     "src/shared/data/usStocks.ts",
     "src/shared/money.module.css",
     "src/shared/money.tsx",
     "src/shared/prototype.ts",
+    "src/shared/ui/Flag.module.css",
+    "src/shared/ui/Flag.tsx",
     "src/shared/ui/MainNav.tsx",
+    "src/shared/ui/StockListCard.module.css",
+    "src/shared/ui/StockListCard.tsx",
     "src/shared/userStatus.ts"
   ]
 }

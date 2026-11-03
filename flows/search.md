@@ -1,6 +1,6 @@
 # Flow: Search (`search`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `c592c0d` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `5bf6176` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 Search stocks, US stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist.
 
@@ -134,7 +134,7 @@ any screen ─back─▶ where Search was opened from (stocks-01 / market-01)
 | View All | Button ("L3: Button" Ghost Small) | `variant="ghost" size="sm"`, chevron right |
 | Recent / popular chip | Card (clickable) + Avatar | `padding="none"`, radius 8, no shadow (1px `border/light` only); inside: 8 / 12 / 8 / 8 padding, Avatar 24 rounded (initials), Label/12 `content/tertiary`; max 200 wide; rows scroll sideways |
 | Watchlist match | ListCell ("L3: list cell", card, tappable, small) | `variant="card" size="sm" as="button"`, Avatar 32 rounded, label + "n stocks", chevron; 12 apart |
-| Result row | ListCell (plain, small, breathable) + Avatar + PriceChange | `size="sm" density="breathable" as="button"` (70 tall); right: price (Label/12) over `PriceChange size="sm" arrow`; 1px `border/light` line under each row, 16 in |
+| Result row | ListCell (plain, small, breathable) + Avatar + PriceChange | `size="sm" density="breathable" as="button"` (70 tall); right: price (Label/12) over `PriceChange size="sm"` (sign, no arrow); 1px `border/light` line under each row, 16 in |
 | Bookmark | Button (Ghost, icon only) + L3 custom icons | `variant="ghost"` (lg, 24 icon): `watchlist_add` (outline bookmark with +) / `watchlist_added` (filled, ✓ cut out) when saved — Icons library → Custom icons; 16 from the edge |
 | F&O / MF tiles | Card (clickable) | radius 8, no shadow (1px `border/light` only); 2 columns, 12 apart; label Label/12 (MF: `content/tertiary`), 10 / 12 padding |
 | Sort | Select ("L3: Select switcher") | `size="sm" icon="swap"`: Price ↕ / Volume, 3Y Returns ↕ |
@@ -455,7 +455,7 @@ function Trailing({ item, showVolume }: { item: SearchResult; showVolume?: boole
   return (
     <span className={styles.stack}>
       <span className={styles.value}>{top}</span>
-      {item.changePct !== undefined && <PriceChange value={item.changePct} size="sm" arrow />}
+      {item.changePct !== undefined && <PriceChange value={item.changePct} size="sm" />}
     </span>
   )
 }

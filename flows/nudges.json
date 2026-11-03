@@ -4,7 +4,7 @@
   "description": "Journey-aware P&L limit and TP/SL prompts: silent help on the order pad, and one nudge sheet when the revenge flag and the journey engine agree.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "c592c0d",
+    "commit": "5bf6176",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {

@@ -1,6 +1,6 @@
 # Flow: Market (`market`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `c592c0d` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `5bf6176` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.
 
@@ -96,8 +96,9 @@ with the live feed. No up/down flash.
 
 ### Cards
 
-The stock cards are flat: no elevation shadow, only the 1px `border/light` edge (`.flatCards` in `Market.module.css`) — the
-designer's call, 2026-11-02. A one-off for this screen; L3's card variant keeps its shadow elsewhere.
+The stock cards are the shared `StockListCard` (`src/shared/ui/`): ListCell card, Avatar 40, flat (1px `border/light` edge, no shadow —
+an L3 gap until ListCell has a flat option), symbol and price in Label 14, name in Description 12, cards 12 apart. The same
+card is used by every stock list in the app.
 
 ### Components (L3 → any platform)
 
@@ -152,6 +153,7 @@ designer's call, 2026-11-02. A one-off for this screen; L3's card variant keeps 
 
 ### Changelog
 
+- 2026-11-03 — Stock cards are the shared `StockListCard` (flat, Label 14, 12 apart, same look app-wide); `.flatCards` override and `StockRow.module.css` removed.
 - 2026-11-02 — Market picker: small pill (`sm`) with a bigger tap area — the whole block around it (16 each side, the tab row's full height) switches the market.
 - 2026-11-02 — Market picker is one pill (IN / US + ↕ icon) instead of a Select; one tap switches the market.
 
@@ -297,52 +299,27 @@ export function SideTabs<V extends string>({ items, value, onChange, idBase, ...
 }
 ```
 
-### `src/flows/market/components/StockRow.module.css`
-
-```css
-/* Price over the day's change, right-aligned (numbers are Label, never Description). */
-.price {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--l3-spacing-02);
-  white-space: nowrap;
-}
-
-.value {
-  font: var(--l3-text-label-16);
-}
-```
-
 ### `src/flows/market/components/StockRow.tsx`
 
 ```tsx
-import { Avatar } from '@l3/components/Avatar'
-import { ListCell } from '@l3/components/ListCell'
-import { PriceChange } from '@l3/components/PriceChange'
+import { StockListCard } from '../../../shared/ui/StockListCard'
 import { useLiveQuote } from '../../../shared/data/live'
-import { inr, usd } from '../../../shared/data/format'
+import { inr } from '../../../shared/data/format'
+import { Usd } from '../../../shared/money'
 import type { MarketStock } from '../data'
-import styles from './StockRow.module.css'
 
-/** One stock in a Market list: logo (the company's own for Indian stocks), symbol, company, price and the day's change, both live. US stocks show $ and their US logo. Opens the stock page. */
+/** One stock in a Market list: the shared StockListCard (flat card), fed by a live quote that ticks every 2 s. US stocks show $ via <Usd>. Opens the stock page. */
 export function StockRow({ stock, onOpen }: { stock: MarketStock; onOpen?: (symbol: string) => void }) {
-  // Each row ticks itself (every 2 s): price and day change move a little around the snapshot.
   const live = useLiveQuote(stock.symbol, stock.price, stock.changePct)
   return (
-    <ListCell
-      variant="card"
-      as="button"
-      iconLeft={<Avatar initials={stock.initials} src={stock.logoUrl} size={40} label={stock.name} />}
-      label={stock.symbol}
-      description={stock.name}
-      trailing={
-        <span className={styles.price}>
-          <span className={styles.value}>{stock.market === 'us' ? usd(live.price) : inr(live.price)}</span>
-          <PriceChange value={live.changePct} size="sm" arrow />
-        </span>
-      }
-      onClick={() => onOpen?.(stock.symbol)}
+    <StockListCard
+      symbol={stock.symbol}
+      name={stock.name}
+      logoUrl={stock.logoUrl}
+      initials={stock.initials}
+      price={stock.market === 'us' ? <Usd value={live.price} layout="inline" /> : inr(live.price)}
+      changePct={live.changePct}
+      onOpen={() => onOpen?.(stock.symbol)}
     />
   )
 }
@@ -774,14 +751,6 @@ export const market: Flow = {
   flex: 1;
   min-width: 0; /* lets the tab row scroll sideways instead of widening the page */
 }
-
-/*
- * Flat stock cards: no elevation shadow, just the 1px edge (the designer's call, 2026-11-02). One-off for this screen,
- * the same override as the Stocks home; L3's card variant keeps its shadow everywhere else.
- */
-.flatCards.flatCards [data-interactive][data-variant='card'] {
-  box-shadow: inset 0 0 0 1px var(--l3-border-light);
-}
 ```
 
 ### `src/flows/market/screens/Market.tsx`
@@ -900,7 +869,7 @@ export function Market({ market: initialMarket = 'in', tab: initialTab = 'all', 
         />
       ) : undefined}
     >
-      <Stack gap="16" className={`${styles.page} ${styles.flatCards}`}>
+      <Stack gap="16" className={styles.page}>
         <Inset paddingInline="16" paddingBlock="00">
           <Stack direction="horizontal" align="center" gap="12">
             {applied.length ? (
@@ -923,7 +892,7 @@ export function Market({ market: initialMarket = 'in', tab: initialTab = 'all', 
         </Inset>
 
         {list.length ? (
-          <Section as="ul" paddingInline="16" gap="16" aria-label={t(`tab.${tab}`, { currency })}>
+          <Section as="ul" paddingInline="16" gap="12" aria-label={t(`tab.${tab}`, { currency })}>
             {list.map((stock) => <li key={stock.symbol}><StockRow stock={stock} onOpen={stock.market === 'us' ? onOpenUs : undefined} /></li>)}
           </Section>
         ) : (
@@ -23364,6 +23333,248 @@ export const viewUsStock = (symbol: string) => { viewed = symbol }
 export const viewedUsStock = () => viewed
 ```
 
+### `src/shared/money.module.css`
+
+```css
+/* <Usd> with "₹ below": the $ value in the parent's type style, the ≈ ₹ line small and secondary under it. */
+.stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.stack[data-align='end'] {
+  align-items: flex-end;
+}
+.stack[data-align='center'] {
+  align-items: center;
+}
+
+.inr {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+  white-space: nowrap;
+}
+```
+
+### `src/shared/money.tsx`
+
+```tsx
+// US Stocks money — every value inside US Stocks is in US dollars (the news, prices and filings users read are in $),
+// with its rupee equivalent at the live USD → INR rate available everywhere. How the ₹ shows is a prototype setting
+// ("₹ equivalent" in the User status panel), so the same screens try each idea:
+//   off    — $ only
+//   below  — $ with a small "≈ ₹1,23,456" line under it
+//   switch — a $ / ₹ switch (<CurrencySwitch />); picking ₹ turns every US value into rupees, across every screen
+// Screens never format a US amount themselves: <Usd value={188.42} /> (or useUsd() where only a string fits).
+// The rate is real: USDINR=X in us-market-snapshot.json (`npm run us:snapshot`), ticking around it like the prices
+// (live.ts). FLAG: it's a snapshot + simulated movement, not a live FX feed — the real app reads its partner's rate.
+import { useSyncExternalStore, type ReactNode } from 'react'
+import { Tabs } from '@l3/components/Tabs'
+import type { FlowOption } from '../flows/types'
+import { usdInrSnapshot } from './data/usStocks'
+import { liveDrift, useLiveTick } from './data/live'
+import { useFlowOption } from './prototype'
+import { USER_STATUS } from './userStatus'
+import styles from './money.module.css'
+
+// ── The rate ────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** ₹ per $ in the snapshot (the fallback is the 2 Nov 2026 close, should the snapshot lose it). Re-read with the prices. */
+const usdInrNow = (): number => usdInrSnapshot() ?? 94.87
+
+/** The USD → INR rate right now: the snapshot's, moving a little every 2 s like a live quote. */
+export function useUsdInrRate(): number {
+  const at = useLiveTick()
+  return Math.round(usdInrNow() * (1 + liveDrift('USDINR', at) / 4) * 100) / 100
+}
+
+// ── Formatting ──────────────────────────────────────────────────────────────────────────────────────────────────────
+
+export type MoneyFormat = {
+  /** Digits after the point (default 2). */
+  decimals?: number
+  /** '+' on positive values (gains and changes). Negative values always get '-'. */
+  sign?: boolean
+  /** Short big numbers: $4.59T / $812.40B / $12.3M, and ₹4.35 L Cr / ₹12.40 Cr / ₹3.20 L. */
+  compact?: boolean
+}
+
+const fixed = (n: number, locale: string, decimals: number) =>
+  n.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+const signOf = (n: number, sign?: boolean) => (n < 0 ? '-' : sign && n > 0 ? '+' : '')
+
+/** $1,234.50 · +$12.30 · $4.59T */
+export function formatUsd(n: number, { decimals = 2, sign, compact }: MoneyFormat = {}): string {
+  const a = Math.abs(n)
+  if (compact) {
+    const unit = a >= 1e12 ? ['T', 1e12] : a >= 1e9 ? ['B', 1e9] : a >= 1e6 ? ['M', 1e6] : undefined
+    if (unit) return `${signOf(n, sign)}$${fixed(a / (unit[1] as number), 'en-US', 2)}${unit[0]}`
+  }
+  return `${signOf(n, sign)}$${fixed(a, 'en-US', decimals)}`
+}
+
+/** ₹1,23,456.78 · +₹1,064 · ₹4.35 L Cr (Indian grouping and units) */
+export function formatInr(n: number, { decimals = 2, sign, compact }: MoneyFormat = {}): string {
+  const a = Math.abs(n)
+  if (compact) {
+    const unit = a >= 1e12 ? [' L Cr', 1e12] : a >= 1e7 ? [' Cr', 1e7] : a >= 1e5 ? [' L', 1e5] : undefined
+    if (unit) return `${signOf(n, sign)}₹${fixed(a / (unit[1] as number), 'en-IN', 2)}${unit[0]}`
+  }
+  return `${signOf(n, sign)}₹${fixed(a, 'en-IN', decimals)}`
+}
+
+/**
+ * A $ amount written as text → the number and how it was written, so sample strings can go through <Usd text="…" />:
+ * '$188.42' → 188.42 · '+$12.30' → 12.3 · '-$5' → -5 · '$4.59T' → 4.59e12. Not a $ amount → undefined.
+ */
+export function parseUsd(text: string): { value: number; format: MoneyFormat } | undefined {
+  const m = /^\s*([+-−])?\s*\$\s*([\d,]+(?:\.\d+)?)\s*([KMBT])?\s*$/.exec(text)
+  if (!m) return undefined
+  const digits = m[2].replace(/,/g, '')
+  const scale = { K: 1e3, M: 1e6, B: 1e9, T: 1e12 }[m[3] as 'K' | 'M' | 'B' | 'T'] ?? 1
+  const value = Number(digits) * scale * (m[1] === '-' || m[1] === '−' ? -1 : 1)
+  return { value, format: { decimals: digits.split('.')[1]?.length ?? 0, sign: m[1] === '+', compact: scale >= 1e6 } }
+}
+
+// ── The setting and the switch ──────────────────────────────────────────────────────────────────────────────────────
+
+export type InrDisplay = 'off' | 'below' | 'switch'
+export type UsCurrency = 'usd' | 'inr'
+
+/** The app-level setting (shown in the User status panel, beside the phone on the US screens that show most money). */
+export const moneyOptions: FlowOption[] = [
+  {
+    id: 'inrDisplay',
+    group: 'US Stocks money',
+    label: '₹ equivalent',
+    values: [{ value: 'off', label: '$ only' }, { value: 'below', label: '₹ below' }, { value: 'switch', label: '$ / ₹ switch' }],
+    default: 'below',
+    // The Home and its US tab screens (the US tab's fixed states show $ amounts too), a US stock page, the wallet's US tab.
+    floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54'],
+  },
+]
+
+const useInrDisplay = () => useFlowOption(USER_STATUS, 'inrDisplay', moneyOptions[0].default) as InrDisplay
+
+// The currency picked on the switch: one for the whole app, remembered on this device (like a real app's preference).
+const CURRENCY_KEY = 'us-currency'
+let currency: UsCurrency = (() => {
+  try {
+    return localStorage.getItem(CURRENCY_KEY) === 'inr' ? 'inr' : 'usd'
+  } catch {
+    return 'usd'
+  }
+})()
+const currencyListeners = new Set<() => void>()
+const subscribeCurrency = (l: () => void) => (currencyListeners.add(l), () => void currencyListeners.delete(l))
+
+export function setUsCurrency(next: UsCurrency) {
+  currency = next
+  try {
+    localStorage.setItem(CURRENCY_KEY, next)
+  } catch {
+    /* private window: just this session */
+  }
+  currencyListeners.forEach((l) => l())
+}
+
+export type MoneyDisplay = {
+  /** How the ₹ shows (the setting). */
+  inr: InrDisplay
+  /** The currency values are in right now: ₹ only when the switch is on and set to ₹. */
+  currency: UsCurrency
+  /** ₹ per $ right now. */
+  rate: number
+}
+
+export function useMoneyDisplay(): MoneyDisplay {
+  const inr = useInrDisplay()
+  const picked = useSyncExternalStore(subscribeCurrency, () => currency, () => 'usd' as UsCurrency)
+  return { inr, currency: inr === 'switch' ? picked : 'usd', rate: useUsdInrRate() }
+}
+
+/**
+ * A US amount as text, in the currency showing: `const usd = useUsd(); usd(188.42)` → "$188.42" (or "₹17,875.40" with
+ * the switch on ₹). For places that only take a string (a button label, a sentence, a chart axis). No "≈ ₹" line.
+ */
+export function useUsd() {
+  const { currency, rate } = useMoneyDisplay()
+  return (usd: number, format: MoneyFormat = {}) =>
+    currency === 'inr' ? formatInr(usd * rate, { ...format, decimals: format.compact ? 2 : format.decimals ?? 2 }) : formatUsd(usd, format)
+}
+
+/** The rupee line on its own ("≈ ₹17,875"), only with the "₹ below" setting. For a ₹ line that sits apart from its $. */
+export function useInrEquivalent() {
+  const { inr, rate } = useMoneyDisplay()
+  return (usd: number, format: MoneyFormat = {}) => (inr === 'below' ? `≈ ${formatInr(usd * rate, { decimals: 0, ...format })}` : undefined)
+}
+
+// ── Components ──────────────────────────────────────────────────────────────────────────────────────────────────────
+
+export type UsdProps = MoneyFormat & {
+  /** The amount in $ … */
+  value?: number
+  /** … or a $ amount written as text ('$188.42', '+$12.30', '$4.59T'); anything else shows as it is. */
+  text?: string
+  /**
+   * `stack` (default): the ≈ ₹ line goes under the value. `inline`: no ₹ line (inside a sentence, a button, a tight
+   * row) — the switch still turns it into ₹.
+   */
+  layout?: 'stack' | 'inline'
+  /** Text-align of the stack (a right-aligned column → 'end'). */
+  align?: 'start' | 'end' | 'center'
+  className?: string
+}
+
+/**
+ * A US amount. Shows $ (or ₹ with the switch on ₹) in the parent's own type style, and with "₹ below" a small
+ * secondary "≈ ₹…" line under it. `<Usd value={1234.5} />` · `<Usd text="+$12.30" />` · `<Usd value={4.59e12} compact />`
+ */
+export function Usd({ value, text, layout = 'stack', align = 'start', className, ...format }: UsdProps) {
+  const usd = useUsd()
+  const below = useInrEquivalent()
+  const parsed = value === undefined && text !== undefined ? parseUsd(text) : undefined
+  if (value === undefined && !parsed) return <span className={className}>{text}</span>
+  const amount = value ?? parsed!.value
+  const f: MoneyFormat = parsed ? { ...parsed.format, ...format } : format
+  const main = usd(amount, f)
+  const line = layout === 'stack' ? below(amount, { sign: f.sign, compact: f.compact }) : undefined
+  if (!line) return <span className={className}>{main}</span>
+  return (
+    <span className={[styles.stack, className].filter(Boolean).join(' ')} data-align={align}>
+      <span>{main}</span>
+      <span className={styles.inr}>{line}</span>
+    </span>
+  )
+}
+
+/** Just the "≈ ₹…" line, for a layout that puts it apart from the $ (under a big balance, say). Nothing unless "₹ below". */
+export function InrEquivalent({ usd, className, ...format }: MoneyFormat & { usd: number; className?: string }): ReactNode {
+  const line = useInrEquivalent()(usd, format)
+  return line ? <span className={[styles.inr, className].filter(Boolean).join(' ')}>{line}</span> : null
+}
+
+/**
+ * The $ / ₹ switch (L3 pill group, small). Shows only with the "$ / ₹ switch" setting; the pick applies to every US
+ * value in the app. Put it where the money is: the wallet's balance, the portfolio's value, a stock page's price.
+ */
+export function CurrencySwitch({ className }: { className?: string }) {
+  const { inr, currency } = useMoneyDisplay()
+  if (inr !== 'switch') return null
+  return (
+    <Tabs
+      className={className}
+      appearance="pill-group"
+      size="sm"
+      aria-label="Show values in"
+      items={[{ value: 'usd', label: '$ USD' }, { value: 'inr', label: '₹ INR' }]}
+      value={currency}
+      onChange={(v) => setUsCurrency(v as UsCurrency)}
+    />
+  )
+}
+```
+
 ### `src/shared/prototype.ts`
 
 ```ts
@@ -23793,5 +24004,193 @@ export function SheetHost({ container, children }: { container: HTMLElement | nu
       )}
     </SheetHostContext.Provider>
   )
+}
+```
+
+### `src/shared/ui/StockListCard.module.css`
+
+```css
+/* Price (Label 14, matching the symbol) over the day's change, right-aligned (numbers are Label, never Description). */
+.price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--l3-spacing-02);
+  white-space: nowrap;
+}
+
+.value {
+  font: var(--l3-text-label-14);
+}
+```
+
+### `src/shared/ui/StockListCard.tsx`
+
+```tsx
+import type { ReactNode } from 'react'
+import { Avatar } from '@l3/components/Avatar'
+import { ListCell } from '@l3/components/ListCell'
+import { PriceChange } from '@l3/components/PriceChange'
+import styles from './StockListCard.module.css'
+
+type StockListCardProps = {
+  /** Ticker, e.g. "RELIANCE" or "QQQ" (L3 Label 14, one line). */
+  symbol: string
+  /** Company or fund name (L3 Description 12, one line with "…"). */
+  name: string
+  /** Logo image URL (a square image; ETFs pass their issuer logo on its plate). Without one the Avatar shows `initials`. Always the L3 Avatar at 40, so every list looks the same. */
+  logoUrl?: string
+  initials?: string
+  /** A small Tag after the symbol, e.g. "3x Long" (ListCell's label suffix). */
+  tag?: ReactNode
+  /** The price, already formatted by the caller: `<Usd value>` for US, `inr()` for India. */
+  price: ReactNode
+  /** The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). */
+  changePct: number
+  /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
+  onOpen?: () => void
+  'aria-label'?: string
+}
+
+/**
+ * The one stock row of the app, as a card — the Market list's style, used wherever stocks or ETFs are listed:
+ * logo · symbol over name · price over the day's change. Long lists show it flat (border only, no shadow).
+ *
+ * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
+ */
+export function StockListCard({ symbol, name, logoUrl, initials, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+  return (
+    <ListCell
+      variant="card"
+      as={onOpen ? 'button' : undefined}
+      raised={false}
+      iconLeft={<Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      labelSuffix={tag || undefined}
+      labelSuffixTone="neutral"
+      labelSize="14"
+      label={symbol}
+      description={name}
+      trailing={
+        <span className={styles.price}>
+          <span className={styles.value}>{price}</span>
+          <PriceChange value={changePct} size="sm" />
+        </span>
+      }
+      onClick={onOpen}
+      aria-label={rest['aria-label']}
+    />
+  )
+}
+```
+
+### `src/shared/userStatus.ts`
+
+```ts
+// Where the user is in the app — the prototype's app-level settings ("User status" in the preview panel, the phone's
+// settings sheet and a floating card beside the phone). Every screen that depends on it reads it here, so they all stay
+// in sync: pick "US Stocks: activated · money on the way" once and the Home's US tab, a US stock page and the wallet all
+// show that state. Picking never moves on by itself; taps in the prototype don't change it.
+// In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
+import type { FlowOption } from '../flows/types'
+import { setFlowOption, useFlowOption } from './prototype'
+
+/** The settings' owner in the preview (as a flow id: where the picks are remembered). */
+export const USER_STATUS = 'app'
+
+export type KycStatus = 'done' | 'pending'
+export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
+export type UsWallet = 'empty' | 'onTheWay' | 'funded'
+export type UsHoldings = 'none' | 'some'
+
+/**
+ * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
+ * its US tab screens (each one sets the status to its own state on arrival, then follows a pick), a US stock page and
+ * the wallet's US tab.
+ */
+const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
+
+/** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
+export const userStatusOptions: FlowOption[] = [
+  {
+    // One list for the whole way in, in order: Lemonn KYC first (US Stocks can't be activated until it's done), then
+    // the activation steps.
+    id: 'us',
+    group: 'User status',
+    label: 'US Stocks activation',
+    picker: 'dropdown',
+    values: [
+      { value: 'kyc', label: 'Lemonn KYC pending' },
+      { value: 'off', label: 'KYC done · not activated' },
+      { value: 'review', label: 'Activation under review' },
+      { value: 'support', label: 'Under review · contact support' },
+      { value: 'failed', label: 'Activation failed' },
+      { value: 'active', label: 'Activated' },
+    ],
+    default: 'off',
+    floatOn: STATUS_SCREENS,
+  },
+  {
+    id: 'usWallet',
+    group: 'User status',
+    label: 'USD wallet',
+    values: [{ value: 'empty', label: '$0' }, { value: 'onTheWay', label: 'Money on the way' }, { value: 'funded', label: 'Has money' }],
+    default: 'empty',
+    showIf: { us: ['active'] },
+    floatOn: STATUS_SCREENS,
+  },
+  {
+    id: 'usHoldings',
+    group: 'User status',
+    label: 'US holdings',
+    picker: 'toggle',
+    values: [{ value: 'none', label: 'None' }, { value: 'some', label: 'Holds NVDA' }],
+    default: 'none',
+    showIf: { usWallet: ['funded'] },
+    floatOn: STATUS_SCREENS,
+  },
+]
+
+const option = (id: string) => userStatusOptions.find((o) => o.id === id)!
+const useStatus = (id: string) => useFlowOption(USER_STATUS, id, option(id).default)
+
+export type UserStatus = { kyc: KycStatus; us: UsActivation; usWallet: UsWallet; usHoldings: UsHoldings }
+
+/** The user status as picked (settings under one that's off keep their last pick). KYC comes from the activation list. */
+export function useUserStatus(): UserStatus {
+  const us = useStatus('us') as UsActivation
+  return {
+    kyc: us === 'kyc' ? 'pending' : 'done',
+    us,
+    usWallet: useStatus('usWallet') as UsWallet,
+    usHoldings: useStatus('usHoldings') as UsHoldings,
+  }
+}
+
+/**
+ * Where the user is with US Stocks, as one step: KYC pending → 'kyc'; not activated → 'activate'; under review /
+ * contact support / failed; activated → $0 'activated', 'onTheWay', or with money 'ready' / 'holding'.
+ * (The Stocks flow's UsState uses the same names.)
+ */
+export type UsJourney = 'kyc' | 'activate' | 'review' | 'support' | 'failed' | 'activated' | 'onTheWay' | 'ready' | 'holding'
+
+export function usJourney({ kyc, us, usWallet, usHoldings }: UserStatus): UsJourney {
+  if (kyc === 'pending' || us === 'kyc') return 'kyc'
+  if (us === 'off') return 'activate'
+  if (us !== 'active') return us
+  if (usWallet === 'empty') return 'activated'
+  if (usWallet === 'onTheWay') return 'onTheWay'
+  return usHoldings === 'some' ? 'holding' : 'ready'
+}
+
+export const useUsJourney = () => usJourney(useUserStatus())
+
+/** Sets the user status to one US Stocks step (a US tab screen showing its own state sets it on arrival). */
+export function setUsJourney(step: UsJourney) {
+  const us: UsActivation = step === 'activate' ? 'off' : ['kyc', 'review', 'support', 'failed'].includes(step) ? (step as UsActivation) : 'active'
+  const set = (id: string, value: string) => setFlowOption(USER_STATUS, id, option(id).default, value)
+  set('us', us)
+  if (us !== 'active') return
+  set('usWallet', step === 'activated' ? 'empty' : step === 'onTheWay' ? 'onTheWay' : 'funded')
+  if (step === 'ready' || step === 'holding') set('usHoldings', step === 'holding' ? 'some' : 'none')
 }
 ```

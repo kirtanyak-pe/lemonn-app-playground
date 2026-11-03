@@ -4,7 +4,7 @@
   "description": "The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "c592c0d",
+    "commit": "5bf6176",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -216,8 +216,6 @@
   "files": [
     "src/flows/stocks/README.md",
     "src/flows/stocks/assets/announcement-jio-ipo.jpg",
-    "src/flows/stocks/assets/flags/india.svg",
-    "src/flows/stocks/assets/flags/us.svg",
     "src/flows/stocks/assets/in/benefit-brokerage.svg",
     "src/flows/stocks/assets/in/benefit-dash.svg",
     "src/flows/stocks/assets/in/benefit-mtf.svg",
@@ -283,6 +281,12 @@
     "src/flows/stocks/screens/Home.tsx"
   ],
   "shared": [
+    "src/shared/assets/flags/china.svg",
+    "src/shared/assets/flags/europe.svg",
+    "src/shared/assets/flags/india.svg",
+    "src/shared/assets/flags/japan.svg",
+    "src/shared/assets/flags/korea.svg",
+    "src/shared/assets/flags/us.svg",
     "src/shared/assets/logos/asahiindia.png",
     "src/shared/assets/logos/crisil.png",
     "src/shared/assets/logos/hoec.png",
@@ -307,6 +311,8 @@
     "src/shared/money.module.css",
     "src/shared/money.tsx",
     "src/shared/prototype.ts",
+    "src/shared/ui/Flag.module.css",
+    "src/shared/ui/Flag.tsx",
     "src/shared/ui/MainNav.tsx",
     "src/shared/ui/Rail.module.css",
     "src/shared/ui/Rail.tsx",

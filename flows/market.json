@@ -4,7 +4,7 @@
   "description": "The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "c592c0d",
+    "commit": "5bf6176",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -127,7 +127,6 @@
     "src/flows/market/README.md",
     "src/flows/market/components/SideTabs.module.css",
     "src/flows/market/components/SideTabs.tsx",
-    "src/flows/market/components/StockRow.module.css",
     "src/flows/market/components/StockRow.tsx",
     "src/flows/market/copy.json",
     "src/flows/market/copy.ts",
@@ -157,11 +156,16 @@
     "src/shared/data/marketHandoff.ts",
     "src/shared/data/us-market-snapshot.json",
     "src/shared/data/usStocks.ts",
+    "src/shared/money.module.css",
+    "src/shared/money.tsx",
     "src/shared/prototype.ts",
     "src/shared/ui/MainNav.tsx",
     "src/shared/ui/Screen.module.css",
     "src/shared/ui/Screen.tsx",
     "src/shared/ui/Sheet.module.css",
-    "src/shared/ui/Sheet.tsx"
+    "src/shared/ui/Sheet.tsx",
+    "src/shared/ui/StockListCard.module.css",
+    "src/shared/ui/StockListCard.tsx",
+    "src/shared/userStatus.ts"
   ]
 }
