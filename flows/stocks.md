@@ -295,6 +295,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Home's holdings card says which market it is, in every version: "IN Stocks holdings" (was "Current holdings", and "IN holdings" in the switcher) and "US Stocks holdings" (was "US holdings"). "Overall holdings" stays.
 - 2026-11-03 — Watchlists (Indian and US tabs): the section's link is “View all” instead of “Add Watchlist”. It's meant to open an all-watchlists page, which isn't built yet, so it does nothing for now.
 - 2026-11-03 — The US tab gets the IN tab's Watchlist rail (shared `Watchlists`, now with a `lists` prop) between Top analyst picks and Brands You Know, with the user's US lists (`usWatchlists` in us/data.ts: US tech, Dividend payers, To research).
 - 2026-11-03 — The holdings card on Home is tappable edge to edge: the space above and below the holdings is inside its own card now, not padding around it.
@@ -21754,7 +21755,7 @@ export function IndexStrip({ onIndex, items = indices, label = t('indices.label'
 }
 
 /** Current value of the holdings and the overall return — the page's headline number. The block opens Portfolio. */
-export function HoldingsSummary({ onOpen, us = false, overall = false, label: labelOverride, usEmpty = false }: { onOpen?: () => void; /** The US tab of a user who holds US stocks: the US holdings in dollars. */ us?: boolean; /** Indian + US together, in ₹ (the US part at today's USD/INR rate). */ overall?: boolean; /** The label above the number (default: "Current holdings" / "US holdings"); null: none (HoldingsSwitcher draws its own). */ label?: string | null; /** Nothing bought in the US yet: $0.00 and no return (and nothing US in the overall). */ usEmpty?: boolean }) {
+export function HoldingsSummary({ onOpen, us = false, overall = false, label: labelOverride, usEmpty = false }: { onOpen?: () => void; /** The US tab of a user who holds US stocks: the US holdings in dollars. */ us?: boolean; /** Indian + US together, in ₹ (the US part at today's USD/INR rate). */ overall?: boolean; /** The label above the number (default: "IN Stocks holdings" / "US Stocks holdings"); null: none (HoldingsSwitcher draws its own). */ label?: string | null; /** Nothing bought in the US yet: $0.00 and no return (and nothing US in the overall). */ usEmpty?: boolean }) {
   const label = labelOverride === undefined ? (us ? t('us.holdings.label') : t('holdings.label')) : labelOverride
   const usd = useUsd()
   const rate = useUsdInrRate()
@@ -25682,9 +25683,9 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "top.wallet": "Wallet",
   "top.profile": "Profile and settings",
   "indices.label": "Market indices",
-  "holdings.label": "Current holdings",
+  "holdings.label": "IN Stocks holdings",
   "holdings.overallLabel": "Overall holdings",
-  "holdings.inLabel": "IN holdings",
+  "holdings.inLabel": "IN Stocks holdings",
   "products.label": "Products",
   "products.new": "New",
   "shortcuts.title": "Do More With Lemonn",
@@ -25856,7 +25857,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.ready.title": "Your money is ready",
   "us.ready.subtitle": "$1,035.37 added to your US wallet",
   "us.ready.cta": "Explore US Stocks",
-  "us.holdings.label": "US holdings",
+  "us.holdings.label": "US Stocks holdings",
   "us.sheet.close": "Close",
   "us.ftux.title": "Invest in US stocks and ETFs on Lemonn",
   "us.ftux.logos": "Apple, NVIDIA, Tesla, Microsoft and Google",
@@ -26977,7 +26978,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   // The US tab's summary: the status card (KYC → activation → add money → buy) in place of the holdings until every
   // step is done and the user holds a US stock; then the US holdings in dollars replace the card.
   const usCard = usState !== 'holding'
-  // V2–V4 (the switch over the feed): the tabs are the feed's, not the page's. The top keeps "Current holdings" with its
+  // V2–V4 (the switch over the feed): the tabs are the feed's, not the page's. The top keeps "IN Stocks holdings" with its
   // own IN / US switch, whatever tab the feed is on; only the index marquee follows the tabs. The US activation card
   // moves into the US tab's feed — except Lemonn KYC pending, which takes the holdings' place (and leaves the feed).
   const feedTabs = version.place === 'mid' && !twoHomes

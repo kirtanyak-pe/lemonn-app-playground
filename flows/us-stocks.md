@@ -107,6 +107,43 @@ meaning (below minimum / above LRS) with $ limits; the ₹ limits in the Figma h
 **L3 gaps:** no big amount input and no in-app number keypad (both drawn in `AmountEntry`, on L3 tokens, flagged there);
 quick-add chips are L3 Tabs (pill, action) used as buttons.
 
+### Orders & Positions (`screens/orders/`, Portfolio's Orders and Positions tabs)
+
+Layout from the F&O dev-handoff file's "Positions & orders" (Figma `nLs24dTJdPz9A5pu3AWMbe`, `6754:65598`), drawn there
+for commodities; US content here. The data contract is `screens/orders/data.ts`: an order has one status, and its list,
+tags, timeline and dock follow from it.
+
+- **Orders tab (USD side):** Open (n) · History (n) (no SIP for US), "All orders ⇕" picker (All / Stocks / ETFs),
+  Filters sheet (Side, Order type, and Status on History) with a count badge. Card: "Limit · Day", status + Buy/Sell
+  tags, logo + symbol, Qty (filled/qty while partly filled), LTP (live) and At limit / Trigger / Mkt / Avg. Empty
+  states for no orders, a narrowed picker and filters that match nothing. Sample orders show for the "holding" user
+  status only.
+- **Statuses:** Open list — open, queued (placed while the US market is closed), partly filled. History — executed,
+  partly executed (rest cancelled at the close), failed, cancelled, expired (Day order not filled by the close).
+- **Order Details (`us-stocks-79`, and one preview screen per status `us-stocks-81`…`90`):** asset row (→ stock / ETF
+  page), status line with filled/qty shares, the reason (Aerobar) for failed / cancelled / expired / partly executed,
+  details (KeyValueList), Order status timeline (L3 Steps). Dock: Cancel order + Modify (open, queued, partly filled;
+  Cancel asks in a sheet first), Repeat order (executed), Retry (failed), Place again (cancelled, expired).
+- **Positions tab:** Indian Stocks / US Stocks tabs as on Holdings. US positions are today's trades before they settle
+  into Holdings (T+1): Today's returns (unrealised / realised) and position cards. Empty state for an activated user
+  with no trades today.
+- **Position Details (`us-stocks-80`):** header (shares, live LTP), Bought / Sold today block, Returns ⓘ (sheet on
+  realised vs unrealised). Dock: Buy more + Exit position for a buy; Buy again for a sell.
+- **Sample story (data.ts):** every sell is of shares the user holds — the one US holding is 12 NVDA (13 bought
+  27 Oct + 5 of 8 on 28 Oct, minus 6 sold today by the partly filled sell). Today's executed AMD and VTI buys and that
+  NVDA sale are the Positions (prices inside today's live range). Times are IST: the US market runs 8:00 PM – 2:30 AM
+  since US daylight time ended on 1 Nov, 7:00 PM – 1:30 AM before.
+- **Back:** Order Details goes back to Portfolio on Orders, USD side (`us-stocks-91`), Position Details to Portfolio
+  on Positions, US Stocks (`us-stocks-92`); the Orders tab keeps its Open / History, picker and filters.
+- **Differences from Figma (US Stocks rules):** no Intraday, Convert to delivery / intraday, tender-period margin,
+  Target profit / Trailing SL or Manage TP/SL; Buy / Sell tags are profit / loss coloured (L3), not blue; done timeline
+  steps show L3's green tick, not grey dots; cards are 16 apart (L3), not 12.
+- **L3 gaps:** Steps has no tone (the current step's colour is overridden in CSS); no status-dot component; no
+  destructive button for "Cancel order"; no text link with a badge (Filters is an action pill + Badge); sheet ListCell
+  rows need a -16 inset to line up with section titles; PriceChange formats ₹ only (signed $ coloured by hand); no card
+  with a grey title strip (Position Details uses a section header over a KeyValueList card); a clickable Card announces
+  itself as a toggle (`aria-pressed`). No sell Limit / SL pad yet, so Modify / Retry on a sell open the plain sell pad.
+
 ### Navigation
 
 Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disclosure → Under review → Approved → Add money
@@ -114,7 +151,15 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — **Orders & Positions: review fixes.** Sample orders tell one story (sells only of the NVDA the user holds, today's executed buys match Positions, weekday dates, 1:30 AM close before 1 Nov); Back from Order / Position Details returns to the US Orders / Positions tab (new preview screens us-stocks-91, 92) with the list as it was.
+- 2026-11-03 — **Orders & Positions for US Stocks** (from the F&O "Positions & orders" design): Open / History order lists with picker, filters and empty states; Order Details for all eight statuses with the status timeline, cancel sheet and per-status dock (preview screens us-stocks-79, 81–90); US positions on the Positions tab and Position Details (us-stocks-80). See "Orders & Positions".
+- 2026-11-03 — **Portfolio opens on Holdings; the US holding opens its stock page.** Tapping the NVDA row goes to NVIDIA's page in its Your Holdings state. Both screens now read one sample holding (`NVDA_HOLDING` in data.ts: 12 shares at $172.50, valued at the live price), so Portfolio's row and P&L card show the same numbers as the stock page. Indian holdings stay non-tappable (no Indian stock page in the prototype).
+- 2026-11-03 — **Order pad laid out like the commodity options pad (F&O fno-25).** Header: symbol over its price and signed change (no ▲ / ▼), the exchange on the right, the Actionbar's line from the start (`Phone topLine`); small pill order types with Day as a Tag (US orders are Day only); 40-high bordered rows with the L3 Stepper Small as it is (the blue US stepper override is gone); dock with the note, Avail. · Req. (an underlined link when it opens the fee breakdown) and a Large button — Buy is Brand, as on the commodity pad. Content is unchanged: amount in $ or shares, limit / trigger as % from the last price, chips, helper line.
 - 2026-11-03 — **Boosted strip versions from jojo:** the ETF list's Boosted strip has jojo's five ticker layouts (flow option "Boosted ticker": V1 Arrows at the edges, V2 Compact, V3 Two chips, V4 Big number, V5 Bolt lead) on jojo's gradient, the "Text" note (gold bolt sliding in, "For every 1% …"), and the gold bolt on the Boosted tab. A Boosted ETF's page has its own option, "ETF page strip": the sentence (default), jojo's bolt-led sentence, or any of the five ticker layouts with that fund's line. Kept from the playground: no tertiary text, nothing under 12 (jojo's 10s raised), "+" / "−" not ▲ / ▼, the grey default tone.
+- 2026-11-03 — **Portfolio opens on Holdings** (was Positions); Positions and Orders are one tap away.
+- 2026-11-03 — **Long / Short tags are border only** (no fill — the filled tag drew the eye from the name): one app component, `LevTag` / `SideTag` in `screens/etf/parts.tsx`, now used everywhere a "3x Long" / "3x Short" shows — ETF cards, the Boosted strip, the ETF page and the stock page's leveraged ETFs. The tag on a logo's foot (Leverage tag V1) keeps its fill so it reads over the logo. **L3 gap:** Tag has no outline-only variant; the fill is cleared in `Etf.module.css` (`.outlineTag`).
+- 2026-11-03 — **Every ETF has an Allocation:** sample sector splits added for the 11 playground funds and the Boosted ones (which use the split of the index or stock they're built on); before, their Allocation title showed over nothing. **Scrolled top bar (stock and ETF pages):** the full name ("iShares MSCI Japan Small-Cap ETF", "NVIDIA Corp") over the price, not the ticker, cut to one line with "…".
+- 2026-11-03 — **ETF cards say what's inside:** the second line is the ticker and the kind of companies the fund holds, with a known name ("QQQ · Mostly big tech, like Apple"), about 28 characters so it fits one line; it was the fund's legal name, which stays on the ETF page. The 11 playground funds without an About text (XLF, XLV, FXI, CQQQ, DXJ, HEWJ, SCJ, FEZ, EZU, IEUR, FLKR) got one. **About card (stock and ETF pages):** Read more shows only when the text is cut at three lines, and it's in Content tertiary, not the Discover link colour.
 - 2026-11-03 — **Top holdings weight, five versions to test** (prototype option "Holding weight", on the ETF page): V1 bar under the name, V2 no bar, V3 a short 40 bar just before the % (now the default), V4 the % on a pill shaded Discover-light as far as its share against the biggest, V5 the % on a plain Discover-light pill.
 - 2026-11-03 — **News (stock and ETF pages):** stories with a hairline between them (16 above and below each), a 64 × 80 picture with 12 corners (as tall as a two-line title, source and reason), the title in Label 14, source · time in Description 12 and the ▲ / ▼ reason in Label 12. Events are unchanged.
 - 2026-11-03 — **Top holdings page (us-stocks-78) audit:** the Actionbar's line shows from the start (`Phone topLine`; other US screens still show it once scrolled); the page is L3 `Section`s — 24 under the bar, 16 at the sides, cards 12 apart as the Market list (was 16 all round, cards 16 apart). The list ends with a note: "That's the top 50 of 503. The other 453 stocks are 40.4% of the fund together." — big funds hold up to thousands of stocks, the page lists the biggest 50.
@@ -22067,6 +22112,10 @@ export const NVDA: UsStock = {
 
 // The symbol of the stock being viewed lives in the shared store (the Market tab sets it too); `current` keeps the
 // details a list row passed along (its price / name strings) for that same symbol.
+/** The sample US holding (user status "holding"): 12 NVDA bought at $172.50. Its value follows the live price.
+ * The stock page's Your Holdings and Portfolio's Holdings both read it, so they always agree. */
+export const NVDA_HOLDING = { qty: 12, avg: 172.5 }
+
 let current: UsStock = NVDA
 /** The stock page / order pad's stock: the one tapped last (here or on the Market tab). */
 export const currentStock = (): UsStock => {
@@ -22390,6 +22439,8 @@ export const registry: UsScreenEntry[] = [
   { figma: '5796:88668', tab: 'portfolio', id: 'us-stocks-05', badge: 'changed', badgeNote: "Empty states: L3 Empty state with its default illustration, centred", section: 'entry', name: "E4 · Portfolio · US market banner", note: "Portfolio before 8 PM IST. Banner says US markets open tonight." },
   { figma: '5796:92301', tab: 'portfolio', id: 'us-stocks-06', badge: 'changed', badgeNote: "Empty states: L3 Empty state with its default illustration, centred", section: 'entry', name: "E4 · Portfolio · US market banner · live", note: "Portfolio after 8 PM IST. Banner turns LIVE till 2:30 AM IST." },
   { figma: '9001:30', tab: 'portfolio', id: 'us-stocks-77', hidden: true, badge: 'new', badgeNote: "Not in Figma: where Home's US holdings card goes", section: 'entry', name: "Portfolio · Holdings · US", note: "Home's US holdings card opens Portfolio on Holdings with the US Stocks P&L card upfront and the US Stocks tab picked (the same page as the Portfolio tab, opened on its US side)." },
+  { figma: '9001:31', tab: 'portfolio', id: 'us-stocks-91', badge: 'new', badgeNote: "Orders · US, from the F&O Positions & orders design", section: 'entry', name: "Portfolio · Orders · US", note: "Portfolio on its Orders tab, USD side: Open (n) / History (n), the All orders / Stocks / ETFs picker and Filters. A card opens Order Details (us-stocks-79), whose back returns here." },
+  { figma: '9001:32', tab: 'portfolio', id: 'us-stocks-92', badge: 'new', badgeNote: "US positions, from the F&O Positions & orders design", section: 'entry', name: "Portfolio · Positions · US", note: "Portfolio on Positions, US Stocks: today's trades before they settle into Holdings. A card opens Position Details (us-stocks-80), whose back returns here." },
   { figma: '5796:88163', tab: 'mutualFund', id: 'us-stocks-07', section: 'entry', name: "E5 · Mutual Fund home · US banner", note: "Mutual Fund home with a US Stocks on Lemonn banner." },
   { figma: '5826:93627', id: 'us-stocks-13', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'ftux', name: "S03 · Stock page", note: "The US stock page in the user status picked in the prototype settings (User status): KYC pending → Complete KYC (as us-stocks-74); not activated, under review or failed → Activate US Stocks in place of Buy / Sell; activated → Buy / Sell (us-stocks-31), with Your Holdings when the user holds NVDA (us-stocks-32). Home, Search and Market open this page." },
   { figma: '9001:10', id: 'us-stocks-74', hidden: true, badge: 'new', badgeNote: "Not in Jojo's Figma: a user whose Lemonn KYC isn't done", section: 'ftux', name: "Stock page · KYC not done", note: "Stock page for a user whose Lemonn (Indian) KYC isn't complete: US Stocks can't be activated yet, so the button is Complete KYC (→ the KYC flow, kyc-01) in place of Activate. Back → the US tab with the KYC card (stocks-21)." },
@@ -22449,6 +22500,18 @@ export const registry: UsScreenEntry[] = [
   { figma: '9001:2', id: 'us-stocks-72', badge: 'new', badgeNote: "ETF page: price, chart, Overview / Events, Buy / Sell", section: 'activated', name: "ETF page", note: "An ETF in the stock page layout: price and chart, Overview (1D and 52W range, fund details) and Events. Leveraged ETFs trade long or short." },
   { figma: '9001:6', id: 'us-stocks-73', badge: 'new', badgeNote: "Jojo's first ETF page, kept to compare", section: 'activated', name: "ETF page · previous", note: "The first ETF page (31 Oct): price line, about, opposite side and holdings, kept to compare." },
   { figma: '9001:12', id: 'us-stocks-78', badge: 'new', badgeNote: "Top holdings: the full list behind the ETF page's Others row", section: 'activated', name: "ETF · Top holdings", note: "Tap Others in the ETF page's Top holdings: a full page of the fund's top 50 holdings (as many as the sample has), biggest first — logo, name, ticker, a weight bar and the share. A row opens its stock page; back returns to the ETF page." },
+  { figma: '9001:40', id: 'us-stocks-79', badge: 'new', badgeNote: "Order Details, from the F&O Positions & orders design", section: 'activated', name: "Order Details", note: "Tap an order in Portfolio → Orders (US): the order's page in its status — open, queued, partly filled, executed, partly executed, failed, cancelled or expired — with its details, the Order Status timeline and the actions that status allows." },
+  { figma: '9001:41', id: 'us-stocks-80', badge: 'new', badgeNote: "Position Details, from the F&O Positions & orders design", section: 'activated', name: "Position Details", note: "Tap a US position in Portfolio → Positions: what was bought or sold today, the returns, Buy more / Exit position." },
+  { figma: '9001:42', id: 'us-stocks-81', badge: 'new', section: 'activated', name: "Order Details · Open · Limit buy", note: "AAPL: a limit buy waiting for its price. Cancel order / Modify." },
+  { figma: '9001:43', id: 'us-stocks-82', badge: 'new', section: 'activated', name: "Order Details · Queued · ETF market buy", note: "QQQ: placed while the US market was closed, sent when it opens. No exchange ID yet." },
+  { figma: '9001:44', id: 'us-stocks-83', badge: 'new', section: 'activated', name: "Order Details · Partly filled · Limit sell", note: "NVDA: 6 of 10 held shares sold at $206, the rest still waiting." },
+  { figma: '9001:45', id: 'us-stocks-84', badge: 'new', section: 'activated', name: "Order Details · Open · Stop-loss sell", note: "NVDA: sells 2 held shares if the price falls to $195." },
+  { figma: '9001:46', id: 'us-stocks-85', badge: 'new', section: 'activated', name: "Order Details · Executed · Market buy", note: "NVDA: all 13 shares bought (27 Oct). Repeat order." },
+  { figma: '9001:47', id: 'us-stocks-86', badge: 'new', section: 'activated', name: "Order Details · Executed · ETF limit buy", note: "VTI: a fractional ETF buy (1.2 shares), today — in Positions." },
+  { figma: '9001:48', id: 'us-stocks-87', badge: 'new', section: 'activated', name: "Order Details · Partly executed · Limit buy", note: "NVDA: 5 of 8 bought, the rest cancelled at the close (reason shown)." },
+  { figma: '9001:49', id: 'us-stocks-88', badge: 'new', section: 'activated', name: "Order Details · Failed", note: "META: rejected — not enough USD balance. Retry." },
+  { figma: '9001:50', id: 'us-stocks-89', badge: 'new', section: 'activated', name: "Order Details · Cancelled · Limit sell", note: "NVDA: a sell the user cancelled. Place again." },
+  { figma: '9001:51', id: 'us-stocks-90', badge: 'new', section: 'activated', name: "Order Details · Expired", note: "GOOGL: a Day limit order that never reached its price. Place again." },
 ]
 
 export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
@@ -23055,7 +23118,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .link {
   font: var(--l3-text-description-14);
-  color: var(--l3-content-accent-discover-default);
+  color: var(--l3-content-tertiary); /* Read more / Read less in tertiary, not the Discover link colour (3 Nov, asked) */
   cursor: pointer;
   background: 0 0;
   border: 0;
@@ -23783,7 +23846,7 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
   const header = (
     <Actionbar
       onBack={() => back('stocks-01')}
-      title={scrolled ? stock.sym : undefined}
+      title={scrolled ? stock.name : undefined}
       description={scrolled ? <><Usd value={stock.price} layout="inline" /> <EtfMove change={stock.change} /></> : undefined}
       actions={<ActionbarAction icon={asset('assets/activation/watchlist.svg')} label={`Add ${stock.sym} to watchlist`} onClick={() => {}} />}
     />
@@ -24693,7 +24756,7 @@ export const screens: UsScreenMap = {
 // The scrolling sections of the stock page, top to bottom: holdings (holding state only), daily performance, analyst
 // ratings, fundamentals, about, peers, related ETFs, key holders, company financials; and the News & Events tab (events, news).
 // FLAG: layout is raw display:flex + gap/padding (module CSS) instead of L3 Stack/Section/Inset/Grid; panels, rows and bars are hand-made.
-import { useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
 import { PriceChange } from '@l3/components/PriceChange'
@@ -24701,11 +24764,12 @@ import { Select } from '@l3/components/Select'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { asset } from '../../asset'
-import { openStock, plateFor, stockFor, type UsStock } from '../../data'
+import { NVDA_HOLDING, openStock, plateFor, stockFor, type UsStock } from '../../data'
 import { useUsNav } from '../../nav'
 import { usQuote } from '../../../../shared/data/usStocks'
 import { Usd, formatUsd, useUsd } from '../../../../shared/money'
 import { setCurrentEtf } from '../etf/currentEtf'
+import { LevTag } from '../etf/parts'
 import { COMPANY_PROFILES } from './companyProfiles'
 import { PeerTable } from './components/PeerTable'
 import { RatingRing } from './components/RatingRing'
@@ -24738,8 +24802,8 @@ export function stockDayStats(stock: UsStock): [string, ReactNode][] {
   return dayStats(stock).map(([value, label]) => [label, <Usd text={value} />])
 }
 
-/** The sample holding: 12 shares bought at $172.50; its value follows the live price. */
-const HOLDING = { qty: 12, avg: 172.5 }
+/** The sample holding (data.ts), shared with Portfolio's Holdings. */
+const HOLDING = NVDA_HOLDING
 
 /** "Total Returns" / "1D Returns" (the Select switches between them). */
 export function HoldingsSection({ stock, dayChange }: { stock: UsStock; dayChange: number }) {
@@ -24900,16 +24964,28 @@ export function AboutCompany({ stock }: { stock: UsStock }) {
 }
 
 /** The About card (stock and ETF pages): the text in a card, three lines until Read more (Read less folds it back).
+ *  Read more shows only when the text is cut (3 Nov: a one-line About had a Read more with nothing more to read).
  *  `short`: a one-liner with no link. */
 export function AboutCard({ title, text, short }: { title: string; text: string; short?: boolean }) {
   const [open, setOpen] = useState(false)
+  const [cut, setCut] = useState(false)
+  const para = useRef<HTMLParagraphElement>(null)
+  useLayoutEffect(() => {
+    const p = para.current
+    if (!p || short || open) return
+    const measure = () => setCut(p.scrollHeight > p.clientHeight + 1)
+    measure()
+    const watch = new ResizeObserver(measure)
+    watch.observe(p)
+    return () => watch.disconnect()
+  }, [text, short, open])
   return (
     <section className={styles.section}>
       <SectionTitle title={title} />
       <Card surface="primary">
         <div className={styles.about}>
-          <p data-collapsed={(!short && !open) || undefined}>{text}</p>
-          {!short && (
+          <p ref={para} data-collapsed={(!short && !open) || undefined}>{text}</p>
+          {!short && (cut || open) && (
             <button type="button" className={styles.link} aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? 'Read less' : 'Read more'}
             </button>
@@ -25170,9 +25246,7 @@ export function RelatedEtfs({ sym }: { sym: string }) {
                 <span className={styles.etfDisc} aria-hidden="true">{e.sym.slice(0, 2)}</span>
                 <b>{e.sym}</b>
               </span>
-              <Tag variant="secondary" color={e.side === 'long' ? 'profit' : 'loss'} size="sm">
-                {e.lev} {e.side === 'long' ? 'Long' : 'Short'}
-              </Tag>
+              <LevTag long={e.side === 'long'}>{e.lev} {e.side === 'long' ? 'Long' : 'Short'}</LevTag>
             </span>
             <span className={styles.etfName}>{e.name}</span>
             <span className={styles.etfPrice}>
@@ -27016,6 +27090,11 @@ export function MutualFundHomeScreen() {
 
 /* FLAG: hand-made holding card — use L3 Card / ListCell */
 .hold {
+  width: 100%; /* also a button (a US holding opens its stock page, 3 Nov) */
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
   gap: var(--l3-spacing-12);
   padding: var(--l3-spacing-12);
   border: 1px solid var(--l3-border-light);
@@ -27023,6 +27102,10 @@ export function MutualFundHomeScreen() {
   background: var(--l3-surface-primary);
   flex-direction: column;
   display: flex;
+}
+
+button.hold {
+  cursor: pointer;
 }
 
 .holdTop {
@@ -27050,6 +27133,8 @@ export function MutualFundHomeScreen() {
 }
 
 .holdRule {
+  display: block;
+  flex: none;
   background: var(--l3-border-light);
   border: 0;
   width: 100%;
@@ -27136,7 +27221,7 @@ export function MutualFundHomeScreen() {
 
 ```tsx
 // E4 · Portfolio tab (before 8 PM IST / after 8 PM IST): Positions · Holdings · Orders. Holdings has Indian / US tabs
-// and a Sort sheet; the US side is empty with an "Explore US Market" button that leads to US Stocks home.
+// and a Sort sheet; the page opens on Holdings (3 Nov, was Positions). The US side is empty with an "Explore US Market" button that leads to US Stocks home.
 // NOTE: both variants render the same — his `live` prop is not read anywhere, and the US-market banner that the Figma
 // frames show ("opens tonight" / "LIVE till 2:30 AM IST") is no longer drawn (OrdersTab keeps an unused `banner` slot).
 // FLAG: redraws the app's Portfolio tab (no portfolio flow in src/flows yet) for this prototype.
@@ -27155,6 +27240,7 @@ import { Tag } from '@l3/components/Tag'
 import { asset } from '../../asset'
 import { Phone } from '../../components/Phone'
 import { UsMainNav } from '../../components/UsMainNav'
+import { openStock, stockFor } from '../../data'
 import { useUsNav } from '../../nav'
 import { HoldingsCards, type HoldingsMarket } from './components/HoldingsCards'
 import { OrdersTab } from './components/OrdersTab'
@@ -27164,9 +27250,11 @@ import { MaskImg } from './components/MaskImg'
 import { entryPath, entryUrl } from './entryAssets'
 import { sortIcon } from './icons'
 import { Usd } from '../../../../shared/money'
+import { useUsMarketSnapshot } from '../../../../shared/data/usStocks'
 import { useUsJourney, type UsJourney } from '../../../../shared/userStatus'
-import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME_ENTRY, WALLET, WALLET_US } from './ids'
-import { holdingsSummary, marketIndices, portfolioTabs, sortedHoldings, usHolding, usHoldingSummary, type Holding, type PortfolioTab } from './portfolioData'
+import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME, STOCKS_HOME_ENTRY, WALLET, WALLET_US } from './ids'
+import { UsPositions, UsPositionsEmpty } from '../orders/UsPositions'
+import { holdingsSummary, marketIndices, portfolioTabs, sortedHoldings, usHoldingNow, type Holding, type PortfolioTab } from './portfolioData'
 import { SortSheet, type SortValue } from './sheets/SortSheet'
 import styles from './PortfolioScreen.module.css'
 
@@ -27181,36 +27269,40 @@ function EmptyWallet({ title, text, button, onClick }: { title: string; text: st
   )
 }
 
-/** One holding card (Indian or US): today's return (1D %) on top, current · invested · total returns below. */
-function HoldingRow({ holding }: { holding: Holding }) {
+/** One holding card (Indian or US): today's return (1D %) on top, current · invested · total returns below.
+ *  `onOpen` (US, 3 Nov): the card is a button that opens the stock's page, with its Your Holdings card. */
+function HoldingRow({ holding, onOpen }: { holding: Holding; onOpen?: () => void }) {
+  const Box = onOpen ? 'button' : 'div'
   return (
-    <li className={styles.hold}>
-      <span className={styles.holdTop}>
-        <Avatar src={holding.logo} initials={holding.name.slice(0, 2)} size={40} label={holding.name} />
-        <span className={styles.holdName}>
-          <span className={styles.holdSym}>{holding.name}</span>
-          <span className={styles.holdQty}>Qty {holding.qty}</span>
+    <li>
+      <Box {...(onOpen ? { type: 'button' as const, onClick: onOpen, 'aria-label': `${holding.name}, open its stock page` } : {})} className={styles.hold}>
+        <span className={styles.holdTop}>
+          <Avatar src={holding.logo} initials={holding.name.slice(0, 2)} size={40} label={holding.name} />
+          <span className={styles.holdName}>
+            <span className={styles.holdSym}>{holding.name}</span>
+            <span className={styles.holdQty}>Qty {holding.qty}</span>
+          </span>
+          <span className={styles.holdCell} data-end="">
+            <span className={styles.holdLabel}>1D Returns</span>
+            <span className={styles.holdFig} data-tone={holding.day >= 0 ? 'up' : 'down'}>{`${holding.day >= 0 ? '+' : '−'}${Math.abs(holding.day).toFixed(2)}%`}</span>
+          </span>
         </span>
-        <span className={styles.holdCell} data-end="">
-          <span className={styles.holdLabel}>1D Returns</span>
-          <span className={styles.holdFig} data-tone={holding.day >= 0 ? 'up' : 'down'}>{`${holding.day >= 0 ? '+' : '−'}${Math.abs(holding.day).toFixed(2)}%`}</span>
+        <span className={styles.holdRule} aria-hidden="true" />
+        <span className={styles.holdBottom}>
+          <span className={styles.holdCell}>
+            <span className={styles.holdLabel}>Current</span>
+            <span className={styles.holdFig}><Usd text={holding.current} /></span>
+          </span>
+          <span className={styles.holdCell} data-mid="">
+            <span className={styles.holdLabel}>Invested</span>
+            <span className={styles.holdFig}><Usd text={holding.invested} /></span>
+          </span>
+          <span className={styles.holdCell} data-end="">
+            <span className={styles.holdLabel}>Returns</span>
+            <span className={styles.holdFig} data-tone={holding.up ? 'up' : 'down'}><Usd text={holding.returns} align="end" /></span>
+          </span>
         </span>
-      </span>
-      <hr className={styles.holdRule} />
-      <span className={styles.holdBottom}>
-        <span className={styles.holdCell}>
-          <span className={styles.holdLabel}>Current</span>
-          <span className={styles.holdFig}><Usd text={holding.current} /></span>
-        </span>
-        <span className={styles.holdCell} data-mid="">
-          <span className={styles.holdLabel}>Invested</span>
-          <span className={styles.holdFig}><Usd text={holding.invested} /></span>
-        </span>
-        <span className={styles.holdCell} data-end="">
-          <span className={styles.holdLabel}>Returns</span>
-          <span className={styles.holdFig} data-tone={holding.up ? 'up' : 'down'}><Usd text={holding.returns} align="end" /></span>
-        </span>
-      </span>
+      </Box>
     </li>
   )
 }
@@ -27234,9 +27326,11 @@ function usEmpty(journey: UsJourney): { title: string; text: string; button: str
 
 /** `live` is accepted for the two Figma variants but, as in the original, not used. `tab` / `market`: where it opens
  * (Home's US holdings card opens Holdings with the US Stocks card upfront). */
-export function PortfolioScreen({ tab: initialTab = 'positions', market: initialMarket = 'in' }: { live?: boolean; tab?: PortfolioTab; market?: HoldingsMarket }) {
+export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialMarket = 'in' }: { live?: boolean; tab?: PortfolioTab; market?: HoldingsMarket }) {
   const { go } = useUsNav()
   const journey = useUsJourney()
+  useUsMarketSnapshot() // re-render when US prices refresh
+  const us = usHoldingNow()
   const usActive = journey === 'activated' || journey === 'onTheWay' || journey === 'ready' || journey === 'holding'
   const usEmptyState = usEmpty(journey)
   const [tab, setTab] = useState<PortfolioTab>(initialTab)
@@ -27311,12 +27405,25 @@ export function PortfolioScreen({ tab: initialTab = 'positions', market: initial
                 </div>
               </section>
             )}
-            {tab === 'holdings' && <HoldingsCards market={market} onMarket={setMarket} data={journey === 'holding' ? { ...holdingsSummary, us: usHoldingSummary } : holdingsSummary} />}
+            {tab === 'holdings' && <HoldingsCards market={market} onMarket={setMarket} data={journey === 'holding' ? { ...holdingsSummary, us: us.summary } : holdingsSummary} />}
           </div>
         )}
         <section key={tab} className={styles.sheet} data-section={tab} ref={swipe.contentRef}>
           {tab === 'positions' && (
             <>
+              {/* Indian Stocks / US Stocks, as on Holdings (the same `market`). US = today's US positions (3 Nov). */}
+              <Tabs
+                appearance="underline"
+                width="fill"
+                aria-label="Positions market"
+                items={[
+                  { value: 'in', label: 'Indian Stocks', iconLeft: <Icon icon={asset('assets/home/ind-icon-on.svg')} size={16} /> },
+                  { value: 'us', label: 'US Stocks', iconLeft: <Icon icon={asset('assets/home/us-icon-on.svg')} size={16} /> },
+                ]}
+                value={market}
+                onChange={(value) => setMarket(value as HoldingsMarket)}
+                className={styles.marketTabs}
+              />
               <div className={styles.sheetHead}>
                 <h2 className={styles.sectionTitle}>Your positions</h2>
                 <button type="button" className={styles.sort}>
@@ -27324,7 +27431,15 @@ export function PortfolioScreen({ tab: initialTab = 'positions', market: initial
                   <MaskImg src={entryPath('portfolio/refresh.svg')} w={12} />
                 </button>
               </div>
-              <EmptyWallet title="Build Wealth Daily" text="Seems like you don’t have any positions right now" button="Explore F&O" />
+              {market === 'us' && journey === 'holding' ? (
+                <UsPositions />
+              ) : market === 'us' && usActive ? (
+                <UsPositionsEmpty onExplore={() => go(STOCKS_HOME)} />
+              ) : market === 'us' ? (
+                <EmptyWallet title={usEmptyState.title} text={usEmptyState.text} button={usEmptyState.button} onClick={() => go(usEmptyState.to)} />
+              ) : (
+                <EmptyWallet title="Build Wealth Daily" text="Seems like you don’t have any positions right now" button="Explore F&O" />
+              )}
             </>
           )}
           {tab === 'holdings' && (
@@ -27350,7 +27465,7 @@ export function PortfolioScreen({ tab: initialTab = 'positions', market: initial
               </div>
               {market === 'us' && journey === 'holding' ? (
                 <ul className={styles.holdList}>
-                  <HoldingRow holding={usHolding} />
+                  <HoldingRow holding={us.holding} onOpen={() => openStock(go, stockFor(us.holding.name))} />
                 </ul>
               ) : market === 'us' ? (
                 <EmptyWallet
@@ -27368,7 +27483,7 @@ export function PortfolioScreen({ tab: initialTab = 'positions', market: initial
               )}
             </>
           )}
-          {tab === 'orders' && <OrdersTab />}
+          {tab === 'orders' && <OrdersTab initialMarket={market === 'us' ? 'us' : undefined} />}
           <SortSheet
             key={String(sortOpen)}
             open={sortOpen}
@@ -27388,6 +27503,10 @@ export function PortfolioScreen({ tab: initialTab = 'positions', market: initial
 export const PortfolioBannerScreen = () => <PortfolioScreen live={false} />
 export const PortfolioBannerLiveScreen = () => <PortfolioScreen live />
 export const PortfolioUsHoldingsScreen = () => <PortfolioScreen tab="holdings" market="us" />
+/** Portfolio on Orders, US side — where Order Details goes back to. */
+export const PortfolioUsOrdersScreen = () => <PortfolioScreen tab="orders" market="us" />
+/** Portfolio on Positions, US Stocks — where Position Details goes back to. */
+export const PortfolioUsPositionsScreen = () => <PortfolioScreen tab="positions" market="us" />
 ```
 
 ### `src/flows/us-stocks/screens/entry/SpxIndex.module.css`
@@ -28416,37 +28535,89 @@ export function MaskImg({ src, w, h = w, className }: { src: string; w: number; 
   }
 
 }
+
+/* US: "All orders ⇕" + Filters row, 16 above the cards (Figma). */
+.pickerRow {
+  margin-bottom: var(--l3-spacing-16);
+}
+
+/* The US order cards: a plain list, 16 from the last card to the navbar. */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--l3-spacing-16);
+}
 ```
 
 ### `src/flows/us-stocks/screens/entry/components/OrdersTab.tsx`
 
 ```tsx
-// Portfolio → Orders: an IND / US switcher, Open · SIP · History tabs, and the empty state for the picked pair.
-// FLAG: the Select is restyled into an outlined pill and the Tabs row is custom-sized (see OrdersTab.module.css).
+// Portfolio → Orders: an IND / US switcher and pill tabs. Indian: Open · SIP · History, each an empty state.
+// US: Open (n) · History (n) (US Stocks have no SIPs), then "All orders ⇕" (Stocks / ETFs) and Filters, then the order
+// cards — layout from "Positions & orders" (nLs24dTJdPz9A5pu3AWMbe, 6754:65685 / 6754:66744, empty 6754:66494…66560).
+// The US lists show the sample orders only for a user who holds US stocks (User status → journey 'holding'); every
+// other user (not activated, under review, $0, money on the way, funded but nothing bought yet) sees the empty states.
+// The picker and the filters are shared by Open and History (switching tabs keeps them). The US side remembers Open /
+// History, the picker and the applied filters across remounts (module-level, like `currentOrder` in orders/data.ts), so
+// coming back from Order Details shows the same list. The Indian side starts on Open each time, as before.
+// "All orders ⇕" is an L3 action pill with the switch icon (AGENTS: a switcher beside order tabs), as Filters next to it.
+// FLAG: the IND / USD Select is restyled into an outlined pill and the Tabs row is custom-sized (see OrdersTab.module.css).
 import { useState, type ReactNode } from 'react'
+import { Badge } from '@l3/components/Badge'
+import { Button } from '@l3/components/Button'
 import { EmptyState } from '@l3/components/EmptyState'
+import { Icon } from '@l3/components/Icon'
+import { lmSwitchArrowVertical } from '@l3/components/icons/glyphs'
 import { Select } from '@l3/components/Select'
-import { Tabs } from '@l3/components/Tabs'
+import { Stack } from '@l3/components/Stack'
+import { Tab, Tabs } from '@l3/components/Tabs'
+import { msFilterList } from '@l3/icons/material'
+import { useUsMarketSnapshot } from '../../../../../shared/data/usStocks'
+import { useUsJourney } from '../../../../../shared/userStatus'
+import { useUsNav } from '../../../nav'
+import { historyOrders, openOrder, openOrders, type UsOrder } from '../../orders/data'
+import { OrderCard } from '../../orders/OrderCard'
+import { NO_FILTERS, OrderFilterSheet, applyFilters, filterCount, type OrderFilters } from '../../orders/OrderFilterSheet'
+import { ORDER_KIND_LABEL, OrderKindSheet, type OrderKind } from '../../orders/OrderKindSheet'
 import styles from './OrdersTab.module.css'
 
 type OrderTab = 'open' | 'sip' | 'history'
-type OrderMarket = 'in' | 'us'
+type UsList = 'open' | 'history'
+export type OrderMarket = 'in' | 'us'
 
 const markets: Record<OrderMarket, { code: string; name: string }> = {
   in: { code: 'IND', name: 'Indian' },
   us: { code: 'USD', name: 'US' },
 }
 
-/** `banner` is a slot between the tabs and the empty state (the US-market banner, which the current build no longer passes). */
-export function OrdersTab({ banner }: { banner?: ReactNode }) {
-  const [tab, setTab] = useState<OrderTab>('open')
-  const [market, setMarket] = useState<OrderMarket>('in')
+/** What the US side was showing last (kept across remounts: Portfolio → Order Details → back). */
+let lastUsList: UsList = 'open'
+let lastKind: OrderKind = 'all'
+let lastFilters: OrderFilters = NO_FILTERS
+
+const EMPTY_KIND: Record<OrderKind, string> = { all: '', stock: ' of stocks', etf: ' of ETFs' }
+
+/**
+ * `banner` is a slot between the tabs and the empty state (the US-market banner, which the current build no longer passes).
+ * `initialMarket` opens the tab on the US side (e.g. from a US screen); the switcher still flips it.
+ */
+export function OrdersTab({ banner, initialMarket = 'in' }: { banner?: ReactNode; initialMarket?: OrderMarket }) {
+  const [tab, setTab] = useState<OrderTab>(initialMarket === 'us' ? lastUsList : 'open')
+  const [market, setMarket] = useState<OrderMarket>(initialMarket)
+  const [kind, setKindState] = useState<OrderKind>(lastKind)
+  const [filters, setFiltersState] = useState<OrderFilters>(lastFilters)
+  const setKind = (next: OrderKind) => {
+    lastKind = next
+    setKindState(next)
+  }
+  const setFilters = (next: OrderFilters) => {
+    lastFilters = next
+    setFiltersState(next)
+  }
+  const lists = useUsOrderLists()
   const current = markets[market]
-  const message = {
-    open: `You do not have any pending ${current.name} orders`,
-    sip: `You do not have any ${current.name} SIPs`,
-    history: `No ${current.name} orders in your history yet`,
-  }[tab]
+  // US has no SIP tab: coming over from SIP lands on Open.
+  const usList: UsList = tab === 'history' ? 'history' : 'open'
 
   return (
     <div className={styles.orders}>
@@ -28461,25 +28632,173 @@ export function OrdersTab({ banner }: { banner?: ReactNode }) {
           <span className={styles.switchLabel} key={market}>{current.code}</span>
         </Select>
         <span className={styles.rule} aria-hidden="true" />
-        <Tabs
-          appearance="pill"
-          behavior="tabs"
-          width="fill"
-          aria-label="Orders"
-          className={`${styles.pills} ${styles.tabs}`}
-          value={tab}
-          onChange={(value) => setTab(value as OrderTab)}
-          items={[
-            { value: 'open', label: 'Open' },
-            { value: 'sip', label: 'SIP' },
-            { value: 'history', label: 'History' },
-          ]}
-        />
+        {market === 'us' ? (
+          <Tabs
+            appearance="pill"
+            behavior="tabs"
+            width="fill"
+            aria-label="US orders"
+            className={`${styles.pills} ${styles.tabs}`}
+            value={usList}
+            onChange={(value) => {
+              lastUsList = value
+              setTab(value)
+            }}
+            items={[
+              { value: 'open', label: `Open (${countOf(lists.open, kind)})` },
+              { value: 'history', label: `History (${countOf(lists.history, kind)})` },
+            ]}
+          />
+        ) : (
+          <Tabs
+            appearance="pill"
+            behavior="tabs"
+            width="fill"
+            aria-label="Orders"
+            className={`${styles.pills} ${styles.tabs}`}
+            value={tab}
+            onChange={(value) => setTab(value as OrderTab)}
+            items={[
+              { value: 'open', label: 'Open' },
+              { value: 'sip', label: 'SIP' },
+              { value: 'history', label: 'History' },
+            ]}
+          />
+        )}
       </div>
       {banner}
-      {/* L3 Empty state with its default illustration, centred in the space under the tabs. */}
-      <EmptyState key={`${tab}${market}`} className={styles.empty} title={message} />
+      {market === 'us' ? (
+        <UsOrders list={usList} orders={lists[usList]} kind={kind} onKind={setKind} filters={filters} onFilters={setFilters} />
+      ) : (
+        /* L3 Empty state with its default illustration, centred in the space under the tabs. */
+        <EmptyState
+          key={`${tab}${market}`}
+          className={styles.empty}
+          title={{ open: 'You do not have any pending Indian orders', sip: 'You do not have any Indian SIPs', history: 'No Indian orders in your history yet' }[tab]}
+        />
+      )}
     </div>
+  )
+}
+
+/** The US sample orders the user has (none until they hold US stocks). */
+function useUsOrderLists(): Record<UsList, UsOrder[]> {
+  const journey = useUsJourney()
+  useUsMarketSnapshot() // re-render when prices tick (the cards' LTP)
+  return journey === 'holding' ? { open: openOrders, history: historyOrders } : { open: [], history: [] }
+}
+
+const ofKind = (orders: UsOrder[], kind: OrderKind) => (kind === 'all' ? orders : orders.filter((o) => o.kind === kind))
+/** The count on a tab: its orders of the picked kind (before filters, as the picker narrows the whole tab). */
+const countOf = (orders: UsOrder[], kind: OrderKind) => ofKind(orders, kind).length
+
+/** A US list: the picker + Filters row, then the cards (or the empty state that fits). */
+function UsOrders({
+  list,
+  orders,
+  kind,
+  onKind,
+  filters,
+  onFilters,
+}: {
+  list: UsList
+  orders: UsOrder[]
+  kind: OrderKind
+  onKind: (kind: OrderKind) => void
+  filters: OrderFilters
+  onFilters: (filters: OrderFilters) => void
+}) {
+  const { go } = useUsNav()
+  const [sheet, setSheet] = useState<'kind' | 'filters' | null>(null)
+  // A fresh filter sheet each time it opens (its picks start from the applied filters), kept while it closes.
+  const [filterRun, setFilterRun] = useState(0)
+  const narrowed = ofKind(orders, kind)
+  const shown = applyFilters(narrowed, filters, list)
+  const activeFilters = filterCount(filters, list)
+
+  let content: ReactNode
+  if (shown.length) {
+    content = (
+      <Stack as="ul" gap="16" className={styles.list} aria-label={list === 'open' ? 'Open US orders' : 'US order history'}>
+        {shown.map((order) => (
+          <li key={order.id}>
+            <OrderCard order={order} onOpen={() => openOrder(go, order)} />
+          </li>
+        ))}
+      </Stack>
+    )
+  } else if (narrowed.length && activeFilters) {
+    content = (
+      <EmptyState
+        className={styles.empty}
+        title="No orders match these filters"
+        action={<Button size="sm" onClick={() => onFilters(NO_FILTERS)}>Clear filters</Button>}
+      />
+    )
+  } else {
+    content = (
+      <EmptyState
+        key={`${list}${kind}`}
+        className={styles.empty}
+        title={list === 'open' ? `No pending US orders${EMPTY_KIND[kind]}` : `No US orders${EMPTY_KIND[kind]} in your history yet`}
+      />
+    )
+  }
+
+  return (
+    <>
+      <Stack direction="horizontal" align="center" justify="between" gap="12" className={styles.pickerRow}>
+        <Tab
+          action
+          appearance="pill"
+          size="sm"
+          iconRight={<Icon icon={lmSwitchArrowVertical} />}
+          aria-haspopup="dialog"
+          aria-expanded={sheet === 'kind'}
+          aria-label={`Showing ${ORDER_KIND_LABEL[kind]}. Change`}
+          onClick={() => setSheet('kind')}
+        >
+          {ORDER_KIND_LABEL[kind]}
+        </Tab>
+        {/* FLAG: Figma's "Filters" is a blue text link with a count; L3 has no text link with a badge, so it's the
+            L3 action pill (Tab action — "open a filter sheet") with an L3 Badge. */}
+        <Tab
+          action
+          appearance="pill"
+          size="sm"
+          iconLeft={<Icon icon={msFilterList} />}
+          badge={activeFilters ? <Badge count={activeFilters} color="discover" label="filters on" /> : undefined}
+          aria-label={activeFilters ? `Filters, ${activeFilters} on. Change` : 'Filters'}
+          onClick={() => {
+            setFilterRun((n) => n + 1)
+            setSheet('filters')
+          }}
+        >
+          Filters
+        </Tab>
+      </Stack>
+      {content}
+      <OrderKindSheet
+        open={sheet === 'kind'}
+        value={kind}
+        onPick={(next) => {
+          onKind(next)
+          setSheet(null)
+        }}
+        onClose={() => setSheet(null)}
+      />
+      <OrderFilterSheet
+        key={filterRun}
+        open={sheet === 'filters'}
+        list={list}
+        value={filters}
+        onApply={(next) => {
+          onFilters(next)
+          setSheet(null)
+        }}
+        onClose={() => setSheet(null)}
+      />
+    </>
   )
 }
 ```
@@ -29036,7 +29355,7 @@ export const WALLET = '5852:99084'
 // don't exist yet as flows; they are kept here only because the US flow enters through them.
 import type { UsScreenMap } from '../types'
 import { MutualFundHomeScreen } from './MutualFundHomeScreen'
-import { PortfolioBannerLiveScreen, PortfolioBannerScreen, PortfolioUsHoldingsScreen } from './PortfolioScreen'
+import { PortfolioBannerLiveScreen, PortfolioBannerScreen, PortfolioUsHoldingsScreen, PortfolioUsOrdersScreen, PortfolioUsPositionsScreen } from './PortfolioScreen'
 import { SpxIndexScreen } from './SpxIndexScreen'
 
 /** Screens of this part, by Figma node id. */
@@ -29045,6 +29364,8 @@ export const screens: UsScreenMap = {
   '5796:88668': PortfolioBannerScreen, // E4 · Portfolio · US market banner
   '5796:92301': PortfolioBannerLiveScreen, // E4 · Portfolio · US market banner · live
   '9001:30': PortfolioUsHoldingsScreen, // Portfolio · Holdings · US card upfront (not in Figma)
+  '9001:31': PortfolioUsOrdersScreen, // Portfolio · Orders · US (Order Details goes back here)
+  '9001:32': PortfolioUsPositionsScreen, // Portfolio · Positions · US (Position Details goes back here)
   '5796:88163': MutualFundHomeScreen, // E5 · Mutual Fund home · US banner
 }
 ```
@@ -29054,6 +29375,8 @@ export const screens: UsScreenMap = {
 ```ts
 // Portfolio tab sample data. FLAG: hard-coded numbers.
 import { asset } from '../../asset'
+import { NVDA, NVDA_HOLDING } from '../../data'
+import { formatUsd } from '../../../../shared/money'
 import type { HoldingsMarket, HoldingsSummary } from './components/HoldingsCards'
 import type { SortValue } from './sheets/SortSheet'
 
@@ -29116,21 +29439,30 @@ export const holdingsSummary: Record<HoldingsMarket, HoldingsSummary> = {
   us: { pnl: '$0.00', pct: '0.00%', up: true, invested: '$0.00', current: '$0.00' },
 }
 
-/** US P&L card once the user holds NVDA (user status "holding"). */
-export const usHoldingSummary: HoldingsSummary = { pnl: '+$14.60', pct: '9.73%', up: true, invested: '$150.00', current: '$164.60' }
-
-/** The one US holding in the "holding" status (1 NVDA bought at $150.00). */
-export const usHolding: Holding = {
-  key: 'nvda',
-  name: 'NVDA',
-  qty: 1,
-  current: '$164.60',
-  invested: '$150.00',
-  returns: '+$14.60',
-  pct: '+9.73%',
-  day: 1.2,
-  up: true,
-  logo: asset('assets/activation/nvda-logo.svg'),
+/** The one US holding in the "holding" status: NVDA_HOLDING (data.ts) at today's price — the same numbers as the stock
+ * page's Your Holdings. Call it on render so it follows the price refresh. */
+export function usHoldingNow(): { holding: Holding; summary: HoldingsSummary } {
+  const { qty, avg } = NVDA_HOLDING
+  const current = qty * NVDA.price
+  const invested = qty * avg
+  const returns = current - invested
+  const pct = (returns / invested) * 100
+  const up = returns >= 0
+  return {
+    holding: {
+      key: 'nvda',
+      name: 'NVDA',
+      qty,
+      current: formatUsd(current),
+      invested: formatUsd(invested),
+      returns: formatUsd(returns, { sign: true }),
+      pct: `${up ? '+' : '-'}${Math.abs(pct).toFixed(2)}%`,
+      day: NVDA.change,
+      up,
+      logo: asset('assets/activation/nvda-logo.svg'),
+    },
+    summary: { pnl: formatUsd(returns, { sign: true }), pct: `${Math.abs(pct).toFixed(2)}%`, up, invested: formatUsd(invested), current: formatUsd(current) },
+  }
 }
 ```
 
@@ -29490,9 +29822,9 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 // 2.5 s (5 s a cycle). Used on the ETF list's Boosted tab and on a Boosted ETF's page. Screen readers hear `label`; with
 // reduced motion the first line stays. FLAG: hand-made (Etf.module.css).
 import { Icon } from '@l3/components/Icon'
-import { Tag } from '@l3/components/Tag'
 import { msArrowForward, msTrendingDown, msTrendingUp } from '@l3/icons/material'
 import { boltIcon, infoIcon } from './icons'
+import { LevTag } from './parts'
 import styles from './Etf.module.css'
 
 /** One line: what moves (and by how much, `up` sets the colour), then the Boosted side — a side tag and / or a name — and its gain. */
@@ -29506,7 +29838,7 @@ export function BoostStrip({ lines, tone, label, onOpen, gradient, look = 'edges
     <Icon icon={up ? msTrendingUp : msTrendingDown} size={14} className={[up ? styles.boostTrendUp : styles.boostTrendDown, end ? styles.boostTrendEnd : ''].join(' ')} />
   )
   const arrow = <Icon icon={msArrowForward} size={14} className={styles.boostArrowIcon} />
-  const tag = (t: BoostLine) => t.tag && <Tag variant="secondary" color={t.tag.long ? 'profit' : 'loss'} size="sm">{t.tag.text}</Tag>
+  const tag = (t: BoostLine) => t.tag && <LevTag long={t.tag.long}>{t.tag.text}</LevTag>
   const market = (t: BoostLine) => <b className={styles.boostMarket} data-down={t.up ? undefined : ''}>{t.move}</b>
   const gain = (t: BoostLine) => <b className={styles.boostGain}>{t.gain}</b>
   const line = (t: BoostLine, i: number) => {
@@ -30204,6 +30536,11 @@ span:has(>.diagCol){width:auto;height:auto}
 .boostTextSentence{font:var(--l3-text-description-12);color:var(--l3-content-secondary);flex:1;min-width:0}
 
 .boostTextUp{font-weight:750;color:var(--l3-content-primary)}
+
+/* The long / short tag, border only (3 Nov): L3 Tag secondary without its soft fill. L3 gap: no outline Tag variant. */
+.outlineTag[data-variant][data-color] { /* beats L3's .tag[data-variant='secondary'] */
+  --tag-surface: transparent;
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfHoldings.module.css`
@@ -30803,7 +31140,7 @@ import { BoostedSheet } from './BoostedSheet'
 import { BoostStrip, type BoostLine, type BoostLook } from './BoostStrip'
 import { setCurrentEtf } from './currentEtf'
 import { boltIcon, infoIcon } from './icons'
-import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, leveragedGroups, plainFor, type Etf } from './data'
+import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, insideFor, leveragedGroups, plainFor, type Etf } from './data'
 import { SideTag, etfLogoUrl } from './parts'
 import styles from './Etf.module.css'
 
@@ -30820,8 +31157,8 @@ const FILTER_BY: Record<FilterBy, string> = { country: 'Country', sector: 'Secto
 const FLAGS: Record<string, FlagCode> = { US: 'us', India: 'in', China: 'cn', Japan: 'jp', Europe: 'eu', Korea: 'kr' }
 
 /**
- * One regular ETF as the shared stock card: issuer logo · the plain name ("Top 500 US stocks") over "SPY · fund name"
- * (jojo's naming, 3 Nov) · price over day change.
+ * One regular ETF as the shared stock card: issuer logo · the plain name ("Top 500 US stocks") over "SPY · what's
+ * inside" ("Big US firms in every sector", 3 Nov; was the fund's name) · price over day change.
  */
 function EtfCard({ etf, onOpen }: { etf: Etf; onOpen: () => void }) {
   const { plain } = plainFor(etf)
@@ -30829,7 +31166,7 @@ function EtfCard({ etf, onOpen }: { etf: Etf; onOpen: () => void }) {
     <li>
       <StockListCard
         symbol={plain}
-        name={`${etf.sym} · ${etf.name}`}
+        name={`${etf.sym} · ${insideFor(etf)}`}
         logoUrl={etfLogoUrl(etf.sym)}
         initials={etf.sym.slice(0, 2)}
         price={<Usd value={etf.price} align="end" />}
@@ -30843,8 +31180,8 @@ function EtfCard({ etf, onOpen }: { etf: Etf; onOpen: () => void }) {
 
 /**
  * "Fund logo" ETF card (3 Nov, flow option "ETF card", the default): the fund's own logo (40) on the left; the plain
- * name is the heading ("Top 500 US stocks"), then the ticker and the fund name under it ("SPY · SPDR S&P 500 ETF" —
- * the ticker always shows, the name ends in "…"); $ price over the change on the right.
+ * name is the heading ("Top 500 US stocks"), then the ticker and what's inside under it ("SPY · Big US firms in every
+ * sector", 3 Nov; was the fund name); $ price over the change on the right.
  */
 function FundRow({ etf, onClick }: { etf: Etf; onClick: () => void }) {
   const { plain } = plainFor(etf)
@@ -30854,18 +31191,18 @@ function FundRow({ etf, onClick }: { etf: Etf; onClick: () => void }) {
   const lev = etf.kind === 'leveraged' ? levTag : undefined
   const marked = lev === 'foot' || lev === 'badge' || lev === 'ring' || lev === 'pill' || lev === 'slice' || lev === 'notch'
   const cell = (
-    // The shared stock card (as the Regular tab and the Market list): logo · plain name over "SPY · fund name" · price
+    // The shared stock card (as the Regular tab and the Market list): logo · plain name over "SPY · what's inside" · price
     // over the signed change. Each leverage version only adds its mark to the logo or a Tag after the name.
     <StockListCard
       symbol={plain}
-      name={`${etf.sym} · ${etf.name}`}
+      name={`${etf.sym} · ${insideFor(etf)}`}
       logoUrl={etfLogoUrl(etf.sym)}
       initials={etf.sym.slice(0, 2)}
       logo={marked ? (
         <span className={styles.diagCol} data-ring={lev === 'ring' ? etf.side : undefined} data-slice={lev === 'slice' ? '' : undefined} data-notch={lev === 'notch' ? '' : undefined}>
           <Avatar src={etfLogoUrl(etf.sym)} initials={etf.sym.slice(0, 2)} size={40} label={etf.name} />
           {/* V1 Logo foot: "3x Long" (L3 Tag) across the logo's foot, both ends round. */}
-          {lev === 'foot' && <SideTag etf={etf} className={styles.levBadge} />}
+          {lev === 'foot' && <SideTag etf={etf} filled className={styles.levBadge} />}
           {/* V2 Logo badge: a "3x ▲" pill on the logo's top-right, like a notification badge. */}
           {lev === 'badge' && <LevPill etf={etf} className={styles.levPillBadge} />}
           {/* V3 Logo ring: the logo ringed green (long) / red (short), the pill on its foot. V6: the pill, no ring. */}
@@ -31636,7 +31973,7 @@ import { BoostStrip, type BoostLine, type BoostLook } from './BoostStrip'
 import listStyles from './Etf.module.css'
 import { Allocation, TopHoldings } from './EtfHoldings'
 import { boltIcon, infoIcon } from './icons'
-import { EtfMove, HoldingLogo } from './parts'
+import { EtfMove, HoldingLogo, SideTag } from './parts'
 import styles from './EtfPage.module.css'
 
 /** T03 · Buy · Empty US wallet. */
@@ -31689,7 +32026,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
   const header = (
     <Actionbar
       onBack={() => back(ETF_LIST)}
-      title={scrolled ? etf.sym : undefined}
+      title={scrolled ? etf.name : undefined}
       description={scrolled ? <><Usd value={etf.price} layout="inline" /> <EtfMove change={etf.change} /></> : undefined}
       actions={<ActionbarAction icon={asset('assets/etf/watchlist.svg')} label={`Add ${etf.sym} to watchlist`} onClick={() => {}} />}
     />
@@ -31761,7 +32098,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
             {/* What's in it, in a word or two (3 Nov): "Top 500", "US"; "Chips", "Global". */}
             {tagsFor(etf).map((tag) => <Tag key={tag} variant="tertiary" color="neutral" size="md">{tag}</Tag>)}
             {leveraged && (
-              <Tag variant="secondary" color={long ? 'profit' : 'loss'} size="md">{etf.lev} {long ? 'Long' : 'Short'}</Tag>
+              <SideTag etf={etf} size="md" />
             )}
           </div>
           {/* What's inside (3 Nov): up to three of the biggest holdings' logos, then a "+35" capsule tucked under the last
@@ -32273,6 +32610,26 @@ export const tagsFor = (etf: Etf) => TAGS[etf.sym] ?? []
 /** The plain-English side of an ETF; leveraged ones (off for now) fall back to the fund's name. */
 export const plainFor = (etf: Etf): EtfPlain => PLAIN[etf.sym] ?? { plain: etf.name, known: [], does: etf.tracks }
 
+// The ETF cards' second line (3 Nov): after the ticker, what kind of companies are inside, with a name people know —
+// "QQQ · Mostly big tech, like Apple" (was the fund's legal name, which says little; it stays on the ETF page).
+// Kept to about 28 characters so it fits one line at 360. Sample copy; the API would send it with the fund.
+const INSIDE: Record<string, string> = {
+  SPY: 'Big US firms in every sector', QQQ: 'Mostly big tech, like Apple', VTI: 'Every US firm, big to small',
+  SMH: 'Chip makers, like NVIDIA', ITA: 'Plane, jet & weapon makers', XLE: 'Oil & gas, like ExxonMobil',
+  XLF: 'Banks, insurers & card firms', XLV: 'Drug makers & health insurers', BOTZ: 'Robot makers & AI chip firms',
+  UFO: 'Rocket, satellite & GPS firms', INDA: 'Big Indian banks, IT & energy', EPI: 'Indian firms with big profits',
+  MCHI: 'Chinese giants, like Tencent', KWEB: 'Chinese shopping & chat apps', EWJ: "Japan's giants, like Toyota",
+  VGK: "Europe's giants, like ASML", EWY: "Korea's giants, like Samsung", FXI: "China's top 50, like Alibaba",
+  CQQQ: 'Chinese tech, chips to apps', DXJ: 'Exporters, like Toyota & Honda', HEWJ: "Japan's giants, yen-protected",
+  SCJ: 'Smaller firms, like Sanrio', FEZ: "Eurozone's top 50, like SAP", EZU: 'Euro-area firms, like Siemens',
+  IEUR: '1,000+ European firms', FLKR: "Korea's giants, like SK Hynix",
+  TQQQ: 'Mostly big tech, like Apple', SQQQ: 'Mostly big tech, like Apple', SOXL: 'Chip makers, like NVIDIA',
+  SOXS: 'Chip makers, like NVIDIA', NVDL: 'One stock: NVIDIA', NVD: 'One stock: NVIDIA',
+  SPXL: 'Big US firms, like Apple', SPXS: 'Big US firms, like Apple',
+}
+/** What kind of companies the fund holds, in a few words (the ETF cards' second line, after the ticker). */
+export const insideFor = (etf: Etf) => INSIDE[etf.sym] ?? plainFor(etf).does
+
 // The ETF page's description (2–3 Nov): a short paragraph on what's inside — which kinds of companies, the biggest
 // names, and how many it holds. Written to follow the ticker ("SPY tracks …"). Sample copy; the API would send it with the fund.
 const ABOUT: Record<string, string> = {
@@ -32291,6 +32648,18 @@ const ABOUT: Record<string, string> = {
   EWJ: "Holds about 185 of Japan's biggest companies: Toyota, Sony, Mitsubishi UFJ (a bank), Hitachi, Nintendo, Keyence and more — carmakers, electronics, banks and industry.",
   VGK: 'Holds about 1,200 European companies across the UK, France, Switzerland, Germany and more: ASML, Novo Nordisk, Nestlé, LVMH (Louis Vuitton), SAP, Shell and AstraZeneca.',
   EWY: "Holds about 90 South Korean companies. Samsung Electronics is the biggest by far, then SK Hynix (memory chips), Hyundai, Kia, KB Financial and Naver.",
+  // The playground's extra funds (3 Nov): written the same way, so their About card says what's inside too.
+  XLF: 'Holds the 72 banks, insurers and payment companies in the S&P 500: Berkshire Hathaway, JPMorgan, Visa, Mastercard, Bank of America and Wells Fargo. It tends to do well when lending and spending pick up.',
+  XLV: 'Holds the 60 healthcare companies in the S&P 500: drug makers like Eli Lilly, Johnson & Johnson, AbbVie and Merck, health insurer UnitedHealth, and makers of medical equipment such as Intuitive Surgical.',
+  FXI: "Holds the 50 biggest Chinese companies listed in Hong Kong: internet giants Tencent, Alibaba and Meituan, phone maker Xiaomi, and China's big state banks and insurers.",
+  CQQQ: 'Holds about 150 Chinese tech companies, from chip makers to apps: Tencent (WeChat), Alibaba, PDD (Temu), Xiaomi, NetEase (games) and Baidu (search).',
+  DXJ: 'Holds about 430 Japanese companies that earn a lot abroad — carmakers Toyota and Honda, banks like Mitsubishi UFJ, and Sony and Hitachi. It is protected from swings in the yen, so you get the shares’ move without the currency’s.',
+  HEWJ: 'Holds about 190 of Japan’s biggest companies — Mitsubishi UFJ, Toyota, Tokyo Electron, Sony and Hitachi — and is protected from swings in the yen, so you get the shares’ move without the currency’s.',
+  SCJ: 'Holds about 770 smaller Japanese companies, each a tiny part of the fund — names like Sanrio (Hello Kitty), Square Enix (games), Ryohin Keikaku (Muji) and builders like Kajima. They tend to sell more in Japan than abroad.',
+  FEZ: 'Holds the 50 biggest companies of the countries that use the euro: ASML (chip machines), SAP (software), Siemens, Louis Vuitton, Allianz and TotalEnergies.',
+  EZU: 'Holds about 220 large and mid-size companies of the countries that use the euro — ASML, SAP, Siemens, Louis Vuitton, Allianz and Sanofi — across Germany, France, the Netherlands, Italy and Spain.',
+  IEUR: 'Holds 1,000+ European companies of every size, including the UK and Switzerland: ASML, Novo Nordisk, SAP, Nestlé, AstraZeneca and HSBC lead it.',
+  FLKR: 'Holds about 150 large and mid-size South Korean companies at a low cost. Samsung Electronics is about a quarter of it; SK Hynix (memory chips), Hyundai and KB Financial follow.',
   // Boosted (leveraged) funds (3 Nov): what each is built on — the index or stock, what's in it — and how the 2x / 3x works.
   TQQQ: "Aims to move 3x the Nasdaq-100's move each day — the index QQQ tracks: the 100 biggest non-financial companies on the Nasdaq, mostly tech like Apple, Microsoft, NVIDIA and Amazon. It gets the 3x mostly through swaps with banks, and resets every day, so over weeks the result can differ from 3x the index.",
   SQQQ: "Aims to move 3x opposite to the Nasdaq-100 each day — the index QQQ tracks: the 100 biggest non-financial companies on the Nasdaq, mostly tech like Apple, Microsoft, NVIDIA and Amazon. When the index falls 1% in a day it aims to rise 3%, and the other way round. It holds swaps, not the stocks, and resets every day.",
@@ -32329,6 +32698,27 @@ const SECTOR_SPLIT: Record<string, [string, number][]> = {
   EWJ: [['Industrials', 23], ['Consumer', 19], ['Financials', 16], ['Technology', 14]],
   VGK: [['Financials', 21], ['Industrials', 17], ['Healthcare', 14], ['Consumer', 11]],
   EWY: [['Technology', 40], ['Financials', 13], ['Industrials', 12], ['Consumer', 9]],
+  // The playground's extra funds (3 Nov): every ETF shows its Allocation.
+  XLF: [['Banks', 32], ['Payments', 24], ['Insurance', 18], ['Investing', 16]],
+  XLV: [['Drug makers', 44], ['Health plans', 17], ['Med devices', 16], ['Biotech', 14]],
+  FXI: [['Consumer', 30], ['Financials', 28], ['Media', 20], ['Technology', 8]],
+  CQQQ: [['Media', 34], ['Shopping', 22], ['Technology', 20], ['Chip makers', 12]],
+  DXJ: [['Industrials', 26], ['Consumer', 22], ['Financials', 18], ['Technology', 15]],
+  HEWJ: [['Industrials', 23], ['Consumer', 19], ['Financials', 16], ['Technology', 14]],
+  SCJ: [['Industrials', 25], ['Consumer', 21], ['Materials', 11], ['Technology', 10]],
+  FEZ: [['Technology', 19], ['Financials', 18], ['Consumer', 17], ['Industrials', 16]],
+  EZU: [['Financials', 21], ['Industrials', 18], ['Technology', 13], ['Consumer', 13]],
+  IEUR: [['Financials', 20], ['Industrials', 17], ['Healthcare', 14], ['Consumer', 11]],
+  FLKR: [['Technology', 38], ['Financials', 14], ['Industrials', 12], ['Consumer', 9]],
+  // Boosted funds: the split of the index or stock they're built on.
+  TQQQ: [['Technology', 51], ['Media', 16], ['Consumer', 14], ['Healthcare', 6]],
+  SQQQ: [['Technology', 51], ['Media', 16], ['Consumer', 14], ['Healthcare', 6]],
+  SOXL: [['Chip makers', 80], ['Chip tools', 18]],
+  SOXS: [['Chip makers', 80], ['Chip tools', 18]],
+  NVDL: [['Chip makers', 100]],
+  NVD: [['Chip makers', 100]],
+  SPXL: [['Technology', 34], ['Financials', 13], ['Healthcare', 10], ['Consumer', 10]],
+  SPXS: [['Technology', 34], ['Financials', 13], ['Healthcare', 10], ['Consumer', 10]],
 }
 /** Every sector name any fund has (and "Other"): the legend's name column is as wide as the widest of them on every ETF. */
 export const SECTOR_NAMES = [...new Set([...Object.values(SECTOR_SPLIT).flat().map(([name]) => name), 'Other'])]
@@ -32523,6 +32913,7 @@ export const screens: UsScreenMap = {
 ```tsx
 // Small pieces the ETF screens share: the issuer logo disc, a holding's logo, the day-change figure and the leveraged tag.
 // FLAG: hand-made logo disc (module CSS) — L3 has no ETF / issuer logo. Changes are L3 PriceChange (EtfMove), as StockListCard.
+import type { ReactNode } from 'react'
 import { Avatar } from '@l3/components/Avatar'
 import { PriceChange } from '@l3/components/PriceChange'
 import { Tag } from '@l3/components/Tag'
@@ -32567,14 +32958,27 @@ export function EtfMove({ change, size = 'sm' }: { change: number; size?: 'sm' |
   return <PriceChange value={change} size={size} />
 }
 
+/**
+ * The app's long / short tag ("3x Long", "3x Short"): L3 Tag in the up / down colour, border only, no fill (3 Nov: the
+ * filled tag pulled the eye away from the name). `filled` keeps L3's soft fill where the tag sits on a logo.
+ * FLAG / L3 gap: L3 Tag has no outline-only variant — the fill is cleared here (Etf.module.css .outlineTag).
+ */
+export function LevTag({ long, size = 'sm', filled, className, children }: { long: boolean; size?: 'sm' | 'md'; filled?: boolean; className?: string; children: ReactNode }) {
+  return (
+    <Tag variant="secondary" color={long ? 'profit' : 'loss'} size={size} className={[filled ? undefined : styles.outlineTag, className].filter(Boolean).join(' ') || undefined}>
+      {children}
+    </Tag>
+  )
+}
+
 /** "3x Long" / "3x Short" on leveraged ETFs, nothing on regular ones. */
-export function SideTag({ etf, size = 'sm', className }: { etf: Etf; size?: 'sm' | 'md'; className?: string }) {
+export function SideTag({ etf, size = 'sm', filled, className }: { etf: Etf; size?: 'sm' | 'md'; filled?: boolean; className?: string }) {
   if (etf.kind !== 'leveraged') return null
   const long = etf.side === 'long'
   return (
-    <Tag variant="secondary" color={long ? 'profit' : 'loss'} size={size} className={className}>
+    <LevTag long={long} size={size} filled={filled} className={className}>
       {etf.lev} {long ? 'Long' : 'Short'}
-    </Tag>
+    </LevTag>
   )
 }
 ```
@@ -32588,10 +32992,11 @@ import { screens as activation } from './activation'
 import { screens as entry } from './entry'
 import { screens as etf } from './etf'
 import { screens as money } from './money'
+import { screens as orders } from './orders'
 import { screens as trade } from './trade'
 import { screens as wallet } from './wallet'
 
-export const allScreens: UsScreenMap = { ...activation, ...entry, ...etf, ...money, ...trade, ...wallet }
+export const allScreens: UsScreenMap = { ...activation, ...entry, ...etf, ...money, ...orders, ...trade, ...wallet }
 ```
 
 ### `src/flows/us-stocks/screens/money/AddMoneyScreen.tsx`
@@ -33734,6 +34139,1526 @@ export function useSheetClose(onClosed: () => void) {
 }
 ```
 
+### `src/flows/us-stocks/screens/orders/CancelOrderSheet.tsx`
+
+```tsx
+// "Cancel this order?" — the confirmation Order Details opens from Cancel order (open, queued, partly filled orders).
+// L3 confirmation sheet (BottomSheet USAGE §7): small header asking the question, the order in one line under it, the
+// facts as ListCell rows, a horizontal dock — secondary "Keep order" left, the confirm right.
+// FLAG / L3 gap: L3 has no destructive / danger button (PENDING in BottomSheet USAGE: "is Cancel order a trade action or
+// a destructive action?") — the confirm is primary.
+// FLAG: copy not in copy.json yet (hard-coded, as the rest of the US Stocks flow).
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
+import { formatUsd } from '../../../../shared/money'
+import { useSheetLayer } from '../../components/Phone'
+import { STATUS_TAG, type UsOrder } from './data'
+
+const shares = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 4 })
+
+/** "Buy 4 AAPL at $332.00 limit" · "Buy 2.5 QQQ at market price" · "Sell 3 MSFT, stop loss at $495.00". */
+export function orderSummary(order: UsOrder): string {
+  const what = `${order.side === 'buy' ? 'Buy' : 'Sell'} ${shares(order.qty)} ${order.sym}`
+  if (order.type === 'market') return `${what} at market price`
+  if (order.type === 'limit') return `${what} at ${formatUsd(order.limitPrice ?? 0)} limit`
+  return `${what}, stop loss at ${formatUsd(order.triggerPrice ?? 0)}`
+}
+
+export function CancelOrderSheet({ open, order, onKeep, onCancel }: { open: boolean; order: UsOrder; onKeep: () => void; onCancel: () => void }) {
+  const layer = useSheetLayer()
+  const left = order.qty - order.filled
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onKeep}
+      container={layer}
+      aria-labelledby="cancel-order-title"
+      header={<BottomSheetHeader size="sm" heading="Cancel this order?" headingId="cancel-order-title" description={orderSummary(order)} />}
+      footer={
+        <ButtonGroup aria-label="Cancel order" direction="horizontal">
+          <Button variant="secondary" size="lg" onClick={onKeep}>Keep order</Button>
+          <Button variant="primary" size="lg" onClick={onCancel}>Cancel order</Button>
+        </ButtonGroup>
+      }
+    >
+      <KeyValueList variant="card" aria-label="Order">
+        <KeyValueRow label="Status" value={STATUS_TAG[order.status].label} />
+        {order.filled > 0 && <KeyValueRow label={order.side === 'buy' ? 'Already bought' : 'Already sold'} value={`${shares(order.filled)} shares`} caption="These stay — only the rest is cancelled" />}
+        <KeyValueRow label="Shares to cancel" value={shares(left)} />
+      </KeyValueList>
+    </BottomSheet>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderCard.module.css`
+
+```css
+/* US order card (Portfolio → Orders). Layout is L3 Stack; only type and colour here. */
+
+/* "Limit · Day" — Figma Label/12, secondary. */
+.meta {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.name {
+  min-width: 0;
+}
+
+.sym {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+/* A figure: secondary label ("Qty", "LTP", "At limit") then the primary value, Heading/12. */
+.figure {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+.label {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderCard.tsx`
+
+```tsx
+// One US order in Portfolio → Orders (Open / History): an L3 clickable Card that opens Order Details.
+// Layout from "Positions & orders" (nLs24dTJdPz9A5pu3AWMbe, 6754:65685): type · validity + status and side tags; the
+// symbol and quantity; the live price (LTP — the same live quote as the positions, PositionParts' useLiveLtp) and the
+// order's own price. OrdersTab wraps each card in an <li> (a clickable Card renders a <button>).
+import { Avatar } from '@l3/components/Avatar'
+import { Card } from '@l3/components/Card'
+import { Stack } from '@l3/components/Stack'
+import { Tag, type TagColor } from '@l3/components/Tag'
+import { Usd } from '../../../../shared/money'
+import { HoldingLogo, etfLogoUrl } from '../etf/parts'
+import { STATUS_TAG, TYPE_LABEL, isOpen, type UsOrder } from './data'
+import { useLiveLtp } from './PositionParts'
+import styles from './OrderCard.module.css'
+
+/** STATUS_TAG's tone → the L3 Tag colour: in-progress is `processing` (AGENTS: open / pending), outcomes success / error. */
+const TONE_COLOR: Record<(typeof STATUS_TAG)[keyof typeof STATUS_TAG]['tone'], TagColor> = {
+  warning: 'processing',
+  positive: 'success',
+  negative: 'error',
+  neutral: 'neutral',
+}
+
+/** Shares as written on a card: whole numbers plain ("10"), fractional up to 4 decimals ("2.5", "1.2"). */
+export const formatShares = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 4 })
+
+/** Quantity: "6/10" while some (not all) shares went through, otherwise the shares asked for ("4"). As in Figma. */
+function quantity(order: UsOrder) {
+  return order.filled > 0 && order.filled < order.qty ? `${formatShares(order.filled)}/${formatShares(order.qty)}` : formatShares(order.qty)
+}
+
+/** The order's own price, bottom right: Avg once shares went through (History), else its limit / trigger / Mkt. */
+function orderPrice(order: UsOrder): { label: string; value?: number } {
+  if (!isOpen(order) && order.filled > 0 && order.avgPrice !== undefined) return { label: 'Avg', value: order.avgPrice }
+  if (order.type === 'sl' && order.triggerPrice !== undefined) return { label: 'Trigger', value: order.triggerPrice }
+  if (order.type === 'limit' && order.limitPrice !== undefined) return { label: 'At limit', value: order.limitPrice }
+  return { label: 'Mkt' }
+}
+
+function OrderLogo({ order }: { order: UsOrder }) {
+  if (order.kind === 'etf') return <Avatar src={etfLogoUrl(order.sym)} initials={order.sym} size={24} />
+  return <HoldingLogo sym={order.sym} size={24} />
+}
+
+export function OrderCard({ order, onOpen }: { order: UsOrder; onOpen: () => void }) {
+  const ltp = useLiveLtp(order)
+  const status = STATUS_TAG[order.status]
+  const price = orderPrice(order)
+  const side = order.side === 'buy' ? 'Buy' : 'Sell'
+  return (
+    <Card
+      onClick={onOpen}
+      aria-label={`${side} ${order.sym}, ${TYPE_LABEL[order.type]} order, ${status.label}. Open order details`}
+    >
+      <Stack gap="08">
+        <Stack direction="horizontal" align="center" justify="between" gap="08">
+          <span className={styles.meta}>{TYPE_LABEL[order.type]} · {order.validity}</span>
+          <Stack direction="horizontal" align="center" gap="04">
+            <Tag variant="secondary" size="sm" color={TONE_COLOR[status.tone]}>{status.label}</Tag>
+            <Tag variant="secondary" size="sm" color={order.side === 'buy' ? 'profit' : 'loss'}>{side}</Tag>
+          </Stack>
+        </Stack>
+        <Stack direction="horizontal" align="center" justify="between" gap="08">
+          <Stack direction="horizontal" align="center" gap="08" className={styles.name}>
+            <OrderLogo order={order} />
+            <span className={styles.sym}>{order.sym}</span>
+          </Stack>
+          <span className={styles.figure}>
+            <span className={styles.label}>Qty </span>
+            {quantity(order)}
+          </span>
+        </Stack>
+        <Stack direction="horizontal" align="center" justify="between" gap="08">
+          <span className={styles.figure}>
+            <span className={styles.label}>LTP </span>
+            <Usd value={ltp} />
+          </span>
+          <span className={styles.figure}>
+            {price.value === undefined ? (
+              <span className={styles.label}>{price.label}</span>
+            ) : (
+              <>
+                <span className={styles.label}>{price.label} </span>
+                <Usd value={price.value} />
+              </>
+            )}
+          </span>
+        </Stack>
+      </Stack>
+    </Card>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderDetails.module.css`
+
+```css
+/* Order Details (9001:40). Every value is an --l3-* token (1px hairlines are the accepted literal). */
+
+/* Status line: a dot + the status in its colour (Label/14), "0/4 shares" on the right. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-secondary);
+}
+
+.status[data-tone='warning'] { color: var(--l3-content-accent-warning-default); }
+.status[data-tone='positive'] { color: var(--l3-content-accent-success-default); }
+.status[data-tone='negative'] { color: var(--l3-content-accent-error-default); }
+
+/* FLAG / L3 gap: hand-made status dot (L3 has no status dot); it takes the status text colour. */
+.statusDot {
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  border-radius: var(--l3-radius-full);
+  background: currentColor;
+}
+
+.filled {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+/* Full-width hairline between the blocks, as in Figma. */
+.rule {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--l3-border-light);
+}
+
+/*
+ * FLAG / L3 gap: L3 Steps' current step is always success green. Its dot (li > marker > dot) takes the order's status
+ * colour here: warning while it's working, error when it failed, neutral when it ended without (all) filling.
+ */
+.timeline {
+  --order-now: var(--l3-border-accent-success-default);
+  --order-now-halo: var(--l3-surface-accent-success-light);
+}
+
+.timeline[data-tone='warning'] {
+  --order-now: var(--l3-border-accent-warning-default);
+  --order-now-halo: var(--l3-surface-accent-warning-light);
+}
+
+.timeline[data-tone='error'] {
+  --order-now: var(--l3-border-accent-error-default);
+  --order-now-halo: var(--l3-surface-accent-error-light);
+}
+
+.timeline[data-tone='neutral'] {
+  --order-now: var(--l3-content-secondary);
+  --order-now-halo: var(--l3-surface-secondary);
+}
+
+.timeline :global(li[data-state='current']) > span:first-child > span {
+  background: var(--order-now);
+  box-shadow: 0 0 0 var(--l3-spacing-04) var(--order-now-halo);
+}
+
+/* Help sheet ("About US orders"): Description/14, secondary. */
+.sheetText p {
+  margin: 0;
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderDetailsScreen.tsx`
+
+```tsx
+// 9001:40 · Order Details — one screen for every order status (open, queued, partly filled, executed, partly executed,
+// failed, cancelled, expired). Layout from the F&O dev-handoff file's "Order Details" (nLs24dTJdPz9A5pu3AWMbe:
+// 6754:65599 open, 6754:66823 executed), drawn there for commodities; the content here is a US stock / ETF order.
+//
+// Top to bottom: L3 Actionbar (back · "Order details" · Help) → the asset row (logo, name, "AAPL · NASDAQ", Buy / Sell
+// tag, ›) → status line (dot + status in its colour, "filled/qty shares") → why (L3 Aerobar, when the order has a
+// reason) → the facts (L3 KeyValueList) → "Order status" (L3 Steps) → the dock (L3 ButtonGroup), by status:
+//   open / queued / partly filled → Cancel order + Modify · executed / partly executed → Repeat order ·
+//   failed → Retry · cancelled / expired → Place again.
+// Cancel order opens CancelOrderSheet; confirming goes back to Portfolio → Orders (USD side, 9001:31), as Back does.
+//
+// Differences from Figma:
+// - No Target Profit / Trailing Stop Loss rows: US orders don't have them. Rows the US order has instead: Trigger price
+//   (stop loss), Limit price and Placed on. Exchange ID is left out until the exchange has given one (queued, failed).
+// - The asset row is an L3 ListCell (plain, tappable): its chevron sits at the row's end after the tag, not next to the
+//   name (L3 wins). The subline is "AAPL · NASDAQ" (Figma: the product, "Intraday" — US Stocks are delivery only).
+// - Side tag: L3 Tag profit / loss (L3: buy / sell side is profit / loss), not Figma's blue Buy tag.
+// - Status icon (clock / tick in Figma) is a dot in the status colour — L3 has no clock icon.
+// - Timeline: L3 Steps. Done steps are L3's green ticks (Figma: grey dots); the last step's dot takes the status colour.
+// - Help (Actionbar) opens a small sheet about US orders (no help centre in the prototype).
+//
+// FLAG: copy not in copy.json yet (hard-coded, as the rest of the US Stocks flow).
+// FLAG / L3 gap: L3 Steps has no tone — its current step is always success green. The last step's dot is recoloured
+// here (warning / error / neutral, OrderDetails.module.css .timeline) to show the order's status.
+// FLAG / L3 gap: no status-dot component (the dot before "Open" / "Executed" is hand-made, .statusDot).
+// FLAG: Modify / Retry / Repeat / Place again on a sell order open SELL_PAD_HOLDING, the one sell pad the prototype has.
+// It shows its own fixed held-shares number, not this asset's (no per-asset sell pad yet), and has no Limit / SL.
+// The pad's current stock / ETF is set first (viewUsStock / setCurrentEtf) so at least the name and price are right.
+import { useState } from 'react'
+import { Actionbar } from '@l3/components/Actionbar'
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Aerobar, type AerobarType } from '@l3/components/Aerobar'
+import { Avatar } from '@l3/components/Avatar'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Icon } from '@l3/components/Icon'
+import { msChevronRight } from '@l3/components/icons/glyphs'
+import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
+import { ListCell } from '@l3/components/ListCell'
+import { Section } from '@l3/components/Section'
+import { SectionHeader } from '@l3/components/SectionHeader'
+import { Stack } from '@l3/components/Stack'
+import { Steps, type StepItem, type StepState } from '@l3/components/Steps'
+import { Tag } from '@l3/components/Tag'
+import { Usd } from '../../../../shared/money'
+import { viewUsStock } from '../../../../shared/data/usStocks'
+import { Phone, useSheetLayer } from '../../components/Phone'
+import { openStock, stockFor } from '../../data'
+import { useUsNav } from '../../nav'
+import { BUY_PAD, SELL_PAD_HOLDING } from '../activation/ids'
+import { setCurrentEtf } from '../etf/currentEtf'
+import { ETF_PAGE } from '../etf/data'
+import { etfLogoUrl, HoldingLogo } from '../etf/parts'
+import { CancelOrderSheet } from './CancelOrderSheet'
+import { assetFor, getCurrentOrder, historyOrders, isOpen, openOrders, STATUS_TAG, TYPE_LABEL, type OrderStatus, type UsOrder } from './data'
+import styles from './OrderDetails.module.css'
+
+/** Portfolio on its Orders tab, USD side (9001:31) — where back and a confirmed cancel land. */
+const PORTFOLIO_US_ORDERS = '9001:31'
+/** Buy pads by order type (registry: T01 Buy · Amount, T07 Buy · Limit, T08 Buy · SL). */
+const BUY_PAD_FOR = { market: BUY_PAD, limit: '5837:95972', sl: '5837:95888' } as const
+
+/** Shares, fractional when they are (2.5, 1.2). */
+export const shares = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 4 })
+
+/**
+ * The Aerobar under the status line: why it failed (danger), was cancelled / expired (plain), is part-filled and still
+ * working (info), or ended partly executed (success — shares did trade; the same tone as its Tag and timeline dot).
+ */
+const REASON_BAR: Partial<Record<OrderStatus, AerobarType>> = {
+  failed: 'danger',
+  cancelled: 'primary',
+  expired: 'primary',
+  partial: 'discover',
+  'partial-executed': 'success',
+}
+
+/** The timeline's last ("now") step: L3 Steps state + the colour its dot takes (see the FLAG above). */
+function nowStep(order: UsOrder): { state: StepState; tone: 'success' | 'warning' | 'error' | 'neutral' } {
+  if (order.status === 'executed') return { state: 'done', tone: 'success' }
+  if (order.status === 'partial-executed') return { state: 'current', tone: 'success' } // shares did trade
+  if (order.status === 'failed') return { state: 'current', tone: 'error' }
+  if (isOpen(order)) return { state: 'current', tone: 'warning' }
+  return { state: 'current', tone: 'neutral' } // cancelled, expired
+}
+
+function timelineFor(order: UsOrder): { steps: StepItem[]; tone: string } {
+  const now = nowStep(order)
+  const steps = order.timeline.map((step): StepItem => ({
+    label: step.label,
+    description: step.time,
+    state: step.state === 'done' ? 'done' : now.state,
+  }))
+  return { steps, tone: now.tone }
+}
+
+export function OrderDetailsScreen({ backdrop, order: given }: { backdrop?: boolean; order?: UsOrder }) {
+  const { go, back } = useUsNav()
+  const order = given ?? getCurrentOrder()
+  const [cancelOpen, setCancelOpen] = useState(false)
+  const [helpOpen, setHelpOpen] = useState(false)
+  const asset = assetFor(order)
+  const status = STATUS_TAG[order.status]
+  const sideLabel = order.side === 'buy' ? 'Buy' : 'Sell'
+  const timeline = timelineFor(order)
+  const filledAny = order.filled > 0 && order.avgPrice !== undefined
+  const open = isOpen(order)
+
+  const act = (fn: () => void) => () => { if (!backdrop) fn() }
+
+  const openAsset = act(() => {
+    if (order.kind === 'etf') {
+      setCurrentEtf(order.sym)
+      go(ETF_PAGE)
+    } else openStock(go, stockFor(order.sym))
+  })
+
+  /** The order pad for this order again: Modify, Retry, Repeat order, Place again. The pads trade the stock / ETF
+   *  looked at last, so point them at this order's first. FLAG: a sell opens SELL_PAD_HOLDING, which shows a fixed
+   *  held-shares number, not this asset's (no per-asset sell pad yet). */
+  const openPad = act(() => {
+    if (order.kind === 'etf') setCurrentEtf(order.sym)
+    else viewUsStock(order.sym)
+    go(order.side === 'buy' ? BUY_PAD_FOR[order.type] : SELL_PAD_HOLDING)
+  })
+
+  const logo = order.kind === 'etf'
+    ? <Avatar src={etfLogoUrl(order.sym)} initials={order.sym} size={40} />
+    : <HoldingLogo sym={order.sym} size={40} />
+
+  const againLabel = order.status === 'failed' ? 'Retry' : order.status === 'cancelled' || order.status === 'expired' ? 'Place again' : 'Repeat order'
+  const dock = open ? (
+    <ButtonGroup aria-label="Order actions" direction="horizontal">
+      <Button variant="secondary" size="lg" onClick={act(() => setCancelOpen(true))}>Cancel order</Button>
+      <Button variant="primary" size="lg" onClick={openPad}>Modify</Button>
+    </ButtonGroup>
+  ) : (
+    <ButtonGroup aria-label="Order actions">
+      <Button variant="primary" size="lg" fullWidth onClick={openPad}>{againLabel}</Button>
+    </ButtonGroup>
+  )
+
+  return (
+    <Phone
+      label={`Order details: ${sideLabel} ${order.sym}, ${status.label}`}
+      header={
+        <Actionbar
+          onBack={act(() => back(PORTFOLIO_US_ORDERS))}
+          title="Order details"
+          actions={<Button variant="tertiary" size="sm" onClick={act(() => setHelpOpen(true))}>Help</Button>}
+        />
+      }
+      footer={dock}
+      gesture="none"
+      topLine
+    >
+      <div inert={backdrop || undefined}>
+        {/* The asset and where the order is. */}
+        <Section paddingBlock="08" gap="04">
+          <ListCell
+            density="breathable"
+            onClick={openAsset}
+            iconLeft={logo}
+            label={asset.name}
+            description={`${order.sym} · ${asset.exchange}`}
+            trailing={<Tag variant="secondary" color={order.side === 'buy' ? 'profit' : 'loss'} size="sm">{sideLabel}</Tag>}
+            iconRight={<Icon icon={msChevronRight} />}
+          />
+          <Section paddingInline="16" paddingBlock="08" gap="12">
+            <Stack direction="horizontal" justify="between" align="center" gap="12">
+              <span className={styles.status} data-tone={status.tone}>
+                <span className={styles.statusDot} aria-hidden="true" />
+                {status.label}
+              </span>
+              <span className={styles.filled}>{shares(order.filled)}/{shares(order.qty)} shares</span>
+            </Stack>
+            {order.reason && <Aerobar type={REASON_BAR[order.status] ?? 'primary'} placement="inline" heading={order.reason} />}
+          </Section>
+        </Section>
+
+        <hr className={styles.rule} />
+
+        {/* The facts. */}
+        <Section paddingInline="16" paddingBlock="24">
+          <KeyValueList aria-label="Order details">
+            <KeyValueRow label="Order type" value={TYPE_LABEL[order.type]} />
+            {order.type === 'sl' && order.triggerPrice !== undefined && <KeyValueRow label="Trigger price" value={<Usd value={order.triggerPrice} />} />}
+            {order.limitPrice !== undefined && <KeyValueRow label="Limit price" value={<Usd value={order.limitPrice} />} />}
+            <KeyValueRow label="Avg. price" value={filledAny ? <Usd value={order.avgPrice!} /> : '–'} />
+            <KeyValueRow label="Validity" value={order.validity} />
+            <KeyValueRow label="Placed on" value={order.placedAt} />
+            <KeyValueRow label="Exchange" value={asset.exchange} />
+            <KeyValueRow label="Order ID" value={order.orderId} copy />
+            {order.exchangeId && <KeyValueRow label="Exchange ID" value={order.exchangeId} copy />}
+          </KeyValueList>
+        </Section>
+
+        <hr className={styles.rule} />
+
+        {/* Where the order has been. */}
+        <Section paddingInline="16" paddingBlock="24" gap="16">
+          <SectionHeader title="Order status" />
+          <div className={styles.timeline} data-tone={timeline.tone}>
+            <Steps label="Order status" steps={timeline.steps} />
+          </div>
+        </Section>
+      </div>
+
+      {open && (
+        <CancelOrderSheet
+          open={cancelOpen}
+          order={order}
+          onKeep={() => setCancelOpen(false)}
+          onCancel={() => {
+            setCancelOpen(false)
+            back(PORTFOLIO_US_ORDERS) // prototype: the order isn't really removed from the Open list
+          }}
+        />
+      )}
+      <OrdersHelpSheet open={helpOpen} onClose={() => setHelpOpen(false)} />
+    </Phone>
+  )
+}
+
+/** Help: about US orders (Day validity, queued orders, fractional shares, when you can cancel / modify). */
+function OrdersHelpSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const layer = useSheetLayer()
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="orders-help-title"
+      header={<BottomSheetHeader headingId="orders-help-title" heading="About US orders" />}
+      footer={
+        <ButtonGroup aria-label="Close">
+          <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
+        </ButtonGroup>
+      }
+    >
+      <Stack gap="16" className={styles.sheetText}>
+        <p>Day orders end when the US market closes: 2:30 AM IST (1:30 AM during US daylight time). Whatever hasn’t gone through by then is cancelled.</p>
+        <p>Orders placed while the market is closed are queued and sent to the exchange when it opens.</p>
+        <p>You can buy and sell fractional shares, such as 2.5 shares.</p>
+        <p>You can cancel or modify an order only while it’s still open.</p>
+      </Stack>
+    </BottomSheet>
+  )
+}
+
+/** Every sample order, by id (o1–o4 open, h1–h6 history). */
+const ALL_ORDERS = [...openOrders, ...historyOrders]
+
+/** The screen for one sample order — the preview registers one entry per status with this. */
+export function OrderDetailsFor({ id, backdrop }: { id: string; backdrop?: boolean }) {
+  const order = ALL_ORDERS.find((o) => o.id === id) ?? openOrders[0]
+  return <OrderDetailsScreen backdrop={backdrop} order={order} />
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderFilterSheet.module.css`
+
+```css
+/* Order filter / picker sheets. Plain ListCell rows bring their own 16 side padding, so their list runs to the sheet's
+   edges (the sheet content already has 16): label text lines up with the group titles. */
+.rows {
+  margin-inline: calc(-1 * var(--l3-spacing-16));
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderFilterSheet.tsx`
+
+```tsx
+// Portfolio → Orders (US) → Filters: an L3 Bottom sheet of checkbox rows in groups — Side, Order type, and on History
+// Status — with Clear / Apply. Several can be picked in a group (multi-select → checkbox rows, DESIGN_SYSTEM 7.1b);
+// nothing picked in a group means "any". Changes apply on Apply; tapping away keeps the filters as they were.
+import { useState } from 'react'
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Checkbox } from '@l3/components/Checkbox'
+import { ListCell } from '@l3/components/ListCell'
+import { SectionHeader } from '@l3/components/SectionHeader'
+import { Stack } from '@l3/components/Stack'
+import { useSheetLayer } from '../../components/Phone'
+import styles from './OrderFilterSheet.module.css'
+import { STATUS_TAG, TYPE_LABEL, type OrderSide, type OrderStatus, type OrderType, type UsOrder } from './data'
+
+export type OrderFilters = { side: OrderSide[]; type: OrderType[]; status: OrderStatus[] }
+export const NO_FILTERS: OrderFilters = { side: [], type: [], status: [] }
+
+/** History's statuses (Open orders are all "working", so the Open list has no Status group). */
+const HISTORY_STATUSES: OrderStatus[] = ['executed', 'partial-executed', 'failed', 'cancelled', 'expired']
+
+/** How many filters are on for a list (Status counts on History only) — the badge on Filters. */
+export function filterCount(filters: OrderFilters, list: 'open' | 'history') {
+  return filters.side.length + filters.type.length + (list === 'history' ? filters.status.length : 0)
+}
+
+/** The orders that pass the filters (an empty group lets everything through). */
+export function applyFilters(orders: UsOrder[], filters: OrderFilters, list: 'open' | 'history') {
+  return orders.filter(
+    (o) =>
+      (!filters.side.length || filters.side.includes(o.side)) &&
+      (!filters.type.length || filters.type.includes(o.type)) &&
+      (list === 'open' || !filters.status.length || filters.status.includes(o.status)),
+  )
+}
+
+type Group<K extends keyof OrderFilters> = { key: K; title: string; options: { value: OrderFilters[K][number]; label: string }[] }
+
+export function OrderFilterSheet({
+  open,
+  list,
+  value,
+  onApply,
+  onClose,
+}: {
+  open: boolean
+  list: 'open' | 'history'
+  value: OrderFilters
+  onApply: (filters: OrderFilters) => void
+  onClose: () => void
+}) {
+  const layer = useSheetLayer()
+  const [draft, setDraft] = useState<OrderFilters>(value)
+
+  const groups: Group<keyof OrderFilters>[] = [
+    { key: 'side', title: 'Side', options: [{ value: 'buy', label: 'Buy' }, { value: 'sell', label: 'Sell' }] },
+    { key: 'type', title: 'Order type', options: (['market', 'limit', 'sl'] as OrderType[]).map((t) => ({ value: t, label: TYPE_LABEL[t] })) },
+    ...(list === 'history'
+      ? [{ key: 'status' as const, title: 'Status', options: HISTORY_STATUSES.map((s) => ({ value: s, label: STATUS_TAG[s].label })) }]
+      : []),
+  ]
+
+  const toggle = (key: keyof OrderFilters, item: string, on: boolean) =>
+    setDraft((prev) => ({ ...prev, [key]: on ? [...prev[key], item] : (prev[key] as string[]).filter((v) => v !== item) }))
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="order-filters-title"
+      header={<BottomSheetHeader heading="Filters" headingId="order-filters-title" />}
+      footer={
+        <ButtonGroup direction="horizontal" aria-label="Filters">
+          <Button variant="secondary" size="lg" onClick={() => setDraft(NO_FILTERS)}>Clear</Button>
+          <Button variant="primary" size="lg" onClick={() => onApply(draft)}>Apply</Button>
+        </ButtonGroup>
+      }
+    >
+      <Stack gap="24">
+        {groups.map((group) => (
+          <Stack key={group.key} gap="08" role="group" aria-labelledby={`order-filter-${group.key}`}>
+            <SectionHeader title={<span id={`order-filter-${group.key}`}>{group.title}</span>} headingLevel={3} />
+            <Stack className={styles.rows}>
+              {group.options.map((option) => {
+                const checked = (draft[group.key] as string[]).includes(option.value)
+                return (
+                  <ListCell
+                    key={option.value}
+                    as="label"
+                    size="sm"
+                    label={option.label}
+                    trailing={<Checkbox checked={checked} onChange={(e) => toggle(group.key, option.value, e.target.checked)} />}
+                  />
+                )
+              })}
+            </Stack>
+          </Stack>
+        ))}
+      </Stack>
+    </BottomSheet>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/OrderKindSheet.tsx`
+
+```tsx
+// Portfolio → Orders (US) → "All orders ⇕" (an L3 action pill): a selector sheet (L3 Bottom sheet, radio rows, no dock) — All orders,
+// Stocks or ETFs. Picking one narrows the list and closes the sheet.
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Radio } from '@l3/components/Checkbox'
+import { ListCell } from '@l3/components/ListCell'
+import { Stack } from '@l3/components/Stack'
+import { useSheetLayer } from '../../components/Phone'
+import type { AssetKind } from './data'
+import styles from './OrderFilterSheet.module.css'
+
+export type OrderKind = 'all' | AssetKind
+
+export const ORDER_KIND_LABEL: Record<OrderKind, string> = { all: 'All orders', stock: 'Stocks', etf: 'ETFs' }
+
+export function OrderKindSheet({ open, value, onPick, onClose }: { open: boolean; value: OrderKind; onPick: (kind: OrderKind) => void; onClose: () => void }) {
+  const layer = useSheetLayer()
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="order-kind-title"
+      header={<BottomSheetHeader heading="Show orders of" headingId="order-kind-title" />}
+    >
+      <Stack role="radiogroup" className={styles.rows} aria-labelledby="order-kind-title">
+        {(Object.keys(ORDER_KIND_LABEL) as OrderKind[]).map((kind) => (
+          <ListCell
+            key={kind}
+            as="label"
+            selected={value === kind}
+            // The row's own click too: tapping the row that's already picked doesn't fire the Radio's onChange, and
+            // it should still close the sheet.
+            onClick={() => onPick(kind)}
+            label={ORDER_KIND_LABEL[kind]}
+            trailing={<Radio name="order-kind" checked={value === kind} onChange={() => onPick(kind)} />}
+          />
+        ))}
+      </Stack>
+    </BottomSheet>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionCard.module.css`
+
+```css
+/* A US position card (PositionCard.tsx). L3 tokens only; the rows are spans inside the clickable L3 Card's button.
+   FLAG: span layout here, not L3 Stack / Grid (they render block elements, not allowed inside a <button>). */
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+}
+
+.name,
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+}
+
+.product {
+  flex: none;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.title {
+  overflow: hidden;
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sub {
+  overflow: hidden;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.delivery {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
+}
+
+/* Avg. price | LTP | Returns, 16 under the name row (Figma). */
+.figures {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: var(--l3-spacing-08);
+  margin-top: var(--l3-spacing-16);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+
+.cell[data-align='center'] {
+  align-items: center;
+  text-align: center;
+}
+
+.cell[data-align='end'] {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.label {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.value {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionCard.tsx`
+
+```tsx
+// One US position on Portfolio → Positions → US Stocks: the F&O dev-handoff file's position card (nLs24dTJdPz9A5pu3AWMbe
+// 6754:66441 / 66442 / 66443 / 8671:13893), drawn there for commodities. Logo · name over "SYM · Bought today · Qty 5" ·
+// exchange over "Delivery"; then Avg. price | LTP | Returns (coloured, with %).
+// Differences from Figma: no "Manage TP/SL" / "Exit Now" buttons and no tender-margin / auto-close strips — US Stocks
+// are delivery only (no TP / SL, no intraday square-off), and a clickable L3 Card holds no buttons: the whole card opens
+// Position Details, where Buy more / Exit position are.
+// FLAG: the card's inner rows are spans laid out in PositionCard.module.css — a clickable L3 Card renders a <button>,
+// and the L3 layout blocks (Stack / Grid) render block elements only.
+import { Card } from '@l3/components/Card'
+import { PriceChange } from '@l3/components/PriceChange'
+import { Usd } from '../../../../shared/money'
+import { openPosition, type UsPosition } from './data'
+import { PositionLogo, qtyText, SignedUsd, sideLabel, usePositionNumbers } from './PositionParts'
+import styles from './PositionCard.module.css'
+
+export function PositionCard({ position, go }: { position: UsPosition; go: (figma: string) => void }) {
+  const n = usePositionNumbers(position)
+  return (
+    <Card
+      onClick={() => openPosition(go, position)}
+      aria-label={`${n.name}, ${sideLabel(position).toLowerCase()}, ${qtyText(position.qty)} shares. Open position details`}
+    >
+      <span className={styles.top}>
+        <PositionLogo position={position} />
+        <span className={styles.name}>
+          <span className={styles.title}>{n.name}</span>
+          <span className={styles.sub}>{`${position.sym} · ${sideLabel(position)} · Qty ${qtyText(position.qty)}`}</span>
+        </span>
+        <span className={styles.product}>
+          <span className={styles.sub}>{n.exchange}</span>
+          <span className={styles.delivery}>Delivery</span>
+        </span>
+      </span>
+      <span className={styles.figures}>
+        <span className={styles.cell}>
+          <span className={styles.label}>{position.side === 'sell' ? 'Avg. sell price' : 'Avg. price'}</span>
+          <span className={styles.value}><Usd value={position.avgPrice} /></span>
+        </span>
+        <span className={styles.cell} data-align="center">
+          <span className={styles.label}>LTP</span>
+          <span className={styles.value}><Usd value={n.ltp} /></span>
+        </span>
+        <span className={styles.cell} data-align="end">
+          <span className={styles.label}>Returns</span>
+          <SignedUsd className={styles.value} value={n.totalReturns} />
+          <PriceChange value={Math.round(n.returnsPct * 100) / 100} size="sm" />
+        </span>
+      </span>
+    </Card>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionDetails.module.css`
+
+```css
+/* Position Details (PositionDetailsScreen.tsx). L3 tokens only. */
+.sheetText p {
+  margin: 0;
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+.sheetTitle {
+  margin: 0;
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionDetailsScreen.tsx`
+
+```tsx
+// 9001:41 · Position Details — a US position's page: the F&O dev-handoff file's "Position Details (Delivery)"
+// (nLs24dTJdPz9A5pu3AWMbe 6754:65857), drawn there for commodities. Opened from a card on Portfolio → Positions → US.
+// - Header: a tappable L3 ListCell card (opens the stock / ETF page, chevron ›): logo, name, "AAPL · NASDAQ · Delivery",
+//   "N Shares" and the live LTP on the right.
+// - "Bought today" / "Sold today": Quantity, Avg. price, Total.
+// - "Returns ⓘ": Realised, Unrealised, Total (coloured). ⓘ → a sheet on realised vs unrealised.
+// - Dock: a buy → Buy more (secondary, buy pad) | Exit position (primary, sell pad); a sell → Buy again (primary, buy
+//   pad) only — the shares are already sold, there's nothing left in the position to exit.
+// Differences from Figma: no "Convert to intraday" row (US Stocks are delivery only — its Convert sheets 6754:66105 /
+// 66272 don't apply); the Buy / Returns blocks' grey title strips are L3 Section headers over an L3 Key-value list card
+// (L3 has no card with a title strip); "Help" opens a sheet about US positions (no help centre in the prototype); the
+// header is an L3 ListCell card, so symbol · exchange · Delivery are its description line, not Figma's three tags, and
+// the chevron sits at the row's end, not next to the name.
+// FLAG: copy not in copy.json yet (hard-coded, as the rest of the US Stocks screens).
+// FLAG: Exit position opens SELL_PAD_HOLDING, the one sell pad the prototype has. It shows its own fixed held-shares
+// number, not this position's (no per-asset sell pad yet). The pad's current stock / ETF is set first (openPad).
+import { useState } from 'react'
+import { Actionbar } from '@l3/components/Actionbar'
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Icon } from '@l3/components/Icon'
+import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
+import { ListCell } from '@l3/components/ListCell'
+import { Section } from '@l3/components/Section'
+import { SectionHeader } from '@l3/components/SectionHeader'
+import { Stack } from '@l3/components/Stack'
+import { msChevronRight } from '@l3/components/icons/glyphs'
+import { viewUsStock, useUsMarketSnapshot } from '../../../../shared/data/usStocks'
+import { Usd } from '../../../../shared/money'
+import { Phone, useSheetLayer } from '../../components/Phone'
+import { openStock, stockFor } from '../../data'
+import { useUsNav } from '../../nav'
+import { BUY_PAD, SELL_PAD_HOLDING } from '../activation/ids'
+import { setCurrentEtf } from '../etf/currentEtf'
+import { ETF_PAGE } from '../etf/data'
+import { getCurrentPosition, type UsPosition } from './data'
+import { PositionLogo, qtyText, returnsTone, sharesText, sideLabel, usePositionNumbers } from './PositionParts'
+import styles from './PositionDetails.module.css'
+
+/** Portfolio on Positions, US Stocks (9001:32) — where Back goes. */
+const PORTFOLIO_US_POSITIONS = '9001:32'
+
+type Explainer = 'returns' | 'help'
+
+/** ⓘ Returns and Help: what the numbers mean (one sheet, two topics). */
+function ExplainerSheet({ topic, onClose }: { topic: Explainer | null; onClose: () => void }) {
+  const layer = useSheetLayer()
+  // Keep the last topic while the sheet slides away.
+  const [shown, setShown] = useState<Explainer>('returns')
+  if (topic && topic !== shown) setShown(topic)
+  const returns = shown === 'returns'
+  return (
+    <BottomSheet
+      open={topic !== null}
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="position-explainer-title"
+      header={<BottomSheetHeader headingId="position-explainer-title" heading={returns ? 'Realised and unrealised returns' : 'About US positions'} />}
+      footer={
+        <ButtonGroup aria-label="Close">
+          <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
+        </ButtonGroup>
+      }
+    >
+      {returns ? (
+        <Stack gap="16" className={styles.sheetText}>
+          <Stack gap="04">
+            <h3 className={styles.sheetTitle}>Realised returns</h3>
+            <p>Profit or loss you’ve booked by selling shares. It’s final: the price moving later doesn’t change it.</p>
+          </Stack>
+          <Stack gap="04">
+            <h3 className={styles.sheetTitle}>Unrealised returns</h3>
+            <p>Profit or loss on shares you still own, at the live price. It moves with the price until you sell.</p>
+          </Stack>
+          <Stack gap="04">
+            <h3 className={styles.sheetTitle}>Total returns</h3>
+            <p>Realised and unrealised returns together, before charges.</p>
+          </Stack>
+        </Stack>
+      ) : (
+        <Stack gap="16" className={styles.sheetText}>
+          <p>A position is a trade you made today. US trades settle the next working day (T+1).</p>
+          <p>Once they settle, shares you bought move to your Holdings, and money from shares you sold is in your USD wallet to invest or withdraw.</p>
+          <p>US Stocks are delivery only: there’s no intraday, so positions are never squared off at the close.</p>
+        </Stack>
+      )}
+    </BottomSheet>
+  )
+}
+
+/** Opens the stock's or ETF's page. */
+function openAsset(go: (figma: string) => void, position: UsPosition) {
+  if (position.kind === 'etf') {
+    setCurrentEtf(position.sym)
+    go(ETF_PAGE)
+  } else {
+    openStock(go, stockFor(position.sym))
+  }
+}
+
+/**
+ * The order pads trade the stock / ETF looked at last: point them at this position's, then open the pad.
+ * FLAG: SELL_PAD_HOLDING (Exit position) shows a fixed held-shares number, not this position's — no per-asset sell pad yet.
+ */
+function openPad(go: (figma: string) => void, position: UsPosition, pad: string) {
+  if (position.kind === 'etf') setCurrentEtf(position.sym)
+  else viewUsStock(position.sym)
+  go(pad)
+}
+
+/** "+$3.00 (+0.28%)" — the colour comes from the row's tone. The % minus is a hyphen, as formatUsd's "-$3.00". */
+function returnsText(value: number, pct: number) {
+  const r = Math.round(pct * 100) / 100
+  return (
+    <>
+      <Usd value={Math.round(value * 100) / 100} sign />
+      {` (${r > 0 ? '+' : r < 0 ? '-' : ''}${Math.abs(r).toFixed(2)}%)`}
+    </>
+  )
+}
+
+export function PositionDetailsScreen() {
+  const { go, back } = useUsNav()
+  useUsMarketSnapshot() // re-render when US prices refresh
+  const position = getCurrentPosition()
+  const n = usePositionNumbers(position)
+  const [explainer, setExplainer] = useState<Explainer | null>(null)
+  const bought = position.side === 'buy'
+
+  const footer = (
+    <ButtonGroup direction="horizontal" aria-label="Position actions">
+      {bought ? (
+        <>
+          <Button variant="secondary" size="lg" onClick={() => openPad(go, position, BUY_PAD)}>Buy more</Button>
+          <Button variant="primary" size="lg" onClick={() => openPad(go, position, SELL_PAD_HOLDING)}>Exit position</Button>
+        </>
+      ) : (
+        <Button variant="primary" size="lg" fullWidth onClick={() => openPad(go, position, BUY_PAD)}>Buy again</Button>
+      )}
+    </ButtonGroup>
+  )
+
+  return (
+    <Phone
+      label={`${position.sym} position details`}
+      header={
+        <Actionbar
+          onBack={() => back(PORTFOLIO_US_POSITIONS)}
+          title="Position Details"
+          actions={<Button variant="tertiary" size="sm" onClick={() => setExplainer('help')}>Help</Button>}
+        />
+      }
+      footer={footer}
+      gesture="none"
+      topLine
+    >
+      <Section paddingInline="16" paddingBlock="24" gap="24">
+        {/* The position: logo, name, symbol · exchange · Delivery; shares and the live LTP; › its page. */}
+        <ListCell
+          variant="card"
+          onClick={() => openAsset(go, position)}
+          iconLeft={<PositionLogo position={position} />}
+          label={n.name}
+          description={`${position.sym} · ${n.exchange} · Delivery`}
+          trailing={sharesText(position.qty)}
+          caption={<>LTP <Usd value={n.ltp} /></>}
+          iconRight={<Icon icon={msChevronRight} />}
+        />
+
+        <Stack as="section" gap="16" aria-label={sideLabel(position)}>
+          <SectionHeader
+            title={sideLabel(position)}
+            description={bought ? 'Moves to your Holdings when it settles tomorrow (T+1)' : 'The money is in your USD wallet once it settles (T+1)'}
+          />
+          <KeyValueList variant="card" aria-label={sideLabel(position)} total={{ label: bought ? 'Total' : 'Total received', value: <Usd value={n.total} /> }}>
+            <KeyValueRow label="Quantity" value={qtyText(position.qty)} />
+            <KeyValueRow label={bought ? 'Avg. price' : 'Avg. sell price'} value={<Usd value={position.avgPrice} />} />
+          </KeyValueList>
+        </Stack>
+
+        <Stack as="section" gap="16" aria-label="Returns">
+          <SectionHeader title="Returns" onInfo={() => setExplainer('returns')} infoLabel="About realised and unrealised returns" />
+          <KeyValueList
+            variant="card"
+            aria-label="Returns"
+            total={{ label: 'Total returns', value: returnsText(n.totalReturns, n.returnsPct), tone: returnsTone(n.totalReturns) }}
+          >
+            <KeyValueRow label="Realised returns" value={<Usd value={Math.round(n.realised * 100) / 100} sign />} />
+            <KeyValueRow label="Unrealised returns" value={<Usd value={Math.round(n.unrealised * 100) / 100} sign />} />
+          </KeyValueList>
+        </Stack>
+      </Section>
+      <ExplainerSheet topic={explainer} onClose={() => setExplainer(null)} />
+    </Phone>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionParts.module.css`
+
+```css
+/* A signed $ return in the market indicator colours (as L3 PriceChange). L3 tokens only. */
+.signed {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.signed[data-tone='up'] {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+.signed[data-tone='down'] {
+  color: var(--l3-content-accent-indicator-down-default);
+}
+```
+
+### `src/flows/us-stocks/screens/orders/PositionParts.tsx`
+
+```tsx
+// What a US position's card and its Position Details page share: the live numbers (LTP, returns), the logo, the
+// side line ("Bought today" / "Sold today") and a coloured $ return.
+// A US position = shares bought or sold TODAY, before they settle into Holdings (T+1). Delivery only: no intraday,
+// no convert, no TP / SL.
+import { Avatar } from '@l3/components/Avatar'
+import { Usd } from '../../../../shared/money'
+import { liveQuote, useLiveTick } from '../../../../shared/data/live'
+import { catalogue } from '../../data'
+import { etfFor } from '../etf/data'
+import { etfLogoUrl, HoldingLogo } from '../etf/parts'
+import { assetFor, type UsPosition } from './data'
+import styles from './PositionParts.module.css'
+
+export type PositionNumbers = {
+  name: string
+  exchange: string
+  /** Live price (ticks every 2 s around the snapshot). */
+  ltp: number
+  /** Buy: what the shares cost (qty × avg). Sell: what the sale brought in (qty × avg sell price). */
+  total: number
+  /** $ booked today — a sale's profit / loss. */
+  realised: number
+  /** $ on paper — shares bought today against the live price. */
+  unrealised: number
+  totalReturns: number
+  /** Total returns as a % of what was put in (a sale: of what the sold shares had cost). */
+  returnsPct: number
+}
+
+/** The day change % behind a symbol's live price (ETF list or stock catalogue). */
+const dayChange = (item: Pick<UsPosition, 'sym' | 'kind'>) =>
+  item.kind === 'etf' ? etfFor(item.sym).change : catalogue[item.sym]?.change ?? 0
+
+/** A stock's / ETF's live price (LTP) at a tick of the live clock — the one price positions and orders both show. */
+export function liveLtp(item: Pick<UsPosition, 'sym' | 'kind'>, tick: number): number {
+  return liveQuote(item.sym, assetFor(item).price, dayChange(item), tick).price
+}
+
+/** The live LTP of a stock / ETF, re-read on every price tick. */
+export function useLiveLtp(item: Pick<UsPosition, 'sym' | 'kind'>): number {
+  return liveLtp(item, useLiveTick())
+}
+
+/** A position's numbers at a tick of the live clock. */
+export function positionNumbers(position: UsPosition, tick: number): PositionNumbers {
+  const asset = assetFor(position)
+  const ltp = liveLtp(position, tick)
+  const total = position.qty * position.avgPrice
+  const realised = position.side === 'sell' ? position.realised ?? 0 : 0
+  const unrealised = position.side === 'buy' ? (ltp - position.avgPrice) * position.qty : 0
+  const totalReturns = realised + unrealised
+  // A sale: the shares had cost what they sold for minus the profit made on them.
+  const putIn = position.side === 'sell' ? total - realised : total
+  return { name: asset.name, exchange: asset.exchange, ltp, total, realised, unrealised, totalReturns, returnsPct: putIn ? (totalReturns / putIn) * 100 : 0 }
+}
+
+/** The numbers of one position, re-read on every price tick. */
+export function usePositionNumbers(position: UsPosition): PositionNumbers {
+  return positionNumbers(position, useLiveTick())
+}
+
+/** Today's returns over every position (the Positions tab's summary). */
+export function usePositionsSummary(list: UsPosition[]) {
+  const tick = useLiveTick()
+  return list.reduce(
+    (sum, p) => {
+      const n = positionNumbers(p, tick)
+      return { realised: sum.realised + n.realised, unrealised: sum.unrealised + n.unrealised, total: sum.total + n.totalReturns }
+    },
+    { realised: 0, unrealised: 0, total: 0 },
+  )
+}
+
+/** "Bought today" / "Sold today". */
+export const sideLabel = (position: UsPosition) => (position.side === 'buy' ? 'Bought today' : 'Sold today')
+
+/** Shares, fractional ones as they are: 5 · 1.2 · 0.35. */
+export const sharesText = (qty: number) => `${qty.toLocaleString('en-US', { maximumFractionDigits: 4 })} ${qty === 1 ? 'Share' : 'Shares'}`
+export const qtyText = (qty: number) => qty.toLocaleString('en-US', { maximumFractionDigits: 4 })
+
+/** The stock's logo (on its plate) or the ETF issuer's, in an L3 Avatar. */
+export function PositionLogo({ position, size = 40 }: { position: UsPosition; size?: 32 | 40 }) {
+  if (position.kind === 'etf') return <Avatar src={etfLogoUrl(position.sym)} initials={position.sym.slice(0, 2)} size={size} />
+  return <HoldingLogo sym={position.sym} size={size} />
+}
+
+const toneOf = (n: number) => (n > 0 ? 'up' : n < 0 ? 'down' : undefined)
+export const returnsTone = (n: number): 'up' | 'down' | undefined => toneOf(Math.round(n * 100) / 100)
+
+/**
+ * A signed $ return in the profit / loss colour, with its % when given: "+$3.00 (+0.28%)". The % minus is a hyphen,
+ * as formatUsd's "-$3.00".
+ * FLAG / L3 gap: L3 PriceChange formats ₹ only (unit="currency"), so a $ amount — which must go through <Usd> for the
+ * app's ₹ switch — is coloured here with the same indicator tokens PriceChange uses.
+ */
+export function SignedUsd({ value, pct, className }: { value: number; pct?: number; className?: string }) {
+  const rounded = Math.round(value * 100) / 100
+  const pctText = pct === undefined ? '' : ` (${pct > 0 ? '+' : pct < 0 ? '-' : ''}${Math.abs(pct).toFixed(2)}%)`
+  return (
+    <span className={[styles.signed, className].filter(Boolean).join(' ')} data-tone={toneOf(rounded)}>
+      <Usd value={rounded} sign />
+      {pctText}
+    </span>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/UsPositions.module.css`
+
+```css
+/* Portfolio → Positions → US Stocks (UsPositions.tsx). L3 tokens only. */
+.label {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+/* "Total Returns" figure (Figma: Heading 18, coloured). */
+.total {
+  font: var(--l3-text-heading-18);
+  color: var(--l3-content-primary);
+}
+
+.value {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+```
+
+### `src/flows/us-stocks/screens/orders/UsPositions.tsx`
+
+```tsx
+// Portfolio → Positions → US Stocks: today's returns over every US position (the Positions tab's "Total Returns" card,
+// nLs24dTJdPz9A5pu3AWMbe 6754:66444, without its D / W / M / Y switch and week strip — US positions only ever cover
+// today), then one card per position. Nothing bought or sold today → the empty state.
+// FLAG: hard-coded sample positions (data.ts `positions`; the API would send them).
+import { Button } from '@l3/components/Button'
+import { Card } from '@l3/components/Card'
+import { EmptyState } from '@l3/components/EmptyState'
+import { Stack } from '@l3/components/Stack'
+import { useUsMarketSnapshot } from '../../../../shared/data/usStocks'
+import { Usd } from '../../../../shared/money'
+import { useUsNav } from '../../nav'
+import { STOCKS_HOME } from '../entry/ids'
+import { positions as samplePositions, type UsPosition } from './data'
+import { PositionCard } from './PositionCard'
+import { SignedUsd, usePositionsSummary } from './PositionParts'
+import styles from './UsPositions.module.css'
+
+/** No US trades today. The button goes to US Stocks home. */
+export function UsPositionsEmpty({ onExplore }: { onExplore?: () => void }) {
+  return (
+    <EmptyState
+      title="No US positions today"
+      description="Shares you buy or sell today show here until they settle into your Holdings the next day"
+      action={onExplore && <Button variant="primary" size="sm" onClick={onExplore}>Explore US Stocks</Button>}
+    />
+  )
+}
+
+/** Today's returns across the positions: the total (coloured), unrealised | realised (Figma: plain). */
+function TodaySummary({ list }: { list: UsPosition[] }) {
+  const sum = usePositionsSummary(list)
+  return (
+    <Card as="section" aria-label="Today’s returns on US positions">
+      <Stack gap="16">
+        <Stack gap="04">
+          <span className={styles.label}>Today’s returns</span>
+          <span className={styles.total}>
+            <SignedUsd value={sum.total} />
+          </span>
+        </Stack>
+        <Stack direction="horizontal" justify="between" gap="12">
+          <Stack gap="04">
+            <span className={styles.label}>Unrealised returns</span>
+            <span className={styles.value}><Usd value={Math.round(sum.unrealised * 100) / 100} sign /></span>
+          </Stack>
+          <Stack gap="04" align="end">
+            <span className={styles.label}>Realised returns</span>
+            <span className={styles.value}><Usd value={Math.round(sum.realised * 100) / 100} sign /></span>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Card>
+  )
+}
+
+/** The US side of Portfolio → Positions: summary + cards, or the empty state. */
+export function UsPositions({ list = samplePositions }: { list?: UsPosition[] }) {
+  const { go } = useUsNav()
+  useUsMarketSnapshot() // re-render when US prices refresh
+  if (!list.length) return <UsPositionsEmpty onExplore={() => go(STOCKS_HOME)} />
+  return (
+    <Stack gap="16">
+      <TodaySummary list={list} />
+      <Stack as="ul" gap="16" className={styles.list} aria-label="US positions">
+        {list.map((position) => (
+          <li key={position.id}>
+            <PositionCard position={position} go={go} />
+          </li>
+        ))}
+      </Stack>
+    </Stack>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/orders/data.ts`
+
+```ts
+// Portfolio → Orders and Positions for US Stocks: the sample orders and positions, every state they can be in, and the
+// screen ids. Layout from the F&O dev-handoff file's "Positions & orders" (nLs24dTJdPz9A5pu3AWMbe, 6754:65598), drawn
+// there for commodities; the content here is US stocks and ETFs.
+// This file is the API contract: an order has one status; the list it sits in (Open / History), its tags, its timeline
+// and its dock actions all follow from that status.
+// FLAG: hard-coded sample orders (the API would send them).
+import { catalogue } from '../../data'
+import { ETFS } from '../etf/data'
+
+/** Order Details (one screen, every status). */
+export const ORDER_DETAILS = '9001:40'
+/** Position Details (a US position's page). */
+export const POSITION_DETAILS = '9001:41'
+
+export type OrderSide = 'buy' | 'sell'
+export type OrderType = 'market' | 'limit' | 'sl'
+/** Stocks or ETFs — the "All orders ⇕" picker splits the lists by it. */
+export type AssetKind = 'stock' | 'etf'
+
+/**
+ * Where an order is.
+ * Open list: `open` (at the exchange, waiting for its price), `queued` (placed while the US market was closed — sent
+ * when it opens), `partial` (some shares bought / sold, the rest still waiting).
+ * History list: `executed`, `partial-executed` (the day ended with only some shares filled — the rest cancelled),
+ * `failed` (rejected by Lemonn's broker or the exchange), `cancelled` (by the user), `expired` (a Day order that never
+ * reached its price before the close).
+ */
+export type OrderStatus = 'open' | 'queued' | 'partial' | 'executed' | 'partial-executed' | 'failed' | 'cancelled' | 'expired'
+
+export const OPEN_STATUSES: OrderStatus[] = ['open', 'queued', 'partial']
+export const isOpen = (order: UsOrder) => OPEN_STATUSES.includes(order.status)
+
+/** The status label and its tone (the card maps the tone to an L3 Tag colour: warning → processing, positive → success, negative → error). */
+export const STATUS_TAG: Record<OrderStatus, { label: string; tone: 'warning' | 'positive' | 'negative' | 'neutral' }> = {
+  open: { label: 'Open', tone: 'warning' },
+  queued: { label: 'Queued', tone: 'warning' },
+  partial: { label: 'Partly filled', tone: 'warning' },
+  executed: { label: 'Executed', tone: 'positive' },
+  'partial-executed': { label: 'Partly executed', tone: 'positive' },
+  failed: { label: 'Failed', tone: 'negative' },
+  cancelled: { label: 'Cancelled', tone: 'neutral' },
+  expired: { label: 'Expired', tone: 'neutral' },
+}
+
+export const TYPE_LABEL: Record<OrderType, string> = { market: 'Market', limit: 'Limit', sl: 'Stop loss' }
+
+/** One step of Order Details' "Order Status" timeline. `state` colours the dot: done (grey), now (the status colour). */
+export type TimelineStep = { label: string; time?: string; state: 'done' | 'now' | 'failed' }
+
+export type UsOrder = {
+  id: string
+  sym: string
+  kind: AssetKind
+  side: OrderSide
+  type: OrderType
+  /** Shares asked for (US shares can be fractional). */
+  qty: number
+  /** Shares bought / sold so far. */
+  filled: number
+  /** Limit orders and the limit part of a stop loss. */
+  limitPrice?: number
+  /** Stop loss: the price that triggers it. */
+  triggerPrice?: number
+  /** Average price the filled shares went at. */
+  avgPrice?: number
+  status: OrderStatus
+  /** US orders are Day orders. */
+  validity: 'Day'
+  /** "3 Nov, 9:42 PM" (IST). */
+  placedAt: string
+  /** Lemonn's order id and the exchange's — both copyable on Order Details. */
+  orderId: string
+  exchangeId?: string
+  /** Why it failed / was cancelled / expired — shown on Order Details. */
+  reason?: string
+  timeline: TimelineStep[]
+}
+
+const received = (time: string): TimelineStep => ({ label: 'Request received', time, state: 'done' })
+const placed = (time: string): TimelineStep => ({ label: 'Order placed with exchange', time, state: 'done' })
+
+// The sample story (today is Tue 3 Nov, IST; US daylight time ended 1 Nov, so the market now runs 8:00 PM – 2:30 AM
+// IST, and ran 7:00 PM – 1:30 AM before that). The user's one US holding is 12 NVDA (NVDA_HOLDING in data.ts): 13
+// bought 27 Oct + 5 of 8 on 28 Oct = 18, minus the 6 sold today (o3) — so every sell is of NVDA shares they hold.
+// Today's executed AMD and VTI buys and today's NVDA sale are the Positions tab (they settle into Holdings at T+1).
+
+/** Orders still working — the Open list. */
+export const openOrders: UsOrder[] = [
+  {
+    id: 'o1', sym: 'AAPL', kind: 'stock', side: 'buy', type: 'limit', qty: 4, filled: 0, limitPrice: 332,
+    status: 'open', validity: 'Day', placedAt: '3 Nov, 9:42 PM', orderId: '1180234561', exchangeId: 'NSDQ8823410977',
+    timeline: [received('9:42 PM'), placed('9:42 PM'), { label: 'Waiting for $332.00 or lower', state: 'now' }],
+  },
+  {
+    id: 'o2', sym: 'QQQ', kind: 'etf', side: 'buy', type: 'market', qty: 2.5, filled: 0,
+    status: 'queued', validity: 'Day', placedAt: '3 Nov, 6:15 PM', orderId: '1180229874',
+    timeline: [received('6:15 PM'), { label: 'Sent to the exchange when the US market opens at 8:00 PM', state: 'now' }],
+  },
+  {
+    id: 'o3', sym: 'NVDA', kind: 'stock', side: 'sell', type: 'limit', qty: 10, filled: 6, limitPrice: 206, avgPrice: 206.18,
+    status: 'partial', validity: 'Day', placedAt: '3 Nov, 8:31 PM', orderId: '1180231190', exchangeId: 'NSDQ8823398112',
+    timeline: [received('8:31 PM'), placed('8:31 PM'), { label: '6 of 10 shares sold', time: '8:47 PM', state: 'done' }, { label: 'Waiting for $206.00 or higher', state: 'now' }],
+  },
+  {
+    id: 'o4', sym: 'NVDA', kind: 'stock', side: 'sell', type: 'sl', qty: 2, filled: 0, triggerPrice: 195, limitPrice: 194,
+    status: 'open', validity: 'Day', placedAt: '3 Nov, 9:05 PM', orderId: '1180233002', exchangeId: 'NSDQ8823404561',
+    timeline: [received('9:05 PM'), placed('9:05 PM'), { label: 'Triggers if the price falls to $195.00', state: 'now' }],
+  },
+]
+
+/** Finished orders — the History list, newest first. */
+export const historyOrders: UsOrder[] = [
+  {
+    id: 'h1', sym: 'VTI', kind: 'etf', side: 'buy', type: 'limit', qty: 1.2, filled: 1.2, limitPrice: 371, avgPrice: 370.9,
+    status: 'executed', validity: 'Day', placedAt: '3 Nov, 8:20 PM', orderId: '1180230017', exchangeId: 'ARCA5520193847',
+    timeline: [received('8:20 PM'), placed('8:20 PM'), { label: 'Order executed', time: '9:26 PM', state: 'now' }],
+  },
+  {
+    id: 'h2', sym: 'AMD', kind: 'stock', side: 'buy', type: 'limit', qty: 5, filled: 5, limitPrice: 468, avgPrice: 467.35,
+    status: 'executed', validity: 'Day', placedAt: '3 Nov, 8:12 PM', orderId: '1180229956', exchangeId: 'NSDQ8823390214',
+    timeline: [received('8:12 PM'), placed('8:12 PM'), { label: 'Order executed', time: '9:18 PM', state: 'now' }],
+  },
+  {
+    id: 'h4', sym: 'META', kind: 'stock', side: 'buy', type: 'market', qty: 2, filled: 0,
+    status: 'failed', validity: 'Day', placedAt: '30 Oct, 7:45 PM', orderId: '1179870345',
+    reason: 'Not enough balance in your USD wallet when the order reached the exchange.',
+    timeline: [received('7:45 PM'), { label: 'Order rejected', time: '7:45 PM', state: 'failed' }],
+  },
+  {
+    id: 'h5', sym: 'NVDA', kind: 'stock', side: 'sell', type: 'limit', qty: 5, filled: 0, limitPrice: 215,
+    status: 'cancelled', validity: 'Day', placedAt: '29 Oct, 9:30 PM', orderId: '1179762210', exchangeId: 'NSDQ8817720035',
+    reason: 'You cancelled this order.',
+    timeline: [received('9:30 PM'), placed('9:30 PM'), { label: 'Cancelled by you', time: '9:52 PM', state: 'now' }],
+  },
+  {
+    id: 'h3', sym: 'NVDA', kind: 'stock', side: 'buy', type: 'limit', qty: 8, filled: 5, limitPrice: 174, avgPrice: 173.54,
+    status: 'partial-executed', validity: 'Day', placedAt: '28 Oct, 10:20 PM', orderId: '1179640012', exchangeId: 'NSDQ8814511734',
+    reason: '3 shares didn’t reach $174.00 before the market closed, so that part was cancelled.',
+    timeline: [received('10:20 PM'), placed('10:20 PM'), { label: '5 of 8 shares bought', time: '11:02 PM', state: 'done' }, { label: 'Rest cancelled at market close', time: '1:30 AM', state: 'now' }],
+  },
+  {
+    id: 'h6', sym: 'GOOGL', kind: 'stock', side: 'buy', type: 'limit', qty: 3, filled: 0, limitPrice: 268,
+    status: 'expired', validity: 'Day', placedAt: '27 Oct, 8:10 PM', orderId: '1179522876', exchangeId: 'NSDQ8814420098',
+    reason: 'The price didn’t reach $268.00 before the market closed. Day orders end at the close.',
+    timeline: [received('8:10 PM'), placed('8:10 PM'), { label: 'Expired at market close', time: '1:30 AM', state: 'now' }],
+  },
+  {
+    id: 'h7', sym: 'NVDA', kind: 'stock', side: 'buy', type: 'market', qty: 13, filled: 13, avgPrice: 172.1,
+    status: 'executed', validity: 'Day', placedAt: '27 Oct, 7:04 PM', orderId: '1179521203', exchangeId: 'NSDQ8814399410',
+    timeline: [received('7:04 PM'), placed('7:04 PM'), { label: 'Order executed', time: '7:04 PM', state: 'now' }],
+  },
+]
+
+/** The stock / ETF behind an order or position (name, exchange, live price). */
+export function assetFor(item: Pick<UsOrder, 'sym' | 'kind'>): { name: string; exchange: string; price: number } {
+  // The live catalogue has ETFs too (from the US snapshot); the ETF list is the fallback for a name.
+  const live = catalogue[item.sym]
+  const etf = item.kind === 'etf' ? ETFS.find((e) => e.sym === item.sym) : undefined
+  return {
+    name: etf?.name ?? live?.name ?? item.sym,
+    exchange: live?.exchange ?? (item.kind === 'etf' ? 'NYSE ARCA' : 'NASDAQ'),
+    price: live?.price ?? etf?.price ?? 0,
+  }
+}
+
+// The order Order Details shows (set by the card that opens it).
+let currentOrder: UsOrder = openOrders[0]
+export const getCurrentOrder = () => currentOrder
+export function openOrder(go: (figma: string) => void, order: UsOrder) {
+  currentOrder = order
+  go(ORDER_DETAILS)
+}
+
+/** A US position: shares bought or sold today, before they settle into Holdings (T+1). US Stocks are delivery only. */
+export type UsPosition = {
+  id: string
+  sym: string
+  kind: AssetKind
+  side: OrderSide
+  qty: number
+  avgPrice: number
+  /** Sell positions: what the shares were sold at; returns are realised. */
+  realised?: number
+}
+
+export const positions: UsPosition[] = [
+  // Today's executed orders: h2 (AMD), h1 (VTI) and the 6 NVDA shares o3 has sold so far — realised (206.18 − 172.50) × 6.
+  { id: 'p1', sym: 'AMD', kind: 'stock', side: 'buy', qty: 5, avgPrice: 467.35 },
+  { id: 'p2', sym: 'VTI', kind: 'etf', side: 'buy', qty: 1.2, avgPrice: 370.9 },
+  { id: 'p3', sym: 'NVDA', kind: 'stock', side: 'sell', qty: 6, avgPrice: 206.18, realised: 202.08 },
+]
+
+let currentPosition: UsPosition = positions[0]
+export const getCurrentPosition = () => currentPosition
+export function openPosition(go: (figma: string) => void, position: UsPosition) {
+  currentPosition = position
+  go(POSITION_DETAILS)
+}
+```
+
+### `src/flows/us-stocks/screens/orders/index.tsx`
+
+```tsx
+// Portfolio → Orders and Positions for US Stocks (layout from the F&O dev-handoff file's "Positions & orders",
+// nLs24dTJdPz9A5pu3AWMbe 6754:65598). The Open / History lists live in Portfolio's Orders tab and the position cards in
+// its Positions tab (screens/entry); these are the pages they open.
+import type { UsScreenMap } from '../types'
+import { ORDER_DETAILS, POSITION_DETAILS } from './data'
+import { OrderDetailsFor, OrderDetailsScreen } from './OrderDetailsScreen'
+import { PositionDetailsScreen } from './PositionDetailsScreen'
+
+/** Order Details in each status, for the preview (figma id → sample order id in data.ts). */
+export const ORDER_STATE_SCREENS: Record<string, string> = {
+  '9001:42': 'o1', // Open · Limit buy
+  '9001:43': 'o2', // Queued · ETF market buy
+  '9001:44': 'o3', // Partly filled · Limit sell
+  '9001:45': 'o4', // Open · Stop-loss sell
+  '9001:46': 'h7', // Executed · Market buy
+  '9001:47': 'h1', // Executed · ETF limit buy
+  '9001:48': 'h3', // Partly executed · Limit buy
+  '9001:49': 'h4', // Failed
+  '9001:50': 'h5', // Cancelled · Limit sell
+  '9001:51': 'h6', // Expired
+}
+
+export const screens: UsScreenMap = {
+  [ORDER_DETAILS]: OrderDetailsScreen, // Order Details (every status)
+  [POSITION_DETAILS]: PositionDetailsScreen, // Position Details
+  ...Object.fromEntries(
+    Object.entries(ORDER_STATE_SCREENS).map(([figma, id]) => [figma, ({ backdrop }: { backdrop?: boolean }) => <OrderDetailsFor id={id} backdrop={backdrop} />]),
+  ),
+}
+```
+
 ### `src/flows/us-stocks/screens/trade/FeeBreakdown.module.css`
 
 ```css
@@ -33884,201 +35809,35 @@ function FeeBreakdownSheet({ onClose }: { onClose: () => void }) {
 ### `src/flows/us-stocks/screens/trade/OrderPad.module.css`
 
 ```css
-/* FLAG: hand-made order pad — bordered .field boxes, amount <input>, toggle button and info dock; layout is raw display:flex + gap/padding, not L3 Stack / Section / Inset. */
+/* US Stocks order pad, laid out like the commodity options order pad (fno/order-pad/screens/OrderPad.module.css). */
+.contract { display: flex; flex-direction: column; align-items: flex-start; gap: var(--l3-spacing-02); }
+.contractName { font: var(--l3-text-heading-14); color: var(--l3-content-primary); }
+.contractPrice { display: inline-flex; align-items: center; gap: var(--l3-spacing-08); font: var(--l3-text-label-12); color: var(--l3-content-primary); }
+.exchange { font: var(--l3-text-label-12); color: var(--l3-content-primary); }
 
-.barGap {
-  height: var(--l3-spacing-08);
-  display: block;
-}
+.body { padding: var(--l3-spacing-16); }
 
-.quote {
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  display: inline-flex;
-}
+/* A field row: label, value, compact stepper at the right — bordered, 08 radius. */
+.field { display: flex; align-items: center; gap: var(--l3-spacing-08); min-height: var(--l3-size-40); padding: var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-12); border: 1px solid var(--l3-border-light); border-radius: var(--l3-radius-08); }
+.field[data-error] { border-color: var(--l3-border-accent-error-default); }
+.fieldLabel { flex: 1; display: inline-flex; align-items: center; font: var(--l3-text-label-12); color: var(--l3-content-secondary); }
+.fieldValue { font: var(--l3-text-heading-12); color: var(--l3-content-primary); }
+/* The amount / shares switch, as the commodity pad's Quantity ⇕ Lots. */
+.toggle { display: inline-flex; align-items: center; gap: var(--l3-spacing-02); padding: 0; border: 0; background: none; color: var(--l3-content-primary); font: var(--l3-text-label-12); cursor: pointer; }
+.amount { flex: 1; min-width: 0; height: var(--l3-size-32); margin: 0; padding: 0 var(--l3-spacing-08); border: 0; outline: none; background: none; font: var(--l3-text-heading-12); color: var(--l3-content-primary); text-align: right; caret-color: var(--l3-content-primary); }
+/* Steppers are the L3 Stepper Small as it is (dark + / −), as on the commodity pad. */
 
-.price {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-primary);
-}
+.helper { display: flex; justify-content: space-between; gap: var(--l3-spacing-08); font: var(--l3-text-label-12); color: var(--l3-content-secondary); }
+.error { margin: 0; font: var(--l3-text-label-12); color: var(--l3-content-accent-error-default); }
 
-.change {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-accent-indicator-up-default);
-  align-items: center;
-  display: inline-flex;
-}
-
-.arrow {
-  margin: 0 calc(-1 * var(--l3-spacing-02));
-}
-
-.change[data-down] {
-  color: var(--l3-content-accent-indicator-down-default);
-}
-
-.pad {
-  gap: var(--l3-spacing-16);
-  padding: var(--l3-spacing-24) 0;
-  flex-direction: column;
-  display: flex;
-}
-
-.typeRow {
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  padding: 0 var(--l3-spacing-16);
-  display: flex;
-}
-
-.validity {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-}
-
-.controls {
-  gap: var(--l3-spacing-12);
-  padding: 0 var(--l3-spacing-16);
-  flex-direction: column;
-  display: flex;
-}
-
-.field {
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  min-height: var(--l3-size-24);
-  padding: var(--l3-spacing-08) var(--l3-spacing-08) var(--l3-spacing-08) var(--l3-spacing-08);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-primary);
-  display: flex;
-}
-
-.field[data-error] {
-  border-color: var(--l3-border-accent-error-default);
-}
-
-.fieldLabel {
-  padding-left: var(--l3-spacing-04);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-primary);
-  flex: 1;
-  align-items: center;
-  display: inline-flex;
-}
-
-.toggle {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  min-height: var(--l3-size-24);
-  font: inherit;
-  color: var(--l3-content-primary);
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-}
-
-.fieldPrice {
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-}
-
-.amount {
-  box-sizing: border-box;
-  min-width: 0;
-  height: var(--l3-size-28);
-  padding: 0 var(--l3-spacing-04);
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-  text-align: right;
-  caret-color: var(--l3-content-accent-us-stock-default);
-  background: 0 0;
-  border: 0;
-  outline: none;
-  flex: 1;
-  margin: 0;
-}
-
-.blueStepper.blueStepper button:not(:disabled) { /* FLAG: overrides L3 Stepper button colours from outside */
-  background: var(--l3-surface-accent-us-stock-light);
-  color: var(--l3-content-accent-us-stock-default);
-}
-
-.helper {
-  justify-content: space-between;
-  gap: var(--l3-spacing-08);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-  display: flex;
-}
-
-.error {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-accent-error-default);
-  margin: 0;
-}
-
-.link {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-accent-discover-default);
-}
-
-.actions {
-  flex-direction: column;
-  display: flex;
-}
-
-.note {
-  padding: var(--l3-spacing-12);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-  text-align: center;
-  margin: 0;
-}
-
-.dock {
-  gap: var(--l3-spacing-12);
-  padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-16);
-  background: var(--l3-surface-default);
-  box-shadow: inset 0 1px 0 var(--l3-border-light);
-  flex-direction: column;
-  display: flex;
-}
-
-.info {
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-
-.infoItem {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  cursor: default;
-  background: 0 0;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-}
-
-button.infoItem {
-  cursor: pointer;
-}
-
-.muted {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-}
-
-.strong {
-  font: var(--l3-text-heading-12);
-  color: var(--l3-content-primary);
-}
+/* Dock: optional note, then Avail. · Req. and the action. */
+.dock { background: var(--l3-surface-primary); }
+.note { margin: 0; padding: var(--l3-spacing-12) var(--l3-spacing-16); font: var(--l3-text-label-12); color: var(--l3-content-secondary); text-align: center; }
+.dockBody { display: flex; flex-direction: column; gap: var(--l3-spacing-12); padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-16); border-top: 1px solid var(--l3-border-light); }
+.funds { display: flex; justify-content: space-between; font: var(--l3-text-label-12); }
+.funds strong { font: var(--l3-text-heading-12); color: var(--l3-content-primary); }
+.muted { color: var(--l3-content-secondary); }
+.req { padding: 0; border: 0; background: none; color: var(--l3-content-accent-discover-default); font: var(--l3-text-label-12); text-decoration: underline; cursor: pointer; }
 ```
 
 ### `src/flows/us-stocks/screens/trade/OrderPad.tsx`
@@ -34086,22 +35845,26 @@ button.infoItem {
 ```tsx
 // The Buy / Sell order pad (T01–T10, H03–H05, H11): order type tabs, amount or shares field, limit / trigger prices,
 // helper line, and the dock with Avail. / Req. and the main button.
-// FLAG: hand-made order pad — bordered field boxes, a raw <input> for the amount, a text toggle button for amount/shares
-// and a custom dock (OrderPad.module.css); no L3 TextField / ListCell / Section.
-// FLAG: layout is raw display:flex + gap/padding (OrderPad.module.css), not L3 Stack / Section / Inset.
+// Layout and look follow the commodity options order pad (F&O fno-25 … 31): header with the price and signed change,
+// small pill order types with the validity Select beside them, 40-high bordered rows with L3 Stepper Small, and the
+// dock with the note, Avail. · Req. and a Large button. The content (amount in $ or shares, limit / trigger prices as %
+// from the last price, chips, the helper line) is the US pad's own.
+// FLAG: the amount is a raw <input> in a bordered row, not an L3 field (the commodity pad has no amount field to copy).
 // FLAG: the amount field is a plain <input> on the device's own keyboard, not the app's shared Keyboard (src/shared/ui/Keyboard).
 // FLAG: duplicates the app's Indian order pad (src/flows/stocks) for US stocks.
 import { useState, type ReactNode } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Button } from '@l3/components/Button'
 import { Icon } from '@l3/components/Icon'
+import { PriceChange } from '@l3/components/PriceChange'
+import { Stack } from '@l3/components/Stack'
 import { Stepper } from '@l3/components/Stepper'
 import { Tabs } from '@l3/components/Tabs'
+import { Tag } from '@l3/components/Tag'
+import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
 import { Usd, useInrEquivalent, useUsd } from '../../../../shared/money'
-import { arrowDropDownIcon, arrowDropUpIcon } from '../money/icons'
-import { MaskImage } from '../money/components/MaskImage'
 import { al, forCurrentStock, il } from './format'
 import type { Derived, OrderPadConfig, OrderType, PadMode } from './types'
 import styles from './OrderPad.module.css'
@@ -34155,56 +35918,41 @@ export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; 
       <span className={styles.fieldLabel}>
         <button type="button" className={styles.toggle} onClick={switchMode} aria-label={`${label}. Switch to ${mode === 'amount' ? 'shares' : 'amount'}`}>
           {label}
-          <MaskImage src="assets/trade/switch-toggle.svg" w={12} />
+          <Icon icon={lmSwitchArrowVertical} size={12} />
         </button>
       </span>
     ) : (
       <span className={styles.fieldLabel}>{label}</span>
     )
 
-  const down = config.stock.change < 0
+  // Header as on the commodity order pad (fno-25): the symbol over its price and signed change, the exchange on the right.
   const header = (
     <Actionbar
       headingLevel={1}
       onBack={() => back(config.back)}
-      title={config.stock.symbol}
-      description={
-        <span className={styles.quote}>
-          <span className={styles.price}><Usd value={config.stock.price} layout="inline" /></span>
-          <span className={styles.change} data-down={down || undefined}>
-            <Icon icon={down ? arrowDropDownIcon : arrowDropUpIcon} size={16} className={styles.arrow} />
-            {Math.abs(config.stock.change).toFixed(2)}%
-          </span>
+      title={
+        <span className={styles.contract}>
+          <span className={styles.contractName}>{config.stock.symbol}</span>
+          <span className={styles.contractPrice}><Usd value={config.stock.price} layout="inline" /><PriceChange value={config.stock.change} unit="percent" size="sm" /></span>
         </span>
       }
-      actions={<Button variant="ghost" size="sm">{config.stock.exchange}</Button>}
-      bottom={<span className={styles.barGap} aria-hidden="true" />}
+      actions={<span className={styles.exchange}>{config.stock.exchange}</span>}
     />
   )
 
-  const reqClass = config.reqLabel === 'View Charges' ? styles.link : styles.muted
+  // Dock as on the commodity order pad: the note above, then Avail. · Req. (a link when it opens something) and the action.
+  const reqLabel = onReq
+    ? <button type="button" className={styles.req} onClick={onReq}>{config.reqLabel}</button>
+    : <span className={styles.muted}>{config.reqLabel}</span>
   const footer = (
-    <div className={styles.actions}>
+    <div className={styles.dock}>
       {derived.note && <p className={styles.note}>{forCurrentStock(derived.note)}</p>}
-      <div className={styles.dock}>
-        <div className={styles.info}>
-          <span className={styles.infoItem}>
-            <span className={styles.muted}>{config.availLabel}</span>
-            <strong className={styles.strong}><Usd text={config.avail} layout="inline" /></strong>
-          </span>
-          {onReq ? (
-            <button type="button" className={styles.infoItem} onClick={onReq}>
-              <span className={reqClass}>{config.reqLabel}</span>
-              {derived.req && <strong className={styles.strong}>{derived.req}</strong>}
-            </button>
-          ) : (
-            <span className={styles.infoItem}>
-              <span className={reqClass}>{config.reqLabel}</span>
-              {derived.req && <strong className={styles.strong}>{derived.req}</strong>}
-            </span>
-          )}
+      <div className={styles.dockBody}>
+        <div className={styles.funds}>
+          <span><span className={styles.muted}>{config.availLabel}</span> <strong><Usd text={config.avail} layout="inline" /></strong></span>
+          <span>{reqLabel}{derived.req && <> <strong>{derived.req}</strong></>}</span>
         </div>
-        <Button variant={config.side === 'buy' ? 'buy' : 'sell'} size="lg" fullWidth disabled={ctaDisabled} onClick={goTo('cta')}>
+        <Button variant={config.side === 'buy' ? 'brand' : 'sell'} size="lg" fullWidth disabled={ctaDisabled} onClick={goTo('cta')}>
           {config.cta.label}
         </Button>
       </div>
@@ -34214,12 +35962,13 @@ export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; 
   const fieldError = typeof config.fieldError === 'function' ? config.fieldError(derived) : config.fieldError
 
   return (
-    <Phone label={forCurrentStock(config.label)} header={header} footer={footer} gesture="none">
-      <div className={styles.pad} inert={backdrop || undefined}>
-        <div className={styles.typeRow}>
+    <Phone label={forCurrentStock(config.label)} header={header} footer={footer} gesture="none" topLine>
+      <Stack gap="16" className={styles.body} inert={backdrop || undefined}>
+        <Stack direction="horizontal" align="center" justify="between">
           {/* FLAG: order type switch is L3 Tabs (pill, toggle) but its choice also navigates to another screen. */}
           <Tabs
             appearance="pill"
+            size="sm"
             behavior="toggle"
             aria-label="Order type"
             items={ORDER_TYPES}
@@ -34229,69 +35978,71 @@ export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; 
               if (type !== config.type && target) go(target)
             }}
           />
-          <span className={styles.validity}>Day</span>
-        </div>
-        <div className={styles.controls}>
-          <div className={styles.field} data-error={fieldError || undefined}>
-            {mode === 'amount' ? (
-              <>
-                {fieldLabel('Amount', config.toggle)}
-                <input className={styles.amount} inputMode="decimal" aria-label="Amount in dollars" value={`$${amountText}`} onChange={(e) => typeAmount(e.target.value)} />
-              </>
-            ) : (
-              <>
-                {fieldLabel('Shares', config.toggle)}
-                <Stepper
-                  className={styles.blueStepper}
-                  label="Shares"
-                  value={current}
-                  onChange={setShown}
-                  min={mode === config.mode ? (config.min ?? 0) : 0}
-                  step={1}
-                  autoCorrect={mode === config.mode && (config.min ?? 0) >= 1}
-                  format={il}
-                />
-              </>
-            )}
-          </div>
-          {(config.prices ?? []).map((price, i) => (
-            <div className={styles.field} key={price.label}>
-              {fieldLabel(price.label)}
-              <span className={styles.fieldPrice}><Usd value={prices[i]} layout="inline" /></span>
+          {/* US orders are Day orders only: the validity is a label (a Tag), not the commodity pad's Select — nothing to pick. */}
+          <Tag variant="secondary" color="neutral" aria-label="Validity: Day">Day</Tag>
+        </Stack>
+        <div className={styles.field} data-error={fieldError || undefined}>
+          {mode === 'amount' ? (
+            <>
+              {fieldLabel('Amount', config.toggle)}
+              <input className={styles.amount} inputMode="decimal" aria-label="Amount in dollars" value={`$${amountText}`} onChange={(e) => typeAmount(e.target.value)} />
+            </>
+          ) : (
+            <>
+              {fieldLabel('Shares', config.toggle)}
               <Stepper
-                className={styles.blueStepper}
-                label={`${price.label} % from last price`}
-                value={pcts[i]}
-                onChange={(pct) => setPcts((all) => all.map((old, j) => (j === i ? pct : old)))}
-                min={-20}
-                max={20}
-                step={0.5}
-                format={(pct) => `${pct.toFixed(1)}%`}
+                size="sm"
+                className={styles.stepper}
+                label="Shares"
+                value={current}
+                onChange={setShown}
+                min={mode === config.mode ? (config.min ?? 0) : 0}
+                step={1}
+                autoCorrect={mode === config.mode && (config.min ?? 0) >= 1}
+                format={il}
               />
-            </div>
-          ))}
-          {derived.error && <p className={styles.error}>{forCurrentStock(derived.error)}</p>}
-          {(derived.left || derived.right) && (
-            <div className={styles.helper}>
-              <span>{derived.left}</span>
-              <span>{derived.right}</span>
-            </div>
-          )}
-          {config.chips && mode === config.mode && (
-            <Tabs
-              appearance="pill"
-              behavior="filter"
-              aria-label={mode === 'amount' ? 'Add amount' : 'Shares to sell'}
-              items={config.chips.map((chip, i) => ({ value: String(i), label: typeof chip.label === 'function' ? chip.label(usd) : chip.label }))}
-              value=""
-              onChange={(label) => {
-                const chip = config.chips?.[Number(label)]
-                if (chip) applyChip(chip.apply)
-              }}
-            />
+            </>
           )}
         </div>
-      </div>
+        {(config.prices ?? []).map((price, i) => (
+          <div className={styles.field} key={price.label}>
+            {fieldLabel(price.label)}
+            <span className={styles.fieldValue}><Usd value={prices[i]} layout="inline" /></span>
+            <Stepper
+              size="sm"
+              className={styles.stepper}
+              label={`${price.label} % from last price`}
+              value={pcts[i]}
+              onChange={(pct) => setPcts((all) => all.map((old, j) => (j === i ? pct : old)))}
+              min={-20}
+              max={20}
+              step={0.5}
+              format={(pct) => `${pct.toFixed(1)}%`}
+            />
+          </div>
+        ))}
+        {derived.error && <p className={styles.error}>{forCurrentStock(derived.error)}</p>}
+        {(derived.left || derived.right) && (
+          <div className={styles.helper}>
+            <span>{derived.left}</span>
+            <span>{derived.right}</span>
+          </div>
+        )}
+        {config.chips && mode === config.mode && (
+          <Tabs
+            appearance="pill"
+            size="sm"
+            behavior="filter"
+            aria-label={mode === 'amount' ? 'Add amount' : 'Shares to sell'}
+            items={config.chips.map((chip, i) => ({ value: String(i), label: typeof chip.label === 'function' ? chip.label(usd) : chip.label }))}
+            value=""
+            onChange={(label) => {
+              const chip = config.chips?.[Number(label)]
+              if (chip) applyChip(chip.apply)
+            }}
+          />
+        )}
+      </Stack>
       {sheet}
     </Phone>
   )
