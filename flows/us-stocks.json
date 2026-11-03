@@ -249,6 +249,7 @@
     "src/flows/us-stocks/screens/wallet/lib/swipeTabs.ts",
     "src/flows/us-stocks/screens/wallet/lib/useSheetClose.ts",
     "src/flows/us-stocks/screens/wallet/sheets/CancelWithdrawalSheet.tsx",
+    "src/flows/us-stocks/screens/wallet/sheets/DepositProgressSheet.tsx",
     "src/flows/us-stocks/screens/wallet/sheets/Sheets.module.css",
     "src/flows/us-stocks/screens/wallet/sheets/WithdrawableSheet.tsx",
     "src/flows/us-stocks/screens/wallet/sheets/WithdrawalRequestsSheet.tsx"

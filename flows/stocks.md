@@ -299,6 +299,9 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 - 2026-11-03 — Top analyst picks page (`stocks-29` / `30`): View all on the US tab's picks opens it instead of Market. Flat tabs Stocks (full breakdown per pick) and History (track record + closed picks). Sample data in `components/us/data.ts` (`analystPicks` ratings / picked on, `closedPicks`).
 - 2026-11-03 — Top analyst picks page rebuilt from the live Trade Ideas screenshots: Stocks cards (LTP, average target + rating, expected profit · % recommend under a hairline) and History grouped by day (Today / Yesterday / date) with entry → exit and "Target hit in N days". Track record card, intros and progress bars removed. `closedPicks` now has an ISO `closedOn` + `days` held; `PICKS_TODAY` is the sample's today.
 - 2026-11-03 — US tab, Brands You Know: cards laid out like the India tab's Top Movers cards — logo 48, name, today's price (live, `<Usd>`), today's move (PriceChange). Market cap dropped from the card and from `brandRows`.
+- 2026-11-03 — US tab, money on the way (`stocks-20`): the top is the holdings card as when holding, at $0.00, with a small "Money on the way" card under it (L3 ListCell card: clock, title, "Expected ready to trade by Thu 8 PM", chevron → the transfer, `us-stocks-28`). The tinted card with the Paid → Sent to US → Ready stepper is no longer used there (`TransferStatusCard` in `components/us/TransferProgress.tsx`).
+- 2026-11-03 — Home setting **Header** archived: "Holdings on page" is the only header. The card variant stays in code (`HEADER_CARD` in `screens/Home.tsx`) but isn't offered in the panel or the phone's settings pills.
+- 2026-11-03 — US tab heatmap uses F&O's Futures Heatmap tiles, so it looks the same everywhere: edge to edge, square flat Cards 1px apart, solid up / down colour, inverted text (Heading 12 symbol, Heading 16 %, Label 14 price at 60%). The tinted, strength-scaled tiles and `heatStrength` are gone.
 - 2026-11-03 — US tab cards (Top Movers, analyst picks, Brands You Know, Explore by themes) sit on surface-primary instead of surface-default, so they lift off the page in dark mode.
 - 2026-11-03 — Themes page: one page for every theme, like ETFs — "Themes" in the Actionbar with the themes as pill tabs below it; a theme card opens it on that theme, Explore by themes' View all on the first. The More themes rail is gone.
 - 2026-11-03 — Explore by themes shows returns: each theme card has its 1Y return (green / red) above "N stocks ›"; the theme page (`stocks-23` …) has a Returns card under the description — 1M (real, equal-weight from the snapshot's month of closes, `themeMonthReturn`), 1Y and 3Y (sample, `themes[].returns`), "$100 put in these stocks 3 years ago would be $X today" and a past-returns note.
@@ -20179,7 +20182,7 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
 
 .was {
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   text-decoration: line-through;
 }
 
@@ -20218,7 +20221,7 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4; /* live app: four lines, then … Read More */
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .disclosureText[data-open] {
@@ -20458,10 +20461,6 @@ const homeVersionOption: FlowOption = {
   id: 'homeVersion', label: 'Homepage version', default: DEFAULT_HOME_VERSION,
   values: activeHomeVersions.map((v) => ({ value: v.id, label: `${v.id.toUpperCase()} · ${v.name}` })),
 }
-const headerOption: FlowOption = {
-  id: 'header', label: 'Header', default: 'page',
-  values: [{ value: 'page', label: 'Holdings on page' }, { value: 'card', label: 'Holdings in card' }],
-}
 
 // The pills, in order. User status first (each one only while the one before has the listed values, as in the panel),
 // then the Home's own settings.
@@ -20470,7 +20469,6 @@ const items: Item[] = [
   { owner: USER_STATUS, option: userStatus('usWallet'), short: (v) => t(`switcher.wallet.${v as UsWallet}`) },
   { owner: USER_STATUS, option: userStatus('usHoldings'), short: (v) => t(`switcher.holdings.${v as UsHoldings}`) },
   { owner: 'stocks', option: homeVersionOption, short: (v) => v.toUpperCase() },
-  { owner: 'stocks', option: headerOption, short: (v) => t(`switcher.header.${v as 'page' | 'card'}`) },
 ]
 
 /**
@@ -22808,7 +22806,8 @@ export function LogoStack({ symbols, max = 3 }: { symbols: string[]; max?: numbe
 // L3 Steps' (done: success disc + check · to do: outline ring); the running step is a live dot with a soft pulse.
 import { Fragment, type ReactNode } from 'react'
 import { Icon } from '@l3/components/Icon'
-import { msCheck, msShieldLockFill } from '@l3/icons/material'
+import { ListCell } from '@l3/components/ListCell'
+import { msCheck, msChevronRight, msScheduleFill, msShieldLockFill } from '@l3/icons/material'
 import { Usd } from '../../../../shared/money'
 import { usTransfer, type TransferStep } from './data'
 import { t } from '../../copy'
@@ -22856,6 +22855,22 @@ export function TransferSafeLine() {
       <Icon icon={msShieldLockFill} size={16} />
       <span>{t('us.transfer.safe')}</span>
     </p>
+  )
+}
+
+/** Money on the way, as a small card under the US holdings ($0.00 until the money lands): the clock, "Money on the way",
+ *  when it's ready to trade, and a chevron to the transfer's details. */
+export function TransferStatusCard({ onOpen }: { onOpen?: () => void }) {
+  return (
+    <ListCell
+      variant="card"
+      as="button"
+      iconLeft={<span className={styles.transferStatusIcon}><Icon icon={msScheduleFill} /></span>}
+      label={t('us.onTheWay.title')}
+      description={t('us.onTheWay.subtitle')}
+      iconRight={<Icon icon={msChevronRight} />}
+      onClick={onOpen}
+    />
   )
 }
 ```
@@ -23082,6 +23097,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .stateIcon[data-status='warning'] { color: var(--l3-content-accent-warning-default); }
 .stateIcon[data-status='error'] { color: var(--l3-content-accent-error-default); }
+.transferStatusIcon { display: flex; color: var(--l3-content-accent-warning-default); }
 .stateIcon[data-status='success'] { color: var(--l3-content-accent-success-default); }
 
 /* FLAG: hand-made horizontal stepper (L3 Steps is vertical only). Row 1, the track across the panel's full width:
@@ -23207,7 +23223,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .transferDetail {
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   white-space: nowrap;
 }
 
@@ -23257,7 +23273,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .cardSub {
   margin: 0;
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   font: var(--l3-text-description-12);
 }
 
@@ -23662,7 +23678,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   justify-content: space-between;
   width: 126px; /* FLAG: raw px — the titan card's inner width */
   font: var(--l3-text-label-10);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .pickFoot > span {
@@ -23692,66 +23708,32 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 }
 
 /* ---- Sectors heatmap ---- */
+/* Heatmap: the same tiles as F&O's Futures Heatmap (fno/components/HomeParts.module.css). */
 .heatmap {
-  overflow: hidden;
-  border-radius: var(--l3-radius-12);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px; /* hairline gaps between tiles */
 }
 
-/* FLAG: hand-made heatmap tile (button) instead of L3 Card */
-.tile {
-  position: relative;
-  isolation: isolate;
+.heatCell {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--l3-spacing-02);
-  height: 72px; /* FLAG: raw px */
-  padding: var(--l3-spacing-10) 0 0;
+  justify-content: space-between;
+  gap: var(--l3-spacing-24);
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: var(--l3-spacing-16) var(--l3-spacing-12);
   border: 0;
-  background: var(--l3-surface-primary);
-  color: var(--l3-content-primary);
+  color: var(--l3-content-inverted);
+  text-align: center;
   cursor: pointer;
 }
 
-.tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--l3-surface-accent-indicator-down-default);
-  opacity: var(--heat);
-  transition: opacity 0.9s var(--l3-motion-easing-standard), background-color 0.9s var(--l3-motion-easing-standard);
-}
-
-.tile::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 0 0.5px var(--l3-border-light); /* hairline */
-  pointer-events: none;
-}
-
-.tile[data-up]::before {
-  background: var(--l3-surface-accent-indicator-up-default);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tile::before {
-    transition: none;
-  }
-}
-
-.tileSym {
-  font: var(--l3-text-heading-12);
-}
-
-.tileChange {
-  font: var(--l3-text-heading-14);
-}
-
-.tilePrice {
-  font: var(--l3-text-description-10);
-}
+.heatCell.heatCell.heatUp { background: var(--l3-surface-accent-indicator-up-default); }
+.heatCell.heatCell.heatDown { background: var(--l3-surface-accent-indicator-down-default); }
+.heatName { font: var(--l3-text-heading-12); }
+.heatCell strong { display: block; font: var(--l3-text-heading-16); }
+.heatPrice { display: block; margin-top: var(--l3-spacing-04); font: var(--l3-text-label-14); opacity: var(--l3-opacity-60, 0.6); }
 ```
 
 ### `src/flows/stocks/components/us/UsHome.tsx`
@@ -23792,7 +23774,6 @@ import {
   capBuckets,
   formatPct,
   heatSectors,
-  heatStrength,
   heatmapIndices,
   sectorSymbols,
   themes,
@@ -23951,18 +23932,19 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
             className={styles.chipTabs}
           />
         </Stack>
-        {/* FLAG: heatmap tiles are hand-made buttons with computed colour strength; real prices, ticking with live.ts */}
-        <Inset paddingInline="16" paddingBlock="00">
-          <Grid columns={3} gap="00" className={styles.heatmap}>
-            {heat.map((tile) => (
-              <button key={tile.sym} type="button" className={styles.tile} data-up={tile.pct >= 0 || undefined} style={{ '--heat': heatStrength(tile.pct) } as CSSProperties} onClick={() => open(tile.sym)}>
-                <span className={styles.tileSym}>{tile.sym}</span>
-                <span className={styles.tileChange}>{formatPct(tile.pct)}</span>
-                <span className={styles.tilePrice}><Usd value={tile.price} layout="inline" /></span>
-              </button>
-            ))}
-          </Grid>
-        </Inset>
+        {/* The F&O heatmap's tiles (fno/components/Heatmap): edge to edge, square flat cards 1px apart, solid green / red with
+            inverted text. Real prices, ticking with live.ts. */}
+        <div className={styles.heatmap}>
+          {heat.map((tile) => (
+            <Card variant="flat" key={tile.sym} className={[styles.heatCell, tile.pct >= 0 ? styles.heatUp : styles.heatDown].join(' ')} onClick={() => open(tile.sym)}>
+              <span className={styles.heatName}>{tile.sym}</span>
+              <span>
+                <strong>{formatPct(tile.pct)}</strong>
+                <span className={styles.heatPrice}><Usd value={tile.price} layout="inline" /></span>
+              </span>
+            </Card>
+          ))}
+        </div>
       </Stack>
 
       <Stack as="section" gap="16" aria-label={t('us.themes.title')}>
@@ -24422,8 +24404,6 @@ export const brandRows: Brand[][] = [
 
 export const formatPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
 export const formatUsd = (n: number) => `$${n.toFixed(2)}`
-/** Tile colour strength: 0.55 at flat up to 1 at ±3%. */
-export const heatStrength = (pct: number) => Math.min(1, 0.55 + (Math.abs(pct) / 3) * 0.45)
 
 // ---- Top analyst picks (US Stocks design, 2 Nov; from jojo) ----
 
@@ -25669,8 +25649,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "switcher.wallet.funded": "Wallet · Funded",
   "switcher.holdings.none": "No holdings",
   "switcher.holdings.some": "Holds NVDA",
-  "switcher.header.page": "Header · page",
-  "switcher.header.card": "Header · card",
   "us.heatmap.title": "Heatmap",
   "us.heatmap.index": "Index",
   "us.heatmap.indexLabel": "Index, tap to switch",
@@ -25958,15 +25936,8 @@ export const stocks: Flow = {
     // FTUX guide for the IND / US switch: dims the screen, lights the switch with a tooltip. Shown every time a Home
     // opens (and again after a version change) while on; tap anywhere or ✕ to end it.
     // "Do more with Lemonn" shortcuts: V1 circles, V2 one outlined card with dividers (default).
-    // The top of the Home: the holdings on the page, or inside the top card (the card the US tab uses for activation).
-    {
-      id: 'header',
-      group: 'Home',
-      label: 'Header',
-      values: [{ value: 'page', label: 'Holdings on page' }, { value: 'card', label: 'Holdings in card' }],
-      default: 'page',
-      floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21'],
-    },
+    // Archived 3 Nov: the "Header" setting (Holdings on page · Holdings in card). Holdings on page is the only header;
+    // the card variant stays in Home.tsx (HEADER_CARD) but is no longer offered.
     // US tab, Top analyst picks: a list of four rows (default, 3 Nov) or the swipeable cards with the 7-day line.
     { id: 'picksView', group: 'Home', label: 'Analyst picks', values: [{ value: 'list', label: 'List' }, { value: 'cards', label: 'Cards' }], default: 'list' },
     { id: 'shortcuts', group: 'Home', label: 'Shortcuts', values: [{ value: 'v1', label: 'V1' }, { value: 'v2', label: 'V2' }], default: 'v1' },
@@ -26020,7 +25991,7 @@ export const stocks: Flow = {
 .disclaimer {
   margin: 0;
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* A pick card's head: name over its LTP, then the average target over the rating at the end. */
@@ -26042,7 +26013,7 @@ export const stocks: Flow = {
 
 .sub {
   font: var(--l3-text-description-14);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .end {
@@ -26065,7 +26036,7 @@ export const stocks: Flow = {
 /* 12 so both halves stay on one line at 360 wide. */
 .meta {
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   white-space: nowrap;
 }
 
@@ -26073,7 +26044,7 @@ export const stocks: Flow = {
 .day {
   margin: 0;
   font: var(--l3-text-label-14);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 ```
 
@@ -26480,6 +26451,7 @@ import { DEFAULT_HOME_VERSION, homeVersion, type HomeVersion } from '../componen
 import { MarketSwitchGuide } from '../components/MarketSwitchGuide'
 import { HomeSwitcher } from '../components/HomeSwitcher'
 import { TopBar } from '../components/TopBar'
+import { TransferStatusCard } from '../components/us/TransferProgress'
 import { activatedStates, inKycCard, usIndices, type ThemeId, type UsState } from '../components/us/data'
 import { UsActivationCard } from '../components/us/UsActivationCard'
 import { UsHome } from '../components/us/UsHome'
@@ -26540,6 +26512,9 @@ type Props = {
  * products; and on the rounded sheet over it, the feed: shortcuts, top movers, watchlists, Smart Invest (brand tint),
  * an announcement (the campaign's artwork), sectors, highlights, idea baskets and the broker's disclosure.
  */
+/** Archived "Header" variant: true puts the holdings inside the top card (the card the US tab uses for activation). */
+const HEADER_CARD = false as boolean
+
 export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsPicks, autoNext, sheet }: Props) {
   useAutoAdvance(autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
@@ -26548,8 +26523,8 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   // The market switch guide (prototype setting, on by default) shows every time this Home opens, and again for each
   // homepage version picked; ending it hides it for this version until the Home opens again.
   const guideOn = useFlowOption('stocks', 'switchGuide', 'off') === 'on'
-  // Home setting "Header": the holdings on the page (as before), or inside the top card.
-  const headerCard = useFlowOption('stocks', 'header', 'page') === 'card'
+  // Archived 3 Nov: the "Header" setting. The holdings are always on the page; flip this to see them inside the top card.
+  const headerCard = HEADER_CARD
   const [guideDoneFor, setGuideDoneFor] = useState<string | null>(null)
   const guiding = guideOn && !sheet && guideDoneFor !== version.id
   const hasSwitch = version.place !== 'none'
@@ -26753,6 +26728,13 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   const topCard = (market: Market) => {
     if (market === 'in') return <UsActivationCard holdings={<HoldingsSummary />} />
     if (headerCard && activatedStates.includes(usState)) return <UsActivationCard state={usState} holdings={<HoldingsSummary us usEmpty={usState !== 'holding'} />} onCta={onActivateUs} />
+    // Money on the way: the holdings card as when holding, at $0.00, with a small "Money on the way" card under it.
+    if (usState === 'onTheWay') return (
+      <Stack gap="12">
+        <UsActivationCard holdings={<HoldingsSummary us usEmpty />} />
+        <TransferStatusCard onOpen={onActivateUs} />
+      </Stack>
+    )
     return usCard ? <UsActivationCard state={usState} onCta={onActivateUs} /> : <UsActivationCard holdings={<HoldingsSummary us />} />
   }
   // The top card is what slides sideways when the market switches — by a swipe on it (once both markets hold stocks)
@@ -26905,7 +26887,7 @@ function initials(name: string) {
 .note {
   margin: 0;
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* The theme tabs, fixed under the title (Actionbar bottom), as the ETFs page's filter row: 12 above and below, 16 from
@@ -50594,9 +50576,17 @@ export function useUserStatus(): UserStatus {
   }
 }
 
-/** The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). */
+/**
+ * The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). Money in the USD
+ * wallet (on the way or landed) came from a bank, so then "None" counts as one — as in the real app, a user with money
+ * moving always has a bank.
+ */
 export function useLinkedBanks(): LinkedBank[] {
-  const banks = useStatus('banks') as BankLinks
+  const picked = useStatus('banks') as BankLinks
+  const us = useStatus('us') as UsActivation
+  const usWallet = useStatus('usWallet') as UsWallet
+  const moneyMoved = us === 'active' && usWallet !== 'empty'
+  const banks = picked === 'none' && moneyMoved ? 'one' : picked
   return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
 }
 

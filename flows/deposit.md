@@ -16907,9 +16907,17 @@ export function useUserStatus(): UserStatus {
   }
 }
 
-/** The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). */
+/**
+ * The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). Money in the USD
+ * wallet (on the way or landed) came from a bank, so then "None" counts as one — as in the real app, a user with money
+ * moving always has a bank.
+ */
 export function useLinkedBanks(): LinkedBank[] {
-  const banks = useStatus('banks') as BankLinks
+  const picked = useStatus('banks') as BankLinks
+  const us = useStatus('us') as UsActivation
+  const usWallet = useStatus('usWallet') as UsWallet
+  const moneyMoved = us === 'active' && usWallet !== 'empty'
+  const banks = picked === 'none' && moneyMoved ? 'one' : picked
   return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
 }
 

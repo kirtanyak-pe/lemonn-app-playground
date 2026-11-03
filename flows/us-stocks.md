@@ -113,6 +113,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — Wallet status bar (deposit in progress, withdrawal pending …) is now the L3 Aerobar, full width (edge to edge), warning tint — no more hand-made `PendingBanner` CSS. The deposit bar is tappable (chevron) and opens “Why it takes 1–2 days” (`sheets/DepositProgressSheet`, L3 Steps: Paid → Sent to US → Ready to trade); withdrawals keep their Ghost action (View / Cancel). Money in progress means a bank is linked, so the “Add a bank account” bar never shows with it (`useLinkedBanks` counts one when the US wallet isn't empty). Text that was tertiary is now secondary (tertiary is for placeholders only). **L3 gap:** Aerobar's paragraph is secondary at 60% (≈ tertiary) — can't change it here.
 - 2026-11-03 — ETF list (us-stocks-71): the Regular tab's filters are fixed at the top with the tabs (Actionbar bottom), as one bar. First a switcher chip (Country ⇄ Sector, like Top Movers' cap chip on Home) and a divider, then that filter's chips: countries with flags, or sectors (Broad market · Technology · Financials · Healthcare · Energy · Industrials; switching starts at All). Every regular ETF has a `sector`; two sector funds added (XLF, XLV).
 - 2026-11-03 — Bank accounts (User status → Bank accounts): the add-money bank row has a chevron that opens “Pay from” (us-stocks-76: pick a bank, add another → deposit-12); no bank → us-stocks-75 (“Add bank account”). The wallet with no bank shows an “Add a bank account to deposit or withdraw” bar, Deposit opens the no-bank add money, Withdraw is off. “Add $X” carries the ₹ it costs in small type: “Add $1,000 (₹86,950)”.
 - 2026-11-03 — Add money is entered in US dollars, Groww-style: big $ amount, "You pay ≈ ₹X · incl. charges" (opens the charges sheet) under it, +$ chips, bank ListCell, number keypad and "Add $X" in the dock. New `inrForUsd` (inverse of `depositBreakdown`); M03 / M07 are $ states; add-money copy moved to `copy.json`.
@@ -23094,7 +23095,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .notice {
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   margin: 0;
 }
 
@@ -23219,7 +23220,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 .grid span {
   width: 36px; /* FLAG: raw px */
   font: var(--l3-text-label-10);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   text-align: right;
   position: absolute;
   top: -6px; /* FLAG: raw px */
@@ -23262,7 +23263,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .fy {
   font: var(--l3-text-label-10);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   white-space: nowrap;
   position: absolute;
   top: 142px; /* FLAG: raw px */
@@ -23392,7 +23393,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 .newsMeta span {
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* FLAG: restyles L3 Select */
@@ -24146,7 +24147,7 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
 .ticker {
   font: var(--l3-text-label-10);
   letter-spacing: 0.08em;
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .cardName {
@@ -26889,7 +26890,7 @@ export function MutualFundHomeScreen() {
 
 .index .label {
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .holdTotal {
@@ -27035,7 +27036,7 @@ export function MutualFundHomeScreen() {
 
 .holdLabel {
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 .holdFig {
@@ -27517,7 +27518,7 @@ export const PortfolioBannerLiveScreen = () => <PortfolioScreen live />
 
 .axis {
   font: var(--l3-text-heading-10);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   flex-direction: column;
   gap: 22px;  /* FLAG: raw px */
   margin: 0;
@@ -27552,7 +27553,7 @@ export const PortfolioBannerLiveScreen = () => <PortfolioScreen live />
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-default);
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   display: flex;
   position: absolute;
   top: 158px;  /* FLAG: raw px */
@@ -29530,7 +29531,7 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 .sectionHead{justify-content:space-between;align-items:center;display:flex}
 
-.sectionMeta{font:var(--l3-text-label-12);color:var(--l3-content-tertiary)}
+.sectionMeta{font:var(--l3-text-label-12);color:var(--l3-content-secondary)}
 
 .facts{gap:var(--l3-spacing-12);padding:var(--l3-spacing-12);border-radius:var(--l3-radius-12);background:var(--l3-surface-primary);box-shadow:inset 0 0 0 1px var(--l3-border-light);flex-direction:column;margin:0;display:flex}
 
@@ -30120,7 +30121,7 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 }
 
 .newsMeta span {
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* FLAG: hand-made logo disc (L3 Avatar / BrandLogo) */
@@ -31386,7 +31387,7 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
 
 .sep {
   margin: 0 var(--l3-spacing-06);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* Add money's button: the ₹ it costs after "Add $X", in a smaller label (the user's 3 Nov ask). */
@@ -31452,7 +31453,7 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
   gap: var(--l3-spacing-04);
   padding: 0 var(--l3-spacing-16) var(--l3-spacing-12);
   font: var(--l3-text-description-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   margin: 0;
   display: flex;
 }
@@ -33481,7 +33482,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 
 .facts dt {
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
 }
 
 .facts dd {
@@ -33527,7 +33528,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
   align-items:center;
   gap:var(--l3-spacing-08);
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   display:flex;
 }
 
@@ -33560,7 +33561,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 .hero:is([data-look=statement],[data-look=surface],[data-look=bar],[data-look=open]) .label {
   font:var(--l3-text-label-12);
   letter-spacing:var(--l3-letter-spacing-ai-caps);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
 }
 
 .hero:is([data-look=statement],[data-look=surface],[data-look=bar],[data-look=open]) .details {
@@ -33608,7 +33609,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 .exact {
   margin:var(--l3-spacing-02) 0 0;
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   font-variant-numeric:tabular-nums;
 }
 
@@ -33652,7 +33653,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 
 .hero[data-look=centred] .label {
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
 }
 
 .hero[data-look=centred] .details {
@@ -33669,7 +33670,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 
 .hero:is([data-look=centred-facts],[data-look=centred-surface],[data-look=centred-line]) .label {
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
 }
 
 .hero:is([data-look=centred-facts],[data-look=centred-line]) {
@@ -33704,7 +33705,7 @@ export type UsScreenMap = Record<string, ComponentType<{ backdrop?: boolean }>>
 
 .line {
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   margin-top:var(--l3-spacing-08)!important;
 }
 
@@ -34464,34 +34465,33 @@ export function GrowNudge() {
 ### `src/flows/us-stocks/screens/wallet/PendingBanner.tsx`
 
 ```tsx
-// The warning-coloured status strip above the wallet's Deposit / Withdraw buttons ("$100.00 withdrawal pending" …).
-// FLAG: hand-made banner with a hand-made pill button (not an L3 component).
+// The warning status bar above the wallet's Deposit / Withdraw buttons ("$100.00 withdrawal pending" …): an L3 Aerobar,
+// full width (edge to edge), warning tint.
 import type { ReactNode } from 'react'
+import { Aerobar } from '@l3/components/Aerobar'
 import { Icon } from '@l3/components/Icon'
 import { scheduleIcon } from './lib/icons'
-import styles from './WalletScreen.module.css'
 
 export type PendingBannerProps = {
   /** Text with its $ amounts in <Usd layout="inline" /> (a tight banner: no ≈ ₹ line). */
   title: ReactNode
   sub: string
+  /** A small Ghost button on the right (Cancel a withdrawal …). */
   action?: { label: string; onClick: () => void }
+  /** The whole bar opens more about it (a deposit: why it takes 1–2 days); Aerobar shows a chevron. No `action` with it. */
+  onOpen?: () => void
 }
 
-export function PendingBanner({ title, sub, action }: PendingBannerProps) {
+export function PendingBanner({ title, sub, action, onOpen }: PendingBannerProps) {
   return (
-    <div className={styles.pending} role="status">
-      <Icon icon={scheduleIcon} size={24} />
-      <span className={styles.pendingText}>
-        <b>{title}</b>
-        <span>{sub}</span>
-      </span>
-      {action && (
-        <button type="button" className={styles.pendingAction} onClick={action.onClick}>
-          {action.label}
-        </button>
-      )}
-    </div>
+    <Aerobar
+      type="warning"
+      icon={<Icon icon={scheduleIcon} />}
+      heading={title}
+      paragraph={sub}
+      action={onOpen ? undefined : action}
+      onClick={onOpen}
+    />
   )
 }
 ```
@@ -34546,7 +34546,7 @@ export function PendingBanner({ title, sub, action }: PendingBannerProps) {
 
 .custodian {
   font:var(--l3-text-description-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   text-align:center;
   margin:auto 0 0;
 }
@@ -34581,7 +34581,7 @@ export function PendingBanner({ title, sub, action }: PendingBannerProps) {
 
 .nudgeDesc {
   font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   margin:0;
 }
 
@@ -34599,7 +34599,7 @@ export function PendingBanner({ title, sub, action }: PendingBannerProps) {
   align-items:center;
   gap:var(--l3-spacing-04);
   font:var(--l3-text-description-12);
-  color:var(--l3-content-tertiary);
+  color:var(--l3-content-secondary);
   margin:auto 0 0;
   display:flex;
 }
@@ -34615,47 +34615,6 @@ export function PendingBanner({ title, sub, action }: PendingBannerProps) {
 
 .link3 .switch {
   padding-bottom:var(--l3-spacing-08);
-}
-
-.pending {
-  /* FLAG: hand-made pending banner (not an L3 component); raw display:flex + gap/padding */
-  align-items:center;
-  gap:var(--l3-spacing-08);
-  padding:var(--l3-spacing-12);
-  background:var(--l3-surface-accent-warning-light);
-  color:var(--l3-content-secondary);
-  display:flex;
-}
-
-.pendingText {
-  gap:var(--l3-spacing-04);
-  flex-direction:column;
-  flex:1;
-  min-width:0;
-  display:flex;
-}
-
-.pendingText>b {
-  font:var(--l3-text-heading-12);
-  color:var(--l3-content-secondary);
-}
-
-.pendingText>span {
-  font:var(--l3-text-label-12);
-  color:var(--l3-content-tertiary);
-}
-
-.pendingAction {
-  /* FLAG: hand-made pill button (L3 Button should be used) */
-  height:var(--l3-size-32);
-  padding:0 var(--l3-spacing-12);
-  border-radius:var(--l3-radius-full);
-  background:var(--l3-surface-accent-warning-default);
-  font:var(--l3-text-heading-12);
-  color:var(--l3-static-black);
-  cursor:pointer;
-  border:0;
-  flex:none;
 }
 ```
 
@@ -34852,8 +34811,9 @@ export function WalletScreen(props: WalletScreenProps) {
   )
 
   // No bank linked (User status → Bank accounts: None): money can't come in or go out yet. A bar above the dock asks to
-  // add one, Deposit opens add-money in its "no bank" state, Withdraw is off.
-  const noBank = useLinkedBanks().length === 0 && dock?.primary === 'Deposit'
+  // add one, Deposit opens add-money in its "no bank" state, Withdraw is off. Money in progress (a deposit or withdrawal
+  // banner) means a bank is linked — it came from or goes to one — so then the bar never shows.
+  const noBank = useLinkedBanks().length === 0 && dock?.primary === 'Deposit' && !pending
   const depositTo = noBank ? (inr ? 'deposit-10' : moneyIds.noBank) : dock?.primaryTo
 
   const footer = dock && (
@@ -34937,6 +34897,7 @@ import { useUsNav } from '../../nav'
 import { Usd } from '../../../../shared/money'
 import { FIGMA, WITHDRAWAL_REQUESTS } from './data'
 import { INR_VIEW, WalletScreen, type WalletDock, type WalletScreenProps } from './WalletScreen'
+import { DepositProgressSheet } from './sheets/DepositProgressSheet'
 import { CancelWithdrawalSheet } from './sheets/CancelWithdrawalSheet'
 import { WithdrawalRequestsSheet } from './sheets/WithdrawalRequestsSheet'
 
@@ -35011,6 +34972,8 @@ export function WalletFundedScreen({ backdrop }: ScreenProps) {
 
 /** Wallet · US tab · Add money transfer in progress. */
 export function WalletTransferInProgressScreen({ backdrop }: ScreenProps) {
+  // Tapping the banner explains the wait: Paid → Sent to US → Ready, and why it takes 1–2 working days.
+  const [explaining, setExplaining] = useState(false)
   return (
     <WalletScreen
       label="Wallet, USD, transfer in progress"
@@ -35020,7 +34983,8 @@ export function WalletTransferInProgressScreen({ backdrop }: ScreenProps) {
       withdrawable="$0.00"
       backTo="stocks-01"
       dock={DEPOSIT_ONLY}
-      pending={{ title: <><Usd value={1035.37} layout="inline" /> deposit in progress</>, sub: 'Arrives in your wallet by Thu 8 PM (or Fri)' }}
+      pending={{ title: <><Usd value={1035.37} layout="inline" /> deposit in progress</>, sub: 'Arrives in your wallet by Thu 8 PM (or Fri)', onOpen: () => !backdrop && setExplaining(true) }}
+      sheet={explaining && <DepositProgressSheet amount={1035.37} eta="by Thu 8 PM" onClose={() => setExplaining(false)} />}
     />
   )
 }
@@ -35567,6 +35531,70 @@ export function CancelWithdrawalSheet({ amount, all, onNo, onYes }: { amount: nu
 }
 ```
 
+### `src/flows/us-stocks/screens/wallet/sheets/DepositProgressSheet.tsx`
+
+```tsx
+// "Why does it take 1–2 days?" — opened from the wallet's "deposit in progress" banner. The same three steps as the Home's
+// "Money on the way" card (Paid → Sent to US → Ready), here as L3 Steps (vertical) so each can say what's happening and
+// why: money leaving India goes through the bank's forex desk under RBI's LRS and an international wire, and US banks
+// only credit on US working days.
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Icon } from '@l3/components/Icon'
+import { Stack } from '@l3/components/Stack'
+import { Steps } from '@l3/components/Steps'
+import { msShieldLockFill } from '@l3/icons/material'
+import { useSheetLayer } from '../../../components/Phone'
+import { Usd } from '../../../../../shared/money'
+import styles from './Sheets.module.css'
+
+export function DepositProgressSheet({ amount, eta, onClose }: { amount: number; eta: string; onClose: () => void }) {
+  const layer = useSheetLayer()
+  return (
+    <BottomSheet
+      open
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="deposit-progress-title"
+      header={
+        <BottomSheetHeader
+          heading="Why it takes 1–2 days"
+          headingId="deposit-progress-title"
+          description="Sending money abroad goes through a few regulated hands. Here's where yours is."
+        />
+      }
+      footer={
+        <ButtonGroup aria-label="Deposit progress">
+          <Button variant="primary" size="lg" fullWidth onClick={onClose}>
+            Got it
+          </Button>
+        </ButtonGroup>
+      }
+    >
+      <Stack gap="24">
+        <Steps
+          label="Your deposit"
+          steps={[
+            { label: 'Paid', state: 'done', description: <><Usd value={amount} layout="inline" /> left your bank account. Nothing more to do.</> },
+            {
+              label: 'Sent to US · 1–2 working days',
+              state: 'loading',
+              description: 'Your bank converts it to dollars under RBI’s Liberalised Remittance Scheme and wires it to our US broker partner. International wires are checked at each bank on the way.',
+            },
+            { label: 'Ready to trade', state: 'todo', description: `Expected ${eta}. US banks credit only on US working days, so a US holiday can add a day.` },
+          ]}
+        />
+        <p className={styles.safeNote}>
+          <Icon icon={msShieldLockFill} size={16} />
+          <span>Your money is safe with Lemonn. It's held in your name at our US broker partner, and you'll be notified the moment it lands.</span>
+        </p>
+      </Stack>
+    </BottomSheet>
+  )
+}
+```
+
 ### `src/flows/us-stocks/screens/wallet/sheets/Sheets.module.css`
 
 ```css
@@ -35707,6 +35735,22 @@ export function CancelWithdrawalSheet({ amount, all, onNo, onYes }: { amount: nu
 .cancelAmount>b {
   font:var(--l3-text-heading-14);
   color:var(--l3-content-primary);
+}
+
+
+/* Deposit progress sheet: "your money is safe" under the steps. */
+.safeNote {
+  display: flex;
+  gap: var(--l3-spacing-08);
+  align-items: flex-start;
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.safeNote > :first-child {
+  flex: none;
+  color: var(--l3-content-accent-success-default);
 }
 ```
 
@@ -58915,9 +58959,17 @@ export function useUserStatus(): UserStatus {
   }
 }
 
-/** The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). */
+/**
+ * The bank accounts the user has linked, as picked in "User status → Bank accounts" (primary first). Money in the USD
+ * wallet (on the way or landed) came from a bank, so then "None" counts as one — as in the real app, a user with money
+ * moving always has a bank.
+ */
 export function useLinkedBanks(): LinkedBank[] {
-  const banks = useStatus('banks') as BankLinks
+  const picked = useStatus('banks') as BankLinks
+  const us = useStatus('us') as UsActivation
+  const usWallet = useStatus('usWallet') as UsWallet
+  const moneyMoved = us === 'active' && usWallet !== 'empty'
+  const banks = picked === 'none' && moneyMoved ? 'one' : picked
   return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
 }
 
