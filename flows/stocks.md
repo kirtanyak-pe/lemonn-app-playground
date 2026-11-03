@@ -267,6 +267,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### L3 gaps
 
+- **Neutral Aerobar:** the theme page's description bar is an inline Aerobar on surface-default with border-light, set through its own variables (L3 has no neutral surface-default look).
+
 - **Select hover underline** — L3 Select underlines its label on hover; the holdings switcher (Home V2–V4) wants
   none, so `.holdingsSelect` in components/Home.module.css turns it off (FLAG). Needs a Select option upstream.
 - **Notched market tabs** (IND / US strip with an SVG outline and a flipping label) — no L3 component; hand-made in
@@ -291,6 +293,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Theme page: no logo stack or big title (the Actionbar's name is the title); the description and disclaimer sit in a flat, rounded Aerobar on surface-default with a light border, then the stocks. Theme cards are compact (about 2.2 across): 3 overlapping 32 logos + "+n", name in Label 14, two-line description, "N stocks ›".
 - 2026-11-03 — Explore by themes is a rail of big theme cards (logo collage, name, description, "N stocks ›") instead of a 2-column grid of small ones, and each opens a new theme page (`stocks-23` … `28`): back + name in the Actionbar, the explanation (logo stack, description, disclaimer) in its own section, the stocks as StockListCards, then More themes. Six themes, with real US tickers (leveraged ETFs stays out). Reworked from the old app's "Invest in Ideas" (references/2026-11-03/home): its dark header with back, title, description and disclaimer all in the bar area is split so the bar stays light; the stock list leads straight after the intro; the idea cards at the end are the More themes rail. Differences: no dark hero, cards show their logos as a collage, not a 3 × 2 tile grid of a fixed size, themes are static samples.
 
 - 2026-11-03 — US logos are full-colour (the mark on its brand colour, edge to edge: Uber and Netflix on black, Visa on blue), fetched from TradingView's public logos by `npm run us:logos` into `src/shared/assets/us-logos/*.svg`; `usLogo` prefers them over the old PNGs (white marks on transparent). They fill the L3 Avatar, so its grey fill no longer shows — only its border. Still PNG (no TradingView logo): EB, IRBT, SNBR. New logos for RIVN, LAZR, PLUG, OPEN (were initials). ETFs unchanged.
@@ -22650,10 +22653,6 @@ export const homeVersion = (id: string) =>
   height: 100%;
 }
 
-.collage {
-  justify-items: start;
-}
-
 .text {
   display: flex;
   flex-direction: column;
@@ -22662,7 +22661,7 @@ export const homeVersion = (id: string) =>
 
 .name {
   color: var(--l3-content-primary);
-  font: var(--l3-text-label-16);
+  font: var(--l3-text-label-14);
 }
 
 .desc {
@@ -22702,9 +22701,9 @@ export const homeVersion = (id: string) =>
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: var(--l3-size-40);
-  height: var(--l3-size-40);
-  margin-left: var(--l3-spacing-08);
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  box-shadow: 0 0 0 2px var(--l3-surface-default); /* same ring as the logos: it overlaps the last one like they do */
   border: 1px solid var(--l3-border-intense);
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-tertiary);
@@ -22716,12 +22715,11 @@ export const homeVersion = (id: string) =>
 ### `src/flows/stocks/components/us/ThemeCard.tsx`
 
 ```tsx
-// A theme's big card (Explore by themes on the US tab, "More themes" on the theme page): a 3 × 2 collage of real logos,
-// the theme's name, a two-line description and "N stocks ›". Also LogoStack, the overlapping logos of the theme page's intro.
+// A theme's card (Explore by themes on the US tab, "More themes" on the theme page): a compact card, about 2 across —
+// overlapping logos (LogoStack), the theme's name, a two-line description and "N stocks ›".
 // FLAG: L3 has no logo stack / group: the overlap and the "+n" disc are hand-made (ThemeCard.module.css).
 import { Avatar } from '@l3/components/Avatar'
 import { Card } from '@l3/components/Card'
-import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
 import { msChevronRight } from '@l3/icons/material'
@@ -22737,10 +22735,8 @@ export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeI
   const name = t(`us.theme.${theme.id}`)
   return (
     <Card onClick={() => onOpen(theme.id)} surface="default" className={styles.card} aria-label={`${name}, ${t('us.themes.stocks', { count: theme.symbols.length })}`}>
-      <Stack gap="16">
-        <Grid columns={3} gap="12" className={styles.collage}>
-          {theme.symbols.slice(0, 6).map((sym) => <Avatar key={sym} src={usLogo(sym)} initials={sym} size={40} />)}
-        </Grid>
+      <Stack gap="12">
+        <LogoStack symbols={theme.symbols} max={3} />
         <span className={styles.text}>
           <span className={styles.name}>{name}</span>
           <span className={styles.desc}>{t(`us.theme.${theme.id}.desc`)}</span>
@@ -22754,22 +22750,22 @@ export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeI
   )
 }
 
-/** The rail of theme cards (about 1.4 across so the next one peeks in). `except` leaves the theme being read out. */
+/** The rail of theme cards (about 2.2 across so the third one peeks in). `except` leaves the theme being read out. */
 export function ThemeRail({ onOpen, except }: { onOpen: (id: ThemeId) => void; except?: ThemeId }) {
   return (
-    <Rail label={t('us.themes.railLabel')} visible={1.4}>
+    <Rail label={t('us.themes.railLabel')} visible={2.2}>
       {themes.filter((theme) => theme.id !== except).map((theme) => <ThemeCard key={theme.id} theme={theme} onOpen={onOpen} />)}
     </Rail>
   )
 }
 
-/** Overlapping logos (up to 6) and a "+n" disc for the rest. */
-export function LogoStack({ symbols, max = 6 }: { symbols: string[]; max?: number }) {
+/** Overlapping logos (32, up to `max`) and a "+n" disc for the rest. */
+export function LogoStack({ symbols, max = 3 }: { symbols: string[]; max?: number }) {
   const rest = symbols.length - max
   return (
     <span className={styles.stack} aria-hidden="true">
       {symbols.slice(0, max).map((sym) => (
-        <span key={sym} className={styles.stackLogo}><Avatar src={usLogo(sym)} initials={sym} size={40} /></span>
+        <span key={sym} className={styles.stackLogo}><Avatar src={usLogo(sym)} initials={sym} size={32} /></span>
       ))}
       {rest > 0 && <span className={styles.stackMore}>+{rest}</span>}
     </span>
@@ -26193,32 +26189,24 @@ function initials(name: string) {
 ### `src/flows/stocks/screens/ThemePage.module.css`
 
 ```css
-.name {
-  margin: 0;
-  color: var(--l3-content-primary);
-  font: var(--l3-text-heading-20);
-}
-
-.desc {
-  margin: 0;
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-description-14);
-}
-
-.disclaimer {
-  margin: 0;
-  color: var(--l3-content-tertiary);
-  font: var(--l3-text-description-12);
+/*
+ * The theme's description: an L3 Aerobar, floating inline (rounded, flat), on the page surface with a light border
+ * instead of its tinted surface. FLAG: L3 Aerobar has no neutral surface-default look — set through its own variables.
+ */
+.about.about {
+  --ab-surface: var(--l3-surface-default);
+  --ab-border: var(--l3-border-light);
 }
 ```
 
 ### `src/flows/stocks/screens/ThemePage.tsx`
 
 ```tsx
-// stocks-23 … 28: one theme of "Explore by themes" — the old app's "Invest in Ideas" page, reworked. The Actionbar has
-// only back + the theme's name; the explanation (logo stack, name, description, disclaimer) is a section below it, then
+// stocks-23 … 28: one theme of "Explore by themes" — the old app's "Invest in Ideas" page, reworked. The Actionbar carries
+// back + the theme's name (the only title); under it the description and the disclaimer in a flat bordered Aerobar, then
 // the stocks, then the other themes in a rail so the loop goes on.
 import { Actionbar } from '@l3/components/Actionbar'
+import { Aerobar } from '@l3/components/Aerobar'
 import { Inset } from '@l3/components/Inset'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
@@ -26230,7 +26218,7 @@ import { Screen } from '../../../shared/ui/Screen'
 import { StockListCard } from '../../../shared/ui/StockListCard'
 import { t } from '../copy'
 import { themeById, usStock, type ThemeId } from '../components/us/data'
-import { LogoStack, ThemeRail } from '../components/us/ThemeCard'
+import { ThemeRail } from '../components/us/ThemeCard'
 import styles from './ThemePage.module.css'
 
 type ThemePageProps = {
@@ -26260,15 +26248,17 @@ export function ThemePage({ theme: id, onStock, onTheme, onBack }: ThemePageProp
       <Inset paddingInline="00" paddingBlock="16">
       <Stack gap="24">
         <Inset paddingInline="16" paddingBlock="00">
-          <Stack as="header" gap="12">
-            <LogoStack symbols={theme.symbols} />
-            <h2 className={styles.name}>{name}</h2>
-            <p className={styles.desc}>{t(`us.theme.${id}.desc`)}</p>
-            <p className={styles.disclaimer}>{t('us.themes.disclaimer')}</p>
+          <Stack gap="16">
+            <Aerobar
+              floating
+              placement="inline"
+              className={styles.about}
+              icon={false}
+              heading={t(`us.theme.${id}.desc`)}
+              paragraph={t('us.themes.disclaimer')}
+            />
+            <Stack gap="12">{theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}</Stack>
           </Stack>
-        </Inset>
-        <Inset paddingInline="16" paddingBlock="00">
-          <Stack gap="12">{theme.symbols.map((sym) => <ThemeStock key={sym} sym={sym} onOpen={open} />)}</Stack>
         </Inset>
         <Stack as="section" gap="16" aria-label={t('us.themes.more')}>
           <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.themes.more')} /></Inset>
