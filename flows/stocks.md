@@ -299,6 +299,7 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 - 2026-11-03 — Top analyst picks page (`stocks-29` / `30`): View all on the US tab's picks opens it instead of Market. Flat tabs Stocks (full breakdown per pick) and History (track record + closed picks). Sample data in `components/us/data.ts` (`analystPicks` ratings / picked on, `closedPicks`).
 - 2026-11-03 — Top analyst picks page rebuilt from the live Trade Ideas screenshots: Stocks cards (LTP, average target + rating, expected profit · % recommend under a hairline) and History grouped by day (Today / Yesterday / date) with entry → exit and "Target hit in N days". Track record card, intros and progress bars removed. `closedPicks` now has an ISO `closedOn` + `days` held; `PICKS_TODAY` is the sample's today.
 - 2026-11-03 — US tab, Brands You Know: cards laid out like the India tab's Top Movers cards — logo 48, name, today's price (live, `<Usd>`), today's move (PriceChange). Market cap dropped from the card and from `brandRows`.
+- 2026-11-03 — US tab cards (Top Movers, analyst picks, Brands You Know, Explore by themes) sit on surface-primary instead of surface-default, so they lift off the page in dark mode.
 - 2026-11-03 — Themes page: one page for every theme, like ETFs — "Themes" in the Actionbar with the themes as pill tabs below it; a theme card opens it on that theme, Explore by themes' View all on the first. The More themes rail is gone.
 - 2026-11-03 — Explore by themes shows returns: each theme card has its 1Y return (green / red) above "N stocks ›"; the theme page (`stocks-23` …) has a Returns card under the description — 1M (real, equal-weight from the snapshot's month of closes, `themeMonthReturn`), 1Y and 3Y (sample, `themes[].returns`), "$100 put in these stocks 3 years ago would be $X today" and a past-returns note.
 - 2026-11-03 — US tab: Top analyst picks is a list by default — four rows (logo · the company name over "94% of analysts recommend" (sample share rating it Buy / Strong Buy); on the right the expected profit — the analysts' 12-month target over today's price, sample, always positive — bold green over "Expected profit"); View all → Market, in the header and as a tertiary Small button (flat, chevron) under the four rows. The cards with the 7-day line stay as the "Analyst picks: Cards" option.
@@ -22753,7 +22754,7 @@ type Theme = (typeof themes)[number]
 export function ThemeCard({ theme, onOpen }: { theme: Theme; onOpen: (id: ThemeId) => void }) {
   const name = t(`us.theme.${theme.id}`)
   return (
-    <Card onClick={() => onOpen(theme.id)} surface="default" className={styles.card} aria-label={t('us.themes.cardLabel', { name, pct: theme.returns['1y'].toFixed(1), count: theme.symbols.length })}>
+    <Card onClick={() => onOpen(theme.id)} surface="primary" className={styles.card} aria-label={t('us.themes.cardLabel', { name, pct: theme.returns['1y'].toFixed(1), count: theme.symbols.length })}>
       <Stack gap="12">
         <LogoStack symbols={theme.symbols} max={3} />
         <span className={styles.text}>
@@ -24009,7 +24010,7 @@ function MoverCard({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string)
   const pct = Math.max(0.01, up ? live.changePct : -live.changePct)
   const usd = useUsd()
   return (
-    <Card onClick={() => onOpen(mover.sym)} surface="default" className={styles.titan} aria-label={`${mover.name}, ${usd(live.price)}, ${sign(up)}${pct.toFixed(2)}%`}>
+    <Card onClick={() => onOpen(mover.sym)} surface="primary" className={styles.titan} aria-label={`${mover.name}, ${usd(live.price)}, ${sign(up)}${pct.toFixed(2)}%`}>
       <span className={styles.titanHead}>
         <Avatar src={usLogo(mover.sym)} initials={mover.sym} size={24} />
         <span className={styles.titanName}>{mover.name}</span>
@@ -24029,7 +24030,7 @@ function BrandCard({ brand, onOpen }: { brand: Brand; onOpen: (sym: string) => v
   const stock = usStock(brand.sym, brand.name)
   const live = useLiveQuote(brand.sym, stock.price, stock.change)
   return (
-    <Card onClick={() => onOpen(brand.sym)} surface="default" className={styles.brand}>
+    <Card onClick={() => onOpen(brand.sym)} surface="primary" className={styles.brand}>
       <span className={styles.brandStack}>
         <Avatar src={usLogo(brand.sym)} initials={brand.sym.slice(0, 2)} size={48} label={brand.name} />
         <span className={styles.brandName}>{brand.name}</span>
@@ -24081,7 +24082,7 @@ function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) =
   return (
     <Card
       onClick={() => onOpen(pick.sym)}
-      surface="default"
+      surface="primary"
       className={styles.titan}
       aria-label={pickLabel(pick, weekPct)}
     >
