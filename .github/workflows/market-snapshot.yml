@@ -1,0 +1,41 @@
+# Market snapshot — refreshes market-snapshot.json (price, day range, volume, 3-month closes for the 50 Indian stocks
+# in the prototype) every 15 minutes while NSE is open. The page re-reads that file every 5 minutes, so prices move
+# without a rebuild. Lives in the PUBLIC site repo as .github/workflows/market-snapshot.yml; the source copy is
+# scripts/site-workflow.yml in the private app repo — edit it there. scripts/deploy.sh keeps .github/scripts/ in sync.
+name: Market snapshot
+
+on:
+  schedule:
+    # Cron runs in UTC. NSE is open 09:15–15:30 IST (03:45–10:00 UTC), Mon–Fri. Minutes are offset by one (:01, :16…)
+    # because GitHub delays jobs queued on the quarter-hour most. Last run 15:46 IST picks up the closing price.
+    - cron: '46 3 * * 1-5'          # 09:16 IST
+    - cron: '1,16,31,46 4-9 * * 1-5' # 09:31 – 15:16 IST
+    - cron: '1,16 10 * * 1-5'       # 15:31, 15:46 IST
+  workflow_dispatch: # "Run workflow" button, for a manual refresh
+
+permissions:
+  contents: write # commit market-snapshot.json — nothing else
+
+concurrency:
+  group: market-snapshot
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      # Node is preinstalled on the runner; the script needs nothing from npm.
+      - name: Fetch prices from Yahoo Finance
+        run: node .github/scripts/market-snapshot.mjs market-snapshot.json
+      - name: Commit market-snapshot.json if prices changed
+        run: |
+          # Skip when only the timestamp moved (market holidays, no trades since the last run).
+          git diff -U0 -- market-snapshot.json | grep '^[-+][^-+]' | grep -v '"fetchedAt"' >/dev/null || { echo "No price changes."; exit 0; }
+          git config user.name 'kirtanyak-pe'
+          git config user.email '333659919+kirtanyak-pe@users.noreply.github.com'
+          git add market-snapshot.json
+          git commit -q -m "Market snapshot $(TZ=Asia/Kolkata date '+%Y-%m-%d %H:%M') IST"
+          git pull -q --rebase
+          git push -q

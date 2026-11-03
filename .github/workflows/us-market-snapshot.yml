@@ -1,0 +1,43 @@
+# US market snapshot — refreshes us-market-snapshot.json (price, day range, volume, a month of closes for every US stock
+# and ETF in the prototype, the S&P 500 / NASDAQ / Dow, and USD → INR) every 15 minutes while NYSE is open. The page
+# re-reads that file every 5 minutes, so US prices, graphs and the ₹ rate move without a rebuild. Lives in the PUBLIC
+# site repo as .github/workflows/us-market-snapshot.yml; the source copy is scripts/site-workflow-us.yml in the private
+# app repo — edit it there. The deploy scripts copy it, and .github/scripts/us-market-snapshot.mjs, to the site.
+name: US market snapshot
+
+on:
+  schedule:
+    # Cron runs in UTC and knows no daylight saving. NYSE is open 09:30–16:00 ET: 13:30–20:00 UTC in summer (EDT),
+    # 14:30–21:00 UTC in winter (EST) — these cover both. Minutes are offset by one (:01, :16…) because GitHub delays
+    # jobs queued on the quarter-hour most. The last run (21:16 UTC) picks up the closing price in winter.
+    - cron: '31,46 13 * * 1-5'       # 09:31, 09:46 EDT
+    - cron: '1,16,31,46 14-20 * * 1-5' # 10:01 EDT / 09:01 EST – 16:46 EDT / 15:46 EST
+    - cron: '1,16 21 * * 1-5'        # 16:01, 16:16 EST
+  workflow_dispatch: # "Run workflow" button, for a manual refresh
+
+permissions:
+  contents: write # commit us-market-snapshot.json — nothing else
+
+concurrency:
+  group: us-market-snapshot
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      # Node is preinstalled on the runner; the script needs nothing from npm.
+      - name: Fetch US prices from Yahoo Finance
+        run: node .github/scripts/us-market-snapshot.mjs us-market-snapshot.json
+      - name: Commit us-market-snapshot.json if prices changed
+        run: |
+          # Skip when only the timestamp moved (US holidays, no trades since the last run).
+          git diff -U0 -- us-market-snapshot.json | grep '^[-+][^-+]' | grep -v '"fetchedAt"' >/dev/null || { echo "No price changes."; exit 0; }
+          git config user.name 'kirtanyak-pe'
+          git config user.email '333659919+kirtanyak-pe@users.noreply.github.com'
+          git add us-market-snapshot.json
+          git commit -q -m "US market snapshot $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
+          git pull -q --rebase
+          git push -q

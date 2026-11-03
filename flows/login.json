@@ -4,7 +4,7 @@
   "description": "Welcome, mobile number + OTP, fingerprint, PIN and email — where the app starts.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "bd9340d",
+    "commit": "c592c0d",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {

@@ -1,6 +1,6 @@
 # Flow: Stocks (`stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `bd9340d` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `c592c0d` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.
 
@@ -280,6 +280,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — US logos are full-colour (the mark on its brand colour, edge to edge: Uber and Netflix on black, Visa on blue), fetched from TradingView's public logos by `npm run us:logos` into `src/shared/assets/us-logos/*.svg`; `usLogo` prefers them over the old PNGs (white marks on transparent). They fill the L3 Avatar, so its grey fill no longer shows — only its border. Still PNG (no TradingView logo): EB, IRBT, SNBR. New logos for RIVN, LAZR, PLUG, OPEN (were initials). ETFs unchanged.
+- 2026-11-03 — US Top Movers: cards 150 wide (graph 126) with a 12 gap, so a third card peeks in and the row reads as swipeable. The cap chip (Mega / Large / Mid / Small Cap) uses the app's switch icon (`lmSwitchArrowVertical`, as on the market picker).
 - 2026-11-03 — Homepage version: V12 · Two homes · switch in top bar is the default (was V8).
 - 2026-11-03 — US tab: Top Movers use the Trillion Dollar Titans card (logo, name, symbol, arrow, sparkline; price and day change at the foot, as movers have no market cap), up to eight in one row that scrolls sideways. Each card's graph is the stock's real last month of daily closes (snapshot) plus today's ticking price — a line over a fill fading from full at the top to clear at the bottom (hand-made SVG: L3 Sparkline is fixed at 64×24). A new cap or filter brings its cards in from the right, one after another. The Trillion Dollar Titans section is removed (Mega Cap movers already cover it).
 - 2026-11-03 — Prototype only, on a phone (the app mode): a floating, draggable settings pill over every Home screen (`components/HomeSwitcher`, copied from the nudges flow's SheetSwitcher) — US Stocks activation · USD wallet · US holdings · Homepage version · Header, each a dropdown with the full names. Hidden on a laptop, where these settings already float beside the phone mockup.
@@ -311,6 +313,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 - 2026-11-03 — The top-card carousel (swipe between IND and US) only once both markets have a holdings card: US Stocks in "holding" (activated, funded, with holdings). Before that — Lemonn KYC pending, any US activation state, activated with $0 — each tab shows its own card, swapped with the page (the US activation / Add money card is much taller than the IND holdings card), and swiping sideways anywhere on the page does nothing (no rubber-band either): IND ↔ US only by the tabs.
 - 2026-11-03 — The activation card's state icon follows Figma 2397:13753 ("KYC State card"): a 40 disc in L3 surface-primary with a filled glyph in the status colour — warning (under review: hourglass · money on the way: clock), error (failed: error), success (money ready: check circle; replaces the hand-made tick badge). Figma's glyph is ~26; L3 Icon stops at 24, so it's 24. Figma's disc is the status colour at 20%; per the brief it's surface-primary here.
 - 2026-11-03 — Money on the way: the card keeps its outer layout (honey tint, "Money on the way" · "Expected ready to trade by Thu 8 PM" — the time is an estimate, never a promise, clock disc) but the white panel shows the transfer instead of benefits, compact: a 3-step horizontal stepper across the panel's full width — Paid ($1,035.37) ✓ → Sent to US (1–2 days, a live dot with a soft 2 s pulse; still when motion is reduced) → Ready (Expected Thu 8 PM); first step flush left, last flush right; 16 above the markers. Then a Secondary Small "View details" (was "Track Transfer", primary Large) with a centred green-shield line "Your money is safe with Lemonn" under it. Sample data in `usTransfer` (data.ts); `at` says which step it's on. L3 gap: no horizontal Steps (L3 Steps is vertical; this one is hand-made with Steps' markers).
+- 2026-11-03 — Text follows L3's three roles. Section titles are the L3 SectionHeader's Heading 14 again (the screen's 16 Label one-off is gone). Numbers are Label, never Description: movers' % change (up and down now match, Label 12), brands' market cap, heatmap symbol / % / price (Label 12 / 14 / 10), the theme stack's +N, counts ("12 Stocks"), and the transfer step's amount. Names in cards are Labels, not Headings: movers' name Label 14 over the symbol in Description 12 (as in ListCell), theme name Label 14, the activation card's lock line Label 12. Logos: L3 Avatar 1.1.0, one 1px edge and no grey fill.
+- 2026-11-03 — Top Movers has a bigger universe: 24–36 real stocks per cap (was 10), so a filter shows up to 15 cards (was 8). Gainers / losers only list stocks that really rose / fell today, so a one-sided day can leave fewer (today: 8 mid-cap losers). New symbols are in the US snapshot and have TradingView logos. Movers cards show only the name, on one line, cut with an ellipsis (no symbol), so every card is the same height. The phone pill can be slid into the left or right edge, where it tucks away as a small tab; a tap brings it out next to the tab and a tap elsewhere tucks it back. The app's second floating button (the flow's settings gear) is gone; those settings are in the prototype settings sheet.
 - 2026-11-02 — The US tab screens (stocks-09, 10, 13–17, 19–21) float the "US Stocks activation" switcher beside the
   phone: arriving sets the user status to the screen's own state, and a pick shows that state in place.
 - 2026-11-02 — Homepage versions **V2, V3, V4, V5, V6 and V7 archived** (`archived: true` in
@@ -19975,6 +19979,12 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
   color: var(--l3-content-secondary);
 }
 
+/* A count under a card's name ("12 Stocks"): a number, so Label, not Description (L3 typography roles). */
+.cardCount {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
 /* Product cards (live app): the chevron right after the name, 4 apart. */
 .cardRow:has(> .productTitle) {
   justify-content: flex-start;
@@ -20309,6 +20319,38 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
   touch-action: none;
 }
 
+/* Out of its edge: next to the side it's tucked into, sliding out of it. */
+.pill[data-side='left'] {
+  left: var(--l3-spacing-12);
+  animation: outOfLeft var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
+}
+.pill[data-side='right'] {
+  left: auto;
+  right: var(--l3-spacing-12);
+  animation: outOfRight var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) both;
+}
+@keyframes outOfLeft { from { transform: translateX(-100%); opacity: 0; } }
+@keyframes outOfRight { from { transform: translateX(100%); opacity: 0; } }
+
+/* Tucked away: a small tab on the edge (drag it up or down; a tap brings the pill out). */
+.tab {
+  position: absolute;
+  z-index: var(--app-layer-fab);
+  display: grid;
+  place-items: center;
+  width: var(--l3-size-20);
+  height: var(--l3-size-48);
+  padding: 0;
+  border: 0;
+  background: var(--l3-surface-primary);
+  color: var(--l3-content-secondary);
+  box-shadow: var(--l3-shadow-elevation-high);
+  cursor: pointer;
+  touch-action: none;
+}
+.tab[data-side='left'] { left: 0; border-radius: 0 var(--l3-radius-12) var(--l3-radius-12) 0; }
+.tab[data-side='right'] { right: 0; border-radius: var(--l3-radius-12) 0 0 var(--l3-radius-12); }
+
 .grip {
   flex: none;
   display: grid;
@@ -20387,7 +20429,7 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
 .item > svg { flex: none; color: var(--l3-content-accent-success-default); }
 
 @keyframes drop { from { opacity: 0; transform: translateY(calc(var(--l3-spacing-04) * -1)); } }
-@media (prefers-reduced-motion: reduce) { .menu, .chip > svg { animation: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .menu, .pill, .chip > svg { animation: none; transition: none; } }
 ```
 
 ### `src/flows/stocks/components/HomeSwitcher.tsx`
@@ -20396,7 +20438,7 @@ export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Icon } from '@l3/components/Icon'
-import { msCheck, msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
+import { msCheck, msChevronLeft, msChevronRight, msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
 import type { FlowOption } from '../../types'
 import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
 import { USER_STATUS, userStatusOptions, type UsActivation, type UsHoldings, type UsWallet } from '../../../shared/userStatus'
@@ -20404,7 +20446,8 @@ import { activeHomeVersions, DEFAULT_HOME_VERSION } from './homeVersions'
 import { t } from '../copy'
 import styles from './HomeSwitcher.module.css'
 
-type Spot = { x: number; y: number }
+/** Where the pill is: a free spot, or tucked into the left / right edge at height `y` (then `x` isn't used). */
+type Spot = { x: number; y: number; dock?: 'left' | 'right' }
 /** One pill: the option, whose settings it is (a flow id, or the app's user status) and its short text. */
 type Item = { owner: string; option: FlowOption; short: (value: string, label: string) => string }
 
@@ -20412,6 +20455,12 @@ const SPOT_KEY = 'stocks-home-switcher-spot'
 const readSpot = (): Spot | null => {
   try { return JSON.parse(localStorage.getItem(SPOT_KEY) ?? 'null') } catch { return null }
 }
+const saveSpot = (spot: Spot) => {
+  try { localStorage.setItem(SPOT_KEY, JSON.stringify(spot)) } catch { /* storage off: it stays for this visit */ }
+}
+// Dropped with its edge this close to the screen's side (or past it), the pill tucks into that side.
+const TUCK_AT = 24
+const EDGE_GAP = 12
 
 // The same test the preview uses to run as the app itself (preview/Preview.tsx phoneQuery): a phone, or the app
 // installed on one. On a laptop these settings already float beside the phone mockup (an option's `floatOn`).
@@ -20448,6 +20497,9 @@ const items: Item[] = [
  * menu, with the full names), so states and versions can be switched without opening the settings. Drag it by the
  * grip; it remembers where it was left (this browser). Copied from the nudges flow's SheetSwitcher.
  *
+ * Slide it into the left or right edge and it tucks away: only a small tab stays on that edge (drag it up or down).
+ * A tap on the tab brings the pill out next to it; a tap anywhere else tucks it back.
+ *
  * A sheet makes everything inside the screen inert, so the pill is drawn just outside the screen (in the layer that
  * holds it), over any sheet.
  */
@@ -20472,44 +20524,94 @@ type MenuState = { item: Item; chip: HTMLElement } | null
 function Pill({ host }: { host: HTMLElement }) {
   const pill = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<Spot | null>(readSpot)
+  // Tucked into an edge: is the pill out (tapped open) or only the tab showing?
+  const [out, setOut] = useState(false)
   const [menu, setMenu] = useState<MenuState>(null)
-  const grab = useRef<{ id: number; dx: number; dy: number } | null>(null)
+  const [drag, setDrag] = useState<Spot | null>(null)
+  const grab = useRef<{ id: number; dx: number; dy: number; startX: number; startY: number; moved: boolean } | null>(null)
+  // A drag of the tab ends with a click too; that one mustn't open the pill.
+  const dragged = useRef(false)
   const us = useFlowOption(USER_STATUS, 'us', userStatus('us').default)
   const wallet = useFlowOption(USER_STATUS, 'usWallet', userStatus('usWallet').default)
   const status: Record<string, string> = { us, usWallet: wallet }
   const shown = items.filter(({ option }) => !option.showIf || Object.entries(option.showIf).every(([id, values]) => values.includes(status[id])))
+  const dock = spot?.dock
+  const tucked = !!dock && !out && !drag
 
-  // Keep it inside the screen (a phone turned, or a spot saved on a bigger screen).
-  const clamp = (x: number, y: number): Spot => {
-    const box = pill.current?.getBoundingClientRect()
-    const w = box?.width ?? 0
-    const h = box?.height ?? 0
-    return { x: Math.min(Math.max(0, x), host.clientWidth - w), y: Math.min(Math.max(0, y), host.clientHeight - h) }
+  // Pointer position in the screen's own pixels (the mockup may be scaled).
+  const local = (e: PointerEvent<HTMLElement>) => {
+    const origin = host.getBoundingClientRect()
+    const scale = origin.width / host.clientWidth || 1
+    return { x: (e.clientX - origin.left) / scale, y: (e.clientY - origin.top) / scale }
   }
+  const keepY = (y: number, h: number) => Math.min(Math.max(EDGE_GAP, y), host.clientHeight - h - EDGE_GAP)
+
+  // Out of its edge, a tap anywhere else (not in the pill or its open menu) tucks it back.
+  useEffect(() => {
+    if (!dock || !out) return
+    const away = (e: Event) => {
+      const target = e.target as Element
+      if (pill.current?.contains(target) || target.closest?.('[role="listbox"]')) return
+      setMenu(null)
+      setOut(false)
+    }
+    document.addEventListener('pointerdown', away)
+    return () => document.removeEventListener('pointerdown', away)
+  }, [dock, out])
 
   const down = (e: PointerEvent<HTMLButtonElement>) => {
-    const box = pill.current!.getBoundingClientRect()
+    const box = (tucked ? e.currentTarget : pill.current!).getBoundingClientRect()
+    const origin = host.getBoundingClientRect()
+    const scale = origin.width / host.clientWidth || 1
     setMenu(null)
-    grab.current = { id: e.pointerId, dx: e.clientX - box.left, dy: e.clientY - box.top }
+    dragged.current = false
+    grab.current = { id: e.pointerId, dx: (e.clientX - box.left) / scale, dy: (e.clientY - box.top) / scale, startX: e.clientX, startY: e.clientY, moved: false }
     try { e.currentTarget.setPointerCapture(e.pointerId) } catch { /* the pointer is already gone */ }
   }
   const move = (e: PointerEvent<HTMLButtonElement>) => {
     const g = grab.current
     if (!g || g.id !== e.pointerId) return
-    const origin = host.getBoundingClientRect()
-    const scale = origin.width / host.clientWidth || 1
-    setSpot(clamp((e.clientX - origin.left - g.dx) / scale, (e.clientY - origin.top - g.dy) / scale))
+    if (!g.moved && Math.hypot(e.clientX - g.startX, e.clientY - g.startY) < 6) return
+    g.moved = true
+    const at = local(e)
+    // The tab slides along its edge; the pill goes anywhere, even half out of the screen (that's how it's tucked away).
+    if (tucked) setSpot({ ...spot!, y: keepY(at.y - g.dy, e.currentTarget.offsetHeight) })
+    else setDrag({ x: at.x - g.dx, y: at.y - g.dy })
   }
   const up = (e: PointerEvent<HTMLButtonElement>) => {
-    if (grab.current?.id !== e.pointerId) return
+    const g = grab.current
     grab.current = null
-    try { if (spot) localStorage.setItem(SPOT_KEY, JSON.stringify(spot)) } catch { /* storage off */ }
+    if (!g || g.id !== e.pointerId || !g.moved) return
+    dragged.current = true
+    if (tucked) return saveSpot(spot!)
+    const w = pill.current?.offsetWidth ?? 0
+    const h = pill.current?.offsetHeight ?? 0
+    const at = drag ?? { x: 0, y: 0 }
+    setDrag(null)
+    const side = at.x < TUCK_AT ? 'left' : at.x + w > host.clientWidth - TUCK_AT ? 'right' : undefined
+    const next: Spot = side
+      ? { x: 0, y: keepY(at.y, h), dock: side }
+      : { x: Math.min(Math.max(0, at.x), host.clientWidth - w), y: keepY(at.y, h) }
+    if (side) setOut(false)
+    setSpot(next)
+    saveSpot(next)
+  }
+  const drags = { onPointerDown: down, onPointerMove: move, onPointerUp: up, onPointerCancel: () => { grab.current = null; setDrag(null) } }
+
+  if (tucked) {
+    return <button type="button" className={styles.tab} data-side={dock} style={{ top: spot!.y }}
+      aria-label={t('switcher.open')} aria-expanded={false} {...drags}
+      onClick={() => { if (dragged.current) { dragged.current = false; return } setOut(true) }}>
+      <Icon icon={dock === 'left' ? msChevronRight : msChevronLeft} size={16} />
+    </button>
   }
 
+  const place = drag ? { left: drag.x, top: drag.y }
+    : dock ? { top: Math.min(spot!.y, host.clientHeight - (pill.current?.offsetHeight ?? 0) - EDGE_GAP) }
+    : spot ? { left: spot.x, top: spot.y } : undefined
   return <div ref={pill} className={styles.pill} role="group" aria-label={t('switcher.label')}
-    style={spot ? { left: spot.x, top: spot.y } : undefined}>
-    <button type="button" className={styles.grip} aria-label={t('switcher.drag')}
-      onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
+    data-side={!drag ? dock : undefined} style={place}>
+    <button type="button" className={styles.grip} aria-label={t('switcher.drag')} {...drags}>
       <Icon icon={msDragIndicator} size={20} />
     </button>
     {shown.map((item) => <Pick key={item.option.id} item={item} menu={menu} setMenu={setMenu} />)}
@@ -20613,7 +20715,7 @@ export function IdeaBaskets({ onOpen }: { onOpen?: (id: string) => void }) {
               </span>
               <span className={styles.basketName}>{b.name}</span>
               <span className={styles.cardRow}>
-                <span className={styles.cardMeta}>{t('baskets.count', { count: b.stocks.length })}</span>
+                <span className={styles.cardCount}>{t('baskets.count', { count: b.stocks.length })}</span>
                 <span className={styles.chevron}><Icon icon={msChevronRight} /></span>
               </span>
             </span>
@@ -20762,7 +20864,7 @@ export function Sectors({ onOpen, onViewAll }: { onOpen?: (id: string) => void; 
                 <span className={styles.chevron}><Icon icon={msChevronRight} size={16} /></span>
               </span>
               <span className={styles.cardRow}>
-                <span className={styles.cardMeta}>{t('sectors.count', { count: s.count })}</span>
+                <span className={styles.cardCount}>{t('sectors.count', { count: s.count })}</span>
                 <PriceChange value={s.changePct} size="sm" arrow />
               </span>
             </span>
@@ -22983,7 +23085,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 }
 
 .transferDetail {
-  font: var(--l3-text-description-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-tertiary);
   white-space: nowrap;
 }
@@ -23075,7 +23177,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   gap: var(--l3-spacing-04);
   min-width: 0;
   color: var(--l3-content-primary);
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-12);
 }
 
 /* FLAG: hand-made carousel dots */
@@ -23257,33 +23359,26 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 .titan[data-interactive] {
   flex: none;
   gap: var(--l3-spacing-10);
-  width: 170px; /* FLAG: raw px */
-  padding: var(--l3-spacing-12) 3px var(--l3-spacing-12) var(--l3-spacing-12); /* FLAG: raw px */
+  /* 150 wide with a 12 gap, so on a 392 phone the third card peeks in (~50) and the row reads as swipeable. */
+  width: 150px; /* FLAG: raw px */
+  padding: var(--l3-spacing-12);
 }
 
 .titanHead {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--l3-spacing-08);
-  width: 146px; /* FLAG: raw px */
-}
-
-.titanHead > :first-child {
-  margin-top: 3px; /* FLAG: raw px */
+  width: 126px; /* FLAG: raw px */
 }
 
 .titanName {
-  display: flex;
   flex: 1;
-  flex-direction: column;
-  gap: var(--l3-spacing-02);
-  color: var(--l3-content-secondary);
-  font: var(--l3-text-description-10);
-}
-
-.titanName b {
+  min-width: 0;
+  overflow: hidden;
   color: var(--l3-content-primary);
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-14);
+  text-overflow: ellipsis;
+  white-space: nowrap; /* one line, so every card is the same height */
 }
 
 .titanArrow {
@@ -23293,7 +23388,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .spark {
   display: block;
-  width: 146px; /* FLAG: raw px */
+  width: 126px; /* FLAG: raw px */
   height: 36px; /* FLAG: raw px */
   margin-top: var(--l3-spacing-02);
   overflow: visible;
@@ -23346,7 +23441,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 146px; /* FLAG: raw px */
+  width: 126px; /* FLAG: raw px */
   color: var(--l3-content-primary);
   font: var(--l3-text-label-12);
 }
@@ -23357,7 +23452,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .titanChange[data-up] {
   color: var(--l3-content-accent-success-default);
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-12);
 }
 
 /* ---- Brands You Know: two rows scrolling together ---- */
@@ -23387,7 +23482,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 
 .brandCap {
   color: var(--l3-content-primary);
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-12);
 }
 
 /* ---- Heatmap ---- */
@@ -23446,15 +23541,15 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 }
 
 .tileSym {
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-12);
 }
 
 .tileChange {
-  font: var(--l3-text-heading-14);
+  font: var(--l3-text-label-14);
 }
 
 .tilePrice {
-  font: var(--l3-text-description-10);
+  font: var(--l3-text-label-10);
 }
 
 /* ---- Explore by themes ---- */
@@ -23469,7 +23564,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   justify-content: space-between;
   padding: 0 var(--l3-spacing-12);
   color: var(--l3-content-primary);
-  font: var(--l3-text-heading-12);
+  font: var(--l3-text-label-14);
 }
 
 .stack {
@@ -23500,7 +23595,7 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-tertiary);
   color: var(--l3-content-primary);
-  font: var(--l3-text-heading-10);
+  font: var(--l3-text-label-10);
 }
 ```
 
@@ -23521,7 +23616,8 @@ import { Inset } from '@l3/components/Inset'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
-import { msChevronRight, msUnfoldMore } from '@l3/icons/material'
+import { msChevronRight } from '@l3/icons/material'
+import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { handToMarket } from '../../../../shared/data/marketHandoff'
 import { useLiveQuote } from '../../../../shared/data/live'
 import { usLogo, usQuote, viewUsStock } from '../../../../shared/data/usStocks'
@@ -23601,7 +23697,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
             {/* FLAG: hand-made cap chip (outlined pill that cycles Mega / Large / Mid / Small) — L3 Select opens a sheet instead */}
             <button type="button" className={styles.capChip} aria-label={t('us.cap.switch', { cap: capName })} onClick={cycleCap}>
               <span className={styles.capName} key={cap}>{capName}</span>
-              <Icon icon={msUnfoldMore} size={16} />
+              <Icon icon={lmSwitchArrowVertical} size={16} />
             </button>
             <span className={styles.chipDivider} aria-hidden="true" />
             <Tabs
@@ -23616,7 +23712,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
           {/* FLAG: hand-made sideways scroller of fixed-width cards (L3 has no carousel; src/shared/ui Rail sizes by count, not by width).
               Keyed by the cap and filter: a new pick starts the rail at its first card and the cards slide in one after another. */}
           <div key={`${cap}-${filter}`} className={styles.scroller} role="region" aria-label={t('us.movers.railLabel')}>
-            <div className={styles.row} data-gap="16">
+            <div className={styles.row}>
               {moversFor(cap, filter).map((m) => <MoverCard key={m.sym} mover={m} onOpen={open} />)}
             </div>
           </div>
@@ -23699,10 +23795,10 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
 /**
  * The card's graph: the stock's real daily closes over the last month (snapshot) and today's ticking price, as a line
  * over a soft fill that fades from full at the top to nothing at the bottom; green for a gainer, red for a loser.
- * FLAG: hand-made SVG — L3 Sparkline is fixed at 64×24 (no width / height); same maths and colours, card-wide (146×36).
+ * FLAG: hand-made SVG — L3 Sparkline is fixed at 64×24 (no width / height); same maths and colours, card-wide (126×36).
  */
 function MonthLine({ closes, up }: { closes: number[]; up: boolean }) {
-  const w = 146
+  const w = 126
   const h = 36
   const hi = Math.max(...closes)
   const lo = Math.min(...closes)
@@ -23736,10 +23832,7 @@ function MoverCard({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string)
     <Card onClick={() => onOpen(mover.sym)} surface="default" className={styles.titan} aria-label={`${mover.name}, ${usd(live.price)}, ${sign(up)}${pct.toFixed(2)}%`}>
       <span className={styles.titanHead}>
         <Avatar src={usLogo(mover.sym)} initials={mover.sym} size={24} />
-        <span className={styles.titanName}>
-          <b>{mover.name}</b>
-          <span>{mover.sym}</span>
-        </span>
+        <span className={styles.titanName}>{mover.name}</span>
         <span className={styles.titanArrow}><Icon icon={msChevronRight} size={16} /></span>
       </span>
       <MonthLine closes={[...(usQuote(mover.sym)?.closes ?? []), live.price]} up={up} />
@@ -23771,7 +23864,12 @@ export const usIndices = [
   { id: 'sp-500', name: 'S&P 500' },
   { id: 'nasdaq', name: 'NASDAQ' },
   { id: 'dow-jones', name: 'DOW JONES' },
-].map((index) => ({ ...index, value: usIndexQuote(index.id)?.price ?? 0, changePct: usIndexQuote(index.id)?.changePct ?? 0 }))
+].map((index) => ({
+  ...index,
+  // Read each time, so the strip follows the runtime refresh of the US snapshot.
+  get value() { return usIndexQuote(index.id)?.price ?? 0 },
+  get changePct() { return usIndexQuote(index.id)?.changePct ?? 0 },
+}))
 
 /** A US stock as a card or row shows it: the catalogue's (real) data, or made-up but stable numbers for a symbol the
  *  snapshot doesn't have. */
@@ -23892,6 +23990,31 @@ const movers: Record<CapValue, Mover[]> = {
     { sym: 'V', name: 'Visa' },
     { sym: 'AMZN', name: 'Amazon' },
     { sym: 'AVGO', name: 'Broadcom' },
+    { sym: 'JPM', name: 'JPMorgan' },
+    { sym: 'WMT', name: 'Walmart' },
+    { sym: 'LLY', name: 'Eli Lilly' },
+    { sym: 'MA', name: 'Mastercard' },
+    { sym: 'ORCL', name: 'Oracle' },
+    { sym: 'XOM', name: 'ExxonMobil' },
+    { sym: 'COST', name: 'Costco' },
+    { sym: 'HD', name: 'Home Depot' },
+    { sym: 'PG', name: 'Procter & Gamble' },
+    { sym: 'JNJ', name: 'Johnson & Johnson' },
+    { sym: 'ABBV', name: 'AbbVie' },
+    { sym: 'BAC', name: 'Bank of America' },
+    { sym: 'UNH', name: 'UnitedHealth' },
+    { sym: 'KO', name: 'Coca-Cola' },
+    { sym: 'PLTR', name: 'Palantir' },
+    { sym: 'AMD', name: 'AMD' },
+    { sym: 'CVX', name: 'Chevron' },
+    { sym: 'CSCO', name: 'Cisco' },
+    { sym: 'CRM', name: 'Salesforce' },
+    { sym: 'IBM', name: 'IBM' },
+    { sym: 'TMUS', name: 'T-Mobile' },
+    { sym: 'MRK', name: 'Merck' },
+    { sym: 'PEP', name: 'PepsiCo' },
+    { sym: 'GE', name: 'GE Aerospace' },
+    { sym: 'WFC', name: 'Wells Fargo' },
   ],
   large: [
     { sym: 'UBER', name: 'Uber' },
@@ -23904,6 +24027,31 @@ const movers: Record<CapValue, Mover[]> = {
     { sym: 'GM', name: 'General Motors' },
     { sym: 'CRWD', name: 'CrowdStrike' },
     { sym: 'TGT', name: 'Target' },
+    { sym: 'ADBE', name: 'Adobe' },
+    { sym: 'INTC', name: 'Intel' },
+    { sym: 'QCOM', name: 'Qualcomm' },
+    { sym: 'BA', name: 'Boeing' },
+    { sym: 'DIS', name: 'Disney' },
+    { sym: 'PFE', name: 'Pfizer' },
+    { sym: 'SHOP', name: 'Shopify' },
+    { sym: 'COIN', name: 'Coinbase' },
+    { sym: 'SLB', name: 'SLB' },
+    { sym: 'MU', name: 'Micron' },
+    { sym: 'LULU', name: 'Lululemon' },
+    { sym: 'DAL', name: 'Delta Air Lines' },
+    { sym: 'UAL', name: 'United Airlines' },
+    { sym: 'MAR', name: 'Marriott' },
+    { sym: 'EBAY', name: 'eBay' },
+    { sym: 'DASH', name: 'DoorDash' },
+    { sym: 'RBLX', name: 'Roblox' },
+    { sym: 'HOOD', name: 'Robinhood' },
+    { sym: 'DELL', name: 'Dell' },
+    { sym: 'CMG', name: 'Chipotle' },
+    { sym: 'TTD', name: 'The Trade Desk' },
+    { sym: 'SPOT', name: 'Spotify' },
+    { sym: 'ZM', name: 'Zoom' },
+    { sym: 'NET', name: 'Cloudflare' },
+    { sym: 'DDOG', name: 'Datadog' },
   ],
   mid: [
     { sym: 'ETSY', name: 'Etsy' },
@@ -23916,6 +24064,34 @@ const movers: Record<CapValue, Mover[]> = {
     { sym: 'AAL', name: 'American Airlines' },
     { sym: 'CAVA', name: 'CAVA Group' },
     { sym: 'HOG', name: 'Harley-Davidson' },
+    { sym: 'GAP', name: 'Gap' },
+    { sym: 'M', name: 'Macy’s' },
+    { sym: 'URBN', name: 'Urban Outfitters' },
+    { sym: 'ELF', name: 'e.l.f. Beauty' },
+    { sym: 'YETI', name: 'YETI' },
+    { sym: 'SHAK', name: 'Shake Shack' },
+    { sym: 'WING', name: 'Wingstop' },
+    { sym: 'FIVE', name: 'Five Below' },
+    { sym: 'PLNT', name: 'Planet Fitness' },
+    { sym: 'VFC', name: 'VF Corp' },
+    { sym: 'RH', name: 'RH' },
+    { sym: 'BROS', name: 'Dutch Bros' },
+    { sym: 'CHWY', name: 'Chewy' },
+    { sym: 'AEO', name: 'American Eagle' },
+    { sym: 'ANF', name: 'Abercrombie & Fitch' },
+    { sym: 'TRIP', name: 'Tripadvisor' },
+    { sym: 'U', name: 'Unity' },
+    { sym: 'LEVI', name: 'Levi Strauss' },
+    { sym: 'COLM', name: 'Columbia Sportswear' },
+    { sym: 'CAR', name: 'Avis Budget' },
+    { sym: 'PENN', name: 'PENN Entertainment' },
+    { sym: 'CZR', name: 'Caesars' },
+    { sym: 'WEN', name: 'Wendy’s' },
+    { sym: 'BIRK', name: 'Birkenstock' },
+    { sym: 'CPRI', name: 'Capri' },
+    { sym: 'BOOT', name: 'Boot Barn' },
+    { sym: 'CAKE', name: 'Cheesecake Factory' },
+    { sym: 'PLAY', name: 'Dave & Buster’s' },
   ],
   small: [
     { sym: 'SONO', name: 'Sonos' },
@@ -23928,20 +24104,35 @@ const movers: Record<CapValue, Mover[]> = {
     { sym: 'LAZR', name: 'Luminar' },
     { sym: 'PLUG', name: 'Plug Power' },
     { sym: 'OPEN', name: 'Opendoor' },
+    { sym: 'LCID', name: 'Lucid' },
+    { sym: 'CHPT', name: 'ChargePoint' },
+    { sym: 'TLRY', name: 'Tilray' },
+    { sym: 'AMC', name: 'AMC Entertainment' },
+    { sym: 'BB', name: 'BlackBerry' },
+    { sym: 'RIG', name: 'Transocean' },
+    { sym: 'JBLU', name: 'JetBlue' },
+    { sym: 'QS', name: 'QuantumScape' },
+    { sym: 'BLNK', name: 'Blink Charging' },
+    { sym: 'WOOF', name: 'Petco' },
+    { sym: 'SNAP', name: 'Snap' },
+    { sym: 'NIO', name: 'NIO' },
+    { sym: 'SOUN', name: 'SoundHound' },
+    { sym: 'SIRI', name: 'SiriusXM' },
   ],
 }
 
-/** The (up to) eight movers (two rows of four cards) of a cap bucket for a filter, from their real day change and range: gainers = biggest rises,
+/** The (up to) fifteen movers (one swipeable row of cards) of a cap bucket for a filter, from their real day change and range: gainers = biggest rises,
  *  losers = biggest falls, most active = highest volume, 52W high / low = closest to it. */
 export function moversFor(cap: CapValue, filter: MoverFilter): MoverToday[] {
-  const today = movers[cap].map((m) => ({ ...m, change: usStock(m.sym).change, q: usQuote(m.sym) }))
+  // Only stocks the snapshot has a real price for (a symbol Yahoo didn't answer for is left out).
+  const today = movers[cap].filter((m) => usQuote(m.sym)?.price != null).map((m) => ({ ...m, change: usStock(m.sym).change, q: usQuote(m.sym) }))
   const near = (to: 'high52' | 'low52') => (m: (typeof today)[number]) => (m.q?.[to] ? Math.abs(m.q.price / m.q[to]! - 1) : 9)
   const sorted =
     filter === 'gainers' ? today.filter((m) => m.change > 0).sort((a, b) => b.change - a.change)
     : filter === 'losers' ? today.filter((m) => m.change < 0).sort((a, b) => a.change - b.change)
     : filter === 'active' ? today.sort((a, b) => (b.q?.volume ?? 0) - (a.q?.volume ?? 0))
     : today.sort((a, b) => near(filter)(a) - near(filter)(b))
-  return sorted.slice(0, 8).map(({ sym, name, change }) => ({ sym, name, up: change >= 0 }))
+  return sorted.slice(0, 15).map(({ sym, name, change }) => ({ sym, name, up: change >= 0 }))
 }
 
 // ---- Brands You Know (two rows) ----
@@ -25085,7 +25276,8 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "switchGuide.buy": "Buy",
   "switchGuide.bought": "Bought 0.25 {sym}",
   "switcher.label": "Home prototype settings",
-  "switcher.drag": "Drag to move",
+  "switcher.drag": "Drag to move, or into an edge to tuck it away",
+  "switcher.open": "Open Home prototype settings",
   "switcher.us.kyc": "US · KYC pending",
   "switcher.us.off": "US · Not activated",
   "switcher.us.review": "US · Under review",
@@ -25417,11 +25609,6 @@ export const stocks: Flow = {
   box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
 }
 
-
-/* Live app at 360 dp: section titles are 16 (L3 SectionHeader is 14) — part of the same one-off for this screen. */
-.flatCards.flatCards h2 {
-  font: var(--l3-text-label-16);
-}
 
 /* Home versions V3, V4: the L3 IND / US switch at the top of the feed's rounded sheet (the feed then starts under it). */
 .sheetHead {
@@ -26726,6 +26913,12 @@ function subscribe(onChange: () => void) {
       timer = undefined
     }
   }
+}
+
+/** Re-render every ticking price now (fresher snapshot data arrived), one tick early. */
+export function nudgeLive() {
+  tick += 1
+  listeners.forEach((l) => l())
 }
 
 /** The live clock: a number that goes up by one every 2 s while anything on screen listens. */
@@ -41992,123 +42185,187 @@ export const watchlists: Watchlist[] = [
 ```json
 {
  "source": "Yahoo Finance (public chart endpoint)",
- "fetchedAt": "2026-11-01T19:29:36.501Z",
+ "fetchedAt": "2026-11-03T03:57:59.833Z",
  "symbols": [
   "AAL",
   "AAPL",
+  "ABBV",
   "ABNB",
   "ADBE",
+  "AEO",
+  "AMC",
   "AMD",
   "AMZN",
+  "ANF",
   "AVGO",
   "BA",
+  "BAC",
+  "BB",
   "BBWI",
+  "BIRK",
+  "BLNK",
+  "BOOT",
   "BOTZ",
+  "BROS",
   "BYND",
+  "CAKE",
+  "CAR",
   "CAVA",
+  "CHPT",
+  "CHWY",
   "CLOV",
+  "CMG",
   "COIN",
+  "COLM",
   "COST",
+  "CPRI",
   "CRM",
   "CROX",
   "CRWD",
   "CSCO",
   "CVX",
+  "CZR",
+  "DAL",
+  "DASH",
+  "DDOG",
+  "DELL",
   "DIS",
   "EB",
+  "EBAY",
+  "ELF",
   "EPI",
   "ETSY",
   "EWJ",
   "EWY",
   "F",
+  "FIVE",
   "FUBO",
+  "GAP",
+  "GE",
   "GM",
   "GOOG",
   "GOOGL",
   "GPRO",
   "HAS",
+  "HBI",
   "HD",
   "HOG",
+  "HOOD",
+  "IBM",
   "INDA",
   "INTC",
   "IRBT",
   "ITA",
+  "JBLU",
   "JNJ",
   "JPM",
   "KO",
   "KWEB",
   "LAZR",
+  "LCID",
+  "LEVI",
+  "LLY",
   "LULU",
   "LYFT",
+  "M",
   "MA",
+  "MAR",
   "MAT",
   "MCD",
   "MCHI",
   "META",
+  "MRK",
   "MSFT",
   "MU",
+  "NET",
   "NFLX",
+  "NIO",
   "NKE",
   "NVD",
   "NVDA",
   "NVDL",
   "OPEN",
   "ORCL",
+  "PENN",
   "PEP",
   "PFE",
+  "PG",
+  "PLAY",
+  "PLNT",
   "PLTR",
   "PLUG",
   "PTON",
   "PYPL",
   "QCOM",
   "QQQ",
+  "QS",
+  "RBLX",
+  "RH",
+  "RIG",
   "RIVN",
   "SBUX",
+  "SHAK",
   "SHOP",
+  "SIRI",
   "SLB",
   "SMH",
+  "SNAP",
   "SNBR",
   "SNOW",
   "SONO",
+  "SOUN",
   "SOXL",
   "SOXS",
   "SPCE",
+  "SPOT",
   "SPXL",
   "SPXS",
   "SPY",
   "SQQQ",
   "TGT",
+  "TLRY",
+  "TMUS",
   "TQQQ",
+  "TRIP",
   "TSLA",
+  "TTD",
+  "U",
+  "UAL",
   "UBER",
   "UFO",
   "UNH",
+  "URBN",
   "V",
+  "VFC",
   "VGK",
+  "VSCO",
   "VTI",
+  "WEN",
+  "WFC",
+  "WING",
   "WMT",
+  "WOOF",
   "XLE",
-  "XOM"
+  "XOM",
+  "YETI",
+  "ZM"
  ],
  "quotes": {
   "AAL": {
    "name": "American Airlines Group Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 12.6,
-   "open": 12.64,
-   "prevClose": 12.78,
-   "change": -0.18,
-   "changePct": -1.41,
-   "dayHigh": 12.64,
-   "dayLow": 12.27,
+   "price": 13.08,
+   "open": 13.09,
+   "prevClose": 12.6,
+   "change": 0.48,
+   "changePct": 3.81,
+   "dayHigh": 13.4,
+   "dayLow": 12.96,
    "high52": 18.79,
    "low52": 10.09,
-   "volume": 60054246,
+   "volume": 84185003,
    "closes": [
-    13.37,
-    13.13,
-    12.94,
     12.83,
     13,
     12.85,
@@ -42128,27 +42385,25 @@ export const watchlists: Watchlist[] = [
     12.61,
     12.58,
     12.78,
-    12.6
+    12.6,
+    13.08
    ]
   },
   "AAPL": {
    "name": "Apple Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 344.63,
-   "open": 346.72,
-   "prevClose": 348.91,
-   "change": -4.28,
-   "changePct": -1.23,
-   "dayHigh": 349.19,
-   "dayLow": 342.35,
+   "price": 338.32,
+   "open": 342.67,
+   "prevClose": 344.63,
+   "change": -6.31,
+   "changePct": -1.83,
+   "dayHigh": 343.78,
+   "dayLow": 335.84,
    "high52": 351.73,
    "low52": 243.42,
-   "volume": 67841555,
+   "volume": 64689155,
    "closes": [
-    333.02,
-    330.32,
-    333.69,
     332.89,
     333.63,
     336.67,
@@ -42168,27 +42423,63 @@ export const watchlists: Watchlist[] = [
     347.1,
     343.83,
     348.91,
-    344.63
+    344.63,
+    338.32
+   ]
+  },
+  "ABBV": {
+   "name": "AbbVie Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 288.84,
+   "open": 290.38,
+   "prevClose": 294.89,
+   "change": -6.05,
+   "changePct": -2.05,
+   "dayHigh": 294.86,
+   "dayLow": 286.14,
+   "high52": 298.74,
+   "low52": 190.75,
+   "volume": 8850080,
+   "closes": [
+    265.76,
+    266.69,
+    271.36,
+    272.42,
+    276.47,
+    281.12,
+    274.36,
+    283.48,
+    283.4,
+    285.42,
+    282.68,
+    289.08,
+    284.8,
+    285.19,
+    285.64,
+    286.74,
+    286.39,
+    285.99,
+    290.79,
+    294.89,
+    288.84
    ]
   },
   "ABNB": {
    "name": "Airbnb, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 164.39,
-   "open": 166.67,
-   "prevClose": 166.45,
-   "change": -2.06,
-   "changePct": -1.24,
-   "dayHigh": 166.85,
-   "dayLow": 164.1,
+   "price": 171.11,
+   "open": 167.6,
+   "prevClose": 164.39,
+   "change": 6.72,
+   "changePct": 4.09,
+   "dayHigh": 173.05,
+   "dayLow": 166.51,
    "high52": 193.45,
    "low52": 110.81,
-   "volume": 4024388,
+   "volume": 5960555,
    "closes": [
-    160.65,
-    160.47,
-    162.43,
     164.07,
     160.39,
     160.63,
@@ -42208,27 +42499,25 @@ export const watchlists: Watchlist[] = [
     168.82,
     166.04,
     166.45,
-    164.39
+    164.39,
+    171.11
    ]
   },
   "ADBE": {
    "name": "Adobe Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 250.23,
-   "open": 253.4,
-   "prevClose": 248.12,
-   "change": 2.11,
-   "changePct": 0.85,
-   "dayHigh": 257.13,
-   "dayLow": 248.8,
+   "price": 251.47,
+   "open": 249.96,
+   "prevClose": 250.23,
+   "change": 1.24,
+   "changePct": 0.5,
+   "dayHigh": 255.43,
+   "dayLow": 248.62,
    "high52": 362.71,
    "low52": 190.12,
-   "volume": 5823508,
+   "volume": 3882346,
    "closes": [
-    239.94,
-    241.28,
-    237.69,
     238.79,
     238.12,
     232.77,
@@ -42248,27 +42537,101 @@ export const watchlists: Watchlist[] = [
     248.36,
     249.76,
     248.12,
-    250.23
+    250.23,
+    251.47
+   ]
+  },
+  "AEO": {
+   "name": "American Eagle Outfitters, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 19.75,
+   "open": 19.62,
+   "prevClose": 19.61,
+   "change": 0.14,
+   "changePct": 0.71,
+   "dayHigh": 20.27,
+   "dayLow": 19.62,
+   "high52": 28.46,
+   "low52": 14.1,
+   "volume": 5660365,
+   "closes": [
+    18.11,
+    17.89,
+    17.66,
+    17.97,
+    18.17,
+    18.07,
+    17.78,
+    17.6,
+    18.05,
+    17.98,
+    17.93,
+    17.81,
+    17.38,
+    17.89,
+    17.91,
+    18.81,
+    19.42,
+    19.46,
+    20.12,
+    19.61,
+    19.75
+   ]
+  },
+  "AMC": {
+   "name": "AMC Entertainment Holdings, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 3.19,
+   "open": 3.1,
+   "prevClose": 3.06,
+   "change": 0.13,
+   "changePct": 4.25,
+   "dayHigh": 3.26,
+   "dayLow": 3.04,
+   "high52": 3.4,
+   "low52": 0.93,
+   "volume": 29144200,
+   "closes": [
+    2.79,
+    2.95,
+    2.88,
+    2.88,
+    2.98,
+    3,
+    3.06,
+    2.89,
+    3.02,
+    2.91,
+    2.98,
+    3.08,
+    3.04,
+    2.93,
+    2.9,
+    2.89,
+    2.99,
+    2.99,
+    3.08,
+    3.06,
+    3.19
    ]
   },
   "AMD": {
    "name": "Advanced Micro Devices, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 504.8,
-   "open": 508.53,
-   "prevClose": 566.42,
-   "change": -61.62,
-   "changePct": -10.88,
-   "dayHigh": 520.4,
-   "dayLow": 492.24,
+   "price": 466.84,
+   "open": 510.71,
+   "prevClose": 504.8,
+   "change": -37.96,
+   "changePct": -7.52,
+   "dayHigh": 512.82,
+   "dayLow": 466.07,
    "high52": 658.52,
    "low52": 188.22,
-   "volume": 39697503,
+   "volume": 32129533,
    "closes": [
-    611.76,
-    615.73,
-    633.91,
     631.75,
     649.42,
     645.86,
@@ -42288,27 +42651,25 @@ export const watchlists: Watchlist[] = [
     560.26,
     578.44,
     566.42,
-    504.8
+    504.8,
+    466.84
    ]
   },
   "AMZN": {
    "name": "Amazon.com, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 240.35,
-   "open": 232.54,
-   "prevClose": 243.79,
-   "change": -3.44,
-   "changePct": -1.41,
-   "dayHigh": 241.55,
-   "dayLow": 229.36,
+   "price": 245.63,
+   "open": 243.01,
+   "prevClose": 240.35,
+   "change": 5.28,
+   "changePct": 2.2,
+   "dayHigh": 253.81,
+   "dayLow": 242.28,
    "high52": 287.2,
    "low52": 196,
-   "volume": 104894738,
+   "volume": 58327853,
    "closes": [
-    249.15,
-    248.23,
-    251.52,
     251.4,
     256.29,
     259.92,
@@ -42328,27 +42689,63 @@ export const watchlists: Watchlist[] = [
     253.1,
     254.6,
     243.79,
-    240.35
+    240.35,
+    245.63
+   ]
+  },
+  "ANF": {
+   "name": "Abercrombie & Fitch Co.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 164.17,
+   "open": 165.28,
+   "prevClose": 164.44,
+   "change": -0.27,
+   "changePct": -0.16,
+   "dayHigh": 169.24,
+   "dayLow": 163.88,
+   "high52": 169.24,
+   "low52": 65.45,
+   "volume": 1134181,
+   "closes": [
+    141.4,
+    141.39,
+    139.44,
+    141.41,
+    142.58,
+    145.91,
+    150.88,
+    149.74,
+    151.99,
+    153.26,
+    162.01,
+    161.73,
+    159.64,
+    161.49,
+    155.82,
+    164.73,
+    165.38,
+    161.24,
+    165.77,
+    164.44,
+    164.17
    ]
   },
   "AVGO": {
    "name": "Broadcom Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 326.08,
-   "open": 330.72,
-   "prevClose": 345,
-   "change": -18.92,
-   "changePct": -5.48,
-   "dayHigh": 331.98,
-   "dayLow": 319.3,
+   "price": 322.23,
+   "open": 328.37,
+   "prevClose": 326.08,
+   "change": -3.85,
+   "changePct": -1.18,
+   "dayHigh": 333.56,
+   "dayLow": 321.87,
    "high52": 495,
    "low52": 289.96,
-   "volume": 36511750,
+   "volume": 20318871,
    "closes": [
-    351.19,
-    343.64,
-    355.14,
     362.51,
     375.81,
     376.51,
@@ -42368,27 +42765,25 @@ export const watchlists: Watchlist[] = [
     342.33,
     351.81,
     345,
-    326.08
+    326.08,
+    322.23
    ]
   },
   "BA": {
    "name": "The Boeing Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 171.55,
-   "open": 171.1,
-   "prevClose": 172.65,
-   "change": -1.1,
-   "changePct": -0.64,
-   "dayHigh": 173.82,
-   "dayLow": 170.37,
+   "price": 175.4,
+   "open": 173.21,
+   "prevClose": 171.55,
+   "change": 3.85,
+   "changePct": 2.24,
+   "dayHigh": 177.37,
+   "dayLow": 172.8,
    "high52": 254.35,
    "low52": 165.01,
-   "volume": 8726123,
+   "volume": 9439858,
    "closes": [
-    186.05,
-    192.28,
-    193.56,
     192.72,
     189.82,
     188.32,
@@ -42408,27 +42803,101 @@ export const watchlists: Watchlist[] = [
     168.18,
     167.14,
     172.65,
-    171.55
+    171.55,
+    175.4
+   ]
+  },
+  "BAC": {
+   "name": "Bank of America Corporation",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 49.57,
+   "open": 50.45,
+   "prevClose": 50.01,
+   "change": -0.44,
+   "changePct": -0.88,
+   "dayHigh": 50.47,
+   "dayLow": 49.45,
+   "high52": 65.23,
+   "low52": 46.12,
+   "volume": 48512490,
+   "closes": [
+    54,
+    54.09,
+    53.52,
+    53.61,
+    54.32,
+    54.58,
+    53.96,
+    51.39,
+    51.7,
+    51.23,
+    50.39,
+    50.64,
+    50.78,
+    51.08,
+    50.56,
+    50.52,
+    50.68,
+    50.85,
+    51.14,
+    50.01,
+    49.57
+   ]
+  },
+  "BB": {
+   "name": "BlackBerry Limited",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 8.02,
+   "open": 8.45,
+   "prevClose": 8.42,
+   "change": -0.4,
+   "changePct": -4.75,
+   "dayHigh": 8.45,
+   "dayLow": 8.01,
+   "high52": 13.59,
+   "low52": 3.12,
+   "volume": 12253892,
+   "closes": [
+    9.08,
+    9.58,
+    8.77,
+    8.63,
+    8.91,
+    8.45,
+    8.47,
+    8.23,
+    8.7,
+    8.06,
+    8.16,
+    8.87,
+    9.41,
+    8.59,
+    8.92,
+    9.19,
+    9.55,
+    9.4,
+    9.19,
+    8.42,
+    8.02
    ]
   },
   "BBWI": {
    "name": "Bath & Body Works, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 22.77,
-   "open": 22.78,
-   "prevClose": 22.78,
-   "change": -0.01,
-   "changePct": -0.04,
-   "dayHigh": 23.07,
-   "dayLow": 22.38,
+   "price": 23.19,
+   "open": 23.3,
+   "prevClose": 22.77,
+   "change": 0.42,
+   "changePct": 1.84,
+   "dayHigh": 23.66,
+   "dayLow": 22.94,
    "high52": 25.21,
    "low52": 14.28,
-   "volume": 6572732,
+   "volume": 7247716,
    "closes": [
-    15.92,
-    16.4,
-    16.06,
     17.46,
     17.93,
     17.81,
@@ -42448,27 +42917,139 @@ export const watchlists: Watchlist[] = [
     21.95,
     21.64,
     22.78,
-    22.77
+    22.77,
+    23.19
+   ]
+  },
+  "BIRK": {
+   "name": "Birkenstock Holding plc",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 35.54,
+   "open": 33.81,
+   "prevClose": 33.43,
+   "change": 2.11,
+   "changePct": 6.31,
+   "dayHigh": 35.77,
+   "dayLow": 33.71,
+   "high52": 50.73,
+   "low52": 29.93,
+   "volume": 2590203,
+   "closes": [
+    33.77,
+    34,
+    33.17,
+    33.12,
+    33.65,
+    33.85,
+    34.18,
+    33.92,
+    35.89,
+    33.85,
+    32.71,
+    32.78,
+    32.32,
+    33.68,
+    32.57,
+    32.61,
+    32.26,
+    31.59,
+    33.39,
+    33.43,
+    35.54
+   ]
+  },
+  "BLNK": {
+   "name": "Blink Charging Co.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 0.43,
+   "open": 0.41,
+   "prevClose": 0.4,
+   "change": 0.03,
+   "changePct": 7.5,
+   "dayHigh": 0.44,
+   "dayLow": 0.4,
+   "high52": 1.7,
+   "low52": 0.38,
+   "volume": 2278953,
+   "closes": [
+    0.55,
+    0.51,
+    0.51,
+    0.48,
+    0.47,
+    0.48,
+    0.48,
+    0.45,
+    0.44,
+    0.42,
+    0.42,
+    0.42,
+    0.42,
+    0.4,
+    0.38,
+    0.38,
+    0.38,
+    0.41,
+    0.41,
+    0.4,
+    0.43
+   ]
+  },
+  "BOOT": {
+   "name": "Boot Barn Holdings, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 137.32,
+   "open": 134,
+   "prevClose": 132.24,
+   "change": 5.08,
+   "changePct": 3.84,
+   "dayHigh": 139.48,
+   "dayLow": 133.23,
+   "high52": 210.25,
+   "low52": 110.53,
+   "volume": 1310033,
+   "closes": [
+    122.88,
+    124.32,
+    122.34,
+    121.6,
+    119.96,
+    119.97,
+    117.57,
+    112.86,
+    120.62,
+    121.72,
+    119.36,
+    115.35,
+    116.09,
+    119.76,
+    115.18,
+    114.18,
+    111.69,
+    113.3,
+    130.48,
+    132.24,
+    137.32
    ]
   },
   "BOTZ": {
    "name": "Global X Robotics & Artificial Intelligence ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 32.22,
-   "open": 32.6,
-   "prevClose": 33.42,
-   "change": -1.2,
-   "changePct": -3.59,
-   "dayHigh": 32.6,
-   "dayLow": 31.9,
+   "price": 32.27,
+   "open": 32.58,
+   "prevClose": 32.22,
+   "change": 0.05,
+   "changePct": 0.16,
+   "dayHigh": 32.91,
+   "dayLow": 32.2,
    "high52": 41.71,
    "low52": 31.88,
-   "volume": 911761,
+   "volume": 766492,
    "closes": [
-    35.23,
-    35.43,
-    36.03,
     36.2,
     36.17,
     35.67,
@@ -42488,27 +43069,63 @@ export const watchlists: Watchlist[] = [
     33.48,
     34.03,
     33.42,
-    32.22
+    32.22,
+    32.27
+   ]
+  },
+  "BROS": {
+   "name": "Dutch Bros Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 43.87,
+   "open": 42.6,
+   "prevClose": 42.87,
+   "change": 1,
+   "changePct": 2.33,
+   "dayHigh": 45.1,
+   "dayLow": 42.6,
+   "high52": 74.02,
+   "low52": 36.51,
+   "volume": 5833257,
+   "closes": [
+    38.23,
+    39.06,
+    38.18,
+    39.78,
+    38.05,
+    37.28,
+    37.98,
+    39.17,
+    41.1,
+    41.16,
+    42.86,
+    43.82,
+    42.26,
+    41.75,
+    41.49,
+    42.02,
+    41.64,
+    42.93,
+    43.98,
+    42.87,
+    43.87
    ]
   },
   "BYND": {
    "name": "Beyond Meat, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 6.91,
-   "open": 7.2,
-   "prevClose": 7.38,
-   "change": -0.47,
-   "changePct": -6.37,
-   "dayHigh": 7.2,
-   "dayLow": 6.75,
+   "price": 7.05,
+   "open": 7.01,
+   "prevClose": 6.91,
+   "change": 0.14,
+   "changePct": 2.03,
+   "dayHigh": 7.7,
+   "dayLow": 7.01,
    "high52": 46.8,
    "low52": 6.49,
-   "volume": 1024658,
+   "volume": 883178,
    "closes": [
-    8.26,
-    8.26,
-    8.25,
     8.06,
     7.99,
     7.66,
@@ -42528,27 +43145,101 @@ export const watchlists: Watchlist[] = [
     7,
     7.13,
     7.38,
-    6.91
+    6.91,
+    7.05
+   ]
+  },
+  "CAKE": {
+   "name": "The Cheesecake Factory Incorporated",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 112.96,
+   "open": 113.69,
+   "prevClose": 112.64,
+   "change": 0.32,
+   "changePct": 0.28,
+   "dayHigh": 117.96,
+   "dayLow": 112.87,
+   "high52": 118.63,
+   "low52": 43.07,
+   "volume": 1478759,
+   "closes": [
+    109.03,
+    108.23,
+    106.99,
+    106.91,
+    108.45,
+    109,
+    112.37,
+    112.85,
+    116.59,
+    114.92,
+    116.18,
+    116.43,
+    114.39,
+    112.44,
+    108.37,
+    110.13,
+    108.47,
+    105.73,
+    113.12,
+    112.64,
+    112.96
+   ]
+  },
+  "CAR": {
+   "name": "Avis Budget Group, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 111.52,
+   "open": 109.61,
+   "prevClose": 107.99,
+   "change": 3.53,
+   "changePct": 3.27,
+   "dayHigh": 114.36,
+   "dayLow": 108.23,
+   "high52": 847.7,
+   "low52": 85.96,
+   "volume": 713639,
+   "closes": [
+    107.98,
+    112.65,
+    110.22,
+    110,
+    105.98,
+    105.1,
+    107.6,
+    106.72,
+    109.77,
+    102.83,
+    102.38,
+    102.45,
+    98.39,
+    101.55,
+    101.34,
+    101.86,
+    102.21,
+    101.74,
+    108.16,
+    107.99,
+    111.52
    ]
   },
   "CAVA": {
    "name": "CAVA Group, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 58.74,
-   "open": 59.21,
-   "prevClose": 59.21,
-   "change": -0.47,
-   "changePct": -0.79,
-   "dayHigh": 60.33,
-   "dayLow": 58.09,
+   "price": 62.05,
+   "open": 59.53,
+   "prevClose": 58.74,
+   "change": 3.31,
+   "changePct": 5.64,
+   "dayHigh": 62.95,
+   "dayLow": 59,
    "high52": 98.79,
    "low52": 43.41,
-   "volume": 2330547,
+   "volume": 3904409,
    "closes": [
-    54.1,
-    54.4,
-    54.41,
     54.1,
     52.64,
     52.07,
@@ -42568,27 +43259,101 @@ export const watchlists: Watchlist[] = [
     51.86,
     54.25,
     59.21,
-    58.74
+    58.74,
+    62.05
+   ]
+  },
+  "CHPT": {
+   "name": "ChargePoint Holdings, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 9.88,
+   "open": 9.77,
+   "prevClose": 9.54,
+   "change": 0.34,
+   "changePct": 3.56,
+   "dayHigh": 10.73,
+   "dayLow": 9.73,
+   "high52": 11.26,
+   "low52": 4.44,
+   "volume": 1377462,
+   "closes": [
+    8.93,
+    8.67,
+    8.22,
+    8.13,
+    7.92,
+    7.22,
+    7.22,
+    6.65,
+    7.23,
+    6.91,
+    7.15,
+    7.83,
+    8.39,
+    8.21,
+    8.35,
+    8.24,
+    8.73,
+    9.22,
+    9.27,
+    9.54,
+    9.88
+   ]
+  },
+  "CHWY": {
+   "name": "Chewy, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 22.27,
+   "open": 21.4,
+   "prevClose": 21.29,
+   "change": 0.98,
+   "changePct": 4.6,
+   "dayHigh": 22.57,
+   "dayLow": 21.15,
+   "high52": 37.34,
+   "low52": 17.4,
+   "volume": 6610503,
+   "closes": [
+    18.22,
+    18.14,
+    18.22,
+    18.91,
+    18.95,
+    19.5,
+    19.71,
+    20.83,
+    21.31,
+    20.97,
+    20.53,
+    21.53,
+    21.33,
+    22.33,
+    21.93,
+    21.9,
+    21.52,
+    20.64,
+    20.83,
+    21.29,
+    22.27
    ]
   },
   "CLOV": {
    "name": "Clover Health Investments, Corp.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 4.46,
+   "price": 4.31,
    "open": 4.53,
-   "prevClose": 4.58,
-   "change": -0.12,
-   "changePct": -2.62,
-   "dayHigh": 4.57,
-   "dayLow": 4.35,
+   "prevClose": 4.46,
+   "change": -0.15,
+   "changePct": -3.36,
+   "dayHigh": 4.53,
+   "dayLow": 4.27,
    "high52": 5.59,
    "low52": 1.58,
-   "volume": 4651444,
+   "volume": 5005122,
    "closes": [
-    4.31,
-    4.23,
-    4.38,
     4.68,
     4.6,
     4.56,
@@ -42608,27 +43373,63 @@ export const watchlists: Watchlist[] = [
     4.63,
     4.79,
     4.58,
-    4.46
+    4.46,
+    4.31
+   ]
+  },
+  "CMG": {
+   "name": "Chipotle Mexican Grill, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 32.91,
+   "open": 31.9,
+   "prevClose": 31.89,
+   "change": 1.02,
+   "changePct": 3.2,
+   "dayHigh": 33.35,
+   "dayLow": 31.9,
+   "high52": 41.42,
+   "low52": 27.31,
+   "volume": 19854563,
+   "closes": [
+    30.85,
+    30.9,
+    30.77,
+    32.68,
+    31.59,
+    30.4,
+    30.35,
+    30.52,
+    30.58,
+    29.89,
+    29.85,
+    29.65,
+    28.12,
+    28.14,
+    27.52,
+    28.41,
+    27.98,
+    28.73,
+    31.28,
+    31.89,
+    32.91
    ]
   },
   "COIN": {
    "name": "Coinbase Global, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 143.54,
-   "open": 148.23,
-   "prevClose": 160.59,
-   "change": -17.05,
-   "changePct": -10.62,
-   "dayHigh": 148.5,
-   "dayLow": 136.9,
+   "price": 137.83,
+   "open": 140.36,
+   "prevClose": 143.54,
+   "change": -5.71,
+   "changePct": -3.98,
+   "dayHigh": 143.77,
+   "dayLow": 135.47,
    "high52": 342.8,
-   "low52": 136.89,
-   "volume": 20893993,
+   "low52": 135.47,
+   "volume": 10634242,
    "closes": [
-    186.41,
-    189.29,
-    183,
     188.22,
     185.74,
     178.45,
@@ -42648,27 +43449,63 @@ export const watchlists: Watchlist[] = [
     161.09,
     162.32,
     160.59,
-    143.54
+    143.54,
+    137.83
+   ]
+  },
+  "COLM": {
+   "name": "Columbia Sportswear Company",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 71.12,
+   "open": 67.49,
+   "prevClose": 67.54,
+   "change": 3.58,
+   "changePct": 5.3,
+   "dayHigh": 71.17,
+   "dayLow": 66.97,
+   "high52": 71.17,
+   "low52": 48.16,
+   "volume": 1358777,
+   "closes": [
+    56.93,
+    57.45,
+    56.53,
+    56.76,
+    57.04,
+    56.34,
+    57.06,
+    57.7,
+    60.82,
+    60.16,
+    59.98,
+    61.1,
+    59.51,
+    62.07,
+    61.35,
+    60.82,
+    61.17,
+    60.9,
+    63.69,
+    67.54,
+    71.12
    ]
   },
   "COST": {
    "name": "Costco Wholesale Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 1012.28,
-   "open": 1012.05,
-   "prevClose": 996.08,
-   "change": 16.2,
-   "changePct": 1.63,
-   "dayHigh": 1021.25,
-   "dayLow": 1006.56,
+   "price": 1040.55,
+   "open": 1015.87,
+   "prevClose": 1012.28,
+   "change": 28.27,
+   "changePct": 2.79,
+   "dayHigh": 1042.57,
+   "dayLow": 1014.34,
    "high52": 1096.5,
    "low52": 844.06,
-   "volume": 3466739,
+   "volume": 3114312,
    "closes": [
-    910.34,
-    914.94,
-    920.65,
     923.52,
     935.68,
     942.25,
@@ -42688,27 +43525,63 @@ export const watchlists: Watchlist[] = [
     992.13,
     982.73,
     996.08,
-    1012.28
+    1012.28,
+    1040.55
+   ]
+  },
+  "CPRI": {
+   "name": "Capri Holdings Limited",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 20.05,
+   "open": 18.94,
+   "prevClose": 18.68,
+   "change": 1.37,
+   "changePct": 7.33,
+   "dayHigh": 20.57,
+   "dayLow": 19.19,
+   "high52": 28.27,
+   "low52": 12.4,
+   "volume": 7449406,
+   "closes": [
+    14.49,
+    14.67,
+    14.44,
+    14.68,
+    14.95,
+    15.09,
+    15.16,
+    15.02,
+    15.85,
+    15.95,
+    16.15,
+    16.51,
+    15.7,
+    16.36,
+    15.87,
+    15.57,
+    15.42,
+    15.29,
+    16.06,
+    18.68,
+    20.05
    ]
   },
   "CRM": {
    "name": "Salesforce, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 229.17,
-   "open": 231.34,
-   "prevClose": 230.9,
-   "change": -1.73,
-   "changePct": -0.75,
-   "dayHigh": 234.62,
-   "dayLow": 227.68,
+   "price": 226.18,
+   "open": 229.75,
+   "prevClose": 229.17,
+   "change": -2.99,
+   "changePct": -1.3,
+   "dayHigh": 232.95,
+   "dayLow": 225.15,
    "high52": 269.11,
    "low52": 146.32,
-   "volume": 7886465,
+   "volume": 6621619,
    "closes": [
-    229.57,
-    236.69,
-    234.69,
     229.79,
     224.99,
     224.56,
@@ -42728,27 +43601,25 @@ export const watchlists: Watchlist[] = [
     240.89,
     242.11,
     230.9,
-    229.17
+    229.17,
+    226.18
    ]
   },
   "CROX": {
    "name": "Crocs, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 150.52,
-   "open": 151.73,
-   "prevClose": 150.26,
-   "change": 0.26,
-   "changePct": 0.17,
-   "dayHigh": 154.05,
-   "dayLow": 149,
-   "high52": 154.05,
+   "price": 153.13,
+   "open": 151.63,
+   "prevClose": 150.52,
+   "change": 2.61,
+   "changePct": 1.73,
+   "dayHigh": 156.71,
+   "dayLow": 150.26,
+   "high52": 156.71,
    "low52": 73.21,
-   "volume": 2119913,
+   "volume": 1497442,
    "closes": [
-    117.31,
-    119.24,
-    118.09,
     118.19,
     120.22,
     115.2,
@@ -42768,27 +43639,25 @@ export const watchlists: Watchlist[] = [
     119.5,
     119.69,
     150.26,
-    150.52
+    150.52,
+    153.13
    ]
   },
   "CRWD": {
    "name": "CrowdStrike Holdings, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 250.43,
-   "open": 261.06,
-   "prevClose": 261.15,
-   "change": -10.72,
-   "changePct": -4.1,
-   "dayHigh": 264.9,
-   "dayLow": 245.15,
+   "price": 241.81,
+   "open": 253,
+   "prevClose": 250.43,
+   "change": -8.62,
+   "changePct": -3.44,
+   "dayHigh": 253.61,
+   "dayLow": 240.17,
    "high52": 286.99,
    "low52": 85.68,
-   "volume": 12503061,
+   "volume": 9274782,
    "closes": [
-    264.75,
-    266.09,
-    270.04,
     272.67,
     278.86,
     265.44,
@@ -42808,27 +43677,25 @@ export const watchlists: Watchlist[] = [
     268.02,
     266.66,
     261.15,
-    250.43
+    250.43,
+    241.81
    ]
   },
   "CSCO": {
    "name": "Cisco Systems, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 104.51,
-   "open": 108.77,
-   "prevClose": 108.59,
-   "change": -4.08,
-   "changePct": -3.76,
-   "dayHigh": 108.77,
-   "dayLow": 103.15,
+   "price": 101.61,
+   "open": 105.42,
+   "prevClose": 104.51,
+   "change": -2.9,
+   "changePct": -2.77,
+   "dayHigh": 105.42,
+   "dayLow": 101.41,
    "high52": 130.37,
    "low52": 70.54,
-   "volume": 24706212,
+   "volume": 26009032,
    "closes": [
-    107.63,
-    108.76,
-    112.2,
     112.82,
     117.94,
     117.39,
@@ -42848,27 +43715,25 @@ export const watchlists: Watchlist[] = [
     111.38,
     110.29,
     108.59,
-    104.51
+    104.51,
+    101.61
    ]
   },
   "CVX": {
    "name": "Chevron Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 235.52,
-   "open": 234.01,
-   "prevClose": 231.46,
-   "change": 4.06,
-   "changePct": 1.75,
-   "dayHigh": 236.46,
-   "dayLow": 233.22,
+   "price": 227.77,
+   "open": 232.5,
+   "prevClose": 235.52,
+   "change": -7.75,
+   "changePct": -3.29,
+   "dayHigh": 233.25,
+   "dayLow": 227.42,
    "high52": 236.48,
    "low52": 146.49,
-   "volume": 11009664,
+   "volume": 9170787,
    "closes": [
-    204.21,
-    207.1,
-    206.69,
     206.47,
     207.58,
     205.15,
@@ -42888,27 +43753,215 @@ export const watchlists: Watchlist[] = [
     228.23,
     229.2,
     231.46,
-    235.52
+    235.52,
+    227.77
+   ]
+  },
+  "CZR": {
+   "name": "Caesars Entertainment, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 28.99,
+   "open": 29.05,
+   "prevClose": 29.09,
+   "change": -0.1,
+   "changePct": -0.34,
+   "dayHigh": 29.11,
+   "dayLow": 28.96,
+   "high52": 30.88,
+   "low52": 17.86,
+   "volume": 7102887,
+   "closes": [
+    29.65,
+    29.65,
+    29.49,
+    29.52,
+    29.5,
+    29.58,
+    29.47,
+    29.3,
+    29.25,
+    28.8,
+    29.04,
+    29.09,
+    28.9,
+    29.07,
+    28.8,
+    28.99,
+    28.85,
+    28.57,
+    29.13,
+    29.09,
+    28.99
+   ]
+  },
+  "DAL": {
+   "name": "Delta Air Lines, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 83.42,
+   "open": 83.04,
+   "prevClose": 80.15,
+   "change": 3.27,
+   "changePct": 4.08,
+   "dayHigh": 84.07,
+   "dayLow": 82.24,
+   "high52": 95.68,
+   "low52": 55.03,
+   "volume": 7588384,
+   "closes": [
+    83.08,
+    83.66,
+    82.97,
+    82.14,
+    82.17,
+    80.11,
+    79.57,
+    76.65,
+    78.08,
+    75.37,
+    74.63,
+    76.66,
+    77.67,
+    79.26,
+    76.78,
+    79.16,
+    81.45,
+    80.35,
+    81.64,
+    80.15,
+    83.42
+   ]
+  },
+  "DASH": {
+   "name": "DoorDash, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 190.07,
+   "open": 181.17,
+   "prevClose": 178.99,
+   "change": 11.08,
+   "changePct": 6.19,
+   "dayHigh": 191.02,
+   "dayLow": 177,
+   "high52": 258,
+   "low52": 143.3,
+   "volume": 6211986,
+   "closes": [
+    191.77,
+    193.62,
+    191.24,
+    191.71,
+    196.5,
+    194.24,
+    193.09,
+    184.01,
+    193.05,
+    189.15,
+    193.53,
+    191.67,
+    184.45,
+    185.94,
+    179.38,
+    168.44,
+    170.56,
+    169.49,
+    179,
+    178.99,
+    190.07
+   ]
+  },
+  "DDOG": {
+   "name": "Datadog, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 216.1,
+   "open": 235.51,
+   "prevClose": 235.27,
+   "change": -19.17,
+   "changePct": -8.15,
+   "dayHigh": 236.39,
+   "dayLow": 215.73,
+   "high52": 300.68,
+   "low52": 98.01,
+   "volume": 4651321,
+   "closes": [
+    276.42,
+    278.24,
+    271.34,
+    273.8,
+    293.26,
+    287.29,
+    283.34,
+    269.33,
+    266.25,
+    247.11,
+    260.36,
+    256.43,
+    273.09,
+    257.75,
+    269.65,
+    280.24,
+    280.82,
+    278.41,
+    265.84,
+    235.27,
+    216.1
+   ]
+  },
+  "DELL": {
+   "name": "Dell Technologies Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 392.78,
+   "open": 423,
+   "prevClose": 424.3,
+   "change": -31.52,
+   "changePct": -7.43,
+   "dayHigh": 424.13,
+   "dayLow": 391.29,
+   "high52": 595.51,
+   "low52": 110.22,
+   "volume": 6608456,
+   "closes": [
+    552.29,
+    574,
+    578.96,
+    574.55,
+    586.06,
+    576.76,
+    572.47,
+    507.93,
+    473.39,
+    451.71,
+    455.44,
+    461.56,
+    485.88,
+    452.95,
+    456.44,
+    467.09,
+    501.96,
+    493.79,
+    475.51,
+    424.3,
+    392.78
    ]
   },
   "DIS": {
    "name": "The Walt Disney Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 110.94,
-   "open": 111.82,
-   "prevClose": 110.91,
-   "change": 0.03,
-   "changePct": 0.03,
-   "dayHigh": 112.47,
-   "dayLow": 110.76,
+   "price": 113.11,
+   "open": 111.78,
+   "prevClose": 110.94,
+   "change": 2.17,
+   "changePct": 1.96,
+   "dayHigh": 113.79,
+   "dayLow": 111.81,
    "high52": 117.09,
    "low52": 92.19,
-   "volume": 6143195,
+   "volume": 7437480,
    "closes": [
-    104.9,
-    101.33,
-    102.19,
     103.61,
     104.03,
     104.75,
@@ -42928,27 +43981,101 @@ export const watchlists: Watchlist[] = [
     110.23,
     109.04,
     110.91,
-    110.94
+    110.94,
+    113.11
+   ]
+  },
+  "EBAY": {
+   "name": "eBay Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 120.93,
+   "open": 121.63,
+   "prevClose": 121.64,
+   "change": -0.71,
+   "changePct": -0.58,
+   "dayHigh": 123.92,
+   "dayLow": 120.31,
+   "high52": 124.59,
+   "low52": 78.03,
+   "volume": 4027217,
+   "closes": [
+    107.14,
+    107.06,
+    107.6,
+    111.98,
+    112.19,
+    114.65,
+    116.41,
+    116.88,
+    122.91,
+    120.28,
+    120.47,
+    121.19,
+    122.9,
+    122.04,
+    121.41,
+    118.62,
+    117.83,
+    118.02,
+    121.19,
+    121.64,
+    120.93
+   ]
+  },
+  "ELF": {
+   "name": "e.l.f. Beauty, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 110.68,
+   "open": 114.37,
+   "prevClose": 111.69,
+   "change": -1.01,
+   "changePct": -0.9,
+   "dayHigh": 115,
+   "dayLow": 109.77,
+   "high52": 123.07,
+   "low52": 48.82,
+   "volume": 1265602,
+   "closes": [
+    103.75,
+    102.79,
+    105.03,
+    105.96,
+    109.23,
+    109.94,
+    108.16,
+    108.13,
+    116.11,
+    113.54,
+    113.48,
+    114.74,
+    113.78,
+    114.99,
+    114.24,
+    112.94,
+    113.17,
+    115.41,
+    112.95,
+    111.69,
+    110.68
    ]
   },
   "EPI": {
    "name": "WisdomTree India Earnings Fund",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 40.97,
-   "open": 40.69,
-   "prevClose": 40.78,
-   "change": 0.19,
-   "changePct": 0.47,
-   "dayHigh": 41,
-   "dayLow": 40.7,
+   "price": 41.69,
+   "open": 41.52,
+   "prevClose": 40.97,
+   "change": 0.72,
+   "changePct": 1.76,
+   "dayHigh": 41.83,
+   "dayLow": 41.53,
    "high52": 46.83,
    "low52": 39.36,
-   "volume": 430982,
+   "volume": 888517,
    "closes": [
-    40.73,
-    40.44,
-    40.53,
     40.51,
     40.57,
     40.09,
@@ -42968,27 +44095,25 @@ export const watchlists: Watchlist[] = [
     40.32,
     40.33,
     40.78,
-    40.97
+    40.97,
+    41.69
    ]
   },
   "ETSY": {
    "name": "Etsy, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 88.96,
-   "open": 90.42,
-   "prevClose": 91.59,
-   "change": -2.63,
-   "changePct": -2.87,
-   "dayHigh": 92.77,
-   "dayLow": 87.93,
-   "high52": 94.49,
+   "price": 92.45,
+   "open": 90.53,
+   "prevClose": 88.96,
+   "change": 3.49,
+   "changePct": 3.92,
+   "dayHigh": 95.49,
+   "dayLow": 90.02,
+   "high52": 95.49,
    "low52": 44,
-   "volume": 3428330,
+   "volume": 5003048,
    "closes": [
-    71.49,
-    72.84,
-    72.77,
     70.89,
     71.39,
     71.49,
@@ -43008,27 +44133,25 @@ export const watchlists: Watchlist[] = [
     87.66,
     92.35,
     91.59,
-    88.96
+    88.96,
+    92.45
    ]
   },
   "EWJ": {
    "name": "iShares MSCI Japan ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 92.91,
-   "open": 93.08,
-   "prevClose": 94.94,
-   "change": -2.03,
-   "changePct": -2.14,
-   "dayHigh": 93.24,
-   "dayLow": 92.07,
+   "price": 92.84,
+   "open": 92.91,
+   "prevClose": 92.91,
+   "change": -0.07,
+   "changePct": -0.08,
+   "dayHigh": 93.88,
+   "dayLow": 92.75,
    "high52": 99.98,
    "low52": 79.48,
-   "volume": 7345784,
+   "volume": 3908370,
    "closes": [
-    97.46,
-    97.38,
-    98.92,
     99.3,
     99.32,
     98.32,
@@ -43048,27 +44171,25 @@ export const watchlists: Watchlist[] = [
     95.25,
     94.99,
     94.94,
-    92.91
+    92.91,
+    92.84
    ]
   },
   "EWY": {
    "name": "iShares MSCI South Korea ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 152.89,
-   "open": 153.89,
-   "prevClose": 161.83,
-   "change": -8.94,
-   "changePct": -5.52,
-   "dayHigh": 155.04,
-   "dayLow": 150.7,
+   "price": 151.62,
+   "open": 158.37,
+   "prevClose": 152.89,
+   "change": -1.27,
+   "changePct": -0.83,
+   "dayHigh": 158.91,
+   "dayLow": 151.48,
    "high52": 220.89,
    "low52": 86.9,
-   "volume": 22500953,
+   "volume": 15065157,
    "closes": [
-    182.78,
-    186.11,
-    191.88,
     191.46,
     186.4,
     183.69,
@@ -43088,27 +44209,25 @@ export const watchlists: Watchlist[] = [
     157.46,
     165.91,
     161.83,
-    152.89
+    152.89,
+    151.62
    ]
   },
   "F": {
    "name": "Ford Motor Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 12.25,
-   "open": 12.28,
-   "prevClose": 12.36,
-   "change": -0.11,
-   "changePct": -0.89,
-   "dayHigh": 12.34,
-   "dayLow": 12.12,
+   "price": 12.6,
+   "open": 12.4,
+   "prevClose": 12.25,
+   "change": 0.35,
+   "changePct": 2.86,
+   "dayHigh": 12.65,
+   "dayLow": 12.38,
    "high52": 17.78,
    "low52": 11.11,
-   "volume": 44464123,
+   "volume": 53362018,
    "closes": [
-    12.06,
-    12.27,
-    12.1,
     12.15,
     12.28,
     12.12,
@@ -43128,27 +44247,63 @@ export const watchlists: Watchlist[] = [
     11.71,
     11.95,
     12.36,
-    12.25
+    12.25,
+    12.6
+   ]
+  },
+  "FIVE": {
+   "name": "Five Below, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 238.97,
+   "open": 241.42,
+   "prevClose": 240.96,
+   "change": -1.99,
+   "changePct": -0.83,
+   "dayHigh": 245.61,
+   "dayLow": 238.77,
+   "high52": 263.88,
+   "low52": 143.02,
+   "volume": 892351,
+   "closes": [
+    215.93,
+    209.92,
+    204.24,
+    209.73,
+    214.73,
+    213.58,
+    213.35,
+    218.95,
+    223.23,
+    222.72,
+    225.61,
+    223.8,
+    224.1,
+    225.87,
+    223.24,
+    230,
+    231.25,
+    234.47,
+    245.5,
+    240.96,
+    238.97
    ]
   },
   "FUBO": {
    "name": "FuboTV Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 7.62,
-   "open": 7.81,
-   "prevClose": 7.96,
-   "change": -0.34,
-   "changePct": -4.27,
-   "dayHigh": 7.9,
-   "dayLow": 7.48,
+   "price": 7.61,
+   "open": 7.67,
+   "prevClose": 7.62,
+   "change": -0.01,
+   "changePct": -0.13,
+   "dayHigh": 7.92,
+   "dayLow": 7.55,
    "high52": 50.4,
    "low52": 7.48,
-   "volume": 1102895,
+   "volume": 766984,
    "closes": [
-    8.96,
-    8.88,
-    8.66,
     8.62,
     8.83,
     9.25,
@@ -43168,27 +44323,101 @@ export const watchlists: Watchlist[] = [
     7.8,
     7.98,
     7.96,
-    7.62
+    7.62,
+    7.61
+   ]
+  },
+  "GAP": {
+   "name": "The Gap, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 22.22,
+   "open": 22.5,
+   "prevClose": 22.32,
+   "change": -0.1,
+   "changePct": -0.45,
+   "dayHigh": 22.74,
+   "dayLow": 22.05,
+   "high52": 29.36,
+   "low52": 18.11,
+   "volume": 6257925,
+   "closes": [
+    23.3,
+    23.79,
+    23.61,
+    23.36,
+    23.23,
+    22.78,
+    22.83,
+    22.67,
+    23.46,
+    23.12,
+    23.54,
+    23.47,
+    22.69,
+    22.91,
+    22.32,
+    22.26,
+    21.7,
+    22,
+    22.89,
+    22.32,
+    22.22
+   ]
+  },
+  "GE": {
+   "name": "GE Aerospace",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 315.78,
+   "open": 309.2,
+   "prevClose": 301.8,
+   "change": 13.98,
+   "changePct": 4.63,
+   "dayHigh": 316.79,
+   "dayLow": 308.17,
+   "high52": 388.84,
+   "low52": 268.91,
+   "volume": 4829940,
+   "closes": [
+    306.34,
+    309.39,
+    303.62,
+    305.62,
+    308.2,
+    308.64,
+    307.63,
+    307.02,
+    312,
+    313.83,
+    311.28,
+    299.87,
+    295.88,
+    293.54,
+    285.64,
+    288.43,
+    297.66,
+    301.13,
+    313.05,
+    301.8,
+    315.78
    ]
   },
   "GM": {
    "name": "General Motors Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 87.4,
-   "open": 85.51,
-   "prevClose": 85.72,
-   "change": 1.68,
-   "changePct": 1.96,
-   "dayHigh": 88.02,
-   "dayLow": 84.73,
+   "price": 89.94,
+   "open": 88.5,
+   "prevClose": 87.4,
+   "change": 2.54,
+   "changePct": 2.91,
+   "dayHigh": 90.03,
+   "dayLow": 87.92,
    "high52": 91.85,
    "low52": 66.75,
-   "volume": 11691040,
+   "volume": 8429526,
    "closes": [
-    77,
-    79.31,
-    78.27,
     80.23,
     82.01,
     80.99,
@@ -43208,27 +44437,25 @@ export const watchlists: Watchlist[] = [
     80.54,
     82.48,
     85.72,
-    87.4
+    87.4,
+    89.94
    ]
   },
   "GOOG": {
    "name": "Alphabet Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 278.22,
-   "open": 279.69,
-   "prevClose": 282.32,
-   "change": -4.1,
-   "changePct": -1.45,
-   "dayHigh": 281.86,
-   "dayLow": 275.35,
+   "price": 278.04,
+   "open": 280.58,
+   "prevClose": 278.22,
+   "change": -0.18,
+   "changePct": -0.06,
+   "dayHigh": 285.21,
+   "dayLow": 277.78,
    "high52": 404.47,
    "low52": 271.41,
-   "volume": 45116487,
+   "volume": 29219125,
    "closes": [
-    340.74,
-    334.93,
-    340.35,
     343.83,
     344.59,
     347.37,
@@ -43248,27 +44475,25 @@ export const watchlists: Watchlist[] = [
     316.83,
     321.89,
     282.32,
-    278.22
+    278.22,
+    278.04
    ]
   },
   "GOOGL": {
    "name": "Alphabet Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 279.84,
-   "open": 281.12,
-   "prevClose": 283.82,
-   "change": -3.98,
-   "changePct": -1.4,
-   "dayHigh": 283.14,
-   "dayLow": 276.92,
+   "price": 278.99,
+   "open": 282.46,
+   "prevClose": 279.84,
+   "change": -0.85,
+   "changePct": -0.3,
+   "dayHigh": 287,
+   "dayLow": 278.87,
    "high52": 408.61,
    "low52": 270.7,
-   "volume": 65695032,
+   "volume": 48504345,
    "closes": [
-    344.08,
-    338.24,
-    343.5,
     346.47,
     347.68,
     350.5,
@@ -43288,27 +44513,25 @@ export const watchlists: Watchlist[] = [
     320.58,
     324.89,
     283.82,
-    279.84
+    279.84,
+    278.99
    ]
   },
   "GPRO": {
    "name": "GoPro, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 0.93,
-   "open": 1,
-   "prevClose": 1,
-   "change": -0.07,
-   "changePct": -7,
-   "dayHigh": 1.01,
-   "dayLow": 0.92,
+   "price": 0.96,
+   "open": 0.95,
+   "prevClose": 0.93,
+   "change": 0.03,
+   "changePct": 3.23,
+   "dayHigh": 0.98,
+   "dayLow": 0.93,
    "high52": 2.05,
    "low52": 0.57,
-   "volume": 10147238,
+   "volume": 9811781,
    "closes": [
-    1.29,
-    1.33,
-    1.35,
     1.36,
     1.32,
     1.22,
@@ -43328,27 +44551,25 @@ export const watchlists: Watchlist[] = [
     1.02,
     1.03,
     1,
-    0.93
+    0.93,
+    0.95
    ]
   },
   "HAS": {
    "name": "Hasbro, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 119.09,
-   "open": 120.1,
-   "prevClose": 119.57,
-   "change": -0.48,
-   "changePct": -0.4,
-   "dayHigh": 120.36,
-   "dayLow": 118.16,
+   "price": 118.36,
+   "open": 119.4,
+   "prevClose": 119.09,
+   "change": -0.73,
+   "changePct": -0.61,
+   "dayHigh": 120.15,
+   "dayLow": 118.18,
    "high52": 121.04,
    "low52": 74.78,
-   "volume": 1921808,
+   "volume": 1967698,
    "closes": [
-    87.68,
-    89.98,
-    89.54,
     92.38,
     91.03,
     90.75,
@@ -43368,27 +44589,25 @@ export const watchlists: Watchlist[] = [
     118.33,
     118.68,
     119.57,
-    119.09
+    119.09,
+    118.36
    ]
   },
   "HD": {
    "name": "The Home Depot, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 329.2,
-   "open": 333.35,
-   "prevClose": 328.98,
-   "change": 0.22,
-   "changePct": 0.07,
-   "dayHigh": 334.8,
-   "dayLow": 328.56,
+   "price": 341.15,
+   "open": 334.08,
+   "prevClose": 329.2,
+   "change": 11.95,
+   "changePct": 3.63,
+   "dayHigh": 341.54,
+   "dayLow": 333,
    "high52": 397.63,
    "low52": 277.15,
-   "volume": 3936972,
+   "volume": 4778206,
    "closes": [
-    284.49,
-    282.46,
-    282.85,
     281.15,
     286.69,
     285.77,
@@ -43408,27 +44627,25 @@ export const watchlists: Watchlist[] = [
     318.5,
     317.56,
     328.98,
-    329.2
+    329.2,
+    341.15
    ]
   },
   "HOG": {
    "name": "Harley-Davidson, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 31.22,
-   "open": 30.26,
-   "prevClose": 30.33,
-   "change": 0.89,
-   "changePct": 2.93,
-   "dayHigh": 31.22,
-   "dayLow": 29.93,
-   "high52": 31.23,
+   "price": 33.07,
+   "open": 31.6,
+   "prevClose": 31.22,
+   "change": 1.85,
+   "changePct": 5.93,
+   "dayHigh": 33.38,
+   "dayLow": 31.6,
+   "high52": 33.38,
    "low52": 17.09,
-   "volume": 3251566,
+   "volume": 4682265,
    "closes": [
-    24.43,
-    24.83,
-    24.55,
     26.19,
     26.94,
     26.95,
@@ -43448,27 +44665,101 @@ export const watchlists: Watchlist[] = [
     29.44,
     29.52,
     30.33,
-    31.22
+    31.22,
+    33.07
+   ]
+  },
+  "HOOD": {
+   "name": "Robinhood Markets, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 83.84,
+   "open": 85.56,
+   "prevClose": 84.99,
+   "change": -1.15,
+   "changePct": -1.35,
+   "dayHigh": 87.37,
+   "dayLow": 83.35,
+   "high52": 149.41,
+   "low52": 63.52,
+   "volume": 19525136,
+   "closes": [
+    114.11,
+    112,
+    109.51,
+    107.01,
+    109.02,
+    109.22,
+    110.52,
+    101.08,
+    103.99,
+    98.87,
+    96.52,
+    98.21,
+    101.93,
+    96.58,
+    95.07,
+    92.84,
+    94.56,
+    91.43,
+    91.59,
+    84.99,
+    83.84
+   ]
+  },
+  "IBM": {
+   "name": "International Business Machines Corporation",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 252.51,
+   "open": 258.12,
+   "prevClose": 257.81,
+   "change": -5.3,
+   "changePct": -2.06,
+   "dayHigh": 259.87,
+   "dayLow": 252.36,
+   "high52": 332.46,
+   "low52": 199.19,
+   "volume": 5592757,
+   "closes": [
+    221.58,
+    221.29,
+    220.51,
+    226.61,
+    227.13,
+    227.02,
+    230.78,
+    227.88,
+    234.12,
+    232.14,
+    236.39,
+    241.92,
+    251.46,
+    252.11,
+    253.56,
+    253.44,
+    250.25,
+    253.22,
+    258.28,
+    257.81,
+    252.51
    ]
   },
   "INDA": {
    "name": "iShares MSCI India ETF",
    "exchange": "Cboe US",
    "type": "ETF",
-   "price": 47.72,
-   "open": 47.42,
-   "prevClose": 47.41,
-   "change": 0.31,
-   "changePct": 0.65,
-   "dayHigh": 47.76,
-   "dayLow": 47.42,
+   "price": 48.45,
+   "open": 48.24,
+   "prevClose": 47.72,
+   "change": 0.73,
+   "changePct": 1.53,
+   "dayHigh": 48.54,
+   "dayLow": 48.16,
    "high52": 55.1,
    "low52": 45.21,
-   "volume": 6258413,
+   "volume": 9860116,
    "closes": [
-    46.68,
-    46.36,
-    46.52,
     46.57,
     46.73,
     46.11,
@@ -43488,27 +44779,25 @@ export const watchlists: Watchlist[] = [
     46.74,
     46.79,
     47.41,
-    47.72
+    47.72,
+    48.45
    ]
   },
   "INTC": {
    "name": "Intel Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 65.76,
-   "open": 68.36,
-   "prevClose": 92.07,
-   "change": -26.31,
-   "changePct": -28.58,
-   "dayHigh": 68.77,
-   "dayLow": 63.2,
+   "price": 59.97,
+   "open": 65.4,
+   "prevClose": 65.76,
+   "change": -5.79,
+   "changePct": -8.8,
+   "dayHigh": 65.72,
+   "dayLow": 59.4,
    "high52": 142.35,
    "low52": 32.89,
-   "volume": 455599430,
+   "volume": 230485372,
    "closes": [
-    120.23,
-    120,
-    119.33,
     116.19,
     112.5,
     113.12,
@@ -43528,27 +44817,25 @@ export const watchlists: Watchlist[] = [
     93.74,
     95.53,
     92.07,
-    65.76
+    65.76,
+    59.97
    ]
   },
   "ITA": {
    "name": "iShares U.S. Aerospace & Defense ETF",
    "exchange": "Cboe US",
    "type": "ETF",
-   "price": 209.74,
-   "open": 214,
-   "prevClose": 214.3,
-   "change": -4.56,
-   "changePct": -2.13,
-   "dayHigh": 215.55,
-   "dayLow": 208.72,
+   "price": 214.68,
+   "open": 212.07,
+   "prevClose": 209.74,
+   "change": 4.94,
+   "changePct": 2.36,
+   "dayHigh": 215.69,
+   "dayLow": 211.87,
    "high52": 256.6,
    "low52": 195.71,
-   "volume": 1299312,
+   "volume": 1072347,
    "closes": [
-    207.18,
-    208.04,
-    207.79,
     206.98,
     208.26,
     203.6,
@@ -43568,27 +44855,63 @@ export const watchlists: Watchlist[] = [
     206.22,
     207.74,
     214.3,
-    209.74
+    209.74,
+    214.68
+   ]
+  },
+  "JBLU": {
+   "name": "JetBlue Airways Corporation",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 3.17,
+   "open": 2.99,
+   "prevClose": 2.85,
+   "change": 0.32,
+   "changePct": 11.23,
+   "dayHigh": 3.23,
+   "dayLow": 2.97,
+   "high52": 6.62,
+   "low52": 2.16,
+   "volume": 32585866,
+   "closes": [
+    4.06,
+    4.03,
+    3.97,
+    3.92,
+    3.84,
+    3.62,
+    3.35,
+    3.01,
+    3.15,
+    2.93,
+    2.91,
+    2.91,
+    2.93,
+    2.65,
+    2.63,
+    2.37,
+    2.82,
+    2.85,
+    3.05,
+    2.85,
+    3.17
    ]
   },
   "JNJ": {
    "name": "Johnson & Johnson",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 273.2,
-   "open": 280,
-   "prevClose": 275.2,
-   "change": -2,
-   "changePct": -0.73,
-   "dayHigh": 282,
-   "dayLow": 273.15,
+   "price": 270.56,
+   "open": 272.06,
+   "prevClose": 273.2,
+   "change": -2.64,
+   "changePct": -0.97,
+   "dayHigh": 273.01,
+   "dayLow": 267.44,
    "high52": 282.02,
    "low52": 185.12,
-   "volume": 8968187,
+   "volume": 8262644,
    "closes": [
-    264.74,
-    258.66,
-    256.03,
     252.93,
     254.78,
     258.45,
@@ -43608,27 +44931,25 @@ export const watchlists: Watchlist[] = [
     268.73,
     271.04,
     275.2,
-    273.2
+    273.2,
+    270.56
    ]
   },
   "JPM": {
    "name": "JPMorgan Chase & Co.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 337.04,
-   "open": 345.29,
-   "prevClose": 343.58,
-   "change": -6.54,
-   "changePct": -1.9,
-   "dayHigh": 345.29,
-   "dayLow": 335.12,
+   "price": 340.58,
+   "open": 340.94,
+   "prevClose": 337.04,
+   "change": 3.54,
+   "changePct": 1.05,
+   "dayHigh": 342.4,
+   "dayLow": 339.92,
    "high52": 366.5,
    "low52": 279.1,
-   "volume": 7829798,
+   "volume": 6014579,
    "closes": [
-    330.83,
-    333.18,
-    332.38,
     332.38,
     331.28,
     329.58,
@@ -43648,27 +44969,25 @@ export const watchlists: Watchlist[] = [
     335.79,
     339.3,
     343.58,
-    337.04
+    337.04,
+    340.58
    ]
   },
   "KO": {
    "name": "The Coca-Cola Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 94.08,
-   "open": 94.52,
-   "prevClose": 92.82,
-   "change": 1.26,
-   "changePct": 1.36,
-   "dayHigh": 95.08,
-   "dayLow": 93.95,
-   "high52": 95.37,
+   "price": 95.83,
+   "open": 94.28,
+   "prevClose": 94.08,
+   "change": 1.75,
+   "changePct": 1.86,
+   "dayHigh": 96.26,
+   "dayLow": 94.28,
+   "high52": 96.26,
    "low52": 67.27,
-   "volume": 18358783,
+   "volume": 22706151,
    "closes": [
-    86.08,
-    86.1,
-    85.65,
     86.51,
     86.17,
     85.82,
@@ -43688,27 +45007,25 @@ export const watchlists: Watchlist[] = [
     91.18,
     91.73,
     92.82,
-    94.08
+    94.08,
+    95.83
    ]
   },
   "KWEB": {
    "name": "KraneShares CSI China Internet ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 22.74,
-   "open": 22.78,
-   "prevClose": 22.79,
-   "change": -0.05,
-   "changePct": -0.22,
-   "dayHigh": 22.95,
-   "dayLow": 22.69,
+   "price": 23.35,
+   "open": 23.19,
+   "prevClose": 22.74,
+   "change": 0.61,
+   "changePct": 2.68,
+   "dayHigh": 23.65,
+   "dayLow": 23.18,
    "high52": 40.1,
    "low52": 22.54,
-   "volume": 14936590,
+   "volume": 30354294,
    "closes": [
-    24.51,
-    24.33,
-    23.86,
     24.56,
     24.54,
     24.33,
@@ -43728,27 +45045,25 @@ export const watchlists: Watchlist[] = [
     23.13,
     22.99,
     22.79,
-    22.74
+    22.74,
+    23.35
    ]
   },
   "LAZR": {
    "name": "Tema Photonics & Optical ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 34.09,
-   "open": 34.67,
-   "prevClose": 37.1,
-   "change": -3.01,
-   "changePct": -8.11,
-   "dayHigh": 35.15,
-   "dayLow": 33.04,
+   "price": 32.02,
+   "open": 34.58,
+   "prevClose": 34.09,
+   "change": -2.07,
+   "changePct": -6.07,
+   "dayHigh": 34.15,
+   "dayLow": 31.96,
    "high52": 50.82,
-   "low52": 32.55,
-   "volume": 350704,
+   "low52": 31.96,
+   "volume": 176470,
    "closes": [
-    44.46,
-    45.63,
-    48.28,
     48.35,
     48.63,
     47.78,
@@ -43768,27 +45083,139 @@ export const watchlists: Watchlist[] = [
     36.33,
     37.91,
     37.1,
-    34.09
+    34.09,
+    32.02
+   ]
+  },
+  "LCID": {
+   "name": "Lucid Group, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 3,
+   "open": 3.09,
+   "prevClose": 3.02,
+   "change": -0.02,
+   "changePct": -0.66,
+   "dayHigh": 3.3,
+   "dayLow": 2.99,
+   "high52": 18.1,
+   "low52": 2.37,
+   "volume": 12709565,
+   "closes": [
+    4.17,
+    4.16,
+    3.89,
+    3.82,
+    3.79,
+    3.43,
+    3.36,
+    3.29,
+    3.5,
+    3.13,
+    3.1,
+    3.27,
+    3.21,
+    3.46,
+    3.52,
+    3.4,
+    3.31,
+    3.41,
+    3.2,
+    3.02,
+    3
+   ]
+  },
+  "LEVI": {
+   "name": "Levi Strauss & Co.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 23.03,
+   "open": 22.72,
+   "prevClose": 22.5,
+   "change": 0.53,
+   "changePct": 2.36,
+   "dayHigh": 23.19,
+   "dayLow": 22.72,
+   "high52": 25.7,
+   "low52": 17.72,
+   "volume": 2963945,
+   "closes": [
+    20.27,
+    20.53,
+    19.51,
+    19.05,
+    18.7,
+    19.24,
+    19.48,
+    19.57,
+    20.65,
+    20.44,
+    20.63,
+    20.85,
+    20.93,
+    21.36,
+    21.13,
+    21.84,
+    21.78,
+    21.63,
+    22.61,
+    22.5,
+    23.03
+   ]
+  },
+  "LLY": {
+   "name": "Eli Lilly and Company",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 1410.99,
+   "open": 1393.15,
+   "prevClose": 1417.54,
+   "change": -6.55,
+   "changePct": -0.46,
+   "dayHigh": 1421.99,
+   "dayLow": 1387.1,
+   "high52": 1449.68,
+   "low52": 850.51,
+   "volume": 3737111,
+   "closes": [
+    1143.12,
+    1157.49,
+    1188.72,
+    1169.6,
+    1179.27,
+    1182.62,
+    1166.51,
+    1208.74,
+    1251.61,
+    1257.03,
+    1240.34,
+    1283.66,
+    1270.75,
+    1306.69,
+    1273.46,
+    1279.14,
+    1281.91,
+    1288.3,
+    1373.7,
+    1417.54,
+    1410.99
    ]
   },
   "LULU": {
    "name": "lululemon athletica inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 107.24,
-   "open": 110.1,
-   "prevClose": 109.82,
-   "change": -2.58,
-   "changePct": -2.35,
-   "dayHigh": 111.68,
-   "dayLow": 106.56,
+   "price": 107.83,
+   "open": 107.48,
+   "prevClose": 107.24,
+   "change": 0.59,
+   "changePct": 0.55,
+   "dayHigh": 110.19,
+   "dayLow": 107.27,
    "high52": 225.98,
    "low52": 90.38,
-   "volume": 3923320,
+   "volume": 2621947,
    "closes": [
-    96.19,
-    95.86,
-    94.46,
     93.14,
     93.61,
     91.88,
@@ -43808,27 +45235,25 @@ export const watchlists: Watchlist[] = [
     104.59,
     105.22,
     109.82,
-    107.24
+    107.24,
+    107.83
    ]
   },
   "LYFT": {
    "name": "Lyft, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 16.16,
-   "open": 16.33,
-   "prevClose": 16.41,
-   "change": -0.25,
-   "changePct": -1.52,
-   "dayHigh": 16.36,
-   "dayLow": 15.84,
+   "price": 16.62,
+   "open": 16.35,
+   "prevClose": 16.16,
+   "change": 0.46,
+   "changePct": 2.85,
+   "dayHigh": 16.99,
+   "dayLow": 16.23,
    "high52": 25.54,
    "low52": 12.46,
-   "volume": 8116278,
+   "volume": 10646286,
    "closes": [
-    15.01,
-    15.21,
-    15.46,
     15.73,
     15.76,
     15.6,
@@ -43848,27 +45273,63 @@ export const watchlists: Watchlist[] = [
     16.79,
     16.34,
     16.41,
-    16.16
+    16.16,
+    16.62
+   ]
+  },
+  "M": {
+   "name": "Macy's, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 24.33,
+   "open": 24.48,
+   "prevClose": 24.11,
+   "change": 0.22,
+   "changePct": 0.91,
+   "dayHigh": 24.69,
+   "dayLow": 24.02,
+   "high52": 26.59,
+   "low52": 16.69,
+   "volume": 5731290,
+   "closes": [
+    22.51,
+    22.46,
+    22.79,
+    22.79,
+    22.67,
+    22.99,
+    22.74,
+    22.68,
+    24.22,
+    24,
+    23.6,
+    23.41,
+    23.43,
+    24.17,
+    24.1,
+    23.59,
+    23.86,
+    23.74,
+    24.72,
+    24.11,
+    24.33
    ]
   },
   "MA": {
    "name": "Mastercard Incorporated",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 638.01,
-   "open": 642.43,
-   "prevClose": 635.7,
-   "change": 2.31,
-   "changePct": 0.36,
-   "dayHigh": 644.21,
-   "dayLow": 633.41,
-   "high52": 644.24,
+   "price": 658.1,
+   "open": 638.32,
+   "prevClose": 638.01,
+   "change": 20.09,
+   "changePct": 3.15,
+   "dayHigh": 661.34,
+   "dayLow": 638.25,
+   "high52": 661.34,
    "low52": 464.52,
-   "volume": 4516903,
+   "volume": 3977345,
    "closes": [
-    551.47,
-    550,
-    552.26,
     564.59,
     566.58,
     570.06,
@@ -43888,27 +45349,63 @@ export const watchlists: Watchlist[] = [
     609.85,
     610.31,
     635.7,
-    638.01
+    638.01,
+    658.1
+   ]
+  },
+  "MAR": {
+   "name": "Marriott International, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 416.3,
+   "open": 425,
+   "prevClose": 399.3,
+   "change": 17,
+   "changePct": 4.26,
+   "dayHigh": 433.3,
+   "dayLow": 411.8,
+   "high52": 433.3,
+   "low52": 258.99,
+   "volume": 2590311,
+   "closes": [
+    355.89,
+    361.28,
+    356.5,
+    361.08,
+    365.88,
+    369.3,
+    371.5,
+    371.82,
+    385.71,
+    388.05,
+    390.7,
+    397.31,
+    404,
+    396.8,
+    390.71,
+    394.75,
+    390.23,
+    394.4,
+    399.65,
+    399.3,
+    416.3
    ]
   },
   "MAT": {
    "name": "Mattel, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 15.42,
-   "open": 15.52,
-   "prevClose": 15.48,
-   "change": -0.06,
-   "changePct": -0.39,
-   "dayHigh": 15.6,
-   "dayLow": 15.27,
+   "price": 15.53,
+   "open": 15.51,
+   "prevClose": 15.42,
+   "change": 0.11,
+   "changePct": 0.71,
+   "dayHigh": 15.85,
+   "dayLow": 15.45,
    "high52": 22.48,
    "low52": 12.4,
-   "volume": 4564989,
+   "volume": 4511429,
    "closes": [
-    12.66,
-    15.04,
-    15.27,
     16.05,
     15.93,
     16.37,
@@ -43928,27 +45425,25 @@ export const watchlists: Watchlist[] = [
     15.43,
     15.28,
     15.48,
-    15.42
+    15.42,
+    15.53
    ]
   },
   "MCD": {
    "name": "McDonald's Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 258.12,
-   "open": 260.38,
-   "prevClose": 257.38,
-   "change": 0.74,
-   "changePct": 0.29,
-   "dayHigh": 262.88,
-   "dayLow": 257.11,
+   "price": 265.64,
+   "open": 260.02,
+   "prevClose": 258.12,
+   "change": 7.52,
+   "changePct": 2.91,
+   "dayHigh": 265.64,
+   "dayLow": 259.75,
    "high52": 341.75,
    "low52": 229.2,
-   "volume": 6521726,
+   "volume": 6480042,
    "closes": [
-    230.94,
-    231.83,
-    231.89,
     233.04,
     232.45,
     230.88,
@@ -43968,27 +45463,25 @@ export const watchlists: Watchlist[] = [
     249.47,
     250.5,
     257.38,
-    258.12
+    258.12,
+    265.64
    ]
   },
   "MCHI": {
    "name": "iShares MSCI China ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 49.07,
-   "open": 49.03,
-   "prevClose": 48.96,
-   "change": 0.11,
-   "changePct": 0.22,
-   "dayHigh": 49.18,
-   "dayLow": 48.91,
+   "price": 49.59,
+   "open": 49.45,
+   "prevClose": 49.07,
+   "change": 0.52,
+   "changePct": 1.06,
+   "dayHigh": 49.95,
+   "dayLow": 49.45,
    "high52": 65.37,
    "low52": 48.65,
-   "volume": 2627256,
+   "volume": 2188252,
    "closes": [
-    52.19,
-    52.11,
-    51.24,
     52.28,
     52.22,
     51.64,
@@ -44008,27 +45501,25 @@ export const watchlists: Watchlist[] = [
     49.08,
     49.04,
     48.96,
-    49.07
+    49.07,
+    49.59
    ]
   },
   "META": {
    "name": "Meta Platforms, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 614.99,
-   "open": 614.51,
-   "prevClose": 624.52,
-   "change": -9.53,
-   "changePct": -1.53,
-   "dayHigh": 626.37,
-   "dayLow": 610.14,
+   "price": 606.73,
+   "open": 614.44,
+   "prevClose": 614.99,
+   "change": -8.26,
+   "changePct": -1.34,
+   "dayHigh": 621.69,
+   "dayLow": 606.41,
    "high52": 779.82,
    "low52": 520.26,
-   "volume": 25364656,
+   "volume": 19494137,
    "closes": [
-    725.18,
-    725.93,
-    728.08,
     741.9,
     738.88,
     721.31,
@@ -44048,27 +45539,63 @@ export const watchlists: Watchlist[] = [
     620.19,
     612.49,
     624.52,
-    614.99
+    614.99,
+    606.73
+   ]
+  },
+  "MRK": {
+   "name": "Merck & Co., Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 148.36,
+   "open": 148.82,
+   "prevClose": 149.52,
+   "change": -1.16,
+   "changePct": -0.78,
+   "dayHigh": 150.25,
+   "dayLow": 147.12,
+   "high52": 156.92,
+   "low52": 82.01,
+   "volume": 9095330,
+   "closes": [
+    139.54,
+    141.94,
+    142.79,
+    142.38,
+    145.6,
+    145.45,
+    141.98,
+    147.37,
+    145.19,
+    145.95,
+    143.63,
+    148.3,
+    149.88,
+    147.24,
+    145.27,
+    140.61,
+    141.82,
+    140.93,
+    146.33,
+    149.52,
+    148.36
    ]
   },
   "MSFT": {
    "name": "Microsoft Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 521.91,
-   "open": 525.27,
-   "prevClose": 530.14,
-   "change": -8.23,
-   "changePct": -1.55,
-   "dayHigh": 526,
-   "dayLow": 514.35,
+   "price": 507.12,
+   "open": 524.02,
+   "prevClose": 521.91,
+   "change": -14.79,
+   "changePct": -2.83,
+   "dayHigh": 529.63,
+   "dayLow": 504.96,
    "high52": 551.15,
    "low52": 349.2,
-   "volume": 35652049,
+   "volume": 34738903,
    "closes": [
-    512.9,
-    512.8,
-    517.53,
     525.18,
     529.3,
     529.76,
@@ -44088,27 +45615,25 @@ export const watchlists: Watchlist[] = [
     531.33,
     531.01,
     530.14,
-    521.91
+    521.91,
+    507.12
    ]
   },
   "MU": {
    "name": "Micron Technology, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 884.74,
-   "open": 884,
-   "prevClose": 934.27,
-   "change": -49.53,
-   "changePct": -5.3,
-   "dayHigh": 906.54,
-   "dayLow": 861.59,
+   "price": 833.59,
+   "open": 890.54,
+   "prevClose": 884.74,
+   "change": -51.15,
+   "changePct": -5.78,
+   "dayHigh": 892.08,
+   "dayLow": 829.24,
    "high52": 1255,
    "low52": 192.59,
-   "volume": 30872693,
+   "volume": 29868539,
    "closes": [
-    1065.11,
-    1097.39,
-    1074.89,
     1063.96,
     1045.56,
     1088,
@@ -44128,27 +45653,63 @@ export const watchlists: Watchlist[] = [
     928.76,
     983.23,
     934.27,
-    884.74
+    884.74,
+    833.59
+   ]
+  },
+  "NET": {
+   "name": "Cloudflare, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 265.17,
+   "open": 282.27,
+   "prevClose": 280.7,
+   "change": -15.53,
+   "changePct": -5.53,
+   "dayHigh": 282,
+   "dayLow": 263.86,
+   "high52": 370.35,
+   "low52": 158.83,
+   "volume": 4126436,
+   "closes": [
+    359.49,
+    355.01,
+    342.97,
+    341.89,
+    360.93,
+    350.87,
+    347.7,
+    324.33,
+    316.32,
+    296.3,
+    297.58,
+    291.69,
+    307.22,
+    303.61,
+    325.73,
+    331.86,
+    327.8,
+    318.72,
+    310.3,
+    280.7,
+    265.17
    ]
   },
   "NFLX": {
    "name": "Netflix, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 62.08,
-   "open": 62.66,
-   "prevClose": 62.05,
-   "change": 0.03,
-   "changePct": 0.05,
-   "dayHigh": 63.05,
-   "dayLow": 61.64,
+   "price": 62.34,
+   "open": 62.2,
+   "prevClose": 62.08,
+   "change": 0.26,
+   "changePct": 0.42,
+   "dayHigh": 62.89,
+   "dayLow": 61.72,
    "high52": 116.73,
    "low52": 61.39,
-   "volume": 52331670,
+   "volume": 40911045,
    "closes": [
-    69.58,
-    67.85,
-    67.06,
     67.5,
     68.69,
     69.7,
@@ -44168,27 +45729,63 @@ export const watchlists: Watchlist[] = [
     62.52,
     61.99,
     62.05,
-    62.08
+    62.08,
+    62.34
+   ]
+  },
+  "NIO": {
+   "name": "NIO Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 3.19,
+   "open": 3.23,
+   "prevClose": 3.21,
+   "change": -0.02,
+   "changePct": -0.62,
+   "dayHigh": 3.28,
+   "dayLow": 3.18,
+   "high52": 7.54,
+   "low52": 3.16,
+   "volume": 31405621,
+   "closes": [
+    3.42,
+    3.48,
+    3.54,
+    3.41,
+    3.58,
+    3.47,
+    3.56,
+    3.41,
+    3.5,
+    3.43,
+    3.39,
+    3.43,
+    3.36,
+    3.31,
+    3.29,
+    3.26,
+    3.29,
+    3.32,
+    3.32,
+    3.21,
+    3.19
    ]
   },
   "NKE": {
    "name": "NIKE, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 38.67,
-   "open": 38.9,
-   "prevClose": 38.42,
-   "change": 0.25,
-   "changePct": 0.65,
-   "dayHigh": 39.24,
-   "dayLow": 38.48,
+   "price": 39.12,
+   "open": 39,
+   "prevClose": 38.67,
+   "change": 0.45,
+   "changePct": 1.16,
+   "dayHigh": 39.57,
+   "dayLow": 38.95,
    "high52": 69.14,
    "low52": 31.97,
-   "volume": 26957486,
+   "volume": 22959016,
    "closes": [
-    35.4,
-    35.15,
-    33.87,
     33.96,
     34.61,
     34.36,
@@ -44208,27 +45805,25 @@ export const watchlists: Watchlist[] = [
     37.56,
     37.15,
     38.42,
-    38.67
+    38.67,
+    39.12
    ]
   },
   "NVD": {
    "name": "Graniteshares 2x Short NVDA Daily ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 4.43,
-   "open": 4.26,
-   "prevClose": 4.09,
-   "change": 0.34,
-   "changePct": 8.31,
-   "dayHigh": 4.58,
-   "dayLow": 4.27,
+   "price": 4.54,
+   "open": 4.3,
+   "prevClose": 4.43,
+   "change": 0.11,
+   "changePct": 2.48,
+   "dayHigh": 4.56,
+   "dayLow": 4.2,
    "high52": 9.76,
    "low52": 3.19,
-   "volume": 143182184,
+   "volume": 190470563,
    "closes": [
-    3.64,
-    3.54,
-    3.45,
     3.31,
     3.3,
     3.35,
@@ -44248,27 +45843,25 @@ export const watchlists: Watchlist[] = [
     3.93,
     4.01,
     4.09,
-    4.43
+    4.43,
+    4.54
    ]
   },
   "NVDA": {
    "name": "NVIDIA Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 204.64,
-   "open": 208.94,
-   "prevClose": 213.66,
-   "change": -9.02,
-   "changePct": -4.22,
-   "dayHigh": 209.05,
-   "dayLow": 200.92,
+   "price": 202.06,
+   "open": 207.53,
+   "prevClose": 204.64,
+   "change": -2.58,
+   "changePct": -1.26,
+   "dayHigh": 209.98,
+   "dayLow": 201.66,
    "high52": 243.37,
    "low52": 164.27,
-   "volume": 168386423,
+   "volume": 119222246,
    "closes": [
-    228.38,
-    230.86,
-    233.95,
     238.9,
     239.24,
     237.47,
@@ -44288,27 +45881,25 @@ export const watchlists: Watchlist[] = [
     217.94,
     215.38,
     213.66,
-    204.64
+    204.64,
+    202.06
    ]
   },
   "NVDL": {
    "name": "GraniteShares 2x Long NVDA Daily ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 28.97,
-   "open": 30.14,
-   "prevClose": 31.6,
-   "change": -2.63,
-   "changePct": -8.32,
-   "dayHigh": 30.23,
-   "dayLow": 27.83,
+   "price": 28.24,
+   "open": 29.75,
+   "prevClose": 28.97,
+   "change": -0.73,
+   "changePct": -2.52,
+   "dayHigh": 30.43,
+   "dayLow": 28.09,
    "high52": 43.27,
    "low52": 21.54,
-   "volume": 12879546,
+   "volume": 7509179,
    "closes": [
-    36.71,
-    37.52,
-    38.5,
     40.17,
     40.17,
     39.57,
@@ -44328,7 +45919,8 @@ export const watchlists: Watchlist[] = [
     32.92,
     32.15,
     31.6,
-    28.97
+    28.97,
+    28.24
    ]
   },
   "OPEN": {
@@ -44336,19 +45928,16 @@ export const watchlists: Watchlist[] = [
    "exchange": "NASDAQ",
    "type": "EQUITY",
    "price": 1.8,
-   "open": 1.86,
-   "prevClose": 1.9,
-   "change": -0.1,
-   "changePct": -5.26,
-   "dayHigh": 1.88,
-   "dayLow": 1.76,
+   "open": 1.85,
+   "prevClose": 1.8,
+   "change": 0,
+   "changePct": 0,
+   "dayHigh": 1.95,
+   "dayLow": 1.79,
    "high52": 9.46,
    "low52": 1.76,
-   "volume": 31961118,
+   "volume": 31498544,
    "closes": [
-    2.37,
-    2.4,
-    2.44,
     2.31,
     2.27,
     2.27,
@@ -44368,6 +45957,7 @@ export const watchlists: Watchlist[] = [
     1.91,
     1.91,
     1.9,
+    1.8,
     1.8
    ]
   },
@@ -44375,20 +45965,17 @@ export const watchlists: Watchlist[] = [
    "name": "Oracle Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 130.67,
-   "open": 133.62,
-   "prevClose": 139.56,
-   "change": -8.89,
-   "changePct": -6.37,
-   "dayHigh": 135.2,
-   "dayLow": 129.27,
+   "price": 119.22,
+   "open": 125.88,
+   "prevClose": 130.67,
+   "change": -11.45,
+   "changePct": -8.76,
+   "dayHigh": 126.5,
+   "dayLow": 118.43,
    "high52": 265.62,
    "low52": 114.5,
-   "volume": 40052541,
+   "volume": 58710047,
    "closes": [
-    137.3,
-    138.07,
-    142.3,
     142.48,
     144.77,
     143.56,
@@ -44408,27 +45995,63 @@ export const watchlists: Watchlist[] = [
     130.53,
     144.54,
     139.56,
-    130.67
+    130.67,
+    119.22
+   ]
+  },
+  "PENN": {
+   "name": "PENN Entertainment, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 17.02,
+   "open": 16.05,
+   "prevClose": 15.89,
+   "change": 1.13,
+   "changePct": 7.11,
+   "dayHigh": 17.45,
+   "dayLow": 16,
+   "high52": 22.36,
+   "low52": 11.65,
+   "volume": 4108359,
+   "closes": [
+    15.1,
+    15.91,
+    15.72,
+    15.76,
+    15.48,
+    15.4,
+    15.37,
+    14.52,
+    15.21,
+    14.94,
+    14.71,
+    14.96,
+    14.89,
+    15.46,
+    14.5,
+    14.9,
+    14.83,
+    14.72,
+    15.33,
+    15.89,
+    17.02
    ]
   },
   "PEP": {
    "name": "PepsiCo, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 137.34,
-   "open": 136.58,
-   "prevClose": 133.79,
-   "change": 3.55,
-   "changePct": 2.65,
-   "dayHigh": 138.59,
-   "dayLow": 135.8,
+   "price": 140.42,
+   "open": 138.28,
+   "prevClose": 137.34,
+   "change": 3.08,
+   "changePct": 2.24,
+   "dayHigh": 140.65,
+   "dayLow": 137.92,
    "high52": 171.48,
    "low52": 123.47,
-   "volume": 19505523,
+   "volume": 9351020,
    "closes": [
-    126.72,
-    125.6,
-    125.89,
     125.65,
     125.71,
     123.73,
@@ -44448,27 +46071,25 @@ export const watchlists: Watchlist[] = [
     133.5,
     132.63,
     133.79,
-    137.34
+    137.34,
+    140.42
    ]
   },
   "PFE": {
    "name": "Pfizer Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 30.52,
-   "open": 30.51,
-   "prevClose": 29.95,
-   "change": 0.57,
-   "changePct": 1.9,
-   "dayHigh": 30.67,
-   "dayLow": 30.14,
-   "high52": 30.67,
+   "price": 30.67,
+   "open": 30.45,
+   "prevClose": 30.52,
+   "change": 0.15,
+   "changePct": 0.49,
+   "dayHigh": 31.04,
+   "dayLow": 30.2,
+   "high52": 31.04,
    "low52": 23.62,
-   "volume": 37087729,
+   "volume": 50815555,
    "closes": [
-    28.52,
-    28.12,
-    27.8,
     27.41,
     27.5,
     28,
@@ -44488,27 +46109,139 @@ export const watchlists: Watchlist[] = [
     29.8,
     29.45,
     29.95,
-    30.52
+    30.52,
+    30.67
+   ]
+  },
+  "PG": {
+   "name": "The Procter & Gamble Company",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 163.56,
+   "open": 162.24,
+   "prevClose": 161.57,
+   "change": 1.99,
+   "changePct": 1.23,
+   "dayHigh": 164.34,
+   "dayLow": 162.24,
+   "high52": 167.25,
+   "low52": 137.62,
+   "volume": 9724324,
+   "closes": [
+    145.94,
+    148.41,
+    147.82,
+    150.59,
+    151.23,
+    153.2,
+    153.04,
+    156.53,
+    157.08,
+    159.35,
+    157.69,
+    159.32,
+    156.84,
+    165.59,
+    161.02,
+    159.92,
+    159.23,
+    158.26,
+    160.59,
+    161.57,
+    163.56
+   ]
+  },
+  "PLAY": {
+   "name": "Dave & Buster's Entertainment, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 8.51,
+   "open": 7.9,
+   "prevClose": 7.83,
+   "change": 0.68,
+   "changePct": 8.68,
+   "dayHigh": 8.7,
+   "dayLow": 7.9,
+   "high52": 22.1,
+   "low52": 6.26,
+   "volume": 2228239,
+   "closes": [
+    6.76,
+    6.86,
+    6.56,
+    6.97,
+    6.9,
+    7.09,
+    7.39,
+    7.15,
+    7.96,
+    7.6,
+    7.71,
+    7.79,
+    7.23,
+    7.46,
+    6.96,
+    7.07,
+    7.58,
+    7.71,
+    8.13,
+    7.83,
+    8.51
+   ]
+  },
+  "PLNT": {
+   "name": "Planet Fitness, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 55.65,
+   "open": 54.83,
+   "prevClose": 53.58,
+   "change": 2.07,
+   "changePct": 3.86,
+   "dayHigh": 55.89,
+   "dayLow": 54.46,
+   "high52": 114.26,
+   "low52": 37.03,
+   "volume": 1473886,
+   "closes": [
+    42.07,
+    42.25,
+    43.09,
+    44.03,
+    47.98,
+    47.89,
+    47.45,
+    46.95,
+    49.41,
+    50.92,
+    52.89,
+    52.96,
+    51.69,
+    53.27,
+    52.52,
+    52.44,
+    52.26,
+    52.63,
+    53.72,
+    53.58,
+    55.65
    ]
   },
   "PLTR": {
    "name": "Palantir Technologies Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 184.11,
-   "open": 193.63,
-   "prevClose": 196.42,
-   "change": -12.31,
-   "changePct": -6.27,
-   "dayHigh": 193.92,
-   "dayLow": 183.68,
+   "price": 178.34,
+   "open": 186.52,
+   "prevClose": 184.11,
+   "change": -5.77,
+   "changePct": -3.13,
+   "dayHigh": 187.55,
+   "dayLow": 178.13,
    "high52": 212.94,
    "low52": 106.37,
-   "volume": 27070005,
+   "volume": 37089804,
    "closes": [
-    187.05,
-    190.04,
-    188.75,
     189.4,
     192.07,
     194.12,
@@ -44528,27 +46261,25 @@ export const watchlists: Watchlist[] = [
     198.73,
     196.81,
     196.42,
-    184.11
+    184.11,
+    178.34
    ]
   },
   "PLUG": {
    "name": "Plug Power Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 1.37,
-   "open": 1.37,
-   "prevClose": 1.42,
-   "change": -0.05,
-   "changePct": -3.52,
-   "dayHigh": 1.41,
-   "dayLow": 1.34,
+   "price": 1.31,
+   "open": 1.39,
+   "prevClose": 1.37,
+   "change": -0.06,
+   "changePct": -4.38,
+   "dayHigh": 1.42,
+   "dayLow": 1.3,
    "high52": 4.33,
-   "low52": 1.34,
-   "volume": 34041188,
+   "low52": 1.3,
+   "volume": 44037337,
    "closes": [
-    1.94,
-    1.89,
-    1.9,
     1.89,
     1.86,
     1.78,
@@ -44568,27 +46299,25 @@ export const watchlists: Watchlist[] = [
     1.4,
     1.42,
     1.42,
-    1.37
+    1.37,
+    1.31
    ]
   },
   "PTON": {
    "name": "Peloton Interactive, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 5.12,
-   "open": 5.29,
-   "prevClose": 5.28,
-   "change": -0.16,
-   "changePct": -3.03,
-   "dayHigh": 5.29,
-   "dayLow": 5.08,
+   "price": 5.3,
+   "open": 5.14,
+   "prevClose": 5.12,
+   "change": 0.18,
+   "changePct": 3.52,
+   "dayHigh": 5.36,
+   "dayLow": 5.11,
    "high52": 7.92,
    "low52": 3.65,
-   "volume": 5449113,
+   "volume": 7639138,
    "closes": [
-    4.99,
-    4.97,
-    4.92,
     5.01,
     4.87,
     4.85,
@@ -44608,27 +46337,25 @@ export const watchlists: Watchlist[] = [
     5.3,
     5.27,
     5.28,
-    5.12
+    5.12,
+    5.3
    ]
   },
   "PYPL": {
    "name": "PayPal Holdings, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 57.01,
-   "open": 56.92,
-   "prevClose": 56.95,
-   "change": 0.06,
-   "changePct": 0.11,
-   "dayHigh": 57.62,
-   "dayLow": 56.48,
+   "price": 58.78,
+   "open": 57.68,
+   "prevClose": 57.01,
+   "change": 1.77,
+   "changePct": 3.1,
+   "dayHigh": 59.03,
+   "dayLow": 57.27,
    "high52": 70.35,
    "low52": 38.46,
-   "volume": 15364954,
+   "volume": 14896219,
    "closes": [
-    52.53,
-    53.06,
-    52.8,
     54.41,
     54.61,
     54.95,
@@ -44648,27 +46375,25 @@ export const watchlists: Watchlist[] = [
     56.09,
     56.55,
     56.95,
-    57.01
+    57.01,
+    58.78
    ]
   },
   "QCOM": {
    "name": "QUALCOMM Incorporated",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 164.79,
-   "open": 174.82,
-   "prevClose": 185.41,
-   "change": -20.62,
-   "changePct": -11.12,
-   "dayHigh": 176.17,
-   "dayLow": 161.72,
+   "price": 162.08,
+   "open": 166.44,
+   "prevClose": 164.79,
+   "change": -2.71,
+   "changePct": -1.64,
+   "dayHigh": 169.52,
+   "dayLow": 161.46,
    "high52": 259.92,
    "low52": 121.99,
-   "volume": 24111889,
+   "volume": 11019565,
    "closes": [
-    184.04,
-    182.09,
-    184.87,
     180.79,
     181.03,
     177.12,
@@ -44688,27 +46413,25 @@ export const watchlists: Watchlist[] = [
     184.17,
     182.97,
     185.41,
-    164.79
+    164.79,
+    162.08
    ]
   },
   "QQQ": {
    "name": "Invesco QQQ Trust",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 690.49,
-   "open": 697.21,
-   "prevClose": 715.34,
-   "change": -24.85,
-   "changePct": -3.47,
-   "dayHigh": 698.63,
-   "dayLow": 683.45,
+   "price": 681.09,
+   "open": 695.32,
+   "prevClose": 690.49,
+   "change": -9.4,
+   "changePct": -1.36,
+   "dayHigh": 699.43,
+   "dayLow": 680.33,
    "high52": 762.86,
    "low52": 555.6,
-   "volume": 85242074,
+   "volume": 54716423,
    "closes": [
-    739.77,
-    742.03,
-    749.58,
     756.2,
     759.66,
     757.73,
@@ -44728,27 +46451,177 @@ export const watchlists: Watchlist[] = [
     721.25,
     725.61,
     715.34,
-    690.49
+    690.49,
+    681.09
+   ]
+  },
+  "QS": {
+   "name": "QuantumScape Corporation",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 4.02,
+   "open": 4.15,
+   "prevClose": 4.06,
+   "change": -0.04,
+   "changePct": -0.99,
+   "dayHigh": 4.22,
+   "dayLow": 3.99,
+   "high52": 17.86,
+   "low52": 3.8,
+   "volume": 13263774,
+   "closes": [
+    4.62,
+    4.65,
+    4.52,
+    4.58,
+    4.58,
+    4.27,
+    4.12,
+    3.93,
+    4.23,
+    4.01,
+    3.89,
+    3.98,
+    3.98,
+    4.15,
+    4.03,
+    3.9,
+    4.18,
+    4.24,
+    4.2,
+    4.06,
+    4.02
+   ]
+  },
+  "RBLX": {
+   "name": "Roblox Corporation",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 42.88,
+   "open": 42.9,
+   "prevClose": 42.99,
+   "change": -0.11,
+   "changePct": -0.26,
+   "dayHigh": 44.79,
+   "dayLow": 41.78,
+   "high52": 113.6,
+   "low52": 33.88,
+   "volume": 14261200,
+   "closes": [
+    44.58,
+    45.56,
+    46.41,
+    45.52,
+    48.09,
+    49.58,
+    49.51,
+    47.54,
+    51.13,
+    49.55,
+    50.75,
+    52.35,
+    52.55,
+    53.96,
+    52.89,
+    54.37,
+    54.47,
+    53.28,
+    52.46,
+    42.99,
+    42.88
+   ]
+  },
+  "RH": {
+   "name": "RH",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 146.52,
+   "open": 148.55,
+   "prevClose": 146.66,
+   "change": -0.14,
+   "changePct": -0.1,
+   "dayHigh": 155,
+   "dayLow": 145.29,
+   "high52": 239.4,
+   "low52": 106.3,
+   "volume": 775541,
+   "closes": [
+    117.45,
+    117.16,
+    115.19,
+    113.67,
+    116.99,
+    116.76,
+    115.88,
+    110.99,
+    117.87,
+    112.99,
+    114.03,
+    119.74,
+    128.01,
+    140.15,
+    137.43,
+    135.72,
+    140.76,
+    145.06,
+    150.79,
+    146.66,
+    146.52
+   ]
+  },
+  "RIG": {
+   "name": "Transocean Ltd.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 6.23,
+   "open": 6.65,
+   "prevClose": 6.94,
+   "change": -0.71,
+   "changePct": -10.23,
+   "dayHigh": 6.77,
+   "dayLow": 6.21,
+   "high52": 7.66,
+   "low52": 3.68,
+   "volume": 45683885,
+   "closes": [
+    5.51,
+    5.4,
+    5.39,
+    5.54,
+    5.51,
+    5.6,
+    5.65,
+    5.58,
+    5.51,
+    5.62,
+    5.89,
+    5.82,
+    6.04,
+    6.08,
+    6.41,
+    6.53,
+    6.46,
+    6.71,
+    6.69,
+    6.94,
+    6.23
    ]
   },
   "RIVN": {
    "name": "Rivian Automotive, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 12.16,
-   "open": 12.1,
-   "prevClose": 11.45,
-   "change": 0.71,
-   "changePct": 6.2,
-   "dayHigh": 12.27,
-   "dayLow": 11.53,
+   "price": 13.19,
+   "open": 12.75,
+   "prevClose": 12.16,
+   "change": 1.03,
+   "changePct": 8.47,
+   "dayHigh": 13.7,
+   "dayLow": 12.65,
    "high52": 22.69,
    "low52": 11.38,
-   "volume": 62702140,
+   "volume": 65299674,
    "closes": [
-    14.94,
-    14.76,
-    14.3,
     14.6,
     14.51,
     14.34,
@@ -44768,27 +46641,25 @@ export const watchlists: Watchlist[] = [
     11.82,
     11.67,
     11.45,
-    12.16
+    12.16,
+    13.19
    ]
   },
   "SBUX": {
    "name": "Starbucks Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 103.65,
-   "open": 105.71,
-   "prevClose": 105.51,
-   "change": -1.86,
-   "changePct": -1.76,
-   "dayHigh": 106.25,
-   "dayLow": 102.24,
+   "price": 104.4,
+   "open": 104.41,
+   "prevClose": 103.67,
+   "change": 0.73,
+   "changePct": 0.7,
+   "dayHigh": 105.06,
+   "dayLow": 102.29,
    "high52": 110.51,
    "low52": 77.99,
-   "volume": 14220252,
+   "volume": 9915772,
    "closes": [
-    93.96,
-    94.88,
-    94.71,
     94.43,
     96.11,
     93.58,
@@ -44808,27 +46679,63 @@ export const watchlists: Watchlist[] = [
     103.04,
     103.2,
     105.51,
-    103.67
+    103.67,
+    104.4
+   ]
+  },
+  "SHAK": {
+   "name": "Shake Shack Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 72.46,
+   "open": 70.43,
+   "prevClose": 70.48,
+   "change": 1.98,
+   "changePct": 2.81,
+   "dayHigh": 73.08,
+   "dayLow": 69.57,
+   "high52": 107.46,
+   "low52": 51.6,
+   "volume": 1796365,
+   "closes": [
+    62.4,
+    64.61,
+    64.17,
+    67.31,
+    66.9,
+    69.34,
+    71.06,
+    68.77,
+    70.61,
+    69.99,
+    71.87,
+    69.74,
+    67.84,
+    67.88,
+    65.16,
+    64.89,
+    64.54,
+    67.22,
+    70.51,
+    70.48,
+    72.46
    ]
   },
   "SHOP": {
    "name": "Shopify Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 157.49,
-   "open": 161.89,
-   "prevClose": 166.89,
-   "change": -9.4,
-   "changePct": -5.63,
-   "dayHigh": 161.95,
-   "dayLow": 154.26,
+   "price": 156.22,
+   "open": 158.29,
+   "prevClose": 157.49,
+   "change": -1.27,
+   "changePct": -0.81,
+   "dayHigh": 160.88,
+   "dayLow": 153.33,
    "high52": 180.88,
    "low52": 94,
-   "volume": 10541418,
+   "volume": 13919506,
    "closes": [
-    148.3,
-    149.09,
-    151.39,
     160.11,
     164.44,
     166.03,
@@ -44848,27 +46755,63 @@ export const watchlists: Watchlist[] = [
     165.81,
     168.22,
     166.89,
-    157.49
+    157.49,
+    156.22
+   ]
+  },
+  "SIRI": {
+   "name": "Sirius XM Holdings Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 29.57,
+   "open": 29.2,
+   "prevClose": 29.01,
+   "change": 0.56,
+   "changePct": 1.93,
+   "dayHigh": 29.73,
+   "dayLow": 29.05,
+   "high52": 32.66,
+   "low52": 19.77,
+   "volume": 4793874,
+   "closes": [
+    26.31,
+    26.36,
+    25.95,
+    26.33,
+    26.51,
+    26.61,
+    26.57,
+    26.51,
+    27.15,
+    26.97,
+    26.84,
+    27.16,
+    26.96,
+    27.54,
+    27.63,
+    27.42,
+    27.25,
+    27.32,
+    28.67,
+    29.01,
+    29.57
    ]
   },
   "SLB": {
    "name": "SLB N.V.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 53.74,
-   "open": 53.29,
-   "prevClose": 53.81,
-   "change": -0.07,
-   "changePct": -0.13,
-   "dayHigh": 54.13,
-   "dayLow": 53.03,
+   "price": 52.31,
+   "open": 52.3,
+   "prevClose": 53.74,
+   "change": -1.43,
+   "changePct": -2.66,
+   "dayHigh": 53.83,
+   "dayLow": 52.23,
    "high52": 60.46,
    "low52": 34.65,
-   "volume": 12752871,
+   "volume": 11945165,
    "closes": [
-    48.72,
-    48.66,
-    48.74,
     50.28,
     50,
     47.96,
@@ -44888,27 +46831,25 @@ export const watchlists: Watchlist[] = [
     54.08,
     53.75,
     53.81,
-    53.74
+    53.74,
+    52.31
    ]
   },
   "SMH": {
    "name": "VanEck Semiconductor ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 522.49,
-   "open": 532.58,
-   "prevClose": 561.67,
-   "change": -39.18,
-   "changePct": -6.98,
-   "dayHigh": 535.32,
-   "dayLow": 511.63,
+   "price": 508.31,
+   "open": 529.05,
+   "prevClose": 522.49,
+   "change": -14.18,
+   "changePct": -2.71,
+   "dayHigh": 532.76,
+   "dayLow": 506.45,
    "high52": 671.83,
    "low52": 315.05,
-   "volume": 17601979,
+   "volume": 8863693,
    "closes": [
-    609,
-    617.81,
-    630.6,
     633.9,
     632.5,
     625.03,
@@ -44928,7 +46869,46 @@ export const watchlists: Watchlist[] = [
     557.98,
     567.67,
     561.67,
-    522.49
+    522.49,
+    508.31
+   ]
+  },
+  "SNAP": {
+   "name": "Snap Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 5.45,
+   "open": 5.38,
+   "prevClose": 5.34,
+   "change": 0.11,
+   "changePct": 2.06,
+   "dayHigh": 5.65,
+   "dayLow": 5.33,
+   "high52": 9.13,
+   "low52": 3.81,
+   "volume": 39403564,
+   "closes": [
+    5.61,
+    5.78,
+    5.81,
+    5.86,
+    6.23,
+    6.53,
+    6.49,
+    6.1,
+    6.44,
+    6.13,
+    6.27,
+    6.38,
+    6.35,
+    6.35,
+    6.34,
+    6.34,
+    6.08,
+    5.96,
+    5.68,
+    5.34,
+    5.45
    ]
   },
   "SNBR": {
@@ -44951,20 +46931,17 @@ export const watchlists: Watchlist[] = [
    "name": "Snowflake Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 306.08,
-   "open": 313.25,
-   "prevClose": 330.27,
-   "change": -24.19,
-   "changePct": -7.32,
-   "dayHigh": 314.93,
-   "dayLow": 295.26,
+   "price": 290.68,
+   "open": 306,
+   "prevClose": 306.08,
+   "change": -15.4,
+   "changePct": -5.03,
+   "dayHigh": 306.96,
+   "dayLow": 287.93,
    "high52": 384.56,
    "low52": 118.3,
-   "volume": 7747027,
+   "volume": 6437324,
    "closes": [
-    339.56,
-    341.99,
-    341.04,
     338.99,
     335.95,
     332.85,
@@ -44984,27 +46961,25 @@ export const watchlists: Watchlist[] = [
     337.42,
     339.91,
     330.27,
-    306.08
+    306.08,
+    290.68
    ]
   },
   "SONO": {
    "name": "Sonos, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 16.17,
-   "open": 17.42,
-   "prevClose": 17.46,
-   "change": -1.29,
-   "changePct": -7.39,
-   "dayHigh": 17.42,
-   "dayLow": 15.98,
+   "price": 15.73,
+   "open": 16.39,
+   "prevClose": 16.17,
+   "change": -0.44,
+   "changePct": -2.72,
+   "dayHigh": 16.67,
+   "dayLow": 15.69,
    "high52": 19.82,
    "low52": 12.44,
-   "volume": 1533616,
+   "volume": 1630590,
    "closes": [
-    17.89,
-    17.75,
-    17.7,
     17.94,
     17.43,
     16.98,
@@ -45024,27 +46999,63 @@ export const watchlists: Watchlist[] = [
     17.87,
     17.75,
     17.46,
-    16.17
+    16.17,
+    15.73
+   ]
+  },
+  "SOUN": {
+   "name": "SoundHound AI, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 4.09,
+   "open": 4.28,
+   "prevClose": 4.22,
+   "change": -0.13,
+   "changePct": -3.08,
+   "dayHigh": 4.42,
+   "dayLow": 4.09,
+   "high52": 17.85,
+   "low52": 4.04,
+   "volume": 17247939,
+   "closes": [
+    5.88,
+    5.72,
+    5.63,
+    5.52,
+    5.39,
+    4.97,
+    4.88,
+    4.53,
+    4.89,
+    4.72,
+    4.65,
+    4.7,
+    4.61,
+    4.5,
+    4.43,
+    4.24,
+    4.37,
+    4.44,
+    4.36,
+    4.22,
+    4.09
    ]
   },
   "SOXL": {
    "name": "Direxion Daily Semiconductor Bull 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 77.05,
-   "open": 81.79,
-   "prevClose": 102.39,
-   "change": -25.34,
-   "changePct": -24.75,
-   "dayHigh": 84.19,
-   "dayLow": 70.23,
+   "price": 68.17,
+   "open": 79.45,
+   "prevClose": 77.05,
+   "change": -8.88,
+   "changePct": -11.52,
+   "dayHigh": 81.07,
+   "dayLow": 67.5,
    "high52": 302,
    "low52": 28.12,
-   "volume": 199204589,
+   "volume": 159025645,
    "closes": [
-    147.86,
-    153.69,
-    163.71,
     164.27,
     164.26,
     158.91,
@@ -45064,27 +47075,25 @@ export const watchlists: Watchlist[] = [
     101.08,
     107.35,
     102.39,
-    77.05
+    77.05,
+    68.17
    ]
   },
   "SOXS": {
    "name": "Direxion Daily Semiconductor Bear 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 52.08,
-   "open": 50.12,
-   "prevClose": 41.68,
-   "change": 10.4,
-   "changePct": 24.95,
-   "dayHigh": 54.85,
-   "dayLow": 49.15,
+   "price": 58.09,
+   "open": 50.38,
+   "prevClose": 52.08,
+   "change": 6.01,
+   "changePct": 11.54,
+   "dayHigh": 58.52,
+   "dayLow": 49.31,
    "high52": 1030,
    "low52": 28.46,
-   "volume": 95869283,
+   "volume": 77017172,
    "closes": [
-    33.08,
-    31.76,
-    29.71,
     29.62,
     29.63,
     30.65,
@@ -45104,27 +47113,25 @@ export const watchlists: Watchlist[] = [
     42.5,
     39.78,
     41.68,
-    52.08
+    52.08,
+    58.09
    ]
   },
   "SPCE": {
    "name": "Virgin Galactic Holdings, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 2.58,
-   "open": 2.64,
-   "prevClose": 2.73,
-   "change": -0.15,
-   "changePct": -5.49,
-   "dayHigh": 2.66,
-   "dayLow": 2.5,
+   "price": 2.47,
+   "open": 2.62,
+   "prevClose": 2.58,
+   "change": -0.11,
+   "changePct": -4.26,
+   "dayHigh": 2.63,
+   "dayLow": 2.45,
    "high52": 8.9,
    "low52": 2.13,
-   "volume": 5127084,
+   "volume": 5087555,
    "closes": [
-    2.99,
-    2.99,
-    3.03,
     3.05,
     3.07,
     3.01,
@@ -45144,27 +47151,63 @@ export const watchlists: Watchlist[] = [
     2.69,
     2.66,
     2.73,
-    2.58
+    2.58,
+    2.47
+   ]
+  },
+  "SPOT": {
+   "name": "Spotify Technology S.A.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 594.04,
+   "open": 588.8,
+   "prevClose": 593.44,
+   "change": 0.6,
+   "changePct": 0.1,
+   "dayHigh": 600.18,
+   "dayLow": 581.28,
+   "high52": 668.5,
+   "low52": 405,
+   "volume": 1753645,
+   "closes": [
+    483.05,
+    488.13,
+    512.92,
+    526.42,
+    529.14,
+    528.8,
+    527.45,
+    523.96,
+    533.37,
+    530.46,
+    518.76,
+    526.08,
+    525.34,
+    583.66,
+    584.22,
+    572.36,
+    555.45,
+    538.4,
+    557.24,
+    593.44,
+    594.04
    ]
   },
   "SPXL": {
    "name": "Direxion Daily S&P500 Bull 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 270.35,
-   "open": 276.63,
-   "prevClose": 285.67,
-   "change": -15.32,
-   "changePct": -5.36,
-   "dayHigh": 276.72,
-   "dayLow": 264.36,
+   "price": 266.32,
+   "open": 274.14,
+   "prevClose": 270.35,
+   "change": -4.03,
+   "changePct": -1.49,
+   "dayHigh": 278.82,
+   "dayLow": 265.77,
    "high52": 303.18,
    "low52": 168.04,
-   "volume": 3003617,
+   "volume": 2269902,
    "closes": [
-    281.1,
-    282.7,
-    288.65,
     294.56,
     299.21,
     296.91,
@@ -45184,27 +47227,25 @@ export const watchlists: Watchlist[] = [
     286.21,
     288.95,
     285.67,
-    270.35
+    270.35,
+    266.32
    ]
   },
   "SPXS": {
    "name": "Direxion Daily S&P 500 Bear 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 25.63,
-   "open": 25.09,
-   "prevClose": 24.3,
-   "change": 1.33,
-   "changePct": 5.47,
-   "dayHigh": 26.14,
-   "dayLow": 25.08,
+   "price": 26.01,
+   "open": 25.27,
+   "prevClose": 25.63,
+   "change": 0.38,
+   "changePct": 1.48,
+   "dayHigh": 26.05,
+   "dayLow": 24.81,
    "high52": 44.83,
    "low52": 23.04,
-   "volume": 15973258,
+   "volume": 10554277,
    "closes": [
-    24.77,
-    24.62,
-    24.12,
     23.64,
     23.26,
     23.45,
@@ -45224,27 +47265,25 @@ export const watchlists: Watchlist[] = [
     24.27,
     24.01,
     24.3,
-    25.63
+    25.63,
+    26.01
    ]
   },
   "SPY": {
    "name": "State Street SPDR S&P 500 ETF Trust",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 755.72,
-   "open": 761.38,
-   "prevClose": 769.36,
-   "change": -13.64,
-   "changePct": -1.77,
-   "dayHigh": 761.46,
-   "dayLow": 750.36,
+   "price": 752.1,
+   "open": 759.45,
+   "prevClose": 755.72,
+   "change": -3.62,
+   "changePct": -0.48,
+   "dayHigh": 763.86,
+   "dayLow": 751.6,
    "high52": 781.62,
    "low52": 629.28,
-   "volume": 77142196,
+   "volume": 50778592,
    "closes": [
-    762.63,
-    763.99,
-    769.64,
     774.83,
     779.09,
     777.22,
@@ -45264,27 +47303,25 @@ export const watchlists: Watchlist[] = [
     769.66,
     772.31,
     769.36,
-    755.72
+    755.72,
+    752.1
    ]
   },
   "SQQQ": {
    "name": "ProShares UltraPro Short QQQ",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 41.83,
-   "open": 40.78,
-   "prevClose": 37.83,
-   "change": 4,
-   "changePct": 10.57,
-   "dayHigh": 42.96,
-   "dayLow": 40.55,
+   "price": 43.55,
+   "open": 40.99,
+   "prevClose": 41.83,
+   "change": 1.72,
+   "changePct": 4.11,
+   "dayHigh": 43.7,
+   "dayLow": 40.24,
    "high52": 90.72,
    "low52": 31.42,
-   "volume": 67107225,
+   "volume": 53112899,
    "closes": [
-    34.41,
-    34.11,
-    33.12,
     32.25,
     31.83,
     32.07,
@@ -45304,27 +47341,25 @@ export const watchlists: Watchlist[] = [
     36.93,
     36.28,
     37.83,
-    41.83
+    41.83,
+    43.55
    ]
   },
   "TGT": {
    "name": "Target Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 154.38,
-   "open": 154.68,
-   "prevClose": 151.82,
-   "change": 2.56,
-   "changePct": 1.69,
-   "dayHigh": 155.49,
-   "dayLow": 152.06,
+   "price": 158.38,
+   "open": 155.13,
+   "prevClose": 154.38,
+   "change": 4,
+   "changePct": 2.59,
+   "dayHigh": 159.29,
+   "dayLow": 155,
    "high52": 170.75,
    "low52": 83.44,
-   "volume": 5164432,
+   "volume": 4279508,
    "closes": [
-    156.69,
-    156.7,
-    156,
     152.99,
     154.33,
     150.92,
@@ -45344,27 +47379,101 @@ export const watchlists: Watchlist[] = [
     148.01,
     148.96,
     151.82,
-    154.38
+    154.38,
+    158.38
+   ]
+  },
+  "TLRY": {
+   "name": "Tilray Brands, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 2.55,
+   "open": 2.58,
+   "prevClose": 2.53,
+   "change": 0.02,
+   "changePct": 0.79,
+   "dayHigh": 2.66,
+   "dayLow": 2.52,
+   "high52": 15.7,
+   "low52": 2.49,
+   "volume": 4611682,
+   "closes": [
+    3.72,
+    3.78,
+    3.72,
+    3.59,
+    3.54,
+    3.36,
+    3.27,
+    3.14,
+    3.21,
+    3.04,
+    3.03,
+    3.03,
+    2.92,
+    2.93,
+    2.81,
+    2.72,
+    2.77,
+    2.69,
+    2.64,
+    2.53,
+    2.55
+   ]
+  },
+  "TMUS": {
+   "name": "T-Mobile US, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 160.15,
+   "open": 153.66,
+   "prevClose": 156.44,
+   "change": 3.71,
+   "changePct": 2.37,
+   "dayHigh": 160.48,
+   "dayLow": 154,
+   "high52": 224.75,
+   "low52": 143.75,
+   "volume": 7259759,
+   "closes": [
+    164.64,
+    165.93,
+    167.65,
+    171.31,
+    148.58,
+    151.87,
+    153.73,
+    157.79,
+    157.03,
+    159.1,
+    156.09,
+    157.75,
+    153.75,
+    158.79,
+    146.54,
+    146.93,
+    146.83,
+    148.08,
+    147.29,
+    156.44,
+    160.15
    ]
   },
   "TQQQ": {
    "name": "ProShares UltraPro QQQ",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 62.01,
-   "open": 63.93,
-   "prevClose": 69.26,
-   "change": -7.25,
-   "changePct": -10.47,
-   "dayHigh": 64.33,
-   "dayLow": 59.95,
+   "price": 59.46,
+   "open": 63.25,
+   "prevClose": 62.01,
+   "change": -2.55,
+   "changePct": -4.11,
+   "dayHigh": 64.35,
+   "dayLow": 59.22,
    "high52": 88.09,
    "low52": 37.32,
-   "volume": 108409521,
+   "volume": 73778531,
    "closes": [
-    78.03,
-    78.73,
-    81.01,
     83.12,
     84.25,
     83.62,
@@ -45384,27 +47493,63 @@ export const watchlists: Watchlist[] = [
     71.04,
     72.36,
     69.26,
-    62.01
+    62.01,
+    59.46
+   ]
+  },
+  "TRIP": {
+   "name": "Tripadvisor, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 9.44,
+   "open": 9.32,
+   "prevClose": 9.22,
+   "change": 0.22,
+   "changePct": 2.39,
+   "dayHigh": 9.65,
+   "dayLow": 9.26,
+   "high52": 17.53,
+   "low52": 8.02,
+   "volume": 4001151,
+   "closes": [
+    8.79,
+    8.52,
+    8.63,
+    8.96,
+    8.68,
+    8.72,
+    8.74,
+    8.93,
+    9.39,
+    9.32,
+    9.27,
+    9.51,
+    9.44,
+    9.67,
+    9.41,
+    9.24,
+    8.98,
+    8.94,
+    9.22,
+    9.22,
+    9.44
    ]
   },
   "TSLA": {
    "name": "Tesla, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 399.81,
-   "open": 393.22,
-   "prevClose": 403.3,
-   "change": -3.49,
-   "changePct": -0.87,
-   "dayHigh": 404.2,
-   "dayLow": 387.52,
+   "price": 403.82,
+   "open": 404.66,
+   "prevClose": 399.81,
+   "change": 4.01,
+   "changePct": 1,
+   "dayHigh": 414.23,
+   "dayLow": 397.61,
    "high52": 498.83,
    "low52": 297.38,
-   "volume": 41737178,
+   "volume": 43129424,
    "closes": [
-    354.81,
-    354.11,
-    370.59,
     378.73,
     380.68,
     377.81,
@@ -45424,27 +47569,139 @@ export const watchlists: Watchlist[] = [
     407.46,
     404.22,
     403.3,
-    399.81
+    399.81,
+    403.82
+   ]
+  },
+  "TTD": {
+   "name": "The Trade Desk, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 12.55,
+   "open": 12.38,
+   "prevClose": 12.29,
+   "change": 0.26,
+   "changePct": 2.12,
+   "dayHigh": 12.84,
+   "dayLow": 12.38,
+   "high52": 50.06,
+   "low52": 11.62,
+   "volume": 11576523,
+   "closes": [
+    11.98,
+    11.92,
+    12.09,
+    12.34,
+    12.08,
+    11.94,
+    12.17,
+    12.18,
+    13.13,
+    12.23,
+    12.26,
+    12.65,
+    12.59,
+    13.16,
+    13,
+    12.77,
+    12.7,
+    12.76,
+    13.06,
+    12.29,
+    12.55
+   ]
+  },
+  "U": {
+   "name": "Unity Software Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 38.87,
+   "open": 38.37,
+   "prevClose": 37.7,
+   "change": 1.17,
+   "changePct": 3.1,
+   "dayHigh": 40.76,
+   "dayLow": 38.32,
+   "high52": 52.15,
+   "low52": 16.78,
+   "volume": 12147609,
+   "closes": [
+    45.68,
+    44.95,
+    45.44,
+    45.89,
+    46.88,
+    46.68,
+    46.63,
+    41.4,
+    43.34,
+    40.4,
+    40.58,
+    40.16,
+    41.21,
+    40.27,
+    40.79,
+    40.33,
+    40.1,
+    39.5,
+    39.27,
+    37.7,
+    38.87
+   ]
+  },
+  "UAL": {
+   "name": "United Airlines Holdings, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 109.24,
+   "open": 108.96,
+   "prevClose": 104.24,
+   "change": 5,
+   "changePct": 4.8,
+   "dayHigh": 112.01,
+   "dayLow": 108.12,
+   "high52": 138.77,
+   "low52": 84.64,
+   "volume": 6632130,
+   "closes": [
+    110,
+    111.87,
+    110.17,
+    107.44,
+    107.46,
+    104.44,
+    103.23,
+    98.96,
+    101.31,
+    96.1,
+    95.6,
+    97.77,
+    101.67,
+    102,
+    97.93,
+    100.69,
+    104.71,
+    103.43,
+    105.21,
+    104.24,
+    109.24
    ]
   },
   "UBER": {
    "name": "Uber Technologies, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 65.25,
-   "open": 65.61,
-   "prevClose": 65.74,
-   "change": -0.49,
-   "changePct": -0.75,
-   "dayHigh": 65.8,
-   "dayLow": 64.67,
+   "price": 66.71,
+   "open": 66.12,
+   "prevClose": 65.25,
+   "change": 1.46,
+   "changePct": 2.24,
+   "dayHigh": 67.47,
+   "dayLow": 65.55,
    "high52": 100.35,
    "low52": 64.04,
-   "volume": 17111001,
+   "volume": 17740543,
    "closes": [
-    68.51,
-    67.88,
-    68.11,
     69.48,
     69.08,
     68.45,
@@ -45464,27 +47721,25 @@ export const watchlists: Watchlist[] = [
     65.78,
     65.27,
     65.74,
-    65.25
+    65.25,
+    66.71
    ]
   },
   "UFO": {
    "name": "Procure Space ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 40.24,
-   "open": 40.69,
-   "prevClose": 41.72,
-   "change": -1.48,
-   "changePct": -3.55,
-   "dayHigh": 41.13,
-   "dayLow": 39.82,
+   "price": 39.89,
+   "open": 40.63,
+   "prevClose": 40.24,
+   "change": -0.35,
+   "changePct": -0.87,
+   "dayHigh": 40.95,
+   "dayLow": 39.76,
    "high52": 68.21,
    "low52": 30.89,
-   "volume": 368012,
+   "volume": 289149,
    "closes": [
-    42.31,
-    41.95,
-    43.13,
     43.56,
     44.33,
     43.04,
@@ -45504,27 +47759,25 @@ export const watchlists: Watchlist[] = [
     41.13,
     41.28,
     41.72,
-    40.24
+    40.24,
+    39.89
    ]
   },
   "UNH": {
    "name": "UnitedHealth Group Incorporated",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 406.97,
-   "open": 415,
-   "prevClose": 410.91,
-   "change": -3.94,
-   "changePct": -0.96,
-   "dayHigh": 416.11,
-   "dayLow": 405.91,
+   "price": 400.44,
+   "open": 406,
+   "prevClose": 406.97,
+   "change": -6.53,
+   "changePct": -1.6,
+   "dayHigh": 408.88,
+   "dayLow": 394.11,
    "high52": 461.62,
    "low52": 255.97,
-   "volume": 4296307,
+   "volume": 5899348,
    "closes": [
-    367.08,
-    365.2,
-    371.9,
     378.58,
     376.32,
     375.98,
@@ -45544,27 +47797,63 @@ export const watchlists: Watchlist[] = [
     410.39,
     407.1,
     410.91,
-    406.97
+    406.97,
+    400.44
+   ]
+  },
+  "URBN": {
+   "name": "Urban Outfitters, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 88.94,
+   "open": 91.16,
+   "prevClose": 90.72,
+   "change": -1.78,
+   "changePct": -1.96,
+   "dayHigh": 92.35,
+   "dayLow": 88.8,
+   "high52": 93.64,
+   "low52": 59.54,
+   "volume": 1251455,
+   "closes": [
+    81.6,
+    80.25,
+    79.75,
+    80.96,
+    82.18,
+    82.69,
+    84.85,
+    84.68,
+    87.4,
+    86.57,
+    86.83,
+    87.32,
+    86.96,
+    88.29,
+    86.55,
+    90.59,
+    90.73,
+    89.35,
+    92.19,
+    90.72,
+    88.94
    ]
   },
   "V": {
    "name": "Visa Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 413.59,
-   "open": 415.25,
-   "prevClose": 410.54,
-   "change": 3.05,
-   "changePct": 0.74,
-   "dayHigh": 416.99,
-   "dayLow": 411.82,
-   "high52": 417,
+   "price": 425.51,
+   "open": 415.51,
+   "prevClose": 413.59,
+   "change": 11.92,
+   "changePct": 2.88,
+   "dayHigh": 426.78,
+   "dayLow": 414.37,
+   "high52": 426.78,
    "low52": 293.89,
-   "volume": 7073982,
+   "volume": 7425819,
    "closes": [
-    359.33,
-    359.85,
-    360.66,
     369.71,
     370.64,
     372.1,
@@ -45584,27 +47873,63 @@ export const watchlists: Watchlist[] = [
     401.86,
     400.6,
     410.54,
-    413.59
+    413.59,
+    425.51
+   ]
+  },
+  "VFC": {
+   "name": "V.F. Corporation",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 19.39,
+   "open": 18.58,
+   "prevClose": 18.3,
+   "change": 1.09,
+   "changePct": 5.96,
+   "dayHigh": 19.48,
+   "dayLow": 18.47,
+   "high52": 22.27,
+   "low52": 12.46,
+   "volume": 11541162,
+   "closes": [
+    14.27,
+    14.45,
+    14.38,
+    14.53,
+    15,
+    15.79,
+    16.07,
+    16.48,
+    17,
+    16.85,
+    17.14,
+    17.46,
+    17.15,
+    17.48,
+    17.26,
+    16.95,
+    17.03,
+    17.23,
+    18.33,
+    18.3,
+    19.39
    ]
   },
   "VGK": {
    "name": "Vanguard FTSE Europe ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 87.54,
-   "open": 87.73,
-   "prevClose": 88.14,
-   "change": -0.6,
-   "changePct": -0.68,
-   "dayHigh": 87.88,
-   "dayLow": 87.07,
+   "price": 88.06,
+   "open": 87.93,
+   "prevClose": 87.54,
+   "change": 0.52,
+   "changePct": 0.59,
+   "dayHigh": 88.49,
+   "dayLow": 87.77,
    "high52": 93.29,
    "low52": 77.87,
-   "volume": 1750002,
+   "volume": 2006619,
    "closes": [
-    86.8,
-    85.49,
-    86.38,
     86.28,
     86.58,
     85.56,
@@ -45624,27 +47949,25 @@ export const watchlists: Watchlist[] = [
     87.04,
     87.31,
     88.14,
-    87.54
+    87.54,
+    88.06
    ]
   },
   "VTI": {
    "name": "Vanguard Morningstar Total Stock Market ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 371.57,
-   "open": 374.25,
-   "prevClose": 378.24,
-   "change": -6.67,
-   "changePct": -1.76,
-   "dayHigh": 374.49,
-   "dayLow": 368.89,
+   "price": 370,
+   "open": 373.52,
+   "prevClose": 371.57,
+   "change": -1.57,
+   "changePct": -0.42,
+   "dayHigh": 375.64,
+   "dayLow": 369.75,
    "high52": 385.12,
    "low52": 310.4,
-   "volume": 4673257,
+   "volume": 6578469,
    "closes": [
-    374.24,
-    375.18,
-    377.99,
     380.6,
     382.54,
     381.03,
@@ -45664,27 +47987,139 @@ export const watchlists: Watchlist[] = [
     377.92,
     379.17,
     378.24,
-    371.57
+    371.57,
+    370
+   ]
+  },
+  "WEN": {
+   "name": "The Wendy's Company",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 7.26,
+   "open": 7.22,
+   "prevClose": 7.21,
+   "change": 0.05,
+   "changePct": 0.69,
+   "dayHigh": 7.35,
+   "dayLow": 7.17,
+   "high52": 10.12,
+   "low52": 5.94,
+   "volume": 6008759,
+   "closes": [
+    6.1,
+    6.16,
+    6.11,
+    6.22,
+    6.23,
+    6.31,
+    6.35,
+    6.44,
+    6.7,
+    6.7,
+    6.68,
+    6.52,
+    6.28,
+    6.57,
+    6.22,
+    6.19,
+    6.14,
+    7.07,
+    7.17,
+    7.21,
+    7.26
+   ]
+  },
+  "WFC": {
+   "name": "Wells Fargo & Company",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 85.89,
+   "open": 84.4,
+   "prevClose": 83.4,
+   "change": 2.49,
+   "changePct": 2.99,
+   "dayHigh": 86.03,
+   "dayLow": 84.1,
+   "high52": 97.76,
+   "low52": 72.78,
+   "volume": 18923647,
+   "closes": [
+    81.44,
+    81.51,
+    80.26,
+    82.03,
+    83.55,
+    83.32,
+    80.74,
+    80.9,
+    82.75,
+    83.87,
+    81.8,
+    82.2,
+    82.42,
+    83.01,
+    82.39,
+    82.65,
+    82.66,
+    83.67,
+    84.81,
+    83.4,
+    85.89
+   ]
+  },
+  "WING": {
+   "name": "Wingstop Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 163.04,
+   "open": 153.46,
+   "prevClose": 149.73,
+   "change": 13.31,
+   "changePct": 8.89,
+   "dayHigh": 170.37,
+   "dayLow": 152.89,
+   "high52": 302.8,
+   "low52": 95.82,
+   "volume": 2973137,
+   "closes": [
+    106.84,
+    112.2,
+    116.68,
+    118.5,
+    122.26,
+    126.02,
+    125.76,
+    122.9,
+    131.03,
+    131.72,
+    132.75,
+    130.31,
+    119.95,
+    120.87,
+    119.54,
+    122.88,
+    123.52,
+    138.57,
+    145.39,
+    149.73,
+    163.04
    ]
   },
   "WMT": {
    "name": "Walmart Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 123.51,
-   "open": 123.14,
-   "prevClose": 121.25,
-   "change": 2.26,
-   "changePct": 1.86,
-   "dayHigh": 124.5,
-   "dayLow": 122.75,
+   "price": 127.69,
+   "open": 124.1,
+   "prevClose": 123.51,
+   "change": 4.18,
+   "changePct": 3.38,
+   "dayHigh": 127.94,
+   "dayLow": 124.12,
    "high52": 135.16,
    "low52": 98.88,
-   "volume": 29777249,
+   "volume": 27680627,
    "closes": [
-    103.92,
-    104.26,
-    104.26,
     105.07,
     107.2,
     108.16,
@@ -45704,27 +48139,63 @@ export const watchlists: Watchlist[] = [
     119.32,
     118.77,
     121.25,
-    123.51
+    123.51,
+    127.69
+   ]
+  },
+  "WOOF": {
+   "name": "Petco Health and Wellness Company, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 2.74,
+   "open": 2.63,
+   "prevClose": 2.61,
+   "change": 0.13,
+   "changePct": 4.98,
+   "dayHigh": 2.77,
+   "dayLow": 2.62,
+   "high52": 3.78,
+   "low52": 2.14,
+   "volume": 4727059,
+   "closes": [
+    2.18,
+    2.22,
+    2.22,
+    2.24,
+    2.23,
+    2.33,
+    2.41,
+    2.37,
+    2.38,
+    2.33,
+    2.34,
+    2.33,
+    2.31,
+    2.53,
+    2.45,
+    2.49,
+    2.48,
+    2.51,
+    2.59,
+    2.61,
+    2.74
    ]
   },
   "XLE": {
    "name": "State Street Energy Select Sector SPDR ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 70.02,
-   "open": 69.52,
-   "prevClose": 68.71,
-   "change": 1.31,
-   "changePct": 1.91,
-   "dayHigh": 70.15,
-   "dayLow": 69.28,
+   "price": 67.25,
+   "open": 68.85,
+   "prevClose": 70.02,
+   "change": -2.77,
+   "changePct": -3.96,
+   "dayHigh": 69.14,
+   "dayLow": 67.23,
    "high52": 70.15,
    "low52": 43.19,
-   "volume": 31087568,
+   "volume": 50873640,
    "closes": [
-    61.5,
-    62.7,
-    62.82,
     63.45,
     63.75,
     63.36,
@@ -45744,27 +48215,25 @@ export const watchlists: Watchlist[] = [
     68.21,
     68.45,
     68.71,
-    70.02
+    70.02,
+    67.25
    ]
   },
   "XOM": {
    "name": "ExxonMobil Holdings Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 187.25,
-   "open": 185.98,
-   "prevClose": 183.29,
-   "change": 3.96,
-   "changePct": 2.16,
-   "dayHigh": 188.5,
-   "dayLow": 184.68,
+   "price": 179.67,
+   "open": 183.98,
+   "prevClose": 187.25,
+   "change": -7.58,
+   "changePct": -4.05,
+   "dayHigh": 184.59,
+   "dayLow": 179.67,
    "high52": 188.5,
    "low52": 112.51,
-   "volume": 21162779,
+   "volume": 16459189,
    "closes": [
-    162.75,
-    163.82,
-    164.01,
     164,
     164.48,
     164.05,
@@ -45784,44 +48253,121 @@ export const watchlists: Watchlist[] = [
     179.91,
     182.02,
     183.29,
-    187.25
+    187.25,
+    179.67
+   ]
+  },
+  "YETI": {
+   "name": "YETI Holdings, Inc.",
+   "exchange": "NYSE",
+   "type": "EQUITY",
+   "price": 45.42,
+   "open": 44.87,
+   "prevClose": 43.66,
+   "change": 1.76,
+   "changePct": 4.03,
+   "dayHigh": 45.77,
+   "dayLow": 44.65,
+   "high52": 53.99,
+   "low52": 32.26,
+   "volume": 1322526,
+   "closes": [
+    40.52,
+    40.25,
+    39.47,
+    39.6,
+    39.79,
+    39.01,
+    39.34,
+    40.51,
+    42.02,
+    43.07,
+    42.12,
+    42.55,
+    42.77,
+    44.03,
+    42.79,
+    43.57,
+    42.25,
+    42.91,
+    44.19,
+    43.66,
+    45.42
+   ]
+  },
+  "ZM": {
+   "name": "Zoom Communications, Inc.",
+   "exchange": "NASDAQ",
+   "type": "EQUITY",
+   "price": 91.98,
+   "open": 95.69,
+   "prevClose": 95.5,
+   "change": -3.52,
+   "changePct": -3.69,
+   "dayHigh": 95.85,
+   "dayLow": 91.39,
+   "high52": 114.74,
+   "low52": 70.7,
+   "volume": 2525733,
+   "closes": [
+    93.62,
+    94.2,
+    94.77,
+    94.67,
+    97.74,
+    97.94,
+    98.16,
+    94.47,
+    98.51,
+    94.19,
+    97.59,
+    97.46,
+    99.44,
+    96.2,
+    95.77,
+    98.04,
+    97.4,
+    100.26,
+    97.66,
+    95.5,
+    91.98
    ]
   }
  },
  "indices": {
   "sp-500": {
    "symbol": "^GSPC",
-   "price": 7580.07,
-   "open": 7631.07,
-   "prevClose": 7720.39,
-   "change": -140.32,
-   "changePct": -1.82,
-   "dayHigh": 7637.48,
-   "dayLow": 7527.56,
+   "price": 7541.4,
+   "open": 7610.83,
+   "prevClose": 7580.07,
+   "change": -38.67,
+   "changePct": -0.51,
+   "dayHigh": 7662.23,
+   "dayLow": 7539.38,
    "high52": 7844.52,
    "low52": 6316.91
   },
   "nasdaq": {
    "symbol": "^IXIC",
-   "price": 25437,
-   "open": 25592.49,
-   "prevClose": 26184.72,
-   "change": -747.72,
-   "changePct": -2.86,
-   "dayHigh": 25673,
-   "dayLow": 25177.33,
+   "price": 25164.36,
+   "open": 25600.17,
+   "prevClose": 25437,
+   "change": -272.64,
+   "changePct": -1.07,
+   "dayHigh": 25799.46,
+   "dayLow": 25145.95,
    "high52": 27722.75,
    "low52": 20690.25
   },
   "dow-jones": {
    "symbol": "^DJI",
-   "price": 51770.31,
-   "open": 52383.9,
-   "prevClose": 52342.56,
-   "change": -572.25,
-   "changePct": -1.09,
-   "dayHigh": 52383.9,
-   "dayLow": 51563.76,
+   "price": 51983.98,
+   "open": 52008.23,
+   "prevClose": 51770.31,
+   "change": 213.67,
+   "changePct": 0.41,
+   "dayHigh": 52424.91,
+   "dayLow": 51981.66,
    "high52": 54744.33,
    "low52": 45057.28
   }
@@ -45829,15 +48375,15 @@ export const watchlists: Watchlist[] = [
  "fx": {
   "usdInr": {
    "symbol": "USDINR=X",
-   "price": 94.87,
-   "open": null,
-   "prevClose": 95.19,
-   "change": -0.32,
-   "changePct": -0.34,
-   "dayHigh": null,
-   "dayLow": null,
-   "high52": null,
-   "low52": null
+   "price": 94.75,
+   "open": 94.89,
+   "prevClose": 94.9,
+   "change": -0.15,
+   "changePct": -0.16,
+   "dayHigh": 94.89,
+   "dayLow": 94.6,
+   "high52": 97.05,
+   "low52": 85.86
   }
  }
 }
@@ -45849,8 +48395,13 @@ export const watchlists: Watchlist[] = [
 // US stocks — data more than one flow uses (the US Stocks flow, the Stocks home's US tab, the Market tab's US list).
 // Prices are real: us-market-snapshot.json, from Yahoo Finance by `npm run us:snapshot` (scripts/us-market-snapshot.mjs),
 // overrides the catalogue's numbers below and adds every other stock / ETF the app shows. `live.ts` makes them tick.
-// Logos are PNGs in src/shared/assets/us-logos (L3 has company logos for Indian stocks only).
-import snapshot from './us-market-snapshot.json'
+// Near-live, not live: the bundled copy is used at first, then the app re-reads ./us-market-snapshot.json (published by
+// the build, refreshed every 15 minutes in US market hours by the site repo's Action, scripts/site-workflow-us.yml) on
+// load and every 5 minutes, and updates the numbers below in place.
+// Logos are in src/shared/assets/us-logos: full-colour SVGs (scripts/us-logos.mjs), PNGs for the few without one (L3 has company logos for Indian stocks only).
+import { useSyncExternalStore } from 'react'
+import bundled from './us-market-snapshot.json'
+import { nudgeLive } from './live'
 
 export type UsStock = {
   sym: string
@@ -45893,34 +48444,92 @@ export const catalogue: Record<string, Omit<UsStock, 'sym'>> = {
 }
 
 type SnapshotQuote = { name: string | null; exchange: string | null; price: number; changePct: number; open?: number | null; prevClose: number; dayHigh: number | null; dayLow: number | null; high52: number | null; low52: number | null; volume: number | null; closes: number[] }
-const quotes = snapshot.quotes as unknown as Record<string, SnapshotQuote>
+type IndexQuote = { price: number; changePct: number }
+type Snapshot = { source: string; fetchedAt: string; quotes: Record<string, SnapshotQuote>; indices: Record<string, IndexQuote>; fx?: { usdInr?: { price: number } } }
+
+// The numbers in use now — the bundled snapshot's, replaced in place when a fresher one is read (see the runtime refresh).
+const quotes: Record<string, SnapshotQuote> = { ...(bundled.quotes as unknown as Record<string, SnapshotQuote>) }
+const indices: Record<string, IndexQuote> = { ...(bundled.indices as Record<string, IndexQuote>) }
+const current = { fetchedAt: bundled.fetchedAt, source: bundled.source, usdInr: (bundled as unknown as Snapshot).fx?.usdInr?.price }
 
 /** "Apple Inc." → "Apple Inc", "Airbnb, Inc." → "Airbnb Inc": the snapshot's legal names, as the app writes them. */
 const tidyName = (name: string) => name.replace(/,? (Inc|Corp|Corporation|Co|Ltd|Plc|N\.V|S\.A)\.?$/i, (m) => ' ' + m.replace(/[,.]/g, '').trim()).replace(/\s+/g, ' ').trim()
 
 // The snapshot's real price, day change and exchange for every symbol in it; the catalogue's own names stay.
-for (const [sym, q] of Object.entries(quotes)) {
-  if (q.price == null) continue
-  const known = catalogue[sym]
-  catalogue[sym] = { name: known?.name ?? tidyName(q.name ?? sym), price: q.price, change: q.changePct, exchange: q.exchange ?? known?.exchange ?? 'NASDAQ' }
+function applyQuotes() {
+  for (const [sym, q] of Object.entries(quotes)) {
+    if (q.price == null) continue
+    const known = catalogue[sym]
+    catalogue[sym] = { name: known?.name ?? tidyName(q.name ?? sym), price: q.price, change: q.changePct, exchange: q.exchange ?? known?.exchange ?? 'NASDAQ' }
+  }
 }
+applyQuotes()
 
 /** When the US prices were taken (ISO time). */
-export const usSnapshotAt: string = snapshot.fetchedAt
+export const usSnapshotAt = (): string => current.fetchedAt
 
 /** The snapshot's full quote of a symbol (day range, 52-week range, volume, a month of closes), if it has one. */
 export const usQuote = (symbol: string): SnapshotQuote | undefined => quotes[symbol]
 
 /** Today's value of a US index (`sp-500`, `nasdaq`, `dow-jones`) from the snapshot. */
-export const usIndexQuote = (id: string): { price: number; changePct: number } | undefined => (snapshot.indices as Record<string, { price: number; changePct: number }>)[id]
+export const usIndexQuote = (id: string): IndexQuote | undefined => indices[id]
 
-const logoFiles = import.meta.glob('../assets/us-logos/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
-const logoBySymbol = new Map(Object.entries(logoFiles).map(([path, url]) => [path.slice(path.lastIndexOf('/') + 1, -'.png'.length), url]))
+/** ₹ per $ in the snapshot (USDINR=X), or undefined if it has none. */
+export const usdInrSnapshot = (): number | undefined => current.usdInr
+
+// ── Runtime refresh ──────────────────────────────────────────────────────────────────────────────────────────────
+const listeners = new Set<() => void>()
+
+function apply(next: Snapshot) {
+  if (!(next.fetchedAt > current.fetchedAt)) return // ISO strings sort by time; never go back to older data
+  // A symbol the published file doesn't have yet (added to the app after the site's copy) keeps the numbers we have.
+  Object.assign(quotes, next.quotes)
+  Object.assign(indices, next.indices)
+  Object.assign(current, { fetchedAt: next.fetchedAt, source: next.source, usdInr: next.fx?.usdInr?.price ?? current.usdInr })
+  applyQuotes()
+  listeners.forEach((l) => l())
+  nudgeLive() // every ticking price re-renders now, not at the next tick
+}
+
+/** Re-read the published US snapshot (same origin — no API call). Fails quietly: the numbers we have stay. */
+export async function refreshUsMarket() {
+  try {
+    const res = await fetch('us-market-snapshot.json', { cache: 'no-cache' })
+    if (res.ok) apply(await res.json())
+  } catch { /* offline, or the file isn't there — keep what we have */ }
+}
+
+const REFRESH_MS = 5 * 60 * 1000
+if (typeof window !== 'undefined') {
+  refreshUsMarket()
+  setInterval(() => { if (document.visibilityState === 'visible') refreshUsMarket() }, REFRESH_MS)
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshUsMarket() })
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener)
+  return () => { listeners.delete(listener) }
+}
+
+/** Re-renders the calling component when fresher US data arrives; returns its `fetchedAt`. */
+export function useUsMarketSnapshot(): string {
+  return useSyncExternalStore(subscribe, () => current.fetchedAt)
+}
+
+// A full-colour SVG (the mark on its brand colour, edge to edge — scripts/us-logos.mjs) wins over the older PNG (a mark on
+// transparent, which shows on the L3 Avatar's grey); the PNG stays for the few symbols that have no SVG.
+const logoFiles = import.meta.glob('../assets/us-logos/*.{png,svg}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
+const symbolOf = (path: string) => path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
+const logoBySymbol = new Map(
+  Object.entries(logoFiles)
+    .sort(([a], [b]) => Number(a.endsWith('.svg')) - Number(b.endsWith('.svg')))
+    .map(([path, url]) => [symbolOf(path), url]),
+)
 
 /** Symbols that have a logo file in src/shared/assets/us-logos. */
 export const usLogoSymbols: string[] = [...logoBySymbol.keys()].sort()
 
-/** The logo of a US company (PNG URL), or undefined (show initials). */
+/** The logo of a US company (SVG or PNG URL), or undefined (show initials). */
 export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(symbol)
 
 // The stock being looked at: a list (Market tab, Search …) sets it, the stock page reads it.
@@ -46008,7 +48617,7 @@ export const bankAccount: BankAccount = {
 import { useSyncExternalStore, type ReactNode } from 'react'
 import { Tabs } from '@l3/components/Tabs'
 import type { FlowOption } from '../flows/types'
-import snapshot from './data/us-market-snapshot.json'
+import { usdInrSnapshot } from './data/usStocks'
 import { liveDrift, useLiveTick } from './data/live'
 import { useFlowOption } from './prototype'
 import { USER_STATUS } from './userStatus'
@@ -46016,13 +48625,13 @@ import styles from './money.module.css'
 
 // ── The rate ────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-/** ₹ per $ in the snapshot (the fallback is the 2 Nov 2026 close, should the snapshot lose it). */
-export const USD_INR_SNAPSHOT: number = (snapshot as { fx?: { usdInr?: { price: number } } }).fx?.usdInr?.price ?? 94.87
+/** ₹ per $ in the snapshot (the fallback is the 2 Nov 2026 close, should the snapshot lose it). Re-read with the prices. */
+const usdInrNow = (): number => usdInrSnapshot() ?? 94.87
 
 /** The USD → INR rate right now: the snapshot's, moving a little every 2 s like a live quote. */
 export function useUsdInrRate(): number {
   const at = useLiveTick()
-  return Math.round(USD_INR_SNAPSHOT * (1 + liveDrift('USDINR', at) / 4) * 100) / 100
+  return Math.round(usdInrNow() * (1 + liveDrift('USDINR', at) / 4) * 100) / 100
 }
 
 // ── Formatting ──────────────────────────────────────────────────────────────────────────────────────────────────────
