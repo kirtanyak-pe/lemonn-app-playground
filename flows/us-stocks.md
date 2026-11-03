@@ -92,10 +92,11 @@ Groww-style $ entry (user's 3 Nov ask; reference `references/2026-11-03/wallet/1
   The sheet (`ChargesBreakdownSheet`) shows the same ₹ and its breakdown; "Lands in your US wallet" = the typed $.
 - Amounts on this screen are plain `$` (`formatUsd`), not the app's "₹ equivalent" setting: the entry is in $ and the ₹ line
   is always there, because paying is in ₹, so a second ≈ ₹ (or a ₹ switch) would only repeat or contradict it.
-- Next: "Add $X" → `us-stocks-26` (M08, pay on the bank's page sheet) → bank page → wallet. The $ amount is handed to M08.
+- Next: "Add $X" → the bank page directly → wallet (no "pay on your bank's page" sheet; M08 was removed 3 Nov). Back on
+  the bank page keeps the typed $.
 - States (same Figma nodes as before): M01 `5776:84630` $1,000 · M02 `5776:85779` charges sheet open · M03 `5776:84513`
   below minimum, prefilled "20" · M07 `5796:86175` above LRS, prefilled 300000 · M05 `5796:86009` bank name mismatch
-  (Aerobar, button disabled) · M08 `5776:84258` pay-on-bank sheet.
+  (Aerobar, button disabled). (M08 `5776:84258`, the pay-on-bank sheet, is dropped: Add $X opens the bank's page.)
 - Copy: `copy.json` (`addMoney.*`), read with `t()` from `screens/money/copy.ts`.
 
 **Differences from Figma:** M01 had a ₹ TextField with min / max helper text, a "US Wallet Balance" card, ₹ chips
@@ -113,6 +114,14 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — Portfolio holding cards: the top-right figure is today's return, labelled “1D Returns” (the holding's 1D %, the same number Sort's 1D returns uses), not the total Returns% again.
+- 2026-11-03 — Portfolio's holdings cards: 12 padding on every side; wide enough that 32 of the next card peeks in (was 296 fixed); the Total / 1D Returns switcher uses the filled ↕ (`lmSwitchArrowVertical`, as on Home's chips); the Lemonn leaves are gone, and the market's glow moved from the top-left to the bottom-right corner.
+- 2026-11-03 — Portfolio's underline tabs (Positions · Holdings · Orders, Indian · US Stocks) draw their line in border intense instead of L3's border light, so it shows in dark mode. L3 gap: underline Tabs have no line-colour option.
+- 2026-11-03 — Portfolio looks like Stocks home: the page is surface secondary (grey) under the surface-default top bar and tabs, and the body is a surface-default sheet with 32 round top corners over it.
+- 2026-11-03 — Day range bar (stock and ETF pages): the gradient runs between the light Indicator down / up surface tokens (`--l3-surface-accent-indicator-down-light` → `-up-light`) instead of the strong content colours.
+- 2026-11-03 — Add money: "Add $X" goes straight to the bank's page; the "Pay on HDFC Bank's page" sheet (M08, us-stocks-26) is removed. The "Pay from" sheet lists the banks as bordered ListCell cards (variant card, 8 apart; the chosen one gets border-dark).
+- 2026-11-03 — Daily Performance's day range bar (stock and ETF pages) is a three-stop gradient: surface Indicator down default → Surface primary → Indicator up default, fading through the middle instead of jumping red to green.
+- 2026-11-03 — New hidden screen us-stocks-77 · Portfolio · Holdings · US: the Portfolio page opened on Holdings with the US Stocks card upfront — where Stocks home's US holdings card goes.
 - 2026-11-03 — **₹ hidden by default**: the "₹ equivalent" setting starts on "$ only". The two asset pages — the stock page and the ETF page (the one with more details: About, Allocation, Top holdings) — always show ≈ ₹ under the price. The wallet's ≈ ₹ line under the balance follows the setting. Add money / Withdraw stay in ₹ (real rupee money).
 - 2026-11-03 — **Asset pages copied over from the jojo branch** (stock page, ETF page with About / Allocation / Top holdings, holding logos, ₹ line under the price, `EtfMove` with no sign, `<Usd>` inline by default). The ETF list (us-stocks-71) and the user status picker stay as they were here, so the jojo notes below about the list's search and holding-logo cards don't apply to it.
 - 2026-11-03 — ETF catalogue: nine more funds for Stocks home's Discover ETFs (FXI, CQQQ, DXJ, HEWJ, SCJ, FEZ, EZU, IEUR, FLKR; real prices from the snapshot, sample expense / size / holdings). The ETF page also reads the shared `viewUsStock`, so a fund opened from another flow shows.
@@ -22553,6 +22562,7 @@ export const registry: UsScreenEntry[] = [
   { figma: '5796:89422', id: 'us-stocks-02', section: 'entry', name: "E1a · S&P 500 index · market open", note: "S&P 500 index page while the US market is open." },
   { figma: '5796:88668', tab: 'portfolio', id: 'us-stocks-05', badge: 'changed', badgeNote: "Empty states: L3 Empty state with its default illustration, centred", section: 'entry', name: "E4 · Portfolio · US market banner", note: "Portfolio before 8 PM IST. Banner says US markets open tonight." },
   { figma: '5796:92301', tab: 'portfolio', id: 'us-stocks-06', badge: 'changed', badgeNote: "Empty states: L3 Empty state with its default illustration, centred", section: 'entry', name: "E4 · Portfolio · US market banner · live", note: "Portfolio after 8 PM IST. Banner turns LIVE till 2:30 AM IST." },
+  { figma: '9001:30', tab: 'portfolio', id: 'us-stocks-77', hidden: true, badge: 'new', badgeNote: "Not in Figma: where Home's US holdings card goes", section: 'entry', name: "Portfolio · Holdings · US", note: "Home's US holdings card opens Portfolio on Holdings with the US Stocks P&L card upfront and the US Stocks tab picked (the same page as the Portfolio tab, opened on its US side)." },
   { figma: '5796:88163', tab: 'mutualFund', id: 'us-stocks-07', section: 'entry', name: "E5 · Mutual Fund home · US banner", note: "Mutual Fund home with a US Stocks on Lemonn banner." },
   { figma: '5826:93627', id: 'us-stocks-13', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'ftux', name: "S03 · Stock page", note: "The US stock page in the user status picked in the prototype settings (User status): KYC pending → Complete KYC (as us-stocks-74); not activated, under review or failed → Activate US Stocks in place of Buy / Sell; activated → Buy / Sell (us-stocks-31), with Your Holdings when the user holds NVDA (us-stocks-32). Home, Search and Market open this page." },
   { figma: '9001:10', id: 'us-stocks-74', hidden: true, badge: 'new', badgeNote: "Not in Jojo's Figma: a user whose Lemonn KYC isn't done", section: 'ftux', name: "Stock page · KYC not done", note: "Stock page for a user whose Lemonn (Indian) KYC isn't complete: US Stocks can't be activated yet, so the button is Complete KYC (→ the KYC flow, kyc-01) in place of Activate. Back → the US tab with the KYC card (stocks-21)." },
@@ -22564,7 +22574,6 @@ export const registry: UsScreenEntry[] = [
   { figma: '5776:84513', id: 'us-stocks-23', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M03 · Add money · below minimum", note: "Error: amount is below the first-deposit minimum of $50." },
   { figma: '5796:86175', id: 'us-stocks-24', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M07 · Add money · above LRS limit", note: "Error: amount is above the LRS limit of $250,000 per year." },
   { figma: '5796:86009', id: 'us-stocks-25', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M05 · Add money · bank name mismatch", note: "Edge case: bank account name doesn't match KYC. Prompts a bank update." },
-  { figma: '5776:84258', id: 'us-stocks-26', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M08 · Add money · pay on bank page sheet", note: "Sheet explaining the user will pay on their bank’s page." },
   { figma: '9001:20', id: 'us-stocks-75', badge: 'new', badgeNote: "Not in Figma: no bank account linked", section: 'ftux', name: "Add money · no bank account", note: "No bank linked (User status → Bank accounts: None): the bank row reads “Add a bank account” and the button is “Add bank account” → Add bank account (deposit-12), which comes back here." },
   { figma: '9001:21', id: 'us-stocks-76', badge: 'new', badgeNote: "Not in Figma: change the bank", section: 'ftux', name: "Add money · change bank", note: "The bank row (chevron) opens “Pay from”: linked banks as radio rows, picking one closes it; “Add another bank account” → Add bank account (deposit-12)." },
   { figma: '5796:86336', id: 'us-stocks-27', section: 'ftux', name: "Bank app (placeholder)", note: "Placeholder for the bank's payment page." },
@@ -22828,16 +22837,9 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   border-radius: var(--l3-radius-full);
   background: linear-gradient(
     90deg,
-    color-mix(
-      in srgb,
-      var(--l3-content-accent-indicator-down-default) 55%,
-      var(--l3-surface-primary)
-    ),
-    color-mix(
-      in srgb,
-      var(--l3-content-accent-indicator-up-default) 55%,
-      var(--l3-surface-primary)
-    )
+    var(--l3-surface-accent-indicator-down-default),
+    var(--l3-surface-primary),
+    var(--l3-surface-accent-indicator-up-default)
   );
   position: relative;
 }
@@ -26773,7 +26775,7 @@ export function MutualFundHomeScreen() {
 /* FLAG: raw display:flex/grid + gap/padding layout instead of L3 Stack/Section/Inset/Grid (whole file) */
 
 .page {
-  background: var(--l3-surface-primary);
+  background: var(--l3-surface-secondary); /* as on Stocks home: grey above, the white sheet over it */
   flex-direction: column;
   min-height: 100%;
   display: flex;
@@ -26847,11 +26849,11 @@ export function MutualFundHomeScreen() {
   display: flex;
 }
 
-/* FLAG: hand-made grey sheet on the page */
+/* FLAG: hand-made sheet on the page — surface default with 32 round top corners over the grey, as on Stocks home. */
 .sheet {
   gap: var(--l3-spacing-16);
   padding: var(--l3-spacing-24) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
+  border-radius: var(--l3-radius-32) var(--l3-radius-32) 0 0;
   background: var(--l3-surface-default);
   flex-direction: column;
   flex: 1;
@@ -27156,6 +27158,13 @@ export function MutualFundHomeScreen() {
   outline-offset: var(--l3-spacing-04);
   border-radius: var(--l3-radius-04);
 }
+
+/* The underline tabs' line (Positions · Holdings · Orders, Indian · US Stocks) is border intense, not L3's border light,
+   so it shows in dark mode too. L3 gap: underline Tabs have no line-colour option. */
+.screen [role='tablist'][data-appearance='underline'],
+.screen [role='tablist'][data-appearance='underline'] > [role='tab'] {
+  box-shadow: inset 0 -1px 0 var(--l3-border-intense);
+}
 ```
 
 ### `src/flows/us-stocks/screens/entry/PortfolioScreen.tsx`
@@ -27207,7 +27216,7 @@ function EmptyWallet({ title, text, button, onClick }: { title: string; text: st
   )
 }
 
-/** One holding card (Indian or US). */
+/** One holding card (Indian or US): today's return (1D %) on top, current · invested · total returns below. */
 function HoldingRow({ holding }: { holding: Holding }) {
   return (
     <li className={styles.hold}>
@@ -27218,8 +27227,8 @@ function HoldingRow({ holding }: { holding: Holding }) {
           <span className={styles.holdQty}>Qty {holding.qty}</span>
         </span>
         <span className={styles.holdCell} data-end="">
-          <span className={styles.holdLabel}>Returns%</span>
-          <span className={styles.holdFig} data-tone={holding.up ? 'up' : 'down'}>{holding.pct}</span>
+          <span className={styles.holdLabel}>1D Returns</span>
+          <span className={styles.holdFig} data-tone={holding.day >= 0 ? 'up' : 'down'}>{`${holding.day >= 0 ? '+' : '−'}${Math.abs(holding.day).toFixed(2)}%`}</span>
         </span>
       </span>
       <hr className={styles.holdRule} />
@@ -27258,14 +27267,15 @@ function usEmpty(journey: UsJourney): { title: string; text: string; button: str
   }
 }
 
-/** `live` is accepted for the two Figma variants but, as in the original, not used. */
-export function PortfolioScreen(_props: { live?: boolean }) {
+/** `live` is accepted for the two Figma variants but, as in the original, not used. `tab` / `market`: where it opens
+ * (Home's US holdings card opens Holdings with the US Stocks card upfront). */
+export function PortfolioScreen({ tab: initialTab = 'positions', market: initialMarket = 'in' }: { live?: boolean; tab?: PortfolioTab; market?: HoldingsMarket }) {
   const { go } = useUsNav()
   const journey = useUsJourney()
   const usActive = journey === 'activated' || journey === 'onTheWay' || journey === 'ready' || journey === 'holding'
   const usEmptyState = usEmpty(journey)
-  const [tab, setTab] = useState<PortfolioTab>('positions')
-  const [market, setMarket] = useState<HoldingsMarket>('in')
+  const [tab, setTab] = useState<PortfolioTab>(initialTab)
+  const [market, setMarket] = useState<HoldingsMarket>(initialMarket)
   const [sort, setSort] = useState<SortValue>({ key: 'current', dir: 'desc' })
   const [sortOpen, setSortOpen] = useState(false)
 
@@ -27282,6 +27292,7 @@ export function PortfolioScreen(_props: { live?: boolean }) {
 
   return (
     <Phone
+      className={styles.screen}
       bodyRef={swipe.bind}
       label="Portfolio"
       header={
@@ -27411,6 +27422,7 @@ export function PortfolioScreen(_props: { live?: boolean }) {
 
 export const PortfolioBannerScreen = () => <PortfolioScreen live={false} />
 export const PortfolioBannerLiveScreen = () => <PortfolioScreen live />
+export const PortfolioUsHoldingsScreen = () => <PortfolioScreen tab="holdings" market="us" />
 ```
 
 ### `src/flows/us-stocks/screens/entry/SpxIndex.module.css`
@@ -27996,14 +28008,15 @@ export function SpxIndexScreen() {
   display: none;
 }
 
-/* FLAG: hand-made carousel card, fixed 296px wide — use L3 Card */
+/* FLAG: hand-made carousel card — use L3 Card. As wide as leaves 32 of the next card in view (rail width − 16 start
+   padding − 12 gap − 32), with 12 padding on every side. The market's glow sits in the bottom-right corner. */
 .card {
   gap: var(--l3-spacing-28);
-  width: 296px;  /* FLAG: raw px */
-  padding: 18px var(--l3-spacing-14);  /* FLAG: raw px */
+  width: calc(100% + var(--l3-spacing-16) - var(--l3-spacing-12) - var(--l3-spacing-32));
+  padding: var(--l3-spacing-12);
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-16);
-  background: radial-gradient(80% 70% at 0% 0%, color-mix(in srgb, var(--glow) 16%, transparent) 0%, transparent 72%), var(--l3-surface-primary);
+  background: radial-gradient(80% 70% at 100% 100%, color-mix(in srgb, var(--glow) 16%, transparent) 0%, transparent 72%), var(--l3-surface-primary);
   --glow: var(--l3-surface-accent-brand-default);
   scroll-snap-align: start;
   cursor: pointer;
@@ -28016,32 +28029,6 @@ export function SpxIndexScreen() {
 
 .card[data-market=us] {
   --glow: var(--l3-surface-accent-us-stock-default);
-}
-
-.leaves {
-  opacity: .08;
-  pointer-events: none;
-  width: 84px;  /* FLAG: raw px */
-  height: 84px;  /* FLAG: raw px */
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
-.leafB {
-  width: 83px;  /* FLAG: raw px */
-  height: 96px;  /* FLAG: raw px */
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.leafA {
-  width: 47px;  /* FLAG: raw px */
-  height: 60px;  /* FLAG: raw px */
-  position: absolute;
-  top: 41px;  /* FLAG: raw px */
-  left: 0;
 }
 
 .facts {
@@ -28179,9 +28166,8 @@ export function SpxIndexScreen() {
 // FLAG: hand-made carousel cards (fixed 296px wide), pager dots and returns pill — L3 has Card and PriceChange.
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@l3/components/Icon'
+import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { Usd } from '../../../../../shared/money'
-import { InlineSvg } from '../../../components/InlineSvg'
-import { unfoldMore } from '../icons'
 import styles from './HoldingsCards.module.css'
 
 export type HoldingsMarket = 'in' | 'us'
@@ -28248,10 +28234,6 @@ export function HoldingsCards({
             : { pct: summary.pct, pnl: summary.pnl }
           return (
             <section key={id} className={styles.card} data-market={id} aria-label={labels[id].title} onClick={() => onMarket(id)}>
-              <span className={styles.leaves} aria-hidden="true">
-                <InlineSvg src="assets/entry/portfolio/leaf-b.svg" className={styles.leafB} />
-                <InlineSvg src="assets/entry/portfolio/leaf-a.svg" className={styles.leafA} />
-              </span>
               <span className={styles.facts}>
                 <span className={styles.fact}>
                   <span className={styles.factLabel}>{labels[id].code} Current Value</span>
@@ -28272,7 +28254,7 @@ export function HoldingsCards({
                   }}
                 >
                   <span className={styles.swap} key={String(oneDay)}>{oneDay ? '1D Returns' : 'Total Returns'}</span>
-                  <Icon icon={unfoldMore} size={12} />
+                  <Icon icon={lmSwitchArrowVertical} size={16} />
                 </button>
                 <span className={`${styles.returns} ${styles.swap}`} key={String(oneDay)}>
                   <span className={styles.pill} data-up={summary.up || undefined}>
@@ -29089,7 +29071,7 @@ export const WALLET = '5852:99084'
 // don't exist yet as flows; they are kept here only because the US flow enters through them.
 import type { UsScreenMap } from '../types'
 import { MutualFundHomeScreen } from './MutualFundHomeScreen'
-import { PortfolioBannerLiveScreen, PortfolioBannerScreen } from './PortfolioScreen'
+import { PortfolioBannerLiveScreen, PortfolioBannerScreen, PortfolioUsHoldingsScreen } from './PortfolioScreen'
 import { SpxIndexScreen } from './SpxIndexScreen'
 
 /** Screens of this part, by Figma node id. */
@@ -29097,6 +29079,7 @@ export const screens: UsScreenMap = {
   '5796:89422': SpxIndexScreen, // E1a · S&P 500 index · market open
   '5796:88668': PortfolioBannerScreen, // E4 · Portfolio · US market banner
   '5796:92301': PortfolioBannerLiveScreen, // E4 · Portfolio · US market banner · live
+  '9001:30': PortfolioUsHoldingsScreen, // Portfolio · Holdings · US card upfront (not in Figma)
   '5796:88163': MutualFundHomeScreen, // E5 · Mutual Fund home · US banner
 }
 ```
@@ -30387,16 +30370,9 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   border-radius: var(--l3-radius-full);
   background: linear-gradient(
     90deg,
-    color-mix(
-      in srgb,
-      var(--l3-content-accent-indicator-down-default) 55%,
-      var(--l3-surface-primary)
-    ),
-    color-mix(
-      in srgb,
-      var(--l3-content-accent-indicator-up-default) 55%,
-      var(--l3-surface-primary)
-    )
+    var(--l3-surface-accent-indicator-down-default),
+    var(--l3-surface-primary),
+    var(--l3-surface-accent-indicator-up-default)
   );
   position: relative;
 }
@@ -31571,8 +31547,9 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
   const type = (key: string) => setTyped((v) => typeAmount(v, key, { decimals: 2, maxDigits: 7 }))
   const quickAdd = (add: number) => setTyped(String(Math.min(usd + add, 9999999)))
   const addToWallet = () => {
-    setHandoff(moneyIds.m08, usd)
-    go(moneyIds.m08)
+    // Straight to the bank's page (no "pay on your bank's page" sheet first); coming back keeps the typed $.
+    setHandoff(moneyIds.m01, usd)
+    go(moneyIds.bank)
   }
 
   const below = belowMin ? (
@@ -31697,7 +31674,7 @@ export function BankPickSheet({ open, banks, selected, copy, onSelect, onAdd, on
         </ButtonGroup>
       }
     >
-      <BankOptions banks={banks} selected={selected} name={id} onPick={(bankId) => { onSelect(bankId); onClose() }} />
+      <BankOptions variant="card" banks={banks} selected={selected} name={id} onPick={(bankId) => { onSelect(bankId); onClose() }} />
     </BottomSheet>
   )
 }
@@ -31750,7 +31727,7 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
 
 ```css
 /* FLAG: layout is raw display:flex + gap/padding on every block, not L3 Stack / Section / Inset (applies to the whole file). */
-/* FLAG: sheet grabber (.sheetGesture / .gesture) is hand-drawn; L3 BottomSheet draws its own handle. */
+/* FLAG: sheet grabber (.gesture) is hand-drawn; L3 BottomSheet draws its own handle. */
 
 .content {
   gap: var(--l3-spacing-24);
@@ -31907,64 +31884,6 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
 
 .balanceCard {
   margin-block: 0;
-}
-
-.ready {
-  gap: var(--l3-spacing-24);
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-}
-
-.readyItem {
-  align-items: center;
-  gap: var(--l3-spacing-12);
-  display: flex;
-}
-
-.readyTile {
-  width: var(--l3-spacing-36);
-  height: var(--l3-spacing-36);
-  border-radius: var(--l3-radius-08);
-  background: var(--l3-surface-secondary);
-  color: var(--l3-content-primary);
-  flex: none;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
-.readyText {
-  gap: var(--l3-spacing-02);
-  flex-direction: column;
-  display: flex;
-}
-
-.readyTitle {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.readySub {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-.sheetGesture {
-  padding: var(--l3-spacing-10) var(--l3-spacing-16);
-  background: var(--l3-surface-primary);
-  justify-content: center;
-  display: flex;
-}
-
-.sheetGesture span {
-  width: calc(var(--l3-spacing-96) + var(--l3-spacing-24));
-  height: var(--l3-size-04);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-inverted);
-  opacity: .5; /* FLAG: raw opacity */
 }
 
 .bankApp {
@@ -32170,73 +32089,6 @@ export function MoneyDock({
         </Button>
       </div>
     </div>
-  )
-}
-```
-
-### `src/flows/us-stocks/screens/money/PayOnBankSheet.tsx`
-
-```tsx
-// M08 · the sheet that says the user pays on their bank's page, with what to keep ready.
-// FLAG: the "keep ready" list is hand-made (tile + two lines per row), not L3 ListCell.
-import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
-import { Button } from '@l3/components/Button'
-import { ButtonGroup } from '@l3/components/ButtonGroup'
-import { Icon } from '@l3/components/Icon'
-import { useSheetLayer } from '../../components/Phone'
-import { useUsNav } from '../../nav'
-import { arrowForwardIcon, cardIcon, closeIcon, keyIcon, personIcon } from './icons'
-import { moneyIds } from './ids'
-import { useSheetClose } from './useSheetClose'
-import styles from './Money.module.css'
-
-const KEEP_READY = [
-  { icon: personIcon, title: 'Customer ID / User ID', text: 'Your netbanking login ID' },
-  { icon: keyIcon, title: 'Netbanking password', text: 'The one you use on your bank’s website' },
-  { icon: cardIcon, title: 'Debit card', text: 'Last 4 digits, expiry and ATM PIN' },
-]
-
-export function PayOnBankSheet() {
-  const { go, back } = useUsNav()
-  const layer = useSheetLayer()
-  const { open, close } = useSheetClose(() => back(moneyIds.m01))
-  return (
-    <BottomSheet
-      open={open}
-      container={layer}
-      onClose={close}
-      aria-labelledby="pay-sheet-title"
-      header={
-        <BottomSheetHeader
-          headingId="pay-sheet-title"
-          heading="Pay on HDFC Bank’s page"
-          description="Keep these ready to finish in one go"
-          trailing={<Button variant="ghost" size="lg" iconLeft={<Icon icon={closeIcon} size={24} />} aria-label="Close" onClick={close} />}
-        />
-      }
-      footer={
-        <ButtonGroup aria-label="Pay on bank page">
-          <Button variant="brand" size="lg" fullWidth iconRight={<Icon icon={arrowForwardIcon} size={24} />} onClick={() => go(moneyIds.bank)}>
-            Continue to HDFC Bank
-          </Button>
-        </ButtonGroup>
-      }
-      utility={<div className={styles.sheetGesture} aria-hidden="true"><span /></div>}
-    >
-      <ul className={styles.ready}>
-        {KEEP_READY.map((item) => (
-          <li key={item.title} className={styles.readyItem}>
-            <span className={styles.readyTile}>
-              <Icon icon={item.icon} size={20} />
-            </span>
-            <span className={styles.readyText}>
-              <span className={styles.readyTitle}>{item.title}</span>
-              <span className={styles.readySub}>{item.text}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </BottomSheet>
   )
 }
 ```
@@ -32634,18 +32486,6 @@ export const infoIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 /** close */
 export const closeIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z'/%3E%3C/svg%3E`
 
-/** person (customer / user ID) */
-export const personIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M367-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z'/%3E%3C/svg%3E`
-
-/** key (netbanking password) */
-export const keyIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M280-240q-100 0-170-70T40-480q0-100 70-170t170-70q81 0 141.5 45.5T506-560h334q33 0 56.5 23.5T920-480q0 36-25 58t-55 22v80q0 33-23.5 56.5T760-240q-33 0-56.5-23.5T680-320v-80H506q-24 69-84.5 114.5T280-240Zm0-160q33 0 56.5-23.5T360-480q0-33-23.5-56.5T280-560q-33 0-56.5 23.5T200-480q0 33 23.5 56.5T280-400Z'/%3E%3C/svg%3E`
-
-/** credit_card (debit card) */
-export const cardIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M880-720v480q0 33-23.5 56.5T800-160H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720Zm-720 80h640v-80H160v80Zm0 160v240h640v-240H160Zm0 240v-480 480Z'/%3E%3C/svg%3E`
-
-/** arrow_forward */
-export const arrowForwardIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M647-440H200q-17 0-28.5-11.5T160-480q0-17 11.5-28.5T200-520h447L451-716q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l264 264q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L508-188q-11 11-27.5 11T452-188q-12-12-12-28.5t12-28.5l195-195Z'/%3E%3C/svg%3E`
-
 /** schedule (timing note) */
 export const clockIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z'/%3E%3C/svg%3E`
 
@@ -32671,8 +32511,6 @@ export const moneyIds = {
   m07: '5796:86175',
   /** M05 · Add money · bank name mismatch */
   m05: '5796:86009',
-  /** M08 · Add money · pay on bank page sheet */
-  m08: '5776:84258',
   /** Add money · no bank account linked (not in Figma) */
   noBank: '9001:20',
   /** Add money · "Pay from" bank sheet (not in Figma) */
@@ -32699,14 +32537,13 @@ export const moneyIds = {
 ### `src/flows/us-stocks/screens/money/index.tsx`
 
 ```tsx
-// Money: add money (deposit) and withdraw for the US wallet — M01–M08, the bank page placeholder and H08–H10.
+// Money: add money (deposit) and withdraw for the US wallet — M01–M07, the bank page placeholder and H08–H10.
 // FLAG: add money's copy is in copy.json; the rest of this part's text is still hard-coded.
 // FLAG: the app already has an Indian deposit flow (src/flows/deposit); add money here duplicates it for the US wallet.
 import type { UsScreenMap } from '../types'
 import { AddMoneyScreen } from './AddMoneyScreen'
 import { BankAppScreen } from './BankAppScreen'
 import { moneyIds } from './ids'
-import { PayOnBankSheet } from './PayOnBankSheet'
 import { WithdrawPlacedScreen } from './WithdrawPlacedScreen'
 import { WithdrawScreen } from './WithdrawScreen'
 
@@ -32720,10 +32557,6 @@ const AddMoneyBelowMinimum = ({ backdrop }: { backdrop?: boolean }) => <AddMoney
 const AddMoneyAboveLrs = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m07} initial={300000} backdrop={backdrop} />
 // M05 · bank name does not match PAN
 const AddMoneyBankMismatch = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m05} initial={1000} mismatch backdrop={backdrop} />
-// M08 · "pay on your bank's page" sheet over the add-money screen
-const AddMoneyPayOnBank = ({ backdrop }: { backdrop?: boolean }) => (
-  <AddMoneyScreen id={moneyIds.m08} initial={1000} sheet={<PayOnBankSheet />} backdrop={backdrop} />
-)
 // No bank linked: the bank row and the button ask to add one · the "Pay from" sheet open (both not in Figma)
 const AddMoneyNoBank = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.noBank} initial={0} noBank backdrop={backdrop} />
 const AddMoneyBanks = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.banks} initial={1000} banksOpen backdrop={backdrop} />
@@ -32739,7 +32572,6 @@ export const screens: UsScreenMap = {
   [moneyIds.m03]: AddMoneyBelowMinimum,
   [moneyIds.m07]: AddMoneyAboveLrs,
   [moneyIds.m05]: AddMoneyBankMismatch,
-  [moneyIds.m08]: AddMoneyPayOnBank,
   [moneyIds.noBank]: AddMoneyNoBank,
   [moneyIds.banks]: AddMoneyBanks,
   [moneyIds.bank]: BankAppScreen,
@@ -59595,6 +59427,7 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Radio } from '@l3/components/Checkbox'
 import { Icon } from '@l3/components/Icon'
 import { ListCell } from '@l3/components/ListCell'
+import { Stack } from '@l3/components/Stack'
 import { msAccountBalance, msAdd, msChevronRight } from '@l3/icons/material'
 import { getCompany } from '../data/companies'
 import type { LinkedBank } from '../data/user'
@@ -59680,14 +59513,24 @@ export function BankSheet({ banks, selected, copy, onSelect, onAdd, onClose }: {
   )
 }
 
-/** The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks). */
-export function BankOptions({ banks, selected, name, onPick }: { banks: LinkedBank[]; selected: string; name: string; onPick: (id: string) => void }) {
+/**
+ * The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks).
+ * `card`: each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain` (default): flat rows.
+ */
+export function BankOptions({ banks, selected, name, onPick, variant = 'plain' }: {
+  banks: LinkedBank[]
+  selected: string
+  name: string
+  onPick: (id: string) => void
+  variant?: 'plain' | 'card'
+}) {
   return (
-    <>
+    <Stack gap={variant === 'card' ? '08' : '00'}>
       {banks.map((bank) => (
         <ListCell
           key={bank.id}
           as="label"
+          variant={variant}
           selected={bank.id === selected}
           iconLeft={<Avatar src={bankLogo(bank)} initials={bank.bank.slice(0, 2)} shape="rounded" size={32} label={bank.bank} />}
           label={bankLine(bank)}
@@ -59695,7 +59538,7 @@ export function BankOptions({ banks, selected, name, onPick }: { banks: LinkedBa
           trailing={<Radio name={name} checked={bank.id === selected} onChange={() => onPick(bank.id)} />}
         />
       ))}
-    </>
+    </Stack>
   )
 }
 ```
@@ -60048,7 +59891,8 @@ export const userStatusOptions: FlowOption[] = [
       { value: 'failed', label: 'Activation failed' },
       { value: 'active', label: 'Activated' },
     ],
-    default: 'off',
+    // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
+    default: 'active',
     floatOn: STATUS_SCREENS,
   },
   {
@@ -60056,7 +59900,7 @@ export const userStatusOptions: FlowOption[] = [
     group: 'User status',
     label: 'USD wallet',
     values: [{ value: 'empty', label: '$0' }, { value: 'onTheWay', label: 'Money on the way' }, { value: 'funded', label: 'Has money' }],
-    default: 'empty',
+    default: 'funded',
     showIf: { us: ['active'] },
     floatOn: STATUS_SCREENS,
   },
@@ -60066,7 +59910,7 @@ export const userStatusOptions: FlowOption[] = [
     label: 'US holdings',
     picker: 'toggle',
     values: [{ value: 'none', label: 'None' }, { value: 'some', label: 'Holds NVDA' }],
-    default: 'none',
+    default: 'some',
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },

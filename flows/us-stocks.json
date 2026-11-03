@@ -205,7 +205,6 @@
     "src/flows/us-stocks/screens/money/Money.module.css",
     "src/flows/us-stocks/screens/money/MoneyDock.module.css",
     "src/flows/us-stocks/screens/money/MoneyDock.tsx",
-    "src/flows/us-stocks/screens/money/PayOnBankSheet.tsx",
     "src/flows/us-stocks/screens/money/WithdrawBreakdownSheet.tsx",
     "src/flows/us-stocks/screens/money/WithdrawPlacedScreen.tsx",
     "src/flows/us-stocks/screens/money/WithdrawScreen.tsx",

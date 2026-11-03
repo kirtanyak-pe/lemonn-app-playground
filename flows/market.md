@@ -24648,7 +24648,8 @@ export const userStatusOptions: FlowOption[] = [
       { value: 'failed', label: 'Activation failed' },
       { value: 'active', label: 'Activated' },
     ],
-    default: 'off',
+    // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
+    default: 'active',
     floatOn: STATUS_SCREENS,
   },
   {
@@ -24656,7 +24657,7 @@ export const userStatusOptions: FlowOption[] = [
     group: 'User status',
     label: 'USD wallet',
     values: [{ value: 'empty', label: '$0' }, { value: 'onTheWay', label: 'Money on the way' }, { value: 'funded', label: 'Has money' }],
-    default: 'empty',
+    default: 'funded',
     showIf: { us: ['active'] },
     floatOn: STATUS_SCREENS,
   },
@@ -24666,7 +24667,7 @@ export const userStatusOptions: FlowOption[] = [
     label: 'US holdings',
     picker: 'toggle',
     values: [{ value: 'none', label: 'None' }, { value: 'some', label: 'Holds NVDA' }],
-    default: 'none',
+    default: 'some',
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },

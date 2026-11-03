@@ -295,11 +295,17 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — The holdings card on Home is tappable edge to edge: the space above and below the holdings is inside its own card now, not padding around it.
+- 2026-11-03 — The prototype now opens on an all-set user: User status defaults to Activated, USD wallet Has money, US holdings on (Holds NVDA), so the home shows the funded, holding US tab.
+- 2026-11-03 — The US tab's holdings card (US holdings $ … ›) opens Portfolio on Holdings with the US Stocks P&L card upfront and the US Stocks tab picked (us-stocks-77).
+- 2026-11-03 — Discover ETFs gets the ETF list's filter, in Top movers' small chips (Home always uses the small ones): a switcher chip (Country ⇄ Sector, ↕), a divider, then the countries (flags per the ETF region flags setting) or the sectors — Broad market, Technology, Industrials, Financials, Healthcare, Energy (up to four funds each, all in the US snapshot).
 - 2026-11-03 — Themes overview card simplified: no chart and no $100 line — the theme's name over its one-line description, and on the right its return under an L3 Select switcher (↕, Small, subtle) that steps 1Y → 3Y → 1M on each tap.
+- 2026-11-03 — Prototype setting **ETF region flags** (Home, on by default): turns off the round flags in Discover ETFs' region pills, to test whether they're too much.
 - 2026-11-03 — 32 between home sections on both tabs (the US tab's 28 override removed).
 - 2026-11-03 — No View all button under a home section's list (Top analyst picks, Discover ETFs): the section header's View all is the one way to the full list.
 - 2026-11-03 — Default homepage version is now V8 (Lit folder · US tiles; `DEFAULT_HOME_VERSION`).
 - 2026-11-03 — Themes overview card: the period switcher's tap area covers the whole right part of the card (period and return, out to the card's edges).
+- 2026-11-03 — Market tabs (IN Stocks / US Stocks, notched): two equal tabs between 16 in from each edge that never move or resize; switching only slides the notched outline (the selected look) from one to the other. Before, the IN tab shrank and the US tab slid, so the labels shifted.
 - 2026-11-03 — US home: “Discover ETFs” between Brands You Know and the Heatmap — SectionHeader (a one-line description that explains an ETF by Nifty 50: “A basket of stocks in one buy, like Nifty 50”; a fuller explainer comes later; View all → the ETF list us-stocks-71), region chips with round flags (L3 pill Tabs + shared `Flag`: US · China · Japan · Europe · Korea), then four of that region's funds as StockListCards (Korea has two: EWY, FLKR) and a tertiary “View all” under them, as Top analyst picks: the fund in plain words (“Top 500 US stocks”) over “SPY · SPDR S&P 500 ETF”, real price and day change, issuer logo. A row → the ETF page (us-stocks-72) on that fund (remembered with the shared `viewUsStock`, which the ETF page now reads too).
 - 2026-11-03 — Themes page: a carousel. The theme before and after are laid just off either side of the current one, so a swipe drags the next theme into view with the finger (not a blank side); a tap on the tab next door makes the same slide, a tap further away slides straight in.
 - 2026-11-03 — Themes page: flat (underline) tabs with icons instead of pills; switching theme slides the body sideways (a tap slides the new theme in from its side), and a left / right swipe on the body drags it and moves to the next / previous theme (the flow's `useSwipeBetween`, rubber-band at the ends). The overview card starts with the theme's name instead of logos.
@@ -21226,7 +21232,10 @@ function findSwitch(from: HTMLElement): HTMLElement | null {
 .marketTabs {
   position: relative;
   display: flex;
+  box-sizing: border-box;
   height: var(--l3-size-40);
+  /* The tabs sit between 16 in from each edge, each half of that: equal, and they never move (only the notch does). */
+  padding-inline: var(--l3-spacing-16);
   margin-top: calc(-1 * var(--l3-spacing-24));
   background: var(--l3-surface-secondary);
 }
@@ -21349,12 +21358,11 @@ function findSwitch(from: HTMLElement): HTMLElement | null {
 .marketTab {
   position: relative;
   display: flex;
-  flex: none;
+  flex: 1 1 0;
   align-items: center;
   justify-content: center;
   gap: var(--l3-spacing-04);
   box-sizing: border-box;
-  width: 50%;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -21365,7 +21373,7 @@ function findSwitch(from: HTMLElement): HTMLElement | null {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: width 0.32s var(--l3-motion-easing-standard), margin 0.32s var(--l3-motion-easing-standard), color 0.32s var(--l3-motion-easing-standard);
+  transition: color 0.32s var(--l3-motion-easing-standard);
 }
 
 .marketTab:focus-visible {
@@ -21380,17 +21388,6 @@ function findSwitch(from: HTMLElement): HTMLElement | null {
 .marketTab[aria-selected='true'] {
   z-index: 1;
   color: var(--l3-content-primary);
-}
-
-/* The notch is the selected tab: 16 in from the edge, so IND shrinks and US slides over. */
-.marketTabs[data-on='in'] .marketTab[data-value='in'] {
-  width: calc(50% - var(--l3-spacing-16));
-  margin-left: var(--l3-spacing-16);
-}
-
-.marketTabs[data-on='us'] .marketTab[data-value='in'] {
-  width: 50%;
-  margin-left: calc(-1 * var(--l3-spacing-16));
 }
 
 .flip {
@@ -21604,7 +21601,7 @@ function FlipLabel({ icon, label, isNew, paused }: { icon: ReactNode; label: str
 
 /** The outline drawn around the selected tab (a rounded notch in a full-width × 40 strip). `on` picks which tab is notched. */
 function TabOutline({ on }: { on: Market }) {
-  // The strip is as wide as the screen: measure it so the geometry (and the tabs' 50 % widths) line up at any width.
+  // The strip is as wide as the screen: measure it so the geometry lines up with the tabs at any width.
   const ref = useRef<SVGSVGElement>(null)
   const id = useId()
   const [width, setWidth] = useState(360)
@@ -21618,8 +21615,9 @@ function TabOutline({ on }: { on: Market }) {
     return () => observer.disconnect()
   }, [])
 
+  // Two equal tabs between 16 in from each edge; only the notch moves from one to the other, the labels stay put.
   const half = width / 2
-  const [left, right] = on === 'in' ? [16, half] : [half - 16, width - 16]
+  const [left, right] = on === 'in' ? [16, half] : [half, width - 16]
   const l = left + 0.5
   const r = right - 0.5
   const top = `L ${l} 12.5 A 12 12 0 0 1 ${l + 12} 0.5 L ${r - 12} 0.5 A 12 12 0 0 1 ${r} 12.5 L ${r} 27`
@@ -23134,12 +23132,14 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   --card-bg: var(--l3-surface-primary);
 }
 
-/* The header card's holdings (they bring their own 16 inline). */
-.cardHoldings {
+/* The header card's holdings (they bring their own 16 inline). The space above and below is inside the holdings' own
+   card, so the whole card is its tap area (not just the line of text). */
+.cardHoldings.cardHoldings > [data-variant] {
   padding-block: var(--l3-spacing-16) var(--l3-spacing-12);
+  border-radius: 0;
 }
 
-.cardHoldings:last-child {
+.cardHoldings.cardHoldings:last-child > [data-variant] {
   padding-block-end: var(--l3-spacing-16);
 }
 
@@ -23793,12 +23793,6 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 .heatName { font: var(--l3-text-heading-12); }
 .heatCell strong { display: block; font: var(--l3-text-heading-16); }
 .heatPrice { display: block; margin-top: var(--l3-spacing-04); font: var(--l3-text-label-14); opacity: var(--l3-opacity-60, 0.6); }
-
-/* Discover ETFs' region chips: start 16 in from the screen edge and scroll edge to edge. */
-.etfRegions {
-  padding-inline: var(--l3-spacing-16);
-  scroll-padding-inline: var(--l3-spacing-16);
-}
 ```
 
 ### `src/flows/stocks/components/us/UsHome.tsx`
@@ -23838,9 +23832,12 @@ import {
   brandRows,
   type Brand,
   discoverEtfs,
+  discoverEtfsBySector,
   etfRegions,
+  etfSectors,
   type DiscoverEtf,
   type EtfRegion,
+  type EtfSector,
   capBuckets,
   formatPct,
   heatSectors,
@@ -24089,27 +24086,55 @@ const REGION_FLAGS: Record<EtfRegion, FlagCode> = { us: 'us', china: 'cn', japan
  * Discover ETFs: what an ETF is in one line, compared with the index Indian users know (Nifty 50), region chips with flags (L3 pill Tabs), then that region's funds as list cards — the
  * fund in plain words ("Top 500 US stocks") over its ticker and real name, price and the day's change on the right.
  */
-/** Discover ETFs shows four funds per region; the rest are on the ETF list (View all). */
+/** Discover ETFs shows up to four funds per country or sector; the rest are on the ETF list (View all). */
 const ETFS_IN_LIST = 4
 
 function DiscoverEtfs({ onOpen, onViewAll }: { onOpen: (sym: string) => void; onViewAll: () => void }) {
+  // The switcher chip picks what the chips filter by (Country ⇄ Sector), as on the ETF list; each keeps its own pick.
+  const [by, setBy] = useState<'country' | 'sector'>('country')
   const [region, setRegion] = useState<EtfRegion>('us')
+  const [sector, setSector] = useState<EtfSector>('broad')
+  // Prototype setting "ETF region flags": the country chips with or without their round flags.
+  const flags = useFlowOption('stocks', 'etfFlags', 'on') === 'on'
+  const byName = t(`us.etfs.by.${by}`)
+  const funds = by === 'country' ? discoverEtfs[region] : discoverEtfsBySector[sector]
   return (
     <Stack as="section" gap="16" aria-label={t('us.etfs.title')}>
       <Inset paddingInline="16" paddingBlock="00">
         <SectionHeader title={t('us.etfs.title')} description={t('us.etfs.description')} action={{ type: 'view-all', onClick: onViewAll }} />
       </Inset>
-      <Tabs
-        appearance="pill"
-        aria-label={t('us.etfs.regionsLabel')}
-        items={etfRegions.map((value) => ({ value, label: t(`us.etfs.region.${value}`), iconLeft: <Flag code={REGION_FLAGS[value]} /> }))}
-        value={region}
-        onChange={(v) => setRegion(v as EtfRegion)}
-        className={styles.etfRegions}
-      />
+      {/* The small chips of Top movers: switcher chip, divider, chips (Home always uses the small ones). */}
+      <Stack direction="horizontal" align="center" gap="12" className={styles.chips}>
+        <button type="button" className={styles.capChip} aria-label={t('us.etfs.by.switch', { by: byName })} onClick={() => setBy(by === 'country' ? 'sector' : 'country')}>
+          <span className={styles.capName} key={by}>{byName}</span>
+          <Icon icon={lmSwitchArrowVertical} size={16} />
+        </button>
+        <span className={styles.chipDivider} aria-hidden="true" />
+        {by === 'country' ? (
+          <Tabs
+            key="country"
+            appearance="pill"
+            aria-label={t('us.etfs.regionsLabel')}
+            items={etfRegions.map((value) => ({ value, label: t(`us.etfs.region.${value}`), iconLeft: flags ? <Flag code={REGION_FLAGS[value]} /> : undefined }))}
+            value={region}
+            onChange={(v) => setRegion(v as EtfRegion)}
+            className={styles.chipTabs}
+          />
+        ) : (
+          <Tabs
+            key="sector"
+            appearance="pill"
+            aria-label={t('us.etfs.sectorsLabel')}
+            items={etfSectors.map((value) => ({ value, label: t(`us.etfs.sector.${value}`) }))}
+            value={sector}
+            onChange={(v) => setSector(v as EtfSector)}
+            className={styles.chipTabs}
+          />
+        )}
+      </Stack>
       <Inset paddingInline="16" paddingBlock="00">
         <Stack gap="12">
-          {discoverEtfs[region].slice(0, ETFS_IN_LIST).map((etf) => <EtfRow key={etf.sym} etf={etf} onOpen={onOpen} />)}
+          {funds.slice(0, ETFS_IN_LIST).map((etf) => <EtfRow key={etf.sym} etf={etf} onOpen={onOpen} />)}
         </Stack>
       </Inset>
     </Stack>
@@ -24657,6 +24682,35 @@ export const discoverEtfs: Record<EtfRegion, DiscoverEtf[]> = {
     { sym: 'EWY', headline: 'South Korea’s top companies', fund: 'iShares MSCI South Korea ETF', issuer: 'ishares' },
     { sym: 'FLKR', headline: 'The whole Korean market', fund: 'Franklin FTSE South Korea ETF' },
   ],
+}
+
+/** Discover ETFs can also be picked by sector (the switcher chip before the chips: Country ⇄ Sector). */
+export type EtfSector = 'broad' | 'tech' | 'industrials' | 'financials' | 'healthcare' | 'energy'
+
+/** The sector chips of Discover ETFs, in order (labels are copy: `us.etfs.sector.<id>`). */
+export const etfSectors: EtfSector[] = ['broad', 'tech', 'industrials', 'financials', 'healthcare', 'energy']
+
+/** Discover ETFs by sector: up to four funds each, all in the US snapshot (the snapshot has one fund each for finance, health and energy). */
+export const discoverEtfsBySector: Record<EtfSector, DiscoverEtf[]> = {
+  broad: [
+    discoverEtfs.us[0],
+    discoverEtfs.us[2],
+    discoverEtfs.europe[0],
+    discoverEtfs.japan[0],
+  ],
+  tech: [
+    discoverEtfs.us[1],
+    discoverEtfs.us[3],
+    { sym: 'BOTZ', headline: 'Robots and AI makers', fund: 'Global X Robotics & AI ETF', issuer: 'globalx' },
+    discoverEtfs.china[3],
+  ],
+  industrials: [
+    { sym: 'ITA', headline: 'US aircraft and defence', fund: 'iShares US Aerospace & Defense', issuer: 'ishares' },
+    { sym: 'UFO', headline: 'Space and satellite companies', fund: 'Procure Space ETF' },
+  ],
+  financials: [{ sym: 'XLF', headline: 'US banks and insurers', fund: 'Financial Select Sector SPDR', issuer: 'spdr' }],
+  healthcare: [{ sym: 'XLV', headline: 'US drug makers and hospitals', fund: 'Health Care Select Sector SPDR', issuer: 'spdr' }],
+  energy: [{ sym: 'XLE', headline: 'US oil and gas companies', fund: 'Energy Select Sector SPDR', issuer: 'spdr' }],
 }
 
 // ---- Explore by themes ----
@@ -25720,6 +25774,16 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.etfs.region.europe": "Europe",
   "us.etfs.region.korea": "Korea",
   "us.etfs.row": "{sym} · {fund}",
+  "us.etfs.by.country": "Country",
+  "us.etfs.by.sector": "Sector",
+  "us.etfs.by.switch": "Filter by {by}, tap to switch",
+  "us.etfs.sectorsLabel": "ETFs by sector",
+  "us.etfs.sector.broad": "Broad market",
+  "us.etfs.sector.tech": "Technology",
+  "us.etfs.sector.industrials": "Industrials",
+  "us.etfs.sector.financials": "Financials",
+  "us.etfs.sector.healthcare": "Healthcare",
+  "us.etfs.sector.energy": "Energy",
   "us.support.subject": "US Stocks activation still under review",
   "us.themes.title": "Explore by themes",
   "us.themes.pageTitle": "Themes",
@@ -26042,7 +26106,7 @@ import { RiskDisclosureSheet } from './components/us/sheets/RiskDisclosureSheet'
 import { UsFtuxSheet } from './components/us/sheets/UsFtuxSheet'
 
 /** The US tab's taps, by screen id: Activate US Stocks → the risk disclosure sheet (stocks-12), a stock → its page (not activated, in the US Stocks flow), View all / a theme → Market on the US list. */
-const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71'), onUsEtf: () => go('us-stocks-72'), onUsPicks: () => go('stocks-29') })
+const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71'), onUsEtf: () => go('us-stocks-72'), onUsPicks: () => go('stocks-29'), onUsHoldings: () => go('us-stocks-77') })
 
 /** The top bar and navbar taps every Home screen shares. */
 /** Search from the Home field: the Stocks tab on IND, the US tab on US (search-29). */
@@ -26121,6 +26185,8 @@ export const stocks: Flow = {
     // US tab, Top analyst picks: a list of four rows (default, 3 Nov) or the swipeable cards with the 7-day line.
     { id: 'picksView', group: 'Home', label: 'Analyst picks', values: [{ value: 'list', label: 'List' }, { value: 'cards', label: 'Cards' }], default: 'list' },
     { id: 'shortcuts', group: 'Home', label: 'Shortcuts', values: [{ value: 'v1', label: 'V1' }, { value: 'v2', label: 'V2' }], default: 'v1' },
+    // US tab, Discover ETFs: the region pills with their round flags (default) or text only — testing whether the flags are too much (3 Nov).
+    { id: 'etfFlags', group: 'Home', label: 'ETF region flags', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'on' },
     { id: 'switchGuide', group: 'Home', label: 'Market switch guide', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
   ],
   screens: [
@@ -26677,6 +26743,8 @@ type Props = {
   usState?: UsState
   /** US tab: the card's button — Activate US Stocks / Retry / Add money / Explore, by `usState`. */
   onActivateUs?: () => void
+  /** The US holdings card was tapped → Portfolio, Holdings, with the US Stocks card upfront. */
+  onUsHoldings?: () => void
   /** US tab: a US stock was tapped (already remembered with `viewUsStock`) → its stock page. */
   onUsStock?: (sym: string) => void
   /** US tab: "View all" / a theme (Market was handed what to open on) → the Market page. */
@@ -26706,7 +26774,7 @@ type Props = {
 /** Archived "Header" variant: true puts the holdings inside the top card (the card the US tab uses for activation). */
 const HEADER_CARD = false as boolean
 
-export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsEtf, onUsPicks, autoNext, sheet }: Props) {
+export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsHoldings, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsEtf, onUsPicks, autoNext, sheet }: Props) {
   useAutoAdvance(autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
   // The design version (the prototype's "Homepage version" option): where the IND / US switch sits and how it looks.
@@ -26918,15 +26986,15 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   // Stocks is activated, each market's top card is a card, so holdings that would sit on the page go into the plain card there (as with Header "Holdings in card").
   const topCard = (market: Market) => {
     if (market === 'in') return <UsActivationCard holdings={<HoldingsSummary />} />
-    if (headerCard && activatedStates.includes(usState)) return <UsActivationCard state={usState} holdings={<HoldingsSummary us usEmpty={usState !== 'holding'} />} onCta={onActivateUs} />
+    if (headerCard && activatedStates.includes(usState)) return <UsActivationCard state={usState} holdings={<HoldingsSummary us onOpen={onUsHoldings} usEmpty={usState !== 'holding'} />} onCta={onActivateUs} />
     // Money on the way: the holdings card as when holding, at $0.00, with a small "Money on the way" card under it.
     if (usState === 'onTheWay') return (
       <Stack gap="12">
-        <UsActivationCard holdings={<HoldingsSummary us usEmpty />} />
+        <UsActivationCard holdings={<HoldingsSummary us onOpen={onUsHoldings} usEmpty />} />
         <TransferStatusCard onOpen={onActivateUs} />
       </Stack>
     )
-    return usCard ? <UsActivationCard state={usState} onCta={onActivateUs} /> : <UsActivationCard holdings={<HoldingsSummary us />} />
+    return usCard ? <UsActivationCard state={usState} onCta={onActivateUs} /> : <UsActivationCard holdings={<HoldingsSummary us onOpen={onUsHoldings} />} />
   }
   // The top card is what slides sideways when the market switches — by a swipe on it (once both markets hold stocks)
   // or a tap on the switcher; the rest of the page dissolves into the other market's.
@@ -51282,7 +51350,8 @@ export const userStatusOptions: FlowOption[] = [
       { value: 'failed', label: 'Activation failed' },
       { value: 'active', label: 'Activated' },
     ],
-    default: 'off',
+    // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
+    default: 'active',
     floatOn: STATUS_SCREENS,
   },
   {
@@ -51290,7 +51359,7 @@ export const userStatusOptions: FlowOption[] = [
     group: 'User status',
     label: 'USD wallet',
     values: [{ value: 'empty', label: '$0' }, { value: 'onTheWay', label: 'Money on the way' }, { value: 'funded', label: 'Has money' }],
-    default: 'empty',
+    default: 'funded',
     showIf: { us: ['active'] },
     floatOn: STATUS_SCREENS,
   },
@@ -51300,7 +51369,7 @@ export const userStatusOptions: FlowOption[] = [
     label: 'US holdings',
     picker: 'toggle',
     values: [{ value: 'none', label: 'None' }, { value: 'some', label: 'Holds NVDA' }],
-    default: 'none',
+    default: 'some',
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },

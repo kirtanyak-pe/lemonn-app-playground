@@ -16257,6 +16257,7 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Radio } from '@l3/components/Checkbox'
 import { Icon } from '@l3/components/Icon'
 import { ListCell } from '@l3/components/ListCell'
+import { Stack } from '@l3/components/Stack'
 import { msAccountBalance, msAdd, msChevronRight } from '@l3/icons/material'
 import { getCompany } from '../data/companies'
 import type { LinkedBank } from '../data/user'
@@ -16342,14 +16343,24 @@ export function BankSheet({ banks, selected, copy, onSelect, onAdd, onClose }: {
   )
 }
 
-/** The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks). */
-export function BankOptions({ banks, selected, name, onPick }: { banks: LinkedBank[]; selected: string; name: string; onPick: (id: string) => void }) {
+/**
+ * The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks).
+ * `card`: each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain` (default): flat rows.
+ */
+export function BankOptions({ banks, selected, name, onPick, variant = 'plain' }: {
+  banks: LinkedBank[]
+  selected: string
+  name: string
+  onPick: (id: string) => void
+  variant?: 'plain' | 'card'
+}) {
   return (
-    <>
+    <Stack gap={variant === 'card' ? '08' : '00'}>
       {banks.map((bank) => (
         <ListCell
           key={bank.id}
           as="label"
+          variant={variant}
           selected={bank.id === selected}
           iconLeft={<Avatar src={bankLogo(bank)} initials={bank.bank.slice(0, 2)} shape="rounded" size={32} label={bank.bank} />}
           label={bankLine(bank)}
@@ -16357,7 +16368,7 @@ export function BankOptions({ banks, selected, name, onPick }: { banks: LinkedBa
           trailing={<Radio name={name} checked={bank.id === selected} onChange={() => onPick(bank.id)} />}
         />
       ))}
-    </>
+    </Stack>
   )
 }
 ```
@@ -16857,7 +16868,8 @@ export const userStatusOptions: FlowOption[] = [
       { value: 'failed', label: 'Activation failed' },
       { value: 'active', label: 'Activated' },
     ],
-    default: 'off',
+    // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
+    default: 'active',
     floatOn: STATUS_SCREENS,
   },
   {
@@ -16865,7 +16877,7 @@ export const userStatusOptions: FlowOption[] = [
     group: 'User status',
     label: 'USD wallet',
     values: [{ value: 'empty', label: '$0' }, { value: 'onTheWay', label: 'Money on the way' }, { value: 'funded', label: 'Has money' }],
-    default: 'empty',
+    default: 'funded',
     showIf: { us: ['active'] },
     floatOn: STATUS_SCREENS,
   },
@@ -16875,7 +16887,7 @@ export const userStatusOptions: FlowOption[] = [
     label: 'US holdings',
     picker: 'toggle',
     values: [{ value: 'none', label: 'None' }, { value: 'some', label: 'Holds NVDA' }],
-    default: 'none',
+    default: 'some',
     showIf: { usWallet: ['funded'] },
     floatOn: STATUS_SCREENS,
   },
