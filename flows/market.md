@@ -23782,6 +23782,15 @@ export const usLogoSymbols: string[] = [...logoBySymbol.keys()].sort()
 /** The logo of a US company (SVG or PNG URL), or undefined (show initials). */
 export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(symbol)
 
+// Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
+// a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
+// (Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+/** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
+export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
+  PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined
+
 // The stock being looked at: a list (Market tab, Search …) sets it, the stock page reads it.
 let viewed: string | undefined
 
@@ -23867,8 +23876,8 @@ export const linkedBanks: LinkedBank[] = [
 // US Stocks money — every value inside US Stocks is in US dollars (the news, prices and filings users read are in $),
 // with its rupee equivalent at the live USD → INR rate available everywhere. How the ₹ shows is a prototype setting
 // ("₹ equivalent" in the User status panel), so the same screens try each idea:
-//   off    — $ only
-//   below  — $ with a small "≈ ₹1,23,456" line under it
+//   off    — $ only (the default; the stock and ETF pages still show ≈ ₹ under the price)
+//   below  — $ with a small "≈ ₹1,23,456" line under it — only in the order pad since 3 Nov (`layout="stack"`)
 //   switch — a $ / ₹ switch (<CurrencySwitch />); picking ₹ turns every US value into rupees, across every screen
 // Screens never format a US amount themselves: <Usd value={188.42} /> (or useUsd() where only a string fits).
 // The rate is real: USDINR=X in us-market-snapshot.json (`npm run us:snapshot`), ticking around it like the prices
@@ -23953,7 +23962,9 @@ export const moneyOptions: FlowOption[] = [
     group: 'US Stocks money',
     label: '₹ equivalent',
     values: [{ value: 'off', label: '$ only' }, { value: 'below', label: '₹ below' }, { value: 'switch', label: '$ / ₹ switch' }],
-    default: 'below',
+    // $ only by default (3 Nov): the ₹ shows when picked here. The stock and ETF pages are the exception — their price
+    // always has its ≈ ₹ under it.
+    default: 'off',
     // The Home and its US tab screens (the US tab's fixed states show $ amounts too), a US stock page, the wallet's US tab.
     floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54'],
   },
@@ -24022,8 +24033,9 @@ export type UsdProps = MoneyFormat & {
   /** … or a $ amount written as text ('$188.42', '+$12.30', '$4.59T'); anything else shows as it is. */
   text?: string
   /**
-   * `stack` (default): the ≈ ₹ line goes under the value. `inline`: no ₹ line (inside a sentence, a button, a tight
-   * row) — the switch still turns it into ₹.
+   * `inline` (default): no ₹ line — the switch still turns it into ₹. `stack`: the ≈ ₹ line goes under the value, with
+   * the "₹ below" setting. Since 3 Nov only the order pad asks for it (its Fee breakdown); listing cards, pages and
+   * sheets show $ only.
    */
   layout?: 'stack' | 'inline'
   /** Text-align of the stack (a right-aligned column → 'end'). */
@@ -24035,7 +24047,7 @@ export type UsdProps = MoneyFormat & {
  * A US amount. Shows $ (or ₹ with the switch on ₹) in the parent's own type style, and with "₹ below" a small
  * secondary "≈ ₹…" line under it. `<Usd value={1234.5} />` · `<Usd text="+$12.30" />` · `<Usd value={4.59e12} compact />`
  */
-export function Usd({ value, text, layout = 'stack', align = 'start', className, ...format }: UsdProps) {
+export function Usd({ value, text, layout = 'inline', align = 'start', className, ...format }: UsdProps) {
   const usd = useUsd()
   const below = useInrEquivalent()
   const parsed = value === undefined && text !== undefined ? parseUsd(text) : undefined

@@ -8517,6 +8517,15 @@ export const usLogoSymbols: string[] = [...logoBySymbol.keys()].sort()
 /** The logo of a US company (SVG or PNG URL), or undefined (show initials). */
 export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(symbol)
 
+// Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
+// a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
+// (Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+/** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
+export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
+  PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined
+
 // The stock being looked at: a list (Market tab, Search …) sets it, the stock page reads it.
 let viewed: string | undefined
 

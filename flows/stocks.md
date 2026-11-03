@@ -296,6 +296,9 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 ### Changelog
 
 - 2026-11-03 — Themes overview card simplified: no chart and no $100 line — the theme's name over its one-line description, and on the right its return under an L3 Select switcher (↕, Small, subtle) that steps 1Y → 3Y → 1M on each tap.
+- 2026-11-03 — 32 between home sections on both tabs (the US tab's 28 override removed).
+- 2026-11-03 — No View all button under a home section's list (Top analyst picks, Discover ETFs): the section header's View all is the one way to the full list.
+- 2026-11-03 — Default homepage version is now V8 (Lit folder · US tiles; `DEFAULT_HOME_VERSION`).
 - 2026-11-03 — Themes overview card: the period switcher's tap area covers the whole right part of the card (period and return, out to the card's edges).
 - 2026-11-03 — US home: “Discover ETFs” between Brands You Know and the Heatmap — SectionHeader (a one-line description that explains an ETF by Nifty 50: “A basket of stocks in one buy, like Nifty 50”; a fuller explainer comes later; View all → the ETF list us-stocks-71), region chips with round flags (L3 pill Tabs + shared `Flag`: US · China · Japan · Europe · Korea), then four of that region's funds as StockListCards (Korea has two: EWY, FLKR) and a tertiary “View all” under them, as Top analyst picks: the fund in plain words (“Top 500 US stocks”) over “SPY · SPDR S&P 500 ETF”, real price and day change, issuer logo. A row → the ETF page (us-stocks-72) on that fund (remembered with the shared `viewUsStock`, which the ETF page now reads too).
 - 2026-11-03 — Themes page: a carousel. The theme before and after are laid just off either side of the current one, so a swipe drags the next theme into view with the finger (not a blank side); a tap on the tab next door makes the same slide, a tap further away slides straight in.
@@ -22697,7 +22700,7 @@ export const homeVersions: HomeVersion[] = [
 // Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13.
 
 /** The version shown until one is picked (and in place of an archived pick). */
-export const DEFAULT_HOME_VERSION: HomeVersionId = 'v12'
+export const DEFAULT_HOME_VERSION: HomeVersionId = 'v8'
 
 /** The versions the "Homepage version" picker offers. */
 export const activeHomeVersions = homeVersions.filter((v) => !v.archived)
@@ -23808,7 +23811,6 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
 // FLAG: hand-made chips, titan / brand cards' insides, heatmap tiles and logo stacks — see UsHome.module.css.
 import { useId, useState, type CSSProperties } from 'react'
 import { Avatar } from '@l3/components/Avatar'
-import { Button } from '@l3/components/Button'
 import { Card } from '@l3/components/Card'
 import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
@@ -23875,7 +23877,7 @@ type UsHomeProps = {
   onEtfs?: () => void
   /** A Discover ETFs row (the symbol is already remembered with `viewUsStock`) → the ETF page. */
   onEtf?: (sym: string) => void
-  /** Top analyst picks' View all (header and under the list) → the Top analyst picks page (Stocks / History). */
+  /** Top analyst picks' View all (in the header) → the Top analyst picks page (Stocks / History). */
   onPicks?: () => void
   /** The activation card on top (default). The two-homes versions show it in the summary instead (screens/Home). */
   card?: boolean
@@ -23955,9 +23957,6 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
           <Inset paddingInline="16" paddingBlock="00">
             <Stack gap="12">
               {analystPicks.slice(0, PICKS_IN_LIST).map((pick) => <PickRow key={pick.sym} pick={pick} onOpen={open} />)}
-              {/* The rest of the picks: a tertiary View all closing the list (L3 Button rule). Small, flat and with a chevron
-                  (the user's call, 3 Nov — an exception to Large buttons). */}
-              <Button variant="tertiary" size="sm" raised="none" fullWidth iconRight={<Icon icon={msChevronRight} />} onClick={() => onPicks?.()}>{t('us.picks.viewAll')}</Button>
             </Stack>
           </Inset>
         ) : (
@@ -24111,8 +24110,6 @@ function DiscoverEtfs({ onOpen, onViewAll }: { onOpen: (sym: string) => void; on
       <Inset paddingInline="16" paddingBlock="00">
         <Stack gap="12">
           {discoverEtfs[region].slice(0, ETFS_IN_LIST).map((etf) => <EtfRow key={etf.sym} etf={etf} onOpen={onOpen} />)}
-          {/* Every ETF: a tertiary View all closing the list, as under Top analyst picks. */}
-          <Button variant="tertiary" size="sm" raised="none" fullWidth iconRight={<Icon icon={msChevronRight} />} onClick={onViewAll}>{t('us.etfs.viewAll')}</Button>
         </Stack>
       </Inset>
     </Stack>
@@ -25716,7 +25713,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.brands.railLabel": "Brands",
   "us.etfs.title": "Discover ETFs",
   "us.etfs.description": "A basket of stocks in one buy, like Nifty 50",
-  "us.etfs.viewAll": "View all",
   "us.etfs.regionsLabel": "ETFs by region",
   "us.etfs.region.us": "US",
   "us.etfs.region.china": "China",
@@ -25845,7 +25841,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.picks.railLabel": "Top analyst picks",
   "us.picks.recommendation": "Recommendation",
   "us.picks.week": "7D",
-  "us.picks.viewAll": "View all",
   "us.picks.expectedProfit": "Expected profit",
   "us.picks.analysts": "{pct}% of analysts recommend",
   "us.picks.rowLabel": "{name}, {sym}: {analysts}% of analysts recommend it; expected profit {pct}%",
@@ -26626,7 +26621,7 @@ export function AnalystPicksPage({ tab: initialTab = 'stocks', onStock }: Analys
 ### `src/flows/stocks/screens/Home.tsx`
 
 ```tsx
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Aerobar } from '@l3/components/Aerobar'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
@@ -27021,7 +27016,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
               <Disclosure />
             </Stack>
           ) : (
-            <Stack key="us" gap="32" data-market-part style={{ '--stk-gap': 'var(--l3-spacing-28)' } as CSSProperties}>
+            <Stack key="us" gap="32" data-market-part>
               <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} onEtf={onUsEtf} onPicks={onUsPicks} />
             </Stack>
           )}
@@ -50219,6 +50214,15 @@ export const usLogoSymbols: string[] = [...logoBySymbol.keys()].sort()
 /** The logo of a US company (SVG or PNG URL), or undefined (show initials). */
 export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(symbol)
 
+// Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
+// a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
+// (Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+/** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
+export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
+  PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined
+
 // The stock being looked at: a list (Market tab, Search …) sets it, the stock page reads it.
 let viewed: string | undefined
 
@@ -50304,8 +50308,8 @@ export const linkedBanks: LinkedBank[] = [
 // US Stocks money — every value inside US Stocks is in US dollars (the news, prices and filings users read are in $),
 // with its rupee equivalent at the live USD → INR rate available everywhere. How the ₹ shows is a prototype setting
 // ("₹ equivalent" in the User status panel), so the same screens try each idea:
-//   off    — $ only
-//   below  — $ with a small "≈ ₹1,23,456" line under it
+//   off    — $ only (the default; the stock and ETF pages still show ≈ ₹ under the price)
+//   below  — $ with a small "≈ ₹1,23,456" line under it — only in the order pad since 3 Nov (`layout="stack"`)
 //   switch — a $ / ₹ switch (<CurrencySwitch />); picking ₹ turns every US value into rupees, across every screen
 // Screens never format a US amount themselves: <Usd value={188.42} /> (or useUsd() where only a string fits).
 // The rate is real: USDINR=X in us-market-snapshot.json (`npm run us:snapshot`), ticking around it like the prices
@@ -50390,7 +50394,9 @@ export const moneyOptions: FlowOption[] = [
     group: 'US Stocks money',
     label: '₹ equivalent',
     values: [{ value: 'off', label: '$ only' }, { value: 'below', label: '₹ below' }, { value: 'switch', label: '$ / ₹ switch' }],
-    default: 'below',
+    // $ only by default (3 Nov): the ₹ shows when picked here. The stock and ETF pages are the exception — their price
+    // always has its ≈ ₹ under it.
+    default: 'off',
     // The Home and its US tab screens (the US tab's fixed states show $ amounts too), a US stock page, the wallet's US tab.
     floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54'],
   },
@@ -50459,8 +50465,9 @@ export type UsdProps = MoneyFormat & {
   /** … or a $ amount written as text ('$188.42', '+$12.30', '$4.59T'); anything else shows as it is. */
   text?: string
   /**
-   * `stack` (default): the ≈ ₹ line goes under the value. `inline`: no ₹ line (inside a sentence, a button, a tight
-   * row) — the switch still turns it into ₹.
+   * `inline` (default): no ₹ line — the switch still turns it into ₹. `stack`: the ≈ ₹ line goes under the value, with
+   * the "₹ below" setting. Since 3 Nov only the order pad asks for it (its Fee breakdown); listing cards, pages and
+   * sheets show $ only.
    */
   layout?: 'stack' | 'inline'
   /** Text-align of the stack (a right-aligned column → 'end'). */
@@ -50472,7 +50479,7 @@ export type UsdProps = MoneyFormat & {
  * A US amount. Shows $ (or ₹ with the switch on ₹) in the parent's own type style, and with "₹ below" a small
  * secondary "≈ ₹…" line under it. `<Usd value={1234.5} />` · `<Usd text="+$12.30" />` · `<Usd value={4.59e12} compact />`
  */
-export function Usd({ value, text, layout = 'stack', align = 'start', className, ...format }: UsdProps) {
+export function Usd({ value, text, layout = 'inline', align = 'start', className, ...format }: UsdProps) {
   const usd = useUsd()
   const below = useInrEquivalent()
   const parsed = value === undefined && text !== undefined ? parseUsd(text) : undefined

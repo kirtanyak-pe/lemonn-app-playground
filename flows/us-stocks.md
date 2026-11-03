@@ -113,6 +113,8 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — **₹ hidden by default**: the "₹ equivalent" setting starts on "$ only". The two asset pages — the stock page and the ETF page (the one with more details: About, Allocation, Top holdings) — always show ≈ ₹ under the price. The wallet's ≈ ₹ line under the balance follows the setting. Add money / Withdraw stay in ₹ (real rupee money).
+- 2026-11-03 — **Asset pages copied over from the jojo branch** (stock page, ETF page with About / Allocation / Top holdings, holding logos, ₹ line under the price, `EtfMove` with no sign, `<Usd>` inline by default). The ETF list (us-stocks-71) and the user status picker stay as they were here, so the jojo notes below about the list's search and holding-logo cards don't apply to it.
 - 2026-11-03 — ETF catalogue: nine more funds for Stocks home's Discover ETFs (FXI, CQQQ, DXJ, HEWJ, SCJ, FEZ, EZU, IEUR, FLKR; real prices from the snapshot, sample expense / size / holdings). The ETF page also reads the shared `viewUsStock`, so a fund opened from another flow shows.
 - 2026-11-03 — Wallet status bar (deposit in progress, withdrawal pending …) is now the L3 Aerobar, full width (edge to edge), warning tint — no more hand-made `PendingBanner` CSS. The deposit bar is tappable (chevron) and opens “Why it takes 1–2 days” (`sheets/DepositProgressSheet`, L3 Steps: Paid → Sent to US → Ready to trade); withdrawals keep their Ghost action (View / Cancel). Money in progress means a bank is linked, so the “Add a bank account” bar never shows with it (`useLinkedBanks` counts one when the US wallet isn't empty). Text that was tertiary is now secondary (tertiary is for placeholders only). **L3 gap:** Aerobar's paragraph is secondary at 60% (≈ tertiary) — can't change it here.
 - 2026-11-03 — ETF list (us-stocks-71): the Regular tab's filters are fixed at the top with the tabs (Actionbar bottom), as one bar. First a switcher chip (Country ⇄ Sector, like Top Movers' cap chip on Home) and a divider, then that filter's chips: countries with flags, or sectors (Broad market · Technology · Financials · Healthcare · Energy · Industrials; switching starts at All). Every regular ETF has a `sector`; two sector funds added (XLF, XLV).
@@ -120,6 +122,69 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 - 2026-11-03 — Add money is entered in US dollars, Groww-style: big $ amount, "You pay ≈ ₹X · incl. charges" (opens the charges sheet) under it, +$ chips, bank ListCell, number keypad and "Add $X" in the dock. New `inrForUsd` (inverse of `depositBreakdown`); M03 / M07 are $ states; add-money copy moved to `copy.json`.
 - 2026-11-03 — ETF list: Regular rows are the shared `StockListCard` (issuer logo, flat, 16 apart); country chips have round flags (new shared `Flag`, `shared/assets/flags`, All = L3 globe); Leveraged tab is a SectionHeader per index (24 apart) with the same cards and a "3x Long / 3x Short" tag.
 - 2026-11-03 — Stock lists match the Market cards: the S&P 500 "Stocks in S&P 500" rows are the shared `StockListCard` (flat, Avatar 40, $ via `<Usd>`); Portfolio holding cards use an L3 Avatar 40, Label 16 / Description 12 and the 12 radius (their Qty / returns grid stays).
+- 2026-11-03 — No $ / ₹ switch on the stock page, ETF page or wallet (`<CurrencySwitch />` is used nowhere now): the
+  price or USD balance always has its rupee value under it ("≈ ₹19,426.53", 10, secondary, live rate; none on a $0 wallet).
+- 2026-11-03 — **No "≈ ₹" lines outside the order pad.** `<Usd>` is inline by default now (`layout="stack"` asks for
+  the ₹ line); only the order pad keeps them — its own ₹ estimate and its Fee breakdown sheet. Gone from listing
+  cards, stock / ETF pages, the wallet balance and every sheet. The "₹ below" setting therefore only shows in the
+  order pad; the $ / ₹ switch still works everywhere.
+- 2026-11-03 — **No "+" / "−" beside an arrow** on the ETF screens: `EtfMove` shows ▲ / ▼ and the size of the move
+  (screen readers get "up" / "down"). The ETF page's big change uses `EtfMove size="lg"` in place of L3 PriceChange,
+  which always writes a sign (L3 gap: a no-sign option); the $ move under it is unsigned too. Also the stock page's
+  scrolled header, which uses EtfMove.
+- 2026-11-03 — Allocation back to the thin stacked bar (V2's shares inside a taller bar dropped); every share in the
+  legend, 14 type kept.
+- 2026-11-03 — **Allocation V2 (labelled bar)**: the bar is 24 tall (radius 06) with each sector's share written inside
+  its part in black when the part is 10% or more; the legend shows dot + name, and the share only for the parts too
+  small to hold it ("Software 2%"). Easier to read: names 14 in the primary colour, 10 dots, 8 between rows. To fit two
+  columns at 360 the longest names were shortened ("Media", "Chip tools", "Social apps").
+- 2026-11-03 — Allocation drops its "Updated 31 Oct 2026 · By sector" header: sector splits barely move, and the date
+  mostly read as "this is old" to a new user. If an "as of" date is needed, it belongs in the section's (i) info.
+- 2026-11-03 — **ETF page: Allocation** (after Revolut's portfolio allocation and Public's allocation table), between
+  About this ETF and Top holdings: a panel with one thick bar of 100% split
+  by sector in colour (L3 accent surfaces: discover, purple, teal, zing; "Other" grey — no green / red / orange, which
+  mean up, down and warning), and a two-column legend — dot, name, share — biggest first, four sectors and "Other".
+  The legend's name column is as wide as the widest sector name any fund has (a hidden sizer row, `SECTOR_NAMES`), so
+  each share sits right after its name and the columns line up the same on every ETF; the first column sits at the left edge, the second at the right edge; names stay short — no wider than "Oil producers"
+  ("Defence", "Oil producers", "Shopping", "Travel", "Media", "Chip tools", "Social apps") so two columns fit at 360
+  (`sectorsFor` in data.ts; sample, rounded weights). Top holdings now opens with a "503 positions ·
+  Weight" header line. Leveraged ETFs (off) skip Allocation. Also no "≈ ₹" lines anywhere on the ETF page now (Daily
+  Performance, the stats and NAV are inline <Usd>).
+- 2026-11-02 — **ETF page: Top holdings** (`screens/etf/EtfHoldings.tsx`), after About this ETF: the six biggest
+  holdings (logo, name, ticker, a bar against the biggest, weight %; a row opens its stock page), then an **Others**
+  row — two of the remaining logos and "+497" in a circle, with their share together (100% minus the top six). No
+  "View all" sheet: searching 500 holdings wasn't a good experience. Sample weights; leveraged ETFs (off) title the
+  block "Tracks".
+- 2026-11-02 — **Compact ETF cards**: still the standard clickable L3 Card (surface-primary, border-light, L3's own 12
+  padding), laid out as a grid: a 40 × 40 logo square — exactly the height of the two text lines, so it never makes
+  the card taller — then two lines that run across the card: name | price (both heading-14), "SPY · description" |
+  % change (both 12). The square: a fund with up to four holdings shows all their logos (three or four); more than
+  four shows two 20 logos on top and the rest as an L3 Tag (tertiary, discover blue, sm, radius 04; chosen after trying the other tag colours) across the bottom —
+  five holdings → "+3", SPY's 503 → "+501", over 999 → "+3k". Only two holdings (EWY in the sample): two bigger 28
+  logos overlapping on the diagonal inside the same 40 × 40; one holding: a single 40 logo. 12 from the square to the
+  text, at least 16 from the text to the numbers; long names end in "…", the numbers never shrink (checked with a
+  50-character name and $12,345.67 at 375 and 360). 64 tall instead of about 110. L3 gap: Avatar has no 20 size
+  (set through --av-size). Indian ADR holdings (HDB, IBN, INFY) use the design system's NSE logos.
+- 2026-11-02 — **Logos for every ETF holding**: 29 logos downloaded from financialmodelingprep.com (image-stock) into
+  `src/shared/assets/us-logos` (TSMC, ASML, GE, RTX, Lockheed, Northrop, Alibaba, Toyota, Sony, Samsung, SK Hynix…;
+  Samsung and SK Hynix saved under SSNLF / HXSCL from 005930.KS / 000660.KS). They are transparent marks, so
+  `HoldingLogo` (screens/etf/parts.tsx) puts them on a static white plate (black for the white Northrop and Samsung
+  marks) — `logoPlate` in data.ts.
+- 2026-11-02 — **ETF card** (one version, after comparing four): on the left, three holding logos + "+500" in a
+  circle, the ETF's name · ticker, the plain name as a one-line description ("Top 500 US companies"); $ price over %
+  change on the right. The ETF page's title is the fund's name ("SPDR S&P 500 ETF") with the ticker under it; no plain name there. See `EtfRow`.
+
+- 2026-11-02 — **ETFs say what they are.** Tickers (QQQ, VTI, SMH) mean nothing to a new user, so every ETF leads
+  with a plain name and keeps the ticker as an alias ("Top 500 US companies · SPY", like Zomato / Eternal), then 2–3
+  companies people recognise ("Apple, Microsoft, NVIDIA + 500 more") and one short line on what it does ("Owns
+  companies that make computer chips." — kept simple, no value-chain arrows). The words live
+  in `screens/etf/data.ts` (`plainFor`, `knownLine`). ETF list (9001:1): the top bar is a search (plain name, ticker,
+  fund name, theme, company, what it does; looks across every region, chips hide while searching, L3 EmptyState when
+  nothing matches); no "≈ ₹" under the price. ETF page (9001:2): plain name as the title with "SYM · fund name" under
+  it, an **About this ETF** paragraph first in Overview (what is inside the fund: kinds of companies, biggest names, how many; `aboutFor`), the Exp. Ratio tag is gone from the top — Fundamentals shows it as
+  "Yearly fee · 0.09% · $0.09 per $100" — and no "≈ ₹" under the price. The home's Discover ETFs rows (stocks flow)
+  use the same plain names.
+
 - 2026-11-02 — User status: Lemonn KYC is no longer its own setting. **US Stocks activation** is one list for the
   whole way in: Lemonn KYC pending → KYC done · not activated → under review → contact support → failed → activated
   (`src/shared/userStatus.ts`; `useUsJourney()` is unchanged).
@@ -22244,8 +22309,9 @@ export function UsMainNav({ value }: { value: Section }) {
 ```ts
 // US stocks sample data shared by the imported screens: the catalogue, the stock being looked at, and logos.
 // FLAG: US logos are PNG/SVG files in ./assets — L3 has company logos for Indian stocks only (@l3/assets/company-logos).
+import { companyLogo } from '@l3/assets/company-logos'
 import { asset } from './asset'
-import { catalogue, usLogo, viewedUsStock, viewUsStock, type UsStock } from '../../shared/data/usStocks'
+import { catalogue, usLogo, usLogoPlate, viewedUsStock, viewUsStock, type UsStock } from '../../shared/data/usStocks'
 
 export type { UsStock }
 export { catalogue }
@@ -22317,12 +22383,18 @@ export function openStock(go: (figma: string) => void, stock: UsStock) {
   go(STOCK_PAGE.notActivated)
 }
 
-/** The logo of a US company (PNG), or undefined (show initials). */
-export const logoFor = (sym: string) => usLogo(sym)
+// Indian companies listed in the US as ADRs (ETF holdings): their logo is the design system's NSE one.
+const ADR_NSE: Record<string, string> = { HDB: 'HDFCBANK', IBN: 'ICICIBANK', INFY: 'INFY' }
+
+/** The logo of a US company (PNG), an Indian ADR's NSE logo, or undefined (show initials). */
+export const logoFor = (sym: string) => usLogo(sym) ?? (ADR_NSE[sym] ? companyLogo(ADR_NSE[sym]) : undefined)
 
 const ON_BLACK = new Set('BA DIS IRBT NKE SNBR SONO UBER UNH V'.split(' '))
 /** Plate behind a logo: L3 static black or white (the same in light and dark, like the logo). */
 export const plateFor = (sym: string) => (ON_BLACK.has(sym) ? 'var(--l3-static-black)' : 'var(--l3-static-white)')
+
+/** The plate a holding's logo needs inside an Avatar ('white' / 'black'), or undefined — shared/data/usStocks. */
+export const logoPlate = usLogoPlate
 
 const US_HOME_LOGOS: Record<string, string> = {
   TSLA: 'assets/entry/ushome/tsla.png', GOGL: 'assets/entry/ushome/googl.svg', GOOGL: 'assets/entry/ushome/googl.svg',
@@ -22570,8 +22642,10 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   display: flex;
 }
 
-.currencySwitch {
-  align-self: flex-start;
+/* ≈ ₹ under the $ price: 10, secondary. */
+.priceInr {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
 }
 
 .titleRow {
@@ -23765,7 +23839,7 @@ import { asset } from '../../asset'
 import { currentStock } from '../../data'
 import { useLiveQuote } from '../../../../shared/data/live'
 import { usQuote } from '../../../../shared/data/usStocks'
-import { CurrencySwitch, InrEquivalent, Usd, useUsd } from '../../../../shared/money'
+import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { useUsNav } from '../../nav'
 import { ImgIcon } from './components/ImgIcon'
 import { NEWS, PERIODS, periodReturn, priceSeries, type NewsItem } from './data'
@@ -23808,6 +23882,7 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
   // The price ticks around its real (snapshot) level: live.ts.
   const live = useLiveQuote(snapshotStock.sym, snapshotStock.price, snapshotStock.change)
   const stock = { ...snapshotStock, price: live.price, change: live.changePct }
+  const usdInr = useUsdInrRate()
   const quote = usQuote(stock.sym)
   const isNvda = stock.sym === 'NVDA'
   const shortName = isNvda ? 'NVIDIA' : stock.name.split(' ')[0]
@@ -23884,7 +23959,8 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
                 </span>
               </span>
             </div>
-            <InrEquivalent usd={stock.price} />
+            {/* The price in rupees at the live rate, always, small under the $ (no $ / ₹ switch on this page). */}
+            <span className={styles.priceInr}>≈ {formatInr(stock.price * usdInr)}</span>
           </div>
           {isNvda ? (
             <img src={asset('assets/activation/nvda-logo.svg')} alt="" width={44} height={44} />
@@ -23898,7 +23974,6 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
             </span>
           )}
         </div>
-        <CurrencySwitch className={styles.currencySwitch} />
         <div className={styles.tagsRow}>
           <div className={styles.tags}>
             <Tag variant="tertiary" color="neutral" size="md">Technology</Tag>
@@ -23979,7 +24054,8 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
               <Fundamentals />
               <AboutCompany stock={stock} />
               <Peers sym={stock.sym} />
-              <RelatedEtfs sym={stock.sym} />
+              {/* Related ETFs (leveraged only) are off for now (2 Nov). */}
+              {false && <RelatedEtfs sym={stock.sym} />}
               <KeyHolders />
               <Financials />
             </div>
@@ -27113,7 +27189,7 @@ import { neighbour, useSwipePages } from './components/swipePages'
 import { MaskImg } from './components/MaskImg'
 import { entryPath, entryUrl } from './entryAssets'
 import { sortIcon } from './icons'
-import { CurrencySwitch, Usd } from '../../../../shared/money'
+import { Usd } from '../../../../shared/money'
 import { useUsJourney, type UsJourney } from '../../../../shared/userStatus'
 import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME_ENTRY, WALLET, WALLET_US } from './ids'
 import { holdingsSummary, marketIndices, portfolioTabs, sortedHoldings, usHolding, usHoldingSummary, type Holding, type PortfolioTab } from './portfolioData'
@@ -27258,11 +27334,6 @@ export function PortfolioScreen(_props: { live?: boolean }) {
                   ))}
                 </div>
               </section>
-            )}
-            {tab === 'holdings' && market === 'us' && (
-              <Stack direction="horizontal" justify="end">
-                <CurrencySwitch />
-              </Stack>
             )}
             {tab === 'holdings' && <HoldingsCards market={market} onMarket={setMarket} data={journey === 'holding' ? { ...holdingsSummary, us: usHoldingSummary } : holdingsSummary} />}
           </div>
@@ -28263,12 +28334,11 @@ export function MaskImg({ src, w, h = w, className }: { src: string; w: number; 
   display: flex;
 }
 
+/* No line under the row (2 Nov): 16 to what follows. */
 .tabRow {
   align-items: center;
   gap: var(--l3-spacing-12);
-  margin: 0 calc(-1 * var(--l3-spacing-16)) var(--l3-spacing-16);
-  padding: 0 var(--l3-spacing-16) var(--l3-spacing-16);
-  border-bottom: 1px solid var(--l3-border-light);
+  margin: 0 0 var(--l3-spacing-16);
   display: flex;
 }
 
@@ -29476,7 +29546,68 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 .holdings{gap:var(--l3-spacing-08);flex-direction:column;margin:0;padding:0;list-style:none;display:flex}
 
-.rowCard[data-interactive]{align-items:center;gap:var(--l3-spacing-12);flex-direction:row}
+.rowCard[data-interactive]{align-items:stretch;gap:var(--l3-spacing-08);flex-direction:column}
+
+/* Plates behind transparent holding logos (HoldingLogo), the same in light and dark. */
+.plateWhite img{background:var(--l3-static-white)}
+
+.plateBlack img{background:var(--l3-static-black)}
+
+/* Overlapping logo row (the ETF page's "Others" row): logos with a 2 ring in the surface colour, then "+497". */
+.logoStack{flex:none;display:flex}
+
+.logoStack>*+*{margin-left:calc(-1 * var(--l3-spacing-08))}
+
+.logoStack>*{box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary);border-radius:var(--l3-radius-full)}
+
+/* "+500" in a circle after the logos (FLAG: hand-made; L3 Avatar has no count variant). Widens to a pill for "+3.6k". */
+.logoStack>.moreCount{margin-left:calc(-1 * var(--l3-spacing-04))}
+
+.moreCount{z-index:1;position:relative;min-width:var(--l3-size-24);height:var(--l3-size-24);padding:0 var(--l3-spacing-06);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);font:var(--l3-text-label-10);color:var(--l3-content-secondary);font-variant-numeric:tabular-nums;place-items:center;display:grid}
+
+/* Inside the ETF card (2 Nov), on L3 Card's own 12 padding. A grid: the logo square spans both lines; line 1 is
+   name | price (both heading-14), line 2 is "SPY · description" | % change (both 12), so each line reads straight
+   across. 12 from the square to the text, 16 from the text to the numbers; the text column shrinks (ends in "…"),
+   the numbers never do. */
+.etfGrid{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-content:center;align-items:center;row-gap:var(--l3-spacing-04);column-gap:var(--l3-spacing-12);text-align:left;display:grid}
+
+/* The square: 2×2 cells of 20, touching (40 × 40) — exactly the height of the two text lines (20 + 4 + 16), so the
+   logos never make the card taller. Up to four holdings: all their logos; more than four: two logos on top and an L3
+   Tag with the rest ("+501") across the bottom row.
+   FLAG: L3 Avatar's smallest size is 24; this sets its --av-size to 20 (L3 gap: a 20 Avatar). */
+.logoSquare{grid-template-columns:repeat(2,var(--l3-size-20));grid-template-rows:repeat(2,var(--l3-size-20));grid-area:1/1/3/2;display:grid}
+
+.logoSquare>[data-avatar][data-size]{--av-size:var(--l3-size-20);--av-font:var(--l3-text-label-10)}
+
+/* Only two holdings: two 28 logos on the diagonal (top-left, bottom-right), overlapping by 16 so they fill the same
+   40 × 40; the second sits on top with a 2 ring in the card colour. One holding: a single 40 logo. */
+.logoSquare[data-layout]{width:var(--l3-size-40);height:var(--l3-size-40);display:block;position:relative}
+
+.logoSquare[data-layout='pair']>[data-avatar][data-size]{--av-size:var(--l3-size-28);position:absolute}
+
+.logoSquare[data-layout='pair']>:first-child{top:0;left:0}
+
+.logoSquare[data-layout='pair']>:last-child{bottom:0;right:0;box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary)}
+
+.logoSquare[data-layout='single']>[data-avatar][data-size]{--av-size:var(--l3-size-40);--av-font:var(--l3-text-label-14)}
+
+/* The count across the bottom row: an L3 Tag (tertiary, discover blue, sm = 16 tall, radius 04; chosen after trying the other colours), centred in the 20 row and stretched to the
+   square's 40 width with its label centred. Over 999 reads "+3k". */
+.squareCount{grid-column:1/3;align-self:center;justify-content:center;width:100%;font-variant-numeric:tabular-nums}
+
+.etfName,.etfDesc{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+
+.etfName{font:var(--l3-text-heading-14);color:var(--l3-content-primary);grid-area:1/2;align-self:end}
+
+.etfDesc{font:var(--l3-text-label-12);color:var(--l3-content-tertiary);grid-area:2/2;align-self:start}
+
+.etfSym{color:var(--l3-content-secondary)}
+
+.etfPrice,.etfChange{white-space:nowrap;justify-self:end;padding-left:var(--l3-spacing-04)}
+
+.etfPrice{font:var(--l3-text-heading-14);color:var(--l3-content-primary);font-variant-numeric:tabular-nums;grid-area:1/3;align-self:end}
+
+.etfChange{grid-area:2/3;align-self:start;display:flex}
 
 .rowText{gap:var(--l3-spacing-04);text-align:left;flex-direction:column;flex:1;min-width:0;display:flex}
 
@@ -29504,7 +29635,28 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 .move[data-up] .tri{border-top:0;border-bottom:var(--l3-spacing-04) solid currentColor}
 
-.sectionTitle{font:var(--l3-text-heading-16);color:var(--l3-content-primary);margin:0}
+/* The ETF page's big change, beside the price (16, a 6 arrow). */
+.move[data-size="lg"]{gap:var(--l3-spacing-06);font:var(--l3-text-heading-16)}
+
+.move[data-size="lg"] .tri{border-top-width:var(--l3-spacing-06);border-right-width:var(--l3-spacing-06);border-left-width:var(--l3-spacing-06)}
+
+.move[data-size="lg"][data-up] .tri{border-bottom-width:var(--l3-spacing-06)}
+
+.lede{font:var(--l3-text-label-12);color:var(--l3-content-secondary);margin:0}
+
+.group{gap:var(--l3-spacing-12);flex-direction:column;display:flex}
+
+.groupTitle,.sectionTitle{font:var(--l3-text-heading-16);color:var(--l3-content-primary);margin:0}
+
+.pair{gap:var(--l3-spacing-08);grid-template-columns:1fr 1fr;display:grid}
+
+.sideCard[data-interactive]{align-items:flex-start;gap:var(--l3-spacing-08);min-width:0}
+
+.sideSym{font:var(--l3-text-heading-16);color:var(--l3-content-primary)}
+
+.sideName{width:100%;font:var(--l3-text-label-12);color:var(--l3-content-secondary);text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+
+.sidePrice{align-items:center;gap:var(--l3-spacing-04);font:var(--l3-text-heading-12);color:var(--l3-content-primary);font-variant-numeric:tabular-nums;flex-wrap:wrap;display:flex}
 
 .head{justify-content:space-between;align-items:flex-start;gap:var(--l3-spacing-12);display:flex}
 
@@ -29575,6 +29727,305 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 /* The chips scroll on their own; 16 after the last one. Room for the raised shadow above and below. */
 .filterRow>.filterTabs{flex:1;min-width:0;margin-block:calc(-1 * var(--l3-spacing-04));padding:var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-04) 0}
+```
+
+### `src/flows/us-stocks/screens/etf/EtfHoldings.module.css`
+
+```css
+/* Allocation and Top holdings on the ETF page (2–3 Nov). L3 tokens only. */
+/* FLAG: hand-made panel (L3 Card), rows and bars (L3 ListCell has no weight bar), like the page's other panels. */
+.panel {
+  padding: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px hairline */
+  flex-direction: column;
+  display: flex;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-direction: column;
+  display: flex;
+}
+
+/* The panel's header line: "503 positions · Weight" (after Public). */
+.head {
+  justify-content: space-between;
+  gap: var(--l3-spacing-12);
+  margin: 0 0 var(--l3-spacing-04);
+  padding-bottom: var(--l3-spacing-08);
+  box-shadow: inset 0 -1px 0 var(--l3-border-light); /* 1px hairline */
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-tertiary);
+  display: flex;
+}
+
+/* One thin bar of 100%, split by sector (2 between the parts), then the legend: dot | name | share. */
+.stack {
+  gap: var(--l3-spacing-02);
+  height: var(--l3-spacing-12);
+  margin: var(--l3-spacing-04) 0 var(--l3-spacing-08);
+  border-radius: var(--l3-radius-full);
+  display: flex;
+  overflow: hidden;
+}
+
+.stack > span {
+  flex-basis: 0;
+  min-width: var(--l3-spacing-02);
+}
+
+/* The legend: two groups a row — dot | name | share — on one grid, so the columns are shared by every row. The name
+   columns are as wide as the widest sector name any fund has (the sizer row), the share sits 8 after it. The first
+   group sits at the left edge, the second at the right edge (a flexible column between them). */
+.legend {
+  grid-template-columns: auto max-content auto 1fr auto max-content auto;
+  align-items: center;
+  column-gap: var(--l3-spacing-06);
+  row-gap: var(--l3-spacing-08);
+  margin: var(--l3-spacing-04) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+/* First group of each row: columns 1–3 (the sizer's first, then li 2, 4, 6 …); second group: columns 5–7. */
+.sizer > .sector:first-child > :nth-child(1), .legend > li.sector:nth-child(even) > :nth-child(1) { grid-column: 1; }
+.sizer > .sector:first-child > :nth-child(2), .legend > li.sector:nth-child(even) > :nth-child(2) { grid-column: 2; }
+.sizer > .sector:first-child > :nth-child(3), .legend > li.sector:nth-child(even) > :nth-child(3) { grid-column: 3; }
+.sizer > .sector:last-child > :nth-child(1), .legend > li.sector:nth-child(odd) > :nth-child(1) { grid-column: 5; }
+.sizer > .sector:last-child > :nth-child(2), .legend > li.sector:nth-child(odd) > :nth-child(2) { grid-column: 6; }
+.sizer > .sector:last-child > :nth-child(3), .legend > li.sector:nth-child(odd) > :nth-child(3) { grid-column: 7; }
+
+.legend > li,
+.sizer > .sector,
+.sector {
+  display: contents;
+}
+
+/* The sizer: no height, not seen — only its widths count. */
+.sizer > .sector > * {
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.sizer .sectorName {
+  flex-direction: column;
+  display: flex;
+}
+
+.dot {
+  width: var(--l3-spacing-10);
+  height: var(--l3-spacing-10);
+  border-radius: var(--l3-radius-full);
+  flex: none;
+}
+
+/* Sector colours (L3 accent surfaces); "Other" is grey. */
+[data-colour='discover'] { background: var(--l3-surface-accent-discover-default); }
+[data-colour='purple'] { background: var(--l3-surface-accent-purple-default); }
+[data-colour='teal'] { background: var(--l3-surface-accent-teal-default); }
+[data-colour='zing'] { background: var(--l3-surface-accent-zing-default); }
+[data-colour='other'] { background: var(--l3-content-tertiary); }
+
+/* Easier to read (3 Nov): 14 names in the primary colour, the share in 14 bold after its name. */
+.sectorName {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+.sectorWeight {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.row {
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  width: 100%;
+  padding: var(--l3-spacing-08) 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: none;
+  border: 0;
+  display: flex;
+}
+
+.row:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-08);
+}
+
+.text {
+  gap: var(--l3-spacing-06);
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.name {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sym {
+  margin-left: var(--l3-spacing-06);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-tertiary);
+}
+
+/* Share of the fund, against the biggest holding. */
+.bar {
+  height: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+  display: block;
+  overflow: hidden;
+}
+
+.bar > span {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--l3-content-accent-discover-default);
+  display: block;
+}
+
+.weight {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+/* The "Others" row: a few logos + "+497", the word Others, their share together. */
+.others {
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-12) 0 0;
+  box-shadow: inset 0 1px 0 var(--l3-border-light); /* 1px hairline */
+  display: flex;
+}
+
+.othersName {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-secondary);
+  flex: 1;
+}
+```
+
+### `src/flows/us-stocks/screens/etf/EtfHoldings.tsx`
+
+```tsx
+// "Top holdings" on the ETF page (2 Nov): the six biggest stocks the ETF holds, each with its logo, name, ticker and
+// share of the fund (a bar against the biggest); a row opens its stock page. Then one "Others" row for the rest: two of
+// their logos and "+497" in a circle, with their share of the fund together. No "View all" — searching 500 holdings in
+// a sheet wasn't a good experience.
+// The list opens with a header, after Public's allocation table: "503 positions" and "Weight".
+// Also "Allocation" (3 Nov, after Revolut's portfolio allocation): the fund split by sector — one thin colour bar, then
+// a legend of colour dots, names and shares, biggest first, then "Other". (No "Updated …" date: sector
+// splits barely move, and a date mostly reads as "this is old" to a new user.)
+// FLAG: copy not in copy.json yet (hard-coded). Holding rows and sector bars are hand-made (module CSS) — L3 ListCell
+// has no weight bar; the "+497" circle is hand-made (L3 Avatar has no count variant), as on the ETF list.
+import { SECTOR_NAMES, holdingsBeyond, otherHoldings, sectorsFor, shortCount, stockName, topHoldings, type Etf } from './data'
+import { HoldingLogo } from './parts'
+import listStyles from './Etf.module.css'
+import styles from './EtfHoldings.module.css'
+
+const TOP = 6
+
+export function TopHoldings({ etf, onOpen }: { etf: Etf; onOpen: (sym: string) => void }) {
+  const top = topHoldings(etf, TOP)
+  const biggest = top[0]?.weight ?? 100
+  const others = otherHoldings(etf, TOP)
+  const total = holdingsBeyond(etf, 0)
+  return (
+    <div className={styles.panel}>
+      <p className={styles.head} aria-hidden="true"><span>{total.toLocaleString('en-US')} positions</span><span>Weight</span></p>
+      <ul className={styles.list}>
+      {top.map((h) => {
+        const name = stockName(h.sym)
+        return (
+          <li key={h.sym}>
+            <button type="button" className={styles.row} onClick={() => onOpen(h.sym)} aria-label={`${name}, ${h.weight}% of the ETF. Open stock`}>
+              <HoldingLogo sym={h.sym} size={32} />
+              <span className={styles.text}>
+                <span className={styles.name}>{name}<span className={styles.sym}>{h.sym}</span></span>
+                <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(h.weight / biggest) * 100}%` }} /></span>
+              </span>
+              <span className={styles.weight}>{h.weight.toFixed(1)}%</span>
+            </button>
+          </li>
+        )
+      })}
+      {others.count > 0 && others.weight > 0 && (
+        <li className={styles.others} aria-label={`Others: ${others.count} more companies, ${others.weight.toFixed(1)}% of the ETF`}>
+          <span className={listStyles.logoStack} aria-hidden="true">
+            {others.logos.map((sym) => <HoldingLogo key={sym} sym={sym} size={24} />)}
+            <span className={listStyles.moreCount}>+{shortCount(others.count)}</span>
+          </span>
+          <span className={styles.othersName}>Others</span>
+          <span className={styles.weight}>{others.weight.toFixed(1)}%</span>
+        </li>
+      )}
+      </ul>
+    </div>
+  )
+}
+
+/** Sector colours, in order (L3 accent surfaces; no green / red / orange — those mean up, down and warning here). */
+const SECTOR_COLOURS = ['discover', 'purple', 'teal', 'zing']
+
+/**
+ * The "Allocation" block: one thin bar split by sector (each part its share of 100%), then a two-column legend — colour
+ * dot, name and share — "Other" in grey. (V2, the share written inside a taller bar, was tried on 3 Nov and dropped.)
+ */
+export function Allocation({ etf }: { etf: Etf }) {
+  const sectors = sectorsFor(etf)
+  if (sectors.length === 0) return null
+  const colour = (name: string, i: number) => (name === 'Other' ? 'other' : SECTOR_COLOURS[i % SECTOR_COLOURS.length])
+  return (
+    <div className={styles.panel}>
+      <span className={styles.stack} aria-hidden="true">
+        {sectors.map((s, i) => (
+          <span key={s.name} data-colour={colour(s.name, i)} style={{ flexGrow: s.weight }} />
+        ))}
+      </span>
+      <ul className={styles.legend} aria-label="Share of the fund by sector">
+        {/* A zero-height row with every sector name any fund has: it sets the name columns to the widest one, so both
+            columns line up the same on every ETF. */}
+        <li className={styles.sizer} aria-hidden="true">
+          {[0, 1].map((col) => (
+            <span key={col} className={styles.sector}>
+              <span className={styles.dot} />
+              <span className={styles.sectorName}>{SECTOR_NAMES.map((n) => <span key={n}>{n}</span>)}</span>
+              <span className={styles.sectorWeight}>99%</span>
+            </span>
+          ))}
+        </li>
+        {sectors.map((s, i) => (
+          <li key={s.name} className={styles.sector} aria-label={`${s.name}, ${s.weight}% of the ETF`}>
+            <span className={styles.dot} data-colour={colour(s.name, i)} aria-hidden="true" />
+            <span className={styles.sectorName}>{s.name}</span>
+            <span className={styles.sectorWeight}>{s.weight}%</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfListScreen.tsx`
@@ -29776,8 +30227,10 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   display: flex;
 }
 
-.currencySwitch {
-  align-self: flex-start;
+/* ≈ ₹ under the $ price: 10, secondary. */
+.priceInr {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
 }
 
 .titleRow {
@@ -29796,6 +30249,13 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 .name {
   font: var(--l3-text-heading-18);
   color: var(--l3-content-primary);
+  margin: 0;
+}
+
+/* The ticker and the fund's own name, under the plain name (2 Nov). */
+.alias {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-tertiary);
   margin: 0;
 }
 
@@ -30113,6 +30573,13 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   overflow: hidden;
 }
 
+/* "About this ETF": a short paragraph on what's inside the fund (2 Nov). */
+.about {
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+  margin: 0;
+}
+
 .newsMeta {
   gap: var(--l3-spacing-04);
   font: var(--l3-text-description-12);
@@ -30157,8 +30624,8 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 ### `src/flows/us-stocks/screens/etf/EtfPage.tsx`
 
 ```tsx
-// 9001:2 · ETF page — an ETF in the stock page layout: price, ETF / Exp. Ratio tags, line chart with a period picker,
-// Overview (Daily Performance, Fundamentals) and Events tabs, Buy / Sell dock (Go Long / Go Short on leveraged ETFs).
+// 9001:2 · ETF page — an ETF in the stock page layout: fund name over its ticker, price, ETF tag, line chart with a period picker,
+// Overview (About this ETF — what's inside it, Allocation by sector and Top holdings (EtfHoldings), Daily Performance, Fundamentals — the yearly fee lives there, not up top) and Events tabs, Buy / Sell dock (Go Long / Go Short on leveraged ETFs).
 // Reads the current ETF (setCurrentEtf; SPY by default).
 // FLAG: copy not in copy.json yet (hard-coded).
 // FLAG: price block, chart, range meter and info buttons are hand-made
@@ -30169,17 +30636,17 @@ import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { MaskIcon } from '@l3/components/MaskIcon'
-import { PriceChange } from '@l3/components/PriceChange'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
 import { asset } from '../../asset'
 import { useUsNav } from '../../nav'
 import { useUsJourney } from '../../../../shared/userStatus'
-import { CurrencySwitch, InrEquivalent, Usd, useUsd } from '../../../../shared/money'
+import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { activationFooter, type StockState } from '../activation/StockPage'
 import { getCurrentEtf } from './currentEtf'
-import { BUY_PAD, ETF_LIST, PERIODS, detailsFor, issuerLogo, issuerName, percent } from './data'
+import { BUY_PAD, ETF_LIST, PERIODS, aboutFor, detailsFor, issuerLogo, issuerName, openHolding, percent } from './data'
+import { Allocation, TopHoldings } from './EtfHoldings'
 import { boltIcon, infoIcon } from './icons'
 import { EtfMove } from './parts'
 import styles from './EtfPage.module.css'
@@ -30215,6 +30682,7 @@ function Stat({ label, value, end }: { label: string; value: ReactNode; end?: bo
 export function EtfPage({ backdrop }: { backdrop?: boolean }) {
   const { go, back } = useUsNav()
   const usd = useUsd()
+  const usdInr = useUsdInrRate()
   const etf = getCurrentEtf()
   const d = detailsFor(etf)
   const leveraged = etf.kind === 'leveraged'
@@ -30256,18 +30724,20 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
     </ButtonGroup>
   )
 
+  // No "≈ ₹" lines on the ETF page (3 Nov): every amount is inline <Usd>.
   // Values are $ numbers or $ text ('$672B'); <Usd> shows them in the currency picked. Volume is shares / a $ figure as written.
   const dayStats: [string, ReactNode][] = [
-    ['Open', <Usd value={etf.price - dayChangeAbs * 0.6} align="end" />],
-    ['Prev. Close', <Usd value={etf.price - dayChangeAbs} align="end" />],
-    ['AUM', <Usd text={etf.aum} align="end" />],
-    ['Volume', <Usd text={d.volume} align="end" />],
-    ['52-week high', <Usd value={d.high52} align="end" />],
-    ['52-week low', <Usd value={d.low52} align="end" />],
+    ['Open', <Usd value={etf.price - dayChangeAbs * 0.6} layout="inline" />],
+    ['Prev. Close', <Usd value={etf.price - dayChangeAbs} layout="inline" />],
+    ['AUM', <Usd text={etf.aum} layout="inline" />],
+    ['Volume', <Usd text={d.volume} layout="inline" />],
+    ['52-week high', <Usd value={d.high52} layout="inline" />],
+    ['52-week low', <Usd value={d.low52} layout="inline" />],
   ]
   const fundamentals: [string, ReactNode][] = [
-    ['Expense Ratio', percent(etf.expense)],
-    ['NAV', <Usd value={d.nav} align="end" />],
+    // The expense ratio, said plainly (most users don't know their own mutual fund's): what it costs per $100 a year.
+    ['Yearly fee', `${percent(etf.expense)} · $${etf.expense.toFixed(2)} per $100`],
+    ['NAV', <Usd value={d.nav} layout="inline" />],
     ['Index Tracked', d.index],
     ['Issuer', issuer ?? '—'],
     ['Dividend Yield', d.yield],
@@ -30281,27 +30751,30 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
       <div className={styles.assetHeader}>
         <div className={styles.titleRow}>
           <div className={styles.namePrice}>
+            {/* The fund's name, its ticker under it (2 Nov) — no plain name here; About this ETF explains it. */}
             <h1 className={styles.name}>{etf.name}</h1>
+            <p className={styles.alias}>{etf.sym}</p>
             <div className={styles.priceRow}>
               <span className={styles.price}><Usd value={etf.price} layout="inline" /></span>
               <span className={styles.change}>
-                <PriceChange value={etf.change} size="lg" />
+                {/* EtfMove, not L3 PriceChange: PriceChange always writes "+" / "−" beside its arrow (L3 gap: a no-sign
+                    option); the arrow alone says which way (3 Nov). The $ move has no sign either. */}
+                <EtfMove change={etf.change} size="lg" />
                 <span className={styles.changeAbs} data-down={dayChangeAbs < 0 || undefined}>
-                  (<Usd value={dayChangeAbs} sign layout="inline" />)
+                  (<Usd value={Math.abs(dayChangeAbs)} layout="inline" />)
                 </span>
               </span>
             </div>
-            <InrEquivalent usd={etf.price} />
+            {/* The price in rupees at the live rate, always, small under the $ (no $ / ₹ switch on this page). */}
+            <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>
           </div>
           <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
             {logo ? <img src={asset(`assets/etf/${logo.file}.png`)} alt="" /> : etf.sym[0]}
           </span>
         </div>
-        <CurrencySwitch className={styles.currencySwitch} />
         <div className={styles.tagsRow}>
           <div className={styles.tags}>
             <Tag variant="tertiary" color="neutral" size="md">ETF</Tag>
-            <Tag variant="tertiary" color="neutral" size="md">Exp. Ratio {percent(etf.expense)}</Tag>
             {leveraged && (
               <Tag variant="secondary" color={long ? 'profit' : 'loss'} size="md">{etf.lev} {long ? 'Long' : 'Short'}</Tag>
             )}
@@ -30352,11 +30825,27 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
           ) : (
             <div className={styles.overview}>
               <section className={styles.section}>
+                <SectionTitle title="About this ETF" />
+                <div className={styles.panel}>
+                  <p className={styles.about}>{aboutFor(etf)}</p>
+                </div>
+              </section>
+              {!leveraged && (
+                <section className={styles.section}>
+                  <SectionTitle title="Allocation" />
+                  <Allocation etf={etf} />
+                </section>
+              )}
+              <section className={styles.section}>
+                <SectionTitle title={leveraged ? 'Tracks' : 'Top holdings'} />
+                <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} />
+              </section>
+              <section className={styles.section}>
                 <SectionTitle title="Daily Performance" />
                 <div className={styles.panel} data-gap="04">
                   <div className={styles.lowHigh}>
-                    <Stat label="1D Low" value={<Usd value={d.low} />} />
-                    <Stat label="1D High" value={<Usd value={d.high} align="end" />} end />
+                    <Stat label="1D Low" value={<Usd value={d.low} layout="inline" />} />
+                    <Stat label="1D High" value={<Usd value={d.high} layout="inline" />} end />
                   </div>
                   <div
                     className={styles.dayRange}
@@ -30410,7 +30899,7 @@ import { Card } from '@l3/components/Card'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
-import { Usd, InrEquivalent } from '../../../../shared/money'
+import { Usd } from '../../../../shared/money'
 import { useUsJourney } from '../../../../shared/userStatus'
 import { activationFooter, type StockState } from '../activation/StockPage'
 import { getCurrentEtf, setCurrentEtf } from './currentEtf'
@@ -30482,7 +30971,6 @@ export function EtfPreviousScreen({ backdrop }: { backdrop?: boolean }) {
             <p className={styles.price}>
               <Usd value={etf.price} layout="inline" /> <EtfMove change={etf.change} />
             </p>
-            <InrEquivalent usd={etf.price} />
             <div className={styles.tags}>
               <Tag variant="secondary" color="neutral" size="sm">ETF</Tag>
               <Tag variant="secondary" color="neutral" size="sm">{etf.tracks}</Tag>
@@ -30608,11 +31096,23 @@ export type Etf = {
 
 const weights = (...rows: [string, number][]): EtfHolding[] => rows.map(([sym, weight]) => ({ sym, weight }))
 
-// Top holdings: Yahoo Finance topHoldings (Nov 2026), as % of the fund. Foreign holdings use their US-listed ADR / OTC ticker.
-// Leveraged ETFs list the exposure of the index they follow (their own holdings are swaps and T-bills).
-const SP500 = weights(['NVDA', 8.4], ['AAPL', 7.4], ['MSFT', 5.8], ['AMZN', 3.7], ['GOOGL', 3.1], ['AVGO', 2.5])
-const NASDAQ = weights(['NVDA', 8.3], ['AAPL', 7.4], ['MSFT', 5.8], ['MU', 5.0], ['AMD', 4.2], ['AMZN', 4.1])
-const SEMIS = weights(['NVDA', 19.3], ['TSM', 9.3], ['AMD', 5.5], ['AVGO', 5.3], ['MU', 4.9], ['AMAT', 4.7])
+// Sample holdings (the ETF page sorts them by weight; the first three written are the card's logos, so a well-known
+// name with a logo goes first — e.g. NVIDIA before TSMC, which has no logo file yet). The big index funds
+// carry about 20 so "View all" has a real list to show; the API would send the fund's full daily holdings file.
+const SP500 = weights(
+  ['NVDA', 7.6], ['MSFT', 6.7], ['AAPL', 6.3], ['AMZN', 3.9], ['META', 2.9], ['AVGO', 2.6], ['GOOGL', 2.1], ['TSLA', 1.9],
+  ['JPM', 1.5], ['V', 1.1], ['WMT', 1.0], ['XOM', 0.9], ['MA', 0.9], ['NFLX', 0.8], ['COST', 0.8], ['ORCL', 0.8],
+  ['HD', 0.7], ['JNJ', 0.7], ['UNH', 0.6], ['KO', 0.4],
+)
+const NASDAQ = weights(
+  ['NVDA', 9.8], ['MSFT', 8.9], ['AAPL', 8.1], ['AVGO', 5.6], ['AMZN', 5.4], ['META', 3.8], ['GOOGL', 3.4], ['TSLA', 3.1],
+  ['NFLX', 2.6], ['COST', 2.5], ['PLTR', 2.1], ['AMD', 1.6], ['CSCO', 1.4], ['PEP', 1.2], ['ADBE', 1.0], ['QCOM', 1.0],
+  ['SBUX', 0.6], ['INTC', 0.6], ['PYPL', 0.4], ['ABNB', 0.4],
+)
+const SEMIS = weights(
+  ['NVDA', 19.8], ['AVGO', 8.6], ['AMD', 5.2], ['TSM', 10.4], ['ASML', 4.9], ['QCOM', 4.6], ['MU', 4.3], ['INTC', 3.9],
+  ['TXN', 3.8], ['AMAT', 3.6], ['LRCX', 3.4], ['KLAC', 3.1], ['ADI', 2.9], ['MRVL', 2.4], ['NXPI', 1.9],
+)
 
 export const ETFS: Etf[] = [
   { sym: 'SPY', name: 'SPDR S&P 500 ETF Trust', description: 'The 500 biggest US companies in one fund', tracks: 'S&P 500', kind: 'normal', country: 'US', sector: 'Broad market', price: 682.4, change: 0.34, expense: 0.09, aum: '$809B', holdings: SP500 },
@@ -30664,6 +31164,106 @@ export const COUNTRIES = ['US', 'China', 'Japan', 'Europe', 'Korea']
 /** Sector chips on the Regular tab (after "All"), the other filter the switcher chip picks. */
 export type EtfSector = 'Broad market' | 'Technology' | 'Financials' | 'Healthcare' | 'Energy' | 'Industrials'
 export const SECTORS: EtfSector[] = ['Broad market', 'Technology', 'Financials', 'Healthcare', 'Energy', 'Industrials']
+// What each ETF does, in plain English (2 Nov): a ticker (QQQ, VTI, SMH) means nothing to a new user, so cards lead
+// with a plain name and keep the ticker as an alias ("Top 500 US companies · SPY", like Zomato / Eternal). `known` is
+// 2–3 companies people recognise (picked by name recognition, not weight); `does` answers "what does SPY do?" in one
+// short, plain sentence: "Owns …" (no value-chain arrows — too much, 2 Nov).
+export type EtfPlain = { plain: string; known: string[]; does: string }
+const PLAIN: Record<string, EtfPlain> = {
+  SPY: { plain: 'Top 500 US companies', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Owns the 500 biggest companies in the US.' },
+  QQQ: { plain: 'Top 100 tech-heavy US companies', known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns the 100 biggest companies on the Nasdaq, mostly tech.' },
+  VTI: { plain: 'The whole US stock market', known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns 3,600+ US companies, big and small.' },
+  SMH: { plain: 'Chip makers', known: ['NVIDIA', 'Broadcom', 'AMD'], does: 'Owns companies that make computer chips.' },
+  ITA: { plain: 'US defence & aerospace', known: ['GE Aerospace', 'Lockheed Martin', 'Boeing'], does: 'Owns companies that build planes, jets and defence systems.' },
+  XLE: { plain: 'US oil & gas', known: ['ExxonMobil', 'Chevron', 'ConocoPhillips'], does: 'Owns the biggest US oil and gas companies.' },
+  BOTZ: { plain: 'Robots & AI', known: ['NVIDIA', 'ABB', 'Intuitive Surgical'], does: 'Owns companies that make robots and AI.' },
+  UFO: { plain: 'Space companies', known: ['Rocket Lab', 'Garmin', 'AST SpaceMobile'], does: 'Owns companies that earn from rockets and satellites.' },
+  INDA: { plain: 'Big Indian companies, in dollars', known: ['HDFC Bank', 'Reliance', 'Infosys'], does: "Owns India's biggest companies, in dollars." },
+  EPI: { plain: 'Profitable Indian companies', known: ['Reliance', 'Infosys', 'HDFC Bank'], does: 'Owns Indian companies that make a profit.' },
+  MCHI: { plain: 'Big Chinese companies', known: ['Alibaba', 'Tencent', 'Xiaomi'], does: "Owns China's biggest companies." },
+  KWEB: { plain: 'Chinese internet companies', known: ['Alibaba', 'Tencent', 'Temu (PDD)'], does: "Owns China's biggest internet companies." },
+  EWJ: { plain: 'Big Japanese companies', known: ['Toyota', 'Sony', 'Nintendo'], does: "Owns Japan's biggest companies." },
+  VGK: { plain: 'Big European companies', known: ['Nestlé', 'Louis Vuitton', 'ASML'], does: 'Owns 1,200+ companies across Europe.' },
+  EWY: { plain: 'Big South Korean companies', known: ['Samsung', 'SK Hynix', 'Hyundai'], does: "Owns South Korea's biggest companies." },
+}
+/** The plain-English side of an ETF; leveraged ones (off for now) fall back to the fund's name. */
+export const plainFor = (etf: Etf): EtfPlain => PLAIN[etf.sym] ?? { plain: etf.name, known: [], does: etf.tracks }
+
+// "About this ETF" on the ETF page (2 Nov): a short paragraph on what's inside — which kinds of companies, the
+// biggest names, and how many it holds. Sample copy; the API would send it with the fund.
+const ABOUT: Record<string, string> = {
+  SPY: "Tracks the S&P 500 — the 500 largest companies listed in the US. The biggest are tech names like Apple, Microsoft, NVIDIA and Amazon, alongside banks (JPMorgan), healthcare (Eli Lilly), retail (Walmart) and more. Buying one share spreads your money across all 500.",
+  QQQ: 'Tracks the Nasdaq-100 — the 100 biggest non-financial companies on the Nasdaq exchange. Mostly tech: Apple, Microsoft, NVIDIA, Amazon, Meta, Alphabet (Google) and Broadcom, plus names like Costco, Netflix and PepsiCo.',
+  VTI: 'Holds almost every listed US company — about 3,600 of them, from giants like Apple, Microsoft and Amazon down to small companies most people haven’t heard of. Bigger companies make up more of the fund.',
+  SMH: 'Holds about 25 of the biggest companies that design or make computer chips: NVIDIA, Taiwan Semiconductor (TSMC), Broadcom, AMD, ASML, Qualcomm and Micron. Their chips go into phones, laptops, cars and the data centres that run AI.',
+  ITA: 'Holds about 38 US companies that build aircraft, jet engines and defence systems: GE Aerospace, RTX (Raytheon), Lockheed Martin, Boeing, Northrop Grumman and General Dynamics. Much of their business comes from governments and airlines.',
+  XLE: 'Holds the 22 energy companies in the S&P 500 — mostly oil and gas producers and refiners such as ExxonMobil, Chevron, ConocoPhillips and Schlumberger. Its price tends to move with oil prices.',
+  BOTZ: 'Holds companies building robots and AI: NVIDIA (AI chips), Intuitive Surgical (surgery robots), ABB and Fanuc (factory robots), Keyence and more, from the US, Japan and Europe.',
+  UFO: 'Holds companies that earn from space: rocket launchers (Rocket Lab), satellite makers and operators (AST SpaceMobile, Iridium, EchoStar) and GPS (Garmin).',
+  INDA: "Holds about 150 of India's large and mid-sized companies, bought in dollars on a US exchange: HDFC Bank, Reliance, ICICI Bank, Infosys, Bharti Airtel and TCS among them. Banks and IT are the biggest parts.",
+  EPI: 'Holds 400+ Indian companies, but only ones that make a profit, and more of those that earn more: Reliance, Infosys, HDFC Bank, ICICI Bank, TCS and others.',
+  MCHI: "Holds about 550 of China's large and mid-sized companies: Tencent (WeChat), Alibaba, Meituan, PDD (Temu), Xiaomi, plus big banks and carmakers like BYD.",
+  KWEB: "Holds China's main internet companies: Tencent (WeChat), Alibaba (Taobao), PDD (Temu), Meituan (food delivery), JD.com, Baidu and NetEase.",
+  EWJ: "Holds about 185 of Japan's biggest companies: Toyota, Sony, Mitsubishi UFJ (a bank), Hitachi, Nintendo, Keyence and more — carmakers, electronics, banks and industry.",
+  VGK: 'Holds about 1,200 European companies across the UK, France, Switzerland, Germany and more: ASML, Novo Nordisk, Nestlé, LVMH (Louis Vuitton), SAP, Shell and AstraZeneca.',
+  EWY: "Holds about 90 South Korean companies. Samsung Electronics is the biggest by far, then SK Hynix (memory chips), Hyundai, Kia, KB Financial and Naver.",
+}
+/** The "About this ETF" paragraph; leveraged ones (off for now) fall back to the plain line. */
+export const aboutFor = (etf: Etf) => ABOUT[etf.sym] ?? plainFor(etf).does
+
+// "Allocation" on the ETF page (3 Nov, after Revolut's portfolio allocation): the fund split by sector, biggest first,
+// four sectors and "Other" for the rest. Names stay short (no wider than "Oil producers") so the legend fits two columns at
+// 360. Sample, rounded weights; the API would send the fund's sector breakdown.
+const SECTOR_SPLIT: Record<string, [string, number][]> = {
+  SPY: [['Technology', 34], ['Financials', 13], ['Healthcare', 10], ['Consumer', 10]],
+  QQQ: [['Technology', 51], ['Media', 16], ['Consumer', 14], ['Healthcare', 6]],
+  VTI: [['Technology', 32], ['Financials', 13], ['Healthcare', 11], ['Consumer', 10]],
+  SMH: [['Chip makers', 78], ['Chip tools', 18], ['Software', 2], ['Industrials', 1]],
+  ITA: [['Defence', 92], ['Industrials', 5], ['Technology', 2], ['Materials', 1]],
+  XLE: [['Oil producers', 50], ['Integrated oil', 34], ['Refining', 8], ['Oil services', 7]],
+  BOTZ: [['Industrials', 45], ['Technology', 38], ['Healthcare', 14], ['Consumer', 3]],
+  UFO: [['Satellites', 38], ['Aerospace', 30], ['Media', 18], ['Technology', 12]],
+  INDA: [['Financials', 27], ['Technology', 12], ['Energy', 10], ['Consumer', 9]],
+  EPI: [['Financials', 25], ['Energy', 17], ['Technology', 15], ['Materials', 10]],
+  MCHI: [['Consumer', 31], ['Media', 22], ['Financials', 16], ['Technology', 8]],
+  KWEB: [['Shopping', 48], ['Social apps', 32], ['Travel', 14], ['Search', 6]],
+  EWJ: [['Industrials', 23], ['Consumer', 19], ['Financials', 16], ['Technology', 14]],
+  VGK: [['Financials', 21], ['Industrials', 17], ['Healthcare', 14], ['Consumer', 11]],
+  EWY: [['Technology', 40], ['Financials', 13], ['Industrials', 12], ['Consumer', 9]],
+}
+/** Every sector name any fund has (and "Other"): the legend's name column is as wide as the widest of them on every ETF. */
+export const SECTOR_NAMES = [...new Set([...Object.values(SECTOR_SPLIT).flat().map(([name]) => name), 'Other'])]
+/** The fund's sectors, biggest first, with "Other" for the rest (none for a fund without a sample breakdown). */
+export const sectorsFor = (etf: Etf): { name: string; weight: number }[] => {
+  const rows = SECTOR_SPLIT[etf.sym]
+  if (!rows) return []
+  const other = 100 - rows.reduce((sum, [, w]) => sum + w, 0)
+  return [...rows.map(([name, weight]) => ({ name, weight })), ...(other > 0 ? [{ name: 'Other', weight: other }] : [])]
+}
+
+/** How many companies the fund holds beyond the first `shown` ("+500 more" after three logos); 0 when unknown. */
+export const holdingsBeyond = (etf: Etf, shown: number) => {
+  const total = Number((HOLDING_COUNT[etf.sym] ?? `${etf.holdings.length}`).replace(',', ''))
+  return Math.max(0, total - shown)
+}
+/** A count for a 24 circle: 497 → "497", 3609 → "3k" (thousands, rounded down, so it fits and never overstates). */
+export const shortCount = (n: number) => (n >= 1000 ? `${Math.floor(n / 1000)}k` : `${n}`)
+
+/** "Apple, Microsoft, NVIDIA + 500 more" — the known companies, plus how many others the fund holds. */
+export const knownLine = (etf: Etf) => {
+  const { known } = plainFor(etf)
+  const more = Number((HOLDING_COUNT[etf.sym] ?? '').replace(',', '')) - known.length
+  const count = more >= 1000 ? `${(more / 1000).toFixed(1)}k` : `${more}`
+  return more > 0 ? `${known.join(', ')} + ${count} more` : known.join(', ')
+}
+
+/** Search on the ETF list: the ticker still matches, and so do the plain name, the fund's name, what it tracks, the companies and what it does ("chips"). */
+export const matchesEtf = (etf: Etf, query: string) => {
+  const q = query.trim().toLowerCase()
+  if (!q) return true
+  const { plain, known, does } = plainFor(etf)
+  return [etf.sym, plain, etf.name, etf.tracks, does, ...known].some((s) => s.toLowerCase().includes(q))
+}
 
 export const etfFor = (sym: string): Etf => ETFS.find((e) => e.sym === sym) ?? ETFS[0]
 /** Leveraged ETFs on one index / theme (the long and the short). */
@@ -30744,8 +31344,37 @@ export const BUY_PAD = '5837:95201'
 /** Stocks home (stocks-01, follows the user status) — the back fallback of the ETF list. */
 export const HOME_IND = '5714:64982'
 
-/** A holding's display name (the catalogue's, or the symbol when it isn't in it). */
-export const stockName = (sym: string) => stockFor(sym).name
+// Names for holdings the US catalogue doesn't have (non-US companies, smaller US ones).
+const HOLDING_NAMES: Record<string, string> = {
+  TSM: 'Taiwan Semiconductor (TSMC)', ASML: 'ASML', TXN: 'Texas Instruments', AMAT: 'Applied Materials', LRCX: 'Lam Research',
+  KLAC: 'KLA', ADI: 'Analog Devices', MRVL: 'Marvell', NXPI: 'NXP Semiconductors', GE: 'GE Aerospace', RTX: 'RTX (Raytheon)',
+  LMT: 'Lockheed Martin', NOC: 'Northrop Grumman', COP: 'ConocoPhillips', ISRG: 'Intuitive Surgical', ABB: 'ABB',
+  RKLB: 'Rocket Lab', ASTS: 'AST SpaceMobile', GRMN: 'Garmin', HDB: 'HDFC Bank', IBN: 'ICICI Bank', INFY: 'Infosys',
+  BABA: 'Alibaba', PDD: 'PDD (Temu)', BIDU: 'Baidu', TM: 'Toyota', SONY: 'Sony', MUFG: 'Mitsubishi UFJ', NVO: 'Novo Nordisk',
+  SAP: 'SAP', SSNLF: 'Samsung Electronics', HXSCL: 'SK Hynix',
+}
+/** A holding's display name (the catalogue's, a known name, or the symbol). */
+export const stockName = (sym: string) => {
+  const name = stockFor(sym).name
+  return name === sym ? HOLDING_NAMES[sym] ?? sym : name
+}
+
+/** The `count` biggest holdings, biggest first. */
+export const topHoldings = (etf: Etf, count: number) => [...etf.holdings].sort((a, b) => b.weight - a.weight).slice(0, count)
+
+/**
+ * Everything after the top `count`, as one "Others" row: a few of their logos, how many companies that is and their
+ * share of the fund together (100% minus the top ones).
+ */
+export const otherHoldings = (etf: Etf, count: number) => {
+  const sorted = [...etf.holdings].sort((a, b) => b.weight - a.weight)
+  const topShare = sorted.slice(0, count).reduce((sum, h) => sum + h.weight, 0)
+  return {
+    logos: sorted.slice(count, count + 2).map((h) => h.sym),
+    count: holdingsBeyond(etf, Math.min(count, sorted.length)),
+    weight: Math.max(0, 100 - topShare),
+  }
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/icons.ts`
@@ -30780,12 +31409,23 @@ export const screens: UsScreenMap = {
 ### `src/flows/us-stocks/screens/etf/parts.tsx`
 
 ```tsx
-// Small pieces the three ETF screens share: the issuer logo disc, the day-change figure and the leveraged tag.
+// Small pieces the ETF screens share: the issuer logo disc, a holding's logo, the day-change figure and the leveraged tag.
 // FLAG: hand-made logo disc and change figure (module CSS) — L3 has no ETF / issuer logo. The ETF list rows use StockListCard (PriceChange); EtfMove is only for the ETF page.
+import { Avatar } from '@l3/components/Avatar'
 import { Tag } from '@l3/components/Tag'
 import { asset } from '../../asset'
+import { logoFor, logoPlate } from '../../data'
 import { issuerLogo, type Etf } from './data'
 import styles from './Etf.module.css'
+
+/**
+ * A company the ETF holds: its logo in an L3 Avatar (initials when there's none), on a white or black plate when the
+ * logo is a transparent mark (logoPlate). FLAG: the plate colours the Avatar's image background (L3 has no plate prop).
+ */
+export function HoldingLogo({ sym, size }: { sym: string; size: 24 | 32 }) {
+  const plate = logoPlate(sym)
+  return <Avatar src={logoFor(sym)} initials={sym} size={size} className={plate === 'black' ? styles.plateBlack : plate === 'white' ? styles.plateWhite : undefined} />
+}
 
 /** The issuer's logo on its plate; initials when the issuer has none. */
 export function EtfDisc({ sym, size = 32 }: { sym: string; size?: 24 | 32 | 40 }) {
@@ -30806,12 +31446,16 @@ export const etfLogoUrl = (sym: string) => {
   return logo ? asset(`assets/etf/logos/${logo.file}.svg`) : undefined
 }
 
-export function EtfMove({ change }: { change: number }) {
+/**
+ * A day change: ▲ / ▼ in the up / down colour, then the size of the move. No "+" / "−" (3 Nov): the arrow already says
+ * which way. Screen readers get the word. `lg` is the ETF page's big change next to the price.
+ */
+export function EtfMove({ change, size = 'sm' }: { change: number; size?: 'sm' | 'lg' }) {
   const up = change >= 0
   return (
-    <span className={styles.move} data-up={up || undefined}>
-      {up ? '+' : '−'}
-      {Math.abs(change).toFixed(2)}%
+    <span className={styles.move} data-up={up || undefined} data-size={size === 'lg' ? 'lg' : undefined} aria-label={`${up ? 'up' : 'down'} ${Math.abs(change).toFixed(2)}%`}>
+      <span className={styles.tri} aria-hidden="true" />
+      <span aria-hidden="true">{Math.abs(change).toFixed(2)}%</span>
     </span>
   )
 }
@@ -32247,24 +32891,24 @@ function FeeBreakdownSheet({ onClose }: { onClose: () => void }) {
     >
       <div className={styles.body}>
         <KeyValueList aria-label="Estimated fee">
-          <KeyValueRow total label="Estimated Fee" value={<Usd value={FEES.total} align="end" />} />
+          <KeyValueRow total label="Estimated Fee" value={<Usd value={FEES.total} align="end" layout="stack" />} />
         </KeyValueList>
         <hr className={styles.divider} />
         <div className={styles.group} data-gap="4">
           <KeyValueList aria-label="Brokerage">
-            <KeyValueRow label="Brokerage" value={<Usd value={FEES.brokerage} align="end" />} />
+            <KeyValueRow label="Brokerage" value={<Usd value={FEES.brokerage} align="end" layout="stack" />} />
           </KeyValueList>
           <p className={styles.small} data-narrow>Note: Brokerage is 0.25% of the order value. GST at 18% is charged on it.</p>
         </div>
         <hr className={styles.divider} />
         <KeyValueList size="sm" aria-label="Charges">
-          <KeyValueRow size="md" label="Charges" value={<Usd value={FEES.charges} align="end" />} />
-          <KeyValueRow label="• IFSCA turnover fee" value={<Usd value={FEES.charges} align="end" />} />
+          <KeyValueRow size="md" label="Charges" value={<Usd value={FEES.charges} align="end" layout="stack" />} />
+          <KeyValueRow label="• IFSCA turnover fee" value={<Usd value={FEES.charges} align="end" layout="stack" />} />
         </KeyValueList>
         <hr className={styles.divider} />
         <KeyValueList size="sm" aria-label="Taxes">
-          <KeyValueRow size="md" label="Taxes" value={<Usd value={FEES.taxes} align="end" />} />
-          <KeyValueRow label="• GST on brokerage" value={<Usd value={FEES.taxes} align="end" />} />
+          <KeyValueRow size="md" label="Taxes" value={<Usd value={FEES.taxes} align="end" layout="stack" />} />
+          <KeyValueRow label="• GST on brokerage" value={<Usd value={FEES.taxes} align="end" layout="stack" />} />
         </KeyValueList>
         <hr className={styles.divider} />
         <p className={styles.small} data-center>Note: The amounts mentioned above are approximate values and may vary slightly at the time of execution.</p>
@@ -34636,6 +35280,13 @@ export function PendingBanner({ title, sub, action, onOpen }: PendingBannerProps
 .link3 .switch {
   padding-bottom:var(--l3-spacing-08);
 }
+
+
+/* ≈ ₹ under the USD balance (in the card's "exact" line): 10, secondary. */
+.balanceInr {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
+}
 ```
 
 ### `src/flows/us-stocks/screens/wallet/WalletScreen.tsx`
@@ -34653,14 +35304,13 @@ import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { Tabs } from '@l3/components/Tabs'
-import { Stack } from '@l3/components/Stack'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
 import { useLinkedBanks } from '../../../../shared/userStatus'
 import { msAccountBalance } from '@l3/icons/material'
 import { moneyIds } from '../money/ids'
-import { CurrencySwitch, InrEquivalent, parseUsd, useUsd } from '../../../../shared/money'
+import { parseUsd, useInrEquivalent, useUsd } from '../../../../shared/money'
 import { BalanceCard, FLIP_KEY } from './BalanceCard'
 import { FIGMA } from './data'
 import { GrowNudge } from './GrowNudge'
@@ -34748,6 +35398,9 @@ export function WalletScreen(props: WalletScreenProps) {
   const shownTotal = localise(rawTotal)
   const shownWithdrawable = localise(rawWithdrawable)
   const totalUsd = parseUsd(rawTotal)?.value
+  // The USD balance in rupees at the live rate, small under it — only with the "₹ below" setting (off by default);
+  // none on a $0 wallet.
+  const balanceInr = useInrEquivalent()(totalUsd ?? 0, { decimals: 2 })
   const { go, back } = useUsNav()
 
   const switchTab = (next: WalletTab, animate = false) => {
@@ -34883,15 +35536,10 @@ export function WalletScreen(props: WalletScreenProps) {
           still={backdrop}
           withdrawable={shownWithdrawable}
           currency={inr ? 'INR' : 'USD'}
-          below={totalUsd ? <InrEquivalent usd={totalUsd} /> : undefined}
+          below={!inr && totalUsd && balanceInr ? <span className={styles.balanceInr}>{balanceInr}</span> : undefined}
           onDetails={backdrop ? undefined : () => setDetailsState('open')}
         />
         <div className={`${styles.page} ${styles.body}`} data-flow={noteFlow || undefined}>
-          {!inr && (
-            <Stack align="center">
-              <CurrencySwitch />
-            </Stack>
-          )}
           {children}
           {nudge && !inr && <GrowNudge />}
           {!inr && <p className={styles.custodian}>US Stocks wallet · held at ViewTrade IFSC</p>}
@@ -58278,6 +58926,15 @@ export const usLogoSymbols: string[] = [...logoBySymbol.keys()].sort()
 /** The logo of a US company (SVG or PNG URL), or undefined (show initials). */
 export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(symbol)
 
+// Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
+// a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
+// (Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+/** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
+export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
+  PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined
+
 // The stock being looked at: a list (Market tab, Search …) sets it, the stock page reads it.
 let viewed: string | undefined
 
@@ -58363,8 +59020,8 @@ export const linkedBanks: LinkedBank[] = [
 // US Stocks money — every value inside US Stocks is in US dollars (the news, prices and filings users read are in $),
 // with its rupee equivalent at the live USD → INR rate available everywhere. How the ₹ shows is a prototype setting
 // ("₹ equivalent" in the User status panel), so the same screens try each idea:
-//   off    — $ only
-//   below  — $ with a small "≈ ₹1,23,456" line under it
+//   off    — $ only (the default; the stock and ETF pages still show ≈ ₹ under the price)
+//   below  — $ with a small "≈ ₹1,23,456" line under it — only in the order pad since 3 Nov (`layout="stack"`)
 //   switch — a $ / ₹ switch (<CurrencySwitch />); picking ₹ turns every US value into rupees, across every screen
 // Screens never format a US amount themselves: <Usd value={188.42} /> (or useUsd() where only a string fits).
 // The rate is real: USDINR=X in us-market-snapshot.json (`npm run us:snapshot`), ticking around it like the prices
@@ -58449,7 +59106,9 @@ export const moneyOptions: FlowOption[] = [
     group: 'US Stocks money',
     label: '₹ equivalent',
     values: [{ value: 'off', label: '$ only' }, { value: 'below', label: '₹ below' }, { value: 'switch', label: '$ / ₹ switch' }],
-    default: 'below',
+    // $ only by default (3 Nov): the ₹ shows when picked here. The stock and ETF pages are the exception — their price
+    // always has its ≈ ₹ under it.
+    default: 'off',
     // The Home and its US tab screens (the US tab's fixed states show $ amounts too), a US stock page, the wallet's US tab.
     floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54'],
   },
@@ -58518,8 +59177,9 @@ export type UsdProps = MoneyFormat & {
   /** … or a $ amount written as text ('$188.42', '+$12.30', '$4.59T'); anything else shows as it is. */
   text?: string
   /**
-   * `stack` (default): the ≈ ₹ line goes under the value. `inline`: no ₹ line (inside a sentence, a button, a tight
-   * row) — the switch still turns it into ₹.
+   * `inline` (default): no ₹ line — the switch still turns it into ₹. `stack`: the ≈ ₹ line goes under the value, with
+   * the "₹ below" setting. Since 3 Nov only the order pad asks for it (its Fee breakdown); listing cards, pages and
+   * sheets show $ only.
    */
   layout?: 'stack' | 'inline'
   /** Text-align of the stack (a right-aligned column → 'end'). */
@@ -58531,7 +59191,7 @@ export type UsdProps = MoneyFormat & {
  * A US amount. Shows $ (or ₹ with the switch on ₹) in the parent's own type style, and with "₹ below" a small
  * secondary "≈ ₹…" line under it. `<Usd value={1234.5} />` · `<Usd text="+$12.30" />` · `<Usd value={4.59e12} compact />`
  */
-export function Usd({ value, text, layout = 'stack', align = 'start', className, ...format }: UsdProps) {
+export function Usd({ value, text, layout = 'inline', align = 'start', className, ...format }: UsdProps) {
   const usd = useUsd()
   const below = useInrEquivalent()
   const parsed = value === undefined && text !== undefined ? parseUsd(text) : undefined

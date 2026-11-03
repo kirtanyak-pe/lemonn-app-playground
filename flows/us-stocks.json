@@ -186,6 +186,8 @@
     "src/flows/us-stocks/screens/entry/sheets/SortSheet.tsx",
     "src/flows/us-stocks/screens/entry/spxData.ts",
     "src/flows/us-stocks/screens/etf/Etf.module.css",
+    "src/flows/us-stocks/screens/etf/EtfHoldings.module.css",
+    "src/flows/us-stocks/screens/etf/EtfHoldings.tsx",
     "src/flows/us-stocks/screens/etf/EtfListScreen.tsx",
     "src/flows/us-stocks/screens/etf/EtfPage.module.css",
     "src/flows/us-stocks/screens/etf/EtfPage.tsx",
