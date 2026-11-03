@@ -295,6 +295,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — Watchlists (Indian and US tabs): the section's link is “View all” instead of “Add Watchlist”. It's meant to open an all-watchlists page, which isn't built yet, so it does nothing for now.
+- 2026-11-03 — The US tab gets the IN tab's Watchlist rail (shared `Watchlists`, now with a `lists` prop) between Top analyst picks and Brands You Know, with the user's US lists (`usWatchlists` in us/data.ts: US tech, Dividend payers, To research).
 - 2026-11-03 — The holdings card on Home is tappable edge to edge: the space above and below the holdings is inside its own card now, not padding around it.
 - 2026-11-03 — The prototype now opens on an all-set user: User status defaults to Activated, USD wallet Has money, US holdings on (Holds NVDA), so the home shows the funded, holding US tab.
 - 2026-11-03 — The US tab's holdings card (US holdings $ … ›) opens Portfolio on Holdings with the US Stocks P&L card upfront and the US Stocks tab picked (us-stocks-77).
@@ -19742,7 +19744,7 @@ import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
 import { msChevronRight, msCurrencyRupee, msTrendingDown, msTrendingUp } from '@l3/icons/material'
 import { inr } from '../../../shared/data/format'
-import { watchlists } from '../../../shared/data/portfolio'
+import { watchlists, type Watchlist } from '../../../shared/data/portfolio'
 import { Rail } from '../../../shared/ui/Rail'
 import { useMarketSnapshot } from '../../../shared/data/companies'
 import { useFlowOption } from '../../../shared/prototype'
@@ -19857,13 +19859,13 @@ export function TopMovers({ initial = 'gainers', onStock, onViewAll }: { initial
   )
 }
 
-/** The user's watchlists, each opening its list. "New watchlist" creates one. */
-export function Watchlists({ onOpen, onCreate }: { onOpen?: (id: string) => void; onCreate?: () => void }) {
+/** The user's watchlists, each opening its list. "View all" will open the all-watchlists page (not built yet). `lists`: the US tab passes its own. */
+export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: Watchlist[]; onOpen?: (id: string) => void; onViewAll?: () => void }) {
   return (
     <Stack as="section" gap="16" aria-label={t('watchlists.title')}>
-      <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('watchlists.title')} action={{ type: 'view-all', label: t('watchlists.new'), onClick: () => onCreate?.() }} /></Inset>
+      <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('watchlists.title')} action={{ type: 'view-all', onClick: () => onViewAll?.() }} /></Inset>
       <Rail label={t('watchlists.railLabel')} visible={1.6}>
-        {watchlists.map((w) => (
+        {lists.map((w) => (
           <ListCell
             key={w.id}
             variant="card"
@@ -23823,7 +23825,7 @@ import { Usd, useUsd } from '../../../../shared/money'
 import { useFlowOption } from '../../../../shared/prototype'
 import { usShortcuts } from '../../data'
 import { t } from '../../copy'
-import { Shortcuts } from '../Discover'
+import { Shortcuts, Watchlists } from '../Discover'
 import { Flag, type FlagCode } from '../../../../shared/ui/Flag'
 import { StockListCard } from '../../../../shared/ui/StockListCard'
 import {
@@ -23853,6 +23855,7 @@ import {
   type UsState,
   type MoverFilter,
   type MoverToday,
+  usWatchlists,
 } from './data'
 import { ThemeRail } from './ThemeCard'
 import { UsActivationCard } from './UsActivationCard'
@@ -23964,6 +23967,8 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
           </div>
         )}
       </Stack>
+
+      <Watchlists lists={usWatchlists} />
 
       <Stack as="section" gap="16" aria-label={t('us.brands.title')}>
         <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.brands.title')} action={{ type: 'view-all', onClick: () => {} }} /></Inset>
@@ -24246,6 +24251,7 @@ function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) =
 // src/shared/data/us-market-snapshot.json) and tick with live.ts; market caps and the user's holdings are samples.
 // The words the app itself says are in copy.json (`us.*`).
 import { catalogue, usIndexQuote, usQuote } from '../../../../shared/data/usStocks'
+import type { Watchlist } from '../../../../shared/data/portfolio'
 import benefitBolt from '../../assets/us/benefit-bolt.svg'
 import benefitDash from '../../assets/in/benefit-dash.svg'
 import benefitBrokerage from '../../assets/in/benefit-brokerage.svg'
@@ -24747,6 +24753,14 @@ export const themeMonthReturn = (symbols: string[]) => {
 
 /** The theme the theme page (stocks-23 …) shows is one screen per theme: `themeScreenId`. */
 export const themeScreenId = (id: ThemeId) => `stocks-${23 + themes.findIndex((theme) => theme.id === id)}`
+
+
+/** The user's US watchlists on the US tab (names are the user's own), in the IN tab's Watchlist rail. */
+export const usWatchlists: Watchlist[] = [
+  { id: 'us-tech', name: 'US tech', count: 9 },
+  { id: 'dividends', name: 'Dividend payers', count: 5 },
+  { id: 'us-research', name: 'To research', count: 0 },
+]
 ```
 
 ### `src/flows/stocks/components/us/sheets/ActivationApprovedSheet.tsx`
@@ -25681,7 +25695,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "movers.losers": "Top Losers",
   "movers.under100": "Under ₹100",
   "watchlists.title": "Watchlist",
-  "watchlists.new": "Add Watchlist",
   "watchlists.railLabel": "Your watchlists",
   "watchlists.one": "{count} stock",
   "watchlists.many": "{count} stocks",
@@ -50284,9 +50297,9 @@ export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(s
 
 // Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
 // a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
-// (Northrop Grumman, Samsung) sit on black.
-const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
-const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+// (Lockheed Martin, Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['LMT', 'NOC', 'SSNLF'])
 /** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
 export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
   PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined

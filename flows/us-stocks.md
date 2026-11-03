@@ -114,6 +114,13 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — Stock page: Company financials' y-axis no longer runs off the card — labels drop trailing zeros ($200B) and the plot leaves room for the longest one (also in ₹).
+- 2026-11-03 — Stock page: About Company shows each company's real profile (what it does, where it's based, when it was founded — `screens/activation/companyProfiles.ts`, 25 companies), three lines until Read more expands it (Read less folds it back); a stock without one gets a one-line listing note and no link. Text stays 14 (description 14). Daily Performance's and Fundamentals' grids have 12 padding on every side. Tapping a peer opens its page fresh: at the top, on Overview. Key Holders shows the latest quarter only (the quarter pills are gone).
+- 2026-11-03 — Stock page Daily Performance: Open, Prev. Close, Mkt. Cap, Volume and the 52-week high / low are a 3 × 2 grid (label over value, as in Fundamentals), not one long list.
+- 2026-11-03 — Stock page Analyst Ratings (and every progress bar on the page): the Buy / Hold / Sell bars and the ring's arcs take L3's surface accent colours (indicator up, warning, indicator down) instead of the darker text colours, so Hold is yellow, not mustard.
+- 2026-11-03 — Stock page Peers: the stock itself is always the first row (styled like the other rows); the Overview / Returns / Ratios switcher in the header is discover blue; rows show the company name only (no ticker line), also for stocks outside the peer list (their page's price and returns). The best figure in each % column (Today, 1M, 3M, 1Y) has a light yellow highlight (warning light). Stock and ETF pages: no 10px text left — every 10 text style is now its 12 (Lemonn's minimum; the 10s came from CoinSwitch).
+- 2026-11-03 — Chart price axis (stock and ETF pages): the y-axis labels are Description 10 (were 12).
+- 2026-11-03 — **ETFs from the jojo branch.** Content for every fund: plain names ("Top 500 US stocks"; the playground's 11 extra funds written the same way), the list card reads plain name over "SPY · fund name", the ETF page's ticker · exchange line, short tags after "ETF", jojo's About text ("SPY tracks …") and Others in Top holdings opening the full Top holdings page (new us-stocks-78, 9001:12; issuers moved to `shared/data/etfIssuers`). Regular funds keep the playground's design (Country / Sector bar, StockListCard rows, the boxed "About this ETF"). The leveraged side takes jojo's whole redesign: the tab is **Boosted** (bolt), with the Boosted note (strip / card / chip, "Boosted note" and "Boosted line" options) that opens How Boosted ETFs work, one list of fund-logo cards with the leverage shown eight ways ("Leverage tag" option, V5 After heading by default); a Boosted ETF page gets the gold strip above About, About cut to 3 lines with "… more", and the logos of the stocks behind it. No filter row on the Boosted tab (every fund is US-listed). Tertiary text in these parts is secondary.
 - 2026-11-03 — Portfolio holding cards: the top-right figure is today's return, labelled “1D Returns” (the holding's 1D %, the same number Sort's 1D returns uses), not the total Returns% again.
 - 2026-11-03 — Portfolio's holdings cards: 12 padding on every side; wide enough that 32 of the next card peeks in (was 296 fixed); the Total / 1D Returns switcher uses the filled ↕ (`lmSwitchArrowVertical`, as on Home's chips); the Lemonn leaves are gone, and the market's glow moved from the top-left to the bottom-right corner.
 - 2026-11-03 — Portfolio's underline tabs (Positions · Holdings · Orders, Indian · US Stocks) draw their line in border intense instead of L3's border light, so it shows in dark mode. L3 gap: underline Tabs have no line-colour option.
@@ -181,7 +188,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
   marks) — `logoPlate` in data.ts.
 - 2026-11-02 — **ETF card** (one version, after comparing four): on the left, three holding logos + "+500" in a
   circle, the ETF's name · ticker, the plain name as a one-line description ("Top 500 US companies"); $ price over %
-  change on the right. The ETF page's title is the fund's name ("SPDR S&P 500 ETF") with the ticker under it; no plain name there. See `EtfRow`.
+  change on the right. The ETF page's title is the fund's name ("SPDR S&P 500 ETF") with the ticker under it; no plain name there. See `EtfCard` (regular) and `FundRow` (Boosted) in EtfListScreen.
 
 - 2026-11-02 — **ETFs say what they are.** Tickers (QQQ, VTI, SMH) mean nothing to a new user, so every ETF leads
   with a plain name and keeps the ticker as an alias ("Top 500 US companies · SPY", like Zomato / Eternal), then 2–3
@@ -317,6 +324,86 @@ The rebuild ran per part, so a few helpers exist more than once: the mask-image 
 `ImgIcon` in entry, money, activation), swipe-between-tabs (`entry/components/swipePages.ts`,
 `wallet/lib/swipeTabs.ts`), sheet-close delay (`money/useSheetClose.ts`, `wallet/lib/useSheetClose.ts`), screen backdrop
 (`activation/components/ScreenBackdrop.tsx`). Entry's copies are the originals.
+```
+
+### `src/flows/us-stocks/ab-tests/leverage-tag.md`
+
+```md
+# A/B test: the leverage tag on leveraged ETF cards
+
+Where: US Stocks → ETFs → **Leveraged** tab (us-stocks-71). In the prototype, every version is in the prototype
+settings under **ETFs → Leverage tag** (flow option `levTag`).
+
+## Versions
+
+| | Version | What the card shows |
+|---|---|---|
+| V1 | Logo foot | "3x Long" pill across the bottom of the logo |
+| V2 | Logo badge | "3x ▲" pill on the logo's top-right |
+| V3 | Logo ring | Logo ringed green / red, "3x ▲" pill under it |
+| V4 | Card corner | "3x Long" cut into the card's top-right corner |
+| **V5** | **After heading (current, control)** | "Nasdaq 100 **[3x Long]**" — the tag right after the heading |
+| V6 | Pill on foot | "3x ▲" pill under the logo, no ring |
+| V7 | Slice | The logo's bottom is a green / red band, "3x ▲" in it |
+| V8 | Notch | V6's pill, the logo's circle cut around it |
+
+## Why not test all eight live
+
+Eight arms split the traffic eight ways: each arm needs roughly 3,000–3,500 people who open the Leveraged tab, so
+about 25,000–28,000 in all, and with seven comparisons against the control the false-positive risk climbs unless the
+bar is raised further. The versions also differ in two ways at once (where the tag sits, and whether it says "Long" /
+"Short" or only "▲" / "▼"). So it runs in two steps.
+
+## Step 1 — comprehension pre-test (all eight, unmoderated, ~1 week)
+
+The risk with leveraged funds is a user buying the short fund thinking it is the long one. Test that first, before
+any traffic is spent.
+
+- **Who:** 40–50 people per version (Lemonn users who have activated US Stocks, or a matching panel), each shown one
+  version — 320–400 in all.
+- **Task:** show the Leveraged list for 5 seconds, then ask: "If the Nasdaq 100 goes up today, which of these two goes
+  up: the first or the second?" and "How many times the move?" Then a preference question across all eight.
+- **Pass mark:** at least 90% answer the direction right. Drop any version below it.
+- **Shortlist:** the two that pass with the best direction score (ties → faster answer), to take to Step 2 against V5.
+
+Expect the "▲ / ▼ only" versions (V2, V3, V6, V7, V8) to need this check most: an arrow alone can read as "the price
+went up today", not "this fund goes the same way".
+
+## Step 2 — live A/B test (control + two, ~2–3 weeks)
+
+**Hypothesis.** If the leverage tag sits where people look first on the card (the shortlisted version), then more
+people who open the Leveraged tab will open a fund's page — and fewer will open the wrong side — because the leverage
+and direction are read before the fund is chosen.
+
+**Variants.** A: V5 After heading (control). B and C: the two from Step 1. Nothing else on the card or page changes.
+
+**Primary metric.** Card tap-through: share of users who view the Leveraged tab and open at least one leveraged ETF
+page in that session.
+
+**Guardrails (must not get worse).**
+- Wrong-side bounce: opens a fund page and goes back within 10 seconds, then opens its pair (e.g. SQQQ → back → TQQQ).
+- Order reversal: a leveraged order cancelled, or the opposite side bought, within 15 minutes.
+- Support contacts mentioning leveraged / short ETFs.
+
+**Secondary.** Time from opening the tab to the first card tap; Go Long / Go Short taps on the fund page; scroll depth
+on the tab.
+
+**Sample size.** Assuming 20% of Leveraged-tab viewers open a fund today, to detect a 3-point lift (20% → 23%) at 95%
+confidence and 80% power, with the 5% split across the two comparisons (2.5% each): about **3,600 users per arm,
+~10,700 in all**. Replace the 20% with the real baseline from analytics before starting; a lower baseline needs more
+users.
+
+**Duration.** At least two full weeks (weekday and weekend use differ), and until every arm reaches its sample.
+Users are randomised once and keep their version across sessions.
+
+**Rules.** Write down the decision rule before starting: ship B or C only if it beats A on the primary metric and no
+guardrail is worse. Don't stop early on a good result. Look at new vs returning users and Android vs iOS after the
+overall result, not to pick a winner.
+
+## If traffic is too low
+
+If the Leveraged tab sees fewer than ~1,000 users a week, skip Step 2: ship the Step 1 winner and watch the
+guardrails for a month instead.
 ```
 
 ### `src/flows/us-stocks/asset.ts`
@@ -21039,170 +21126,6 @@ h��ha�E�  @����=O������S��m���㡦8�
 </svg>
 ```
 
-### `src/flows/us-stocks/assets/etf/direxion.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   �F�   	pHYs  !8  !8E�1`   sRGB ���   gAMA  ���a  	�IDATx�KLTW�M��M��&��>bm m"�T|�Ǣ@���� \؅Mդ&]U�ʦM�E����1Qqam�H$U�h�����G�@�]��?��\�<?�
-����ܹ�3���;�N�s�"$C^R��@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "�/�4�=Ӧ��y�N��T�~���_Q�oE��~�T=WY*g����y�d�L5w�������U'N��nvv���E���H�v._�C��/���o�O�?R�����N�s�ʐ]�/�-�;m�j���w;�v����{�Z9��S�~B�N�ڤZ.�F��b��Q��ngp��;KUl�D�vDC��3R��T�֯7�Ȕ�U���p%��^Y&M��F#��Б��z�Ul�ב���0��z�JsuUE*����n�j��h�e��B���k>����I�F_��܏?�V��@_���[U__�Z��D�DC��Uߝ5�a��W�y�ڱv�KXy�6�3��X&�*C_({�y�H�&�c�ǉ< �2��`�y�~��Tv/2�(���ե����<�@��E�B ʁ$��Q�B�y^��٨d#nf��}=�z*ۜk�c�1���|ϡ��3u��Sݼ�м/?7GGǙ1��Բܾwϔ�w��3�C2��Л��T���c�����ǏH�z'�����쉺MB1ۄ;�5�Ea��9$#0��3Yp�0\�w��?C���+�HoӤs��3�LÀ�ݫ�>�4)-2w�q���T��������j�������Ū��m��ٳ�/�8t�������c����B��d�����sf���'�Ý�	��y��C�x�/��6��;�߃�Q�Z_�m+{�>_#Y�6�y+�˝��^��(�4^ۣ�rylCB4.�sD��C,��n�.Ӹ�O�7�PǶ��L9Ե�N3��Ɩ��ɓ��kM�M��J��La�������(��S�����&�6�߮��U�{-���T���,�����r�J��
-y�y�F����Jh|�v����AC�������2]*��G$�>b���s��d����Mv�R��ԕu�*4�s~~ ��k�9s}�D�8�$-�V��d�׋��\;?z�hwD�L	N���P3����몖�^�����F*��|����˲
-c��������{2eבK���	�9$�J��Q=K������]R&§K(�II?�C���!�F�������;�Y ���2�.�R"�� ������ퟐ��4^G�;���s��*�%�^�0\I�nO��s�m��[�L�BZ��;J�[0$kwx��A�@=�rs�prYW(�d�n���Vl~�(��x+�Lpe���\��M��_�A`�f+����H�S���YB�Ԛ�P�CE`9P뭁��-Ň��ntD��"C�[���jo��P�	�t=��F&���p��~�q:�lG�~����w^(]p���'IR��,H��y�I �	m�|c�p�g�ɧ�qƝ�� �F�2g�%ٹ�ñwFz�	D���H�YӑJ��w�]����kI��7���J �E�0�c�"<(��Dkd1��.J�K���xQ�0���o�!�T����C���	ke���ZT�g��.�8!
-�͍|��B�2˄c�?4Q:���pD ,uU}YDa�10\���T�^1ǚL*UЃ���$K>��\mt,W`�ծ��z�<��=p�����-��p�a&`*�ES�bL��%�����^�~`�p����M����X�I����&�[�u�l���Ӡ������a��P0U����&<އ��c�Y2�,e�ߴdP���(�m���7|��y���W�;MT����\��&�c���7i�#miW�pg����=��C����"��Z���w��6���r0w�T��:p74�o6�~�g�I���d��D��χD�7S5�*'�<�:�)۰N^��Ԡ����	�&��2���������b\�ݨ�N76��z���ߐg,|�x8�C��mQ�MR�Y�ʓ�>��0�ᪧ�ה�(�Γ��3^`FD�
-#"(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D""(A��
-DDP "����@D�������^��    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/globalx.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   �F�   	pHYs  !8  !8E�1`   sRGB ���   gAMA  ���a  fIDATx�O�_U��u��tҐf$mc����q��q�]a@Y����llڨ���$,����"���q+e��������4�0m��)�������;s�}�߻��If������̽�{�s_L0�R�y�(5P��Z�@J-T �*�RH��
-��BRj�)�P��Z�@J-T��}�ss������q3t��3n�����ǻf{�ӯA��;����u Ĺ��˓�~����?k�}��%0�@���^O>v�Hu��anm^�LS�8��t�����5�4�n^��,��3DT���MS`�����#f��ϯ��`*>�@sZ�Xp�����'��Ǟ2{�?��+g�'S����{V�ï���*��`�Z~��Ɉ�p"��D$Э���dC@*��7_J�O���4wiY�>�Q ��J y�H\�T���Ӝd���4CCG����Y��#I`\VH�Q�/#��1� R�w��R+�"q��k[fh�@9 �C�.(+O�8��ǟ!�1P0�\~�g��E�)"N��)4T r���<y��l���ɽ����Q�,@�8w�8��B��E2�eF�U�H��>���g�	H@� �0⬜z���\�{����ؓ΄��)��k�ʏ�CB@b`�����k�����&�26�Od�V&�h��Oͥ���{�Ȅ����������C[9�B&��U]q�`���`J�|ThI�R�گ�$��w��T2]Ց')a����z��s���	�}�y ���_�SD�< �Y�=������w0�-�J�?�Aj {gӟ�cE���<��N?�� �(�&��	q�12`��F>�aj��7����Ũ�0)D@�#� ��𐯼z:�o \ ��D�k�_�.�@���<�J��0P�r��i��Q�%�"�u�h�}m[|en珟;q2��6�J1\�ߗ�����F+D��'^�$���w����7_�Lk�|�A��`��;F��u��_J��+D�$����*�؇�88�8{���}HJ��P$l��UY���}_���CaF�D��W"������8���D����.f>�$bu%�8��k��K��ҝ�{>�Ȓ~�z�D����c!�����#�Vi�
-�g��f�Օg��vKt�Íd*�aں���I��q�t��=�S���n@�ٿ�-�ÒD�F��0� n��!.�9�,��ü������5Br�ߛ�2 ��N<��������+7!1:�l+�&���	�?|����O�����������֕<�w��~f^0���N��JY��d��J7�Z�$B�������{l���}3�)�'O�	��G�}�%8����~��x���U�>�[���U�
--��D=��,�� �a���A��< Z�B��F��3�x_ߚ�K�;D�������A���4�����9m��5Rg�6�	$�j��b��Z�]L(D5��"F>_�+��m���#!�@6y����e�[�u��1_I��sfhD1����iή�6Jy|�� +m��b��G��䱕n ���b�z
-M�>8$�߱�<`��7EY!�)��e���%��Q�;�����!Ƀ���,ԏM0��
-�������}�~,������Tl�`����$QL� �$Uc/�03&��b���g����`����-c�G�A	D͹�7q��%DcEZ]��Ƀ����}͌� �뱜G���Vϋ˶�!�uI�����G1��_���)�ޘ�M W���sc�1=K��3)��h4i�d��:��(^�I�E [�o���d�x���^S��d>:�uh�t.�M�88�Y�aS�9>�!Ȯ� S^_����T��w�mm�|	>*Oq:�k{'�	�%M���*O9:����Y��Y��,��O���䵑e:�SF��"���P@���������.�E[Wr�1�龫��Z�a�*���.�M�Sy��d*�$�m���x "V\8[�+Z��F!��@��72������/KL�������34Z�S�{�T��t �LL9��&i���GW.��Õ-ސD�	�_���8�oK`W]�)G�}<{��B�|�d���ĩ��8��C��Nx,��dc��=HACnb*���q���#�+3��WY��|�l�����)�i]�l;9w�̓}���a�+{��y�k��-�
-P��i&��6�P�#ս�����M�EȻ�G)G�zn_�2]��)Js�.P��~r3�s��Dv[-�~U�&�T �H×ϲ�ǆ�?�Og�hJi��B�9��נ&��ΗeF#��\�%�F<���fi] #'�Z!�ç!�2ˠ�5�P���{�W�_"��:5J�ex�����s_�ZL58�'��/�+��&ِ�F"Ri��G �%o��`t�.��Q���<EoBV���2^�G�*� �V��Z��@�d�*���h��A!}�x���j�Q~A�LZz�vn�9=���4ˌDd��d���՜��i�hP�t&F�juNL�M��?�����,�e�!�BU�g�m�}1u	��������7�N�[�2	Ý�i�ڟJ��|t�]Es?xo��J�󃅶�[x����j=��}Փ�k�u:����f�D +0�r��%8t���%>�б�*6��J����oϬ[��(w����S6���$W%9+ �A.���sLwZ�E���lgګB�Q��.��&���D3��PVU$j� ���R�$�~�J�\�D�T���'ֽ/�d���&�m��*��໴�rWٱ�K�D����Ŋ�bD���D%�2�{�BRcA��J4C��J�28��^CgM�D�t�Z�P�� �#�D��
-T�*WC}"7Z�$Ѡ����Ё�Z�$B�J�g�%r.��^^j�'R"[O��\M'78�M����٤*v���OM�;��pPJ�!��R��E)�`�@�*B]B�6Zq�d��	�N$��0!��'����n���$f�����g�]y� $ZZN$�+G��I�(�2���9xa��.Q4{a8�%��"ўo�V�h�]��v�#[�h���ڍ�w![�w%BW�$
-iK�
-QV$"��'TC:x����ˤ���!�z ��G(��F�h�l��C�!�E��+1eq�0��D�}I+�V%B�ՁD+'_�^3 �FQm���Vg�{��h����^ny ��D���(��D�:���<o��V����$
-�������/��! с_f[�,�W~7���������{I!�����9S��U�|��=�ʌ�񊏑�
-���(�����~<�r��|�����\A��mVj�)�P��Z�@J-T �*�RH��
-��BRj�)�P��Z|	qk�л?s    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/graniteshares.png`
-
-```tsx
-�PNG
-
-   IHDR   d   d   p�T   bKGD � � �����  
-JIDATx���s�ǿ+Y��m�m�Ʋ-�i�^I��!��pBl�63!	I��$4G����δ�JiH2�f�B|�1`�aNChb�[�-˒�C���ծ,���l�.�g��վ�W����y�w50N���ds��*�0� B�
-!*�0� B�
-!*�0� B�
-!*�0� B�
-!*�0� B�
-!*�0� B�
-!��ZH ��.L���y񏽻�+Z!�;����;�p��\wE�C)dx؅�S� ��m����y(�km��� ����x��9�Q�y-�
-%ݦ�jAו˂cΟ���-Uݚ�V�Y�{M���575 !2���!U]��RH�e���������$��֭nܾ}3�k���w��NU%3/������ϲ�m0&�&
-M���)��O�{f�y'd8�Gf3w8�f��ݕ���g���G��/����;f�Zp����v8I材�f�#*��~(��z�v�3�6�al��0ýv���$��T3gB>�Z1��'�����P���7GF�f��]ǩ���ʪe(.) ��-�Ҋ*�5�ۍ��mI�+�̉���Lf��M=����?�^�c4FM�].'Μn�b�B����Ω���B��gϜ��1�T�RŜ�pb�m	gI_����Kd`�&��m>�e�Ү�h|>���*���
-�Q��f�.�hinL��Y�͛^,�O-�8- ��^����z=���#]�"�A�Ō�]�"033���F}����H�����|���{	}�T2�BX �~/�B,����5:��O��X�V�P�ċ�"��X0���p�x�f7X����YdddD}�R�����cM��g�Y�~7��u����i�`ydo�����:.ަ�"O�����O,>�b%2��  M>�zz��{UV-�NN��F��֕�'K�&�
-a�1\�� �[����Պ�w����h�.^ ����\bYnzKO�@m�z @]�F��r��b�7��G��A3ͬ	���}^/�/��O23E����p��E�)���Ғ)����<3,������! ��V�zٓx�	�S_��4��t�tG�H��2+B�~��w�\�7yձ�k2c����jq1r�)����w��#�,�\��/nK��u6A����N��r&u�̊��M��V�G������\\�Rᅢ�1ϯ^�+rr��w|_�,��DP�s��f-�|>=Ҝ�5�2�B
-v�J%Ȍb��`@���l�頒�w�-�i����ٌ���=��k��e�׮^�ɔ�B�t�q!;{��#����U������Z^}F�r���ǖ�V&Q*�x�n�,���C���3*�Ák�5�ǳ����^�$�w�z�M:��n�� ��� ;-�{�~,o���TVUC�K���n\�ZҵeƄ���e� 67� �F��ǳ�c��מ^��� �(-�+.�^�E����06E��-͍3�<׌	���{&_��Oi�p�g
-O1J�;t:��*���B������$=�;�cPX�&��l	**��xp�>Ν=-�Z�0#B�� �[,\�.�a{����-�x}/-F�J���`PP��2bY(;x�|�%�d���(H�O�h�Ȉ4��!��&�y��V��8i������'?r
-��7�D〵v^]�p!d�KMn.�.Ou�##8q?����i��3�c�GDZH'�Bz���`���ۊ�q�}`4����x���"K6��ŦNXlF&M�J�3���˗.��/�Ju��\�N�A^���N'X"�F�e�*7�?������˱��@���pCj�V�����YYx&_���^/>g�J�u����P(���Ò�%FJ�\t:q�^b�YV��H,���o�&r��{dm��P��K1����Z�p$�u<IE�0�}�nv+�Z�H�� o�H<�M�h_�;D�h{&�&��-��দ��>A�2!_�l���yyxB�~�J{D
-�Xv�i���W"��Z�'�k��L���q�B��kE#%B"��L&H;S�/<� �SYYܻ0C.��e� �b�� �B��z�j��){�>%B>2뇭EE���T"�Tj5��I"�L.;]�蔶��V�Q�:�������VI׊d�B"���S*�jin��������h�9I�=�]�0V����ga���H�������`<+U�J��(��L�n�`O�e��*�b3��=�Ή�Ğ�q4���ŅqZNe2���' �O����7���i	��r�cHp�ۍ�׍%?�b3o�u��t"0�G��lFm�Yq�ۣQQY��γ0��  ����޽���G%��Ɣ�Hsg���Ҹ�f,"�L��~|b����M����C�z�^���w��y���i]#r������d!��2TV��`�ł�+�$����?���m?��d2(%�|"��.�C!�V��A�7�  �ˡTJ�2%�����!��P!�A�BTaP!�A�BTaP!�A�BTaP!�A�BTaP!�A�BTaP!�A�BTaP!�A�BTaP!�A�B�2��ܰ(�u    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/invesco.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   ��Z=   sRGB ���    IDATx^�}�mGY�Z���H�Z�B(5��$ԐE��?zMJ衇��H���
-�4)����Y��.���g����>�y���M�=3{ͬ=3％	�� w��� ��1	�@ �����c�@}9^1��6 � �r�b D�9l A��x�@ �s � ��0��@=�@ ��7`��� ź@`�o� �+A���� D߀A�W��1�@ �����7tH���8_?&���rQd��':0��%� .�r �p 8WA_!y��Qtb�'6 }�#�, .	�R ��& nѧ��l����"��J�{�-�� �p�B߬G����X���B�g;�.� n� ������ z	Z,D���wIқ �i�]���M�k�8`�.�l"�� zJ.D���H:�_O��A�	B�.���7���䁛ɩ>���҄��':8���� ���Z~I�l��D��� zw�}Rҩ n=h#e��F��e�D� D��H��CҾ >?��	�[H�R�?1H֧;A�U�n���N�k������`ߢKK�OlzHz�M�[��1�O!y�	�1�6�@}BSB�%ҝ��_&��I:!��+������F �R��o pw���	#+�DG�M�6��t�U �Kr
-�=%�ި�A�	wR�}��&Н.]x�Â�]�� �88/mep9(=����9P�_&�>>�{���O��0�˘����y n��-��p��3f��v���ZBҫ�s�F�Wn�M�xI���fY��|x��;�C<D��:% ����c�M�%��oST� ��#ң� z��<*�L >��5��j�g�H�Ϟ�\҅ |	�[��}���Xg�#p}�t�g��g��M�cI6�M�CD���g��
-�F��� z!`5�Kr�o8w��*�a�C�:%�z�{J��Ʒ�9��A�@^��}�ۮ��eM��G�|aI�$}�^-��={	��� �*%]�gFn��9�����%m��Iv[��;�e� ��� z�j��;�Y����,z��~���=ɻ�i'��@�n���tXrA����b}W�tf�N���7$�"*dd�4�F~�����m�ƛ[�4I�d�-I���ˮޮF��s!#"D	lI `ѩI5����=��`9U�"	��`�G]�?g���ԛ=��J�Dv[�Y�脏�D_�(�G =��O��.MT'z"�`�.��eT*?D���$}{���ݡ���?p�9LbEa��7DtI����S�PDo�2D�3Z��w.��Lc���(7�����ub�����c���$��6����NtI�Lv�g��fPc�>"�~�#6٥�!�~ ;�,�غw���Ċ����%�����f�C�o �0�^s���D�_�Ӓ�%�yU�K�v�mM;�X��s˪� ��� �w�����6��K:Db[��W]��6��r�CVW��p� ��CV^w���OH:��*W;duՈ�Q��"m��;Ċ>�h6�D�z�迬X�U�$���E�	��1�sm�+�.�` �X�U�$zNP��I�`��6~�@��l�d��_T�n�j>E�5���m���,IG�� z%�%=��8蕪��'�|J�$��bg�e�T�O��^ԑ�@=�ƒ���� ��W\�V��L#!g�9��*@Ud"�n3��+�"ǼxI� ���UM�$9�[[���=�� zHME$��c���G5�xt�o���;xsˋ9��I� lZ�A�#.�� 5fݢ�����^��a�tg ol�׻�C��'a�cA��fV,�m��纑ܙP�Mr�=I�xC��~p��;LĂG��`��$�r�s�Hn���E������᱂�����3�J$(��!�~�������**)��.z��Ɨ��W>����'������ �_�gV��x]�A��J��3���+��g�$�!{��VQo��2ch�H&A����L��f'��g�|���W8�jFC�"� �!�/1%^XG���[���Wӕ�$�R��˲�l[��6~]x��e�7�����M�}<�#�0%����}�Q�{2�F����Io/]C�[�D?��Qm���]�g:�f��sPZR&�>N�]��ۺ���N� <�o>��ƚʥ-��jΟYW�=�Eł�3���Z�8��$�\�2�t )�@����-DOh$G�7��Zǡǳ 5����N0���\�f��k�u �t�o�1�C�7�zI�J��VЇ�g/ �E7��.`�C=���<�K�} _.��aAW X]r�'���dy&�Ǯ I�8��7G�<Ă�A����\�ϛ6Ô�.9�x�=c8��A��i���g̛A�H�b��+��vq��.b�-�@�UW� ����\V�����p^DX����A�ES�D�κ2�H���� �]�x�����X��9��#�V���� xg�ʼ�GX��Ŋ+�2>=��Jn$$��;�=�Rѷ#+z+�N"�`��J2��:�ul8��3�Ŋ�}��8���l�3�A,�>$�S�倔vz��.� ���+ﭰ	�S���� �}�����?�Q��?��D�t��^�|
-�䇑|��f�������w <��=�X�G7��n �����A$�rj����%��Αw4���Ie6����4����Խ�l%�'I� p�
-��-��4K��"z�N�y6�*V�]_��� prȜ��9 ;T��H~/����ɳ��I��
-�ɉ��$�}��=I��~G�F=��Ys�����|UV���(@w���I �!�;Rv<�C��5oM�{�|mV��tQ N���45�� nC�5+�J]kItI��9��F%�@d�h�mw!ٖ˼���J�c�W�3Ф�|۰���׊��O�TRʜ��/lI����g�J}�B)K�! �g;G%f��/ ����oG�Z=�� >�"s��M���&�� 6�8��̼3IGd]+�t�d�X{+o��P�v�]k�<�%].��^�ܰ��a�k>ޕ�zհ��%9X��V��D\��7kW<f}�%z
-+���%2�����{ ��K �:&�;�-�}�1ɫ��$9�ε|�r��t=V֭4�E����%��y�._��엩�
-�����s�4�)R��W�� ���ٖ�?p�u<�O���� W-$x�q�����;��x��Igp �=��R�^�_���fu_9�%]��]'^i*֩�ǡL݀&�U%yU� ;���LF'����e�]y��=e簽��~ƕ#X����p��.���Vxk�=�.Vᅼ����$����NtIޚ?��������Qd���ޮ��*�\}� ;��ш��~�B��;���9��V�����H��R�U��蒮	�O*�Wy騤&��$�0�Q"�I �\񥌕��mp��)��FtI��<��*U����_� d�j��x[tZ��f�v�]�]�5 <�g@�с���jeO����[�����{uJl��a ���0I{�"Ո�L[�Q�mՍب���kiA�B�c <c$�}5���G�n�7ѓ������٨Rxur��!(ɹ�>������+;=��>Ӄ= ��4��+�د.ɻӧ���$?8d[�D�te �&�92�U�H~l����[IOs ����KX3�޵,� ���f���١�{m8p'�P�����C�#&-�R��V�K�m��]�F�QǎF��$��%�GFrE�{rB��E�q ��/=:s#�����Gv<Et�$ ��WYH ����J��SpYI�tŖz|�w���B}�nz^���|n����b��b׹�[B6Շ�w� P���/mjz�����g#�
-�e7�%yw�Ů���w.*\;��o-�A�|�N�c�$���6BnF��!*f�wD�K�-��Q���I�/� $mo�|�G�����
-����&�]F�	DԵ��$�� r�lLҩ�G���޼m?�Qg��N��XM�[���)��@�$�Q�jIOI�[5�=����W� zU87��jDO�t��\���d�y~���\��$�W��A�ڈnv}����}7�/%��U�/��#���\�vh� �*f�xmz�������n���R$�%�p[9I�%h�m�Fo����i�q4 �~Ԑץ�����k�t�8��/�$�J:�@9���Ȫ�$mp|�9��a9�(S9x�CQ��љHz��%A�^�M��+�7�L���j�`��jf~Fr�l�]��n��6�}ɟfwd�`�+r��$�����DwsG�<�����%� �f��^�~�} �������9څ�A���~�>Oҁ9�� D��~����$��9���%��+�+Ͻ'�Q �}�f��nϱ>�$XE=s��a���l�9 ��SHV3�d��p��q8��3�V,g���
-��bI_��QpN ��m��Z�߳��ݨ]��ւO�� � ˶��.�E��nn�L� ��}e��F�ы�l�
-_��SH��u�j�x�N�PM$Y�����@omM�ɉ$��qfV {U젯������:��Q�PU���Wt�qq�߮������U�`0��Z�$�!��At��+�ks�א��V}A�J�N��ϐtv�V�����4D^�g��R��H�MZ���Ö�D���~�t3 �2�풕v����>6��[�Q��
-CE��Һ?�V�w�}	I�A�H ���@M�um�X����d�9bm�iօ��՜k)�P7&i��"��\������I���R��ß-ݗ:�uHw�q���d�?�#����XG���'ӝ�'�~a}kCvI5��i �̻;���D���t��,I�r㳋�hξzf �Zz�MF�Z�N#��k=�6�C�i����}c���|���t ���!�{��-�ko��[XI����v���k
-��v2���
-�Z�;��!��$�CkM��5J��$���H�v֫]q����`�g{ݹܮ:Or��D��u�:Oph���m���g'��w�Y���=�"�+)��w\%�^m�yA�����ܰRmu��~ؔS?� �#����f�6Xҹ8�3St����Ȯ���$k��r���$��T
-�M�;e�P$���Z�C�;g�$_X��jUu$�R��s���8`7?��Wp+;��J�f}�p=�d��u�x�*�������>%��$oE��Qwi����.���XT��MrG�Ү7IS��\�w�M򮤝��*	�չ ��a���k��io�=���U2�8�ֳ���~,ɱR$g�����^='��R�$�u�jd6���39��W�@� ���s֜�Ϛu-�$��%�?q��=�q��}��4ܗ��ǖ:Lv�ٝSp"ɱ���&����J�UI�UUJ��($_'�����	���*�`�j6�޺k%̾L2א�w���u��!��z����7xE����F�ٍm����#�dKѳk[a���$��X*��?�䝊;��I?v,�U���ƯN�nu��cC�D��H:_'�Lt�9�ܜ��$�Fm���&�A�UI���6&_<��o�z��MW&�`���`Jk�e��T��H���_'b;����9^��c�D�rok��n��KFI�p�Qݳ1�	��s��Ce$]���n:���*$��[�uъ�ﶲ;�[|�릡�tY�SA��1�F���1�7(�~OH�ס��Ck߭�(�S �\#�y�7_����ec��L>�\�3���0��({���%��}��5m����lҖ;j���C
-����
-mY�|�^3��(&�>X��R+F��[�`'�Wř;�6���a8ɽ�����u#��|8b��R)���:۟�w���p�A����nZ���=���%zz(n1=����a�.�k�ٵ���\}����N���p��&�cH�ؠW�BG�۽����W}�5�,��<xvctD�AD�C4�0H��GI:,�ʤ0X��I�faY�;�s�;���a�eG��+��+�6,�YL�Xͷ�p.�+u֐d��@�A��Iӣ܎!�1H�T�o��u�e���o��W�}�G�i
-��3���v��L-xlG}���؉��K��928�<�kj��ۧI���C�I��,�?�v�*�x��սc�>Gz�*�-���5e�������~��#Hg�TM	"l������Ga��^��7��H�D���U�͵_#lq��?��3sY.Ř�`J��$m22G�9�9�^$�e$��Gp0�+�О�����ߏ�VVie?S�<���6��U�̬L��O�?�xi1��q��IZ	�B ���� �1�\�i;�8b��5��@}"����m�{6o�{�dG��@`!A�MI���̠o\*��B�~>$hE ��
-�p
-�`m�	�O�߆�UԼ��xT%�@SZi't�k������(+~�h~*�W<)9�5��б%֞ �q$-$�@�|u��o`Wͷ8��F%��d�҄@+�%��=�tqծ�;y%�Z̚��@�:�D�d��;8f�V�$[?�{�@o�w���q�
-��"�����u ��](���t���@�3L~�7MJ o�%���x0X)&��s�Ӌ zJQ&�A��I�(��@�:�Qa 0=�����Q P� zuH��@`zѧ7&ѣ@�:A��F�����OoL�G�@u���!�
-��!P���S��,��$Ta�Hr~���.��p�-q�0g��g�H:�x�$ϻ�f~H�e��t ��|�$�Yvw1I� �- 'P�l��v�z���;;��;�
-c-��m]y=�Xp�Y��� �G��$�;�H:�����8y������Կo�y���y��%$��� 8��y�>盛��� >�T�?)m�6�@�j����J�w�щ���V>쀈$�e�H�/����K����.)�ɝ9���TD��/Igp|v  p} ��q�
-ctI��*�����'h�g��Ș���?����v.U&�F	�CS��f<��� ^1D�MI�H��0��n���� N"����[��&zn�>���]��<t� Hr&'g8Sf#'��̲��Ir��D	^�.���K�.�yνJvc�`�c�j<9?=��[ο�I�����]_r�9I�Y<	�W�Т�z>"��ڽ��OI��� �ܵ��缻=���w����m���ݤ���jz@һ��#�#����s�$;�$�����Z:�]K�����@�%yz�:%]����(�M9���H~��A�O!�w����Ї���.K�v�� L���E�Yy~�T����<�W ��6�too�
-�=cI����Pr�$}V](�������şoë��I�!���e$�>V��[�,�f#�����uC��|gI�����]B{�6儕4� �	D7�%��+�VG+~Ζ����;��:$Yy�Hܹ�_!�H`I��n=��C��I�-���Pe[�ѦϠ!����������+%r���Ss
-Jr�G�KnG�������WJIV���FҮ�Y"�A ^�Ux IoɷIJ@���u�-�tg�Uy�r����m0���H�efY��+�G$�V�Z�.�i�?��.��|>z�N"�i$��p�n�R9X:���g)^$��4��K5]yI� O��`�2޵\���3C�GxV�6۪y7�C�
-���װV��Jjr�k�s>�Y9�ફ�=>�;���w��lR��w6v�2�/�s�#��IG�3��'y��IqM �ͩd���ܿJWn��/�#I��P�?|�
-*v��/q�,�����M���Hz��*�\�wG�B]�|���y	7_�������<[xN������gL�0�^�m��x���+��dg�on+�� Ni+�~�բ��4a�:LdV�������g�2}t��� ���kd��1�Y����q ^3噌B��~�`e�N�k�!���]�"\����|�t��n�!��� Hr�\g��"6�r������}˵��o��$��\5��R����I�쫱}в����I�&��̺�Mҫ�R�d�̭�ʙ� �^I��  QIDATt�-��ɨc� <�e���v�Z�u:Y��u�IAn8���,X���9 Ε�=D�u��Ɉ���2�q��-�l���(I��oO��><�!�#�"̬��ba�͟���>>L��c�^%�}i_	����!i�F�� �/x��/�j��ך��ز\㒼�������$7�sdᮠ�^[�ٴ2GbVO��w'~��^
-���*(�����	["Y}̸a�&Ik�JG]˃H���e$9J������G���/"ٺ�N�h4w;���0��`��Y�}ON���W#���FS�5os�f#���Ov�}ϑk�ܦ#( �wfV`�(gp�d��s�&$m'�%ɢ���b{�.�^m��u@��l�e;�,�t ����^�$��J�&�$��|�̑}IZ�M
-MU?G�q�+�F86�ɑ��Ģ�D�>úS��<��&n��~�VY>���^�"� Pb�w/��H+�E��R�X�Tx���ܐ�G�:��q-1�v��Z%��Rp��3G. �����"�����L�?��c��M>��h���բ�X3k{�6���+��h��6��- �Mpm�^"����������sN#����r��z�+f�t�i��\O6I��龟��V��q��S��AZ�?Mr���L�6�f�l�[ҝ�1�����у�#�g}I^�g]r��3yl�S*�J�}sd�Vp�Iv��5M���E;�X��<������%�]���9ra���E$Y[���w|��9cn�t{9�?�"z��H������֪f���6-�$oO�6�&֤�o���$+���<�I�v�I�o�5[-��j� ���N�NmW�d2���5|��r�|�[�X�i�$s��&�G��J���VE�g�|l	��r�8K��&K�Fz��k1I��r0���Q�*��3٦�%Xu,��g��=�VDY#��u�\�6�ic�1PN%e
-w��"��46�Fd��o*�KAn6��Y8�}���m��d]��>��u�Ȑb�j�Z6:������	�?��$��"ǩeuJ�Ѩ5pŦ�Vw>���KHژb�Hz.�#2���&�D$=�R��6jYFt��XäӚ~o��VB���Jr�[+�H��G�óe$�=��3s#���S9vҾ��d�����(:�lTح��{�*�^}�W��sv��CHn��8�u�рr$�ބR�3z��W�͈����{K)������?׶�H����̊��4��s+��˼���sH����V	��V�,�J�KZ����ǭ:���{�cEF���$�&)����H�C�(�g���rQ}�~���q�|������v��~d6Zp�2�p�vdE
-?B��A[�#��q%�T~c��V�g 8&c&|���%�ǑE���6�K�N�,�����QS��I��-�臤��p���:%n����2$���,�^�)�=�rokza[x]�N�ث��#}�r$�V�t���;��W24��M2+؀$����n�g��p-$�c�T� ��D�A_��?"��ه$��:�3/+�@i���K��S�G�ؤykڷ|��^ae3+�G�BE��6k����	�a�&6��e[!�.��s��]b���c�2��ض�K�������$Ɂ2�#�#v׽QX��Ý�v*�a��'�#�}�s
-ϗ��� ��G7zEOd��Y��F���6yͲ���c��9r7��.������:�s:VR&9���,G7�y����[$9�I��󂾴�v[�I[�_���j�����$s|�袤]��}x�̯�mN�dn��.^HK}�|���W|��7�	����U�?d�LwS�����6����]{�9W�H�z�,I�G����<lk����$�X����)���.�MJ*�-r5�����=M;Y����#��-����J�\����m.�>��N�d��qS������U ����,���Şa�kN'�-x�$�1(ը۠�8�60Y()֛�6���/�5��Mo���h�U���/]�3}d�M�1(��|h��get�H	z��/�VS���$����¶���tM��/�Ȗ&�Ͽ6�h2l�!�CZ;R�H����\_Ο��Y�T)!���9�t����C�疯�r��w5[$��a�#�q�J��$ԎN~�E�{���4`�EW*�C��96�r�v���Ts�sܙmӋ������So��g���H:�C�H*	qU\��<�/��"�No�b��tU錷�>")@�Â9�a�\���R��$g��C#�[i�rv�u֛mQk%=!���T�j�HҶ+9	��,|���!�X��P,��d��ox��Qs�fI��<7%�W"����+�W6�L^5sBf�v�n�C7%���;�U�¸
-�`?~�"�J|�䤡��Ǌ��!]�gRM�{�e�����H�__�e]�U�9���nJҳS6��ͶV���',+��x̲�Z[,/И#���R�r���ܝ
-*�>�$�ˤ�$I�'�,ik�(,]��ܮS2��{����[_��鏟�*��ح!������w!�4R�$G�Yx��Չ�z��7��I��s ߉dn"��1NA}�:�S
-���Vh5���P��I�jʿV��겖����I%�k��>����(��'ѭŵT�
-�d��K��rG0��Wn���s��/��#o�Ò�����"�vm4�N)t���9Z�n4i]�|����F>�!˻��1�u}RI�6�\c����f��$p���f��x�~ ����)��5ɾ�J����P&����Ȗ��s��.׵y����݉)��$}�P��ۉ��D��+K����,���T�ԙL��W�}}0��pG��K[d�șRjI�~-��鷜��$�C���*�E��٪/%�X��r߷�{��L�m^z%Do�ʒ���%ֲ��7�"#I�9���q�sPMf�0'loV���v�ʤ��+$�l�GX�!�������$mh�[$9�w1�@z�£�V�v8��)�����{ ��g�{޶펕礑�J�RP%�M��=�}���v+~[n�&��$緪nx��csGg�hIN�X�m�/ЂAs�öć��g��]B.��$��*���km�����y�2�l�l�o��n���#>�z�~�I���Xf��at�~���t��d�x�+�O�?||�63���bI�`��b���jǐY��ָ9���g�x�Y�K�1n��JE���w�G5��[�t�ߖ�:��Q(��@}���� D�cTL� ���'zTA �^ƨ$�6A�i�O�.��@�
-�QI 0m�����] P� z��@`�ѧ=>ѻ@�
-A�*0F%����O{|�w�@��U`�J�i#D���D��*ѫ���F �>���U�W�1*	��@}���� D�cTL� ���'zTA�� ��(0���    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/ishares.png`
-
-```tsx
-�PNG
-
-   IHDR   d   d   p�T   bKGD � � �����  
-�IDATx��yt��?3����n��)[�Z%@K��(�xT���PKk�RyrZ�Z�G�ȥX��'
-�5X9T��ܻ�+�3�ca�a�K���߳��_�����������9+�H�A�_ �"��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��"R�`H!�!��-Uf��)�j+pt�I�ML(����G�i:��W6��G�޸�BugZ��6���y���9hނ3q/�R
-	��J��V�H������
-��떡8�ɼ�N2��@��0��M�턃�!������'������e�(
-P��oT=~Ģ�����Bl�E�:t�֡ZN����6��7Zk6l�E��	����l˙��{N�!+��V���-��^�ɽ{.jf�1��6R��!bU߂f#g�l��.=sQ�:ъC��@Q�r
-���rf�7"w�tpz�՝��K1�s~��Z��(�}���U h��/@��oS�)��6`��7\HZ��=r�R.��Iq ���'CH;�B���7d�W����$%|`;���Q\n��뛰  �V|���|��_g��r
-q_~�׏Gq�[�B��Co��������R|kӸ�u�cx���3�V�lݒ�4}�?�{����>��_d���څ3�#�q���(*�^�ɺe"�.�)CJ!u�易��d �ǅ(�'�4}�G��453��?�ʩ�)�;+hx�)sE�8�񎙎����4ߚ��Q��H���j*hx�i�e�)��5�k�5��i�{���\L�|��K��~k�A#�o|�څ3��[����.*���	O��; =�H嬑I@:�O7���13�\���Ϣ]������f�tj�M"���z#m�Q�t��M�Ȁ���f���v�O�	�ܒTFK���K�&͏=��RKZ�5c�|���f&�a�R��}�j+ h|gEr-P4;���,�.!�ì	�N��T�����O�3�|�I��
-nې<�0��[Qɽ�q�㟼�[o�c o���f&�-o�C���A?�<�����/���W�ZV��.�<�O:�����ϣ�vl-؈oM|��-���=j
-EKwq��r�,�Y|1�*���������#吕g�KpA�;+�b����-ÿn��=�=��s�$oLU�:W�+1�M��/'�u���{��STg:y�- X�����	�3�V���y��ǈ|�gɀ�o������PN�@zc�����Aޤ�h���R+@����3�,ڶFޗ��� �*�˃���8{�'����2��B r�x�[����bD�Z-9���Y#�?���[-�5|���2���S��̈́�aF$����-�3$>� F�	ř����\=Ʋ��Ɵ{�������e2V��}��RǈZ|ӑ/!�ޱ�e�[����.���b�ŗ���6ɀ� E%k�p����� �����^���n	�'&��v�z�3� �1=V_�o�>ZG������7���z��X��� �m���[j��j������ނ�r�0�WK��M�o�����J�n�_���;.���u?�O�C��q�	gSF����@��5-1�V�b����.n�`��j*��ަ�����t�N���^ԍ�{����n��#��*���w+��!��KKE�ѽG��n�H�?�D��7̲�C{�KW Ծ0��jYy�����Eo�%r`{��49�aj�ȼ�ԕ4;��	��� :<�.�ͯ���}�	�J��*V��;nf�&�-ķz!���S0�elgu��)v���"�X�3��`��v�oI˻o�����Ⱦ�v9y�7���w-ZV�I���v޺�%͉�1x�������Kmo�;���)�8�!�0����-{�X�1*f�L`˛��ڈ��[n�f+<紻jI��t���V`m3�fO��h��s�C6��TϽ�h��fZ��a���@��/ՈF�z�wT�I��� P�3p]8��1Ӭ%Y ���戏�t3'��ߤ�''P�l�.=�|�I�������nW�o|��B|�K��Wh�(��7hX9�R���"��Gȼ��6t��f,�/=j&��n�Ȅ������hշf���53_Fuy�]0�� ����Eݱ��C׉���؋6-9m!Βx����� V}�`������u����ʂ��AZ�,_A㻯���I�D��#k���ж�֍�a=v8�lӡ�4nX���%֡h�fM��K�@Qp�2�v����f�}:��sʲ�� w�3r
-�=z*J���<ՓE��g,�W��b��7y!��M]P�ȼ�.2�����Q0k�9:$E��u?��~)���B��TOV�o��E�
-��Ɛ~�JW�QJ����髢�e�c���%י'�&�4��xÉ�bw�(��2�zS��J|��޻=؈�S���2<Wߎ��G~nG��E��|\�����r�m*��_$��!��g�-#��*"�?%Vw�<����c���[	��$�{+���%��<��U���H;��A���K�w�S�b!��D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-)D0���BC
-���1�@�p�    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/kraneshares.png`
-
-```tsx
-�PNG
-
-   IHDR   d   d   p�T   bKGD � � �����  �IDATx���MHq��gvW���ڭt-� -HS�[���FB"Yװ�t�t�QAa����X�D�J�X"�-b�`�D/��ۡ��^����g��s\v���/�qew��c	��H*!� d����Q2
-BFA�(!� d����Q2
-BFA�(!� d���ʃ�\���耕K�.\4�7Zv|K����D��^+����ŖіEFA�(K�!�
-�0�{YS����uMۃ�߸��۽�)�N^��kl]S[!� d������.k*��>����3�^x=  � F���Z37���0�Z+Py�;��W��}���8Q����o������5�5Tb͒���Z!㶬m+
-p�nY��8y�����ΐ��.ı����b�n}����O�^d��0�n-K�8�0��Go�*�2"ȮUE8���[���78���١,B��1Rb��(������t���q��c���E�1  ���ZwEC�bi�:w���S2
-BFA�(!� d\$���ҹ3�#�k�̛���=�X0;��QR���n��|?.6V�$pz�_�.��99��XEwfLrU��P �P�� t��a 5��O��k�!�l/��V'ctF��t��F���vq���y��� x�7�W��s�+�3dRG/o�Eg ����k��%6��(D$O`ۙ���xcq�@I x����c��u�v
-BFA�P]Ch�-�u�b�������W���1�-����Q2
-BFA��~���ǝ��v/kJ$���5m��փ�6��8E[!� dy����������Avկ��eMA[!c閵a�jTT.Ny�fe��K�Uͪ�0~�������HC?��E[!� d����Q2
-BFA�(!� d����Q2
-BFA�(!� d��W�ǯ��mS&    IEND�B`�
-```
-
 ### `src/flows/us-stocks/assets/etf/logos/direxion.svg`
 
 ```tsx
@@ -21281,225 +21204,10 @@ BFA�(!� d��W�ǯ��mS&    IEND�B`�
 <svg width="293" height="163" viewBox="0 0 293 163" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.750198 153.05L2.2502 156.65L3.7502 161.75L5.2502 147.05L6.7502 132.25L8.2502 117.25L9.7502 98.75L11.2502 78.75L12.7502 68.25L14.2502 71.95L15.7502 76.15L17.2502 81.25L18.6502 71.25L20.1502 59.55L21.6502 55.65L23.1502 50.35L24.6502 41.75L26.1502 37.75L27.6502 36.95L29.1502 35.75L30.6502 39.25L32.1502 37.65L33.6502 38.85L35.1502 40.55L36.6502 41.55L38.1502 39.05L39.6502 33.85L41.1502 29.15L42.6502 31.35L44.1502 35.25L45.6502 39.35L47.1502 37.35L48.6502 43.35L50.1502 38.35L51.6502 40.55L53.1502 46.45L54.6502 47.55L56.1502 43.05L57.6502 40.35L59.1502 36.55L60.6502 32.45L62.0502 32.55L63.5502 27.75L65.0502 34.45L66.5502 36.35L68.0502 34.85L69.5502 34.25L71.0502 31.15L72.5502 28.85L74.0502 24.55L75.5502 27.25L77.0502 24.45L78.5502 22.85L80.0502 21.65L81.5502 24.45L83.0502 24.65L84.5502 25.85L86.0502 32.25L87.5502 30.25L89.0502 28.85L90.5502 29.35L92.0502 32.75L93.5502 29.55L95.0502 27.05L96.5502 23.75L97.9502 25.95L99.5502 29.75L100.95 30.95L102.45 27.25L103.95 34.35L105.45 36.75L106.95 38.85L108.45 37.95L109.95 34.55L111.45 35.55L112.95 39.95L114.45 46.35L115.95 44.65L117.45 42.35L118.95 37.25L120.45 39.05L121.95 39.65L123.45 41.85L124.95 40.05L126.45 43.35L127.95 38.55L129.45 38.25L130.95 36.25L132.45 28.45L133.95 28.85L135.45 21.15L136.95 20.05L138.45 17.15L139.85 14.05L141.35 20.55L142.85 20.35L144.35 20.75L145.85 14.65L147.35 14.95L148.85 17.35L150.35 15.95L151.85 9.15L153.35 12.95L154.85 7.75L156.35 10.15L157.85 7.25L159.35 4.45L160.85 7.35L162.35 5.45L163.85 8.95L165.35 11.25L166.85 5.25L168.35 2.15L169.85 5.15L171.35 0.75L172.85 5.35L174.35 3.75L175.85 11.25L177.25 9.25L178.75 4.75L180.25 5.85L181.75 12.55L183.25 13.55L184.75 16.95L186.25 15.55L187.75 15.65L189.25 18.15L190.75 19.05L192.25 26.65L193.75 26.35L195.25 23.05L196.75 29.05L198.25 30.85L199.75 33.55L201.25 39.95L202.75 42.15L204.25 51.05L205.75 51.55L207.25 57.35L208.75 62.850L210.25 65.75L211.75 65.25L213.15 63.45L214.65 59.25L216.15 59.15L217.65 63.45L219.15 60.45L220.65 59.15L222.15 62.65L223.65 60.25L225.15 55.15L226.65 55.55L228.15 59.25L229.65 59.85L231.15 62.75L232.65 67.95L234.15 69.45L235.65 74.45L237.15 68.55L238.65 75.95L240.15 77.05L241.65 73.85L243.15 77.15L244.65 72.75L246.15 74.55L247.65 70.35L249.15 69.25L250.65 72.25L252.05 69.25L253.55 71.35L255.05 72.75L256.55 62.65L258.05 59.95L259.55 59.35L261.05 50.45L262.55 44.35L264.05 33.35L265.55 33.65L267.05 30.75L268.55 35.35L270.05 35.65L271.55 33.55L273.05 36.15L274.55 36.75L276.05 31.85L277.55 32.05L279.05 39.95L280.55 41.85L282.05 48.85L283.55 47.05L285.05 50.75L286.55 51.85L288.05 50.55L289.55 49.05L290.95 51.45L291.75 52.15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 ```
 
-### `src/flows/us-stocks/assets/etf/procure.png`
-
-```tsx
-�PNG
-
-   IHDR   d   d   p�T   bKGD � � �����  IDATx��yt����'y�IBvB !aT��+ZE�X��j���x��E=�H=V)գ�� eQ����""K4�����$$y�����!9	yI��d���zo������f�Ν{Mm�]@E1h;�ΨB�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da�B�*Da���&�!���<RА��^3h��������;9T��(�X�I��@��#���Xv�	�M�����:��?`B��V����Z��	�7P�fB�d N�fr�6�xsw����!�H�~��jbK�F�T��-�;�K'�MAp������Oo&�7�sMg(n,��S˘6�{G>@�!�_�ѯ}H^}6�d.bw��.2t=�>�^��p;ȭ?�����}�7}�kG"}��l;T��g�>FNݩ~��(���eŉ�T�Tx�hB��Yn�8T����|�3�9���8S�͗���e���<n��[x�ĳ�z2����.wN���2�AT�w�ͣ�1�eǞ`u�
-R��\��mś�����;�Sp�v�j������}��e_�a�{�����=�ث��d�v�� ����Qg������h4>;�����"-x<������c�-7��μ����԰�b]L�
-9Zs�M�xU��Q�[pw{�
-5�	����22��_@@Z��*mTRA~Cy<����G�Z/�!o�N�O$���$Ǻ�>�eU�T�V��.�ww8'U-�{,cҚ�}���8Q{ԣ@1�5�xU�ᶳ6��]Ͳ�u�O������Q�
-��Z&�":�O�~���q1V{M�'JG*m|��-�[�D���8i�Yt�S�c���w~w���z�'.dz�5���m,��/D�p�6St���(hȓ�bdq
-N��/�nF���e�9�|z��n�7:���f�G�d��G�"�j&�N`s�r�D�t�j��:��6���	�B��F�%�����v�?�r�WK�m48�y��
-t-W���ɏ����൬�1����q�����;r��g��%��l!_I�5���x�n�+{e�u��}�q	.����ϲ��v~q -.��x{�V�}��-@������e%P�\�����<b���k�ױr�[����s �k3�1��<?�U����UE���?�W�t ������ڐ%�H�Y���un���{l��n�̍�O�)�`c���9�a�0�O\�����v�.wn�s3��̚#�ڐ%�X�O��w�ݼ78P�m�mѾ�L��cy�E��	�$����� ^�u�7HȺ+G-�$��j����q���o��ҏ;m�7�=�����ߔ^xEކ�����ߑ}��HV�	Y�%)n,��zB@`s�Vg���a ����/�3�SY�������e;�'�����f��>�;�%r`y1���>�LJ�㵙dZK�eͥ�؍���s"���~~z?*l���Kp�sMy���Ig���u'Y����2���H�@�o������lk��l/��q_�_<�C.!�o�@j�5�!�r����8����sW�_�QkB��=ʞ���Ys��*3��(e)	�Iݶu�!�/J>��]��SI	G�O$����s�%���ߙ�����g{}��bJ�>o-�V|�i[JP:w������n�*��Q�{X�^�3���2�J.����tZ��
-v�~ʷ�w�p�1�|xt̓L�� ��l�lS!���ɨ�AT�=9tw%�KTgzQc>��O�C��ϊ�����:VG$Y��
-���@��2/�~n��������N-��Ȩ5�0��A�<|��-E�s�����<���bm�+���h��.q!7D���:��c}�ZZ\6 �G���ɏ��2:��ѵV���OpS�m�� �!<��"Q���c��-dY��q�,��A6�cvܝ<���`cod�J�1��cn��="e L��Si/b�01fs5��ۆd!m?�qwK�53��yd�t��4��� �]Dqc/M|�1�i��~�Y�sH��u[Sæs�Hm$���Q��Z�'Y�Ak ޜ���s%�7'rM䍽�Ӡ!�H�1���x���ﲥh#�S�#%0��Eyx�R��a��<�kԚ���P�q@��K�].��S��:?f�݅V����-1s�S�uݖY�ό�k�<l*��ɘ����n�MiS1?Y��|g�����0i}xp�bVg���v�4}N�I��8{�w�Q}������7b�},s���Y�f��%���sr	3��4��&��-7E��������u)��h�3'gN��9l/����-�Bw���с�<0z1�-�C�k��ĸ�I�7�.w�M��mzs�zC�9A�@�q˚6���2b�:h��]Ƽ�?x�q1����w�8�Y�Zc���o���a٥�H�d^������c�X��>:�2�J�u%	5�I��Z#O�}^TG�Ƅ�Kyx̓h.��^��ݖ7�|X��WR��1&0Mrޞ����[��!����O\�㠲7.	�¬��ڿ����{.�F�#c�� =f_�!>:_fF�$��9q�2�+Bz�@43#b��}�b���s=���ڨY����N�P�o��ɤ�6��s��l3ϐ��ޱ�]�7�I!�:�=�dW"CV�^�*"�8l�3ǐRc� �7ș�cH
-��k���o���%1$��>���Ȁd��5ظ��>`f�^J+�!'d��7�#�7�+ï�tD3���֟f[�&t��59X!���:����}I��2�)I�3j<�����+6�G�͟�gz�5Z�e���sM��#ܗ�`�6��$Ӓ���8S�è�1ܟ�0q�A�T>�r�j?o� �g8M�J��ɮ;���LZ��>���K������u+�K���ہN�'��p�(�G�4}�`�٧(Z��#C�)k��
-Q���
-Q���
-Q���
-Q���
-Q���
-Q���
-Q���
-Q���
-Q���
-Q���
-Q�^%���K�    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/proshares.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   ��Z=   sRGB ���    IDATx^�]	xT��~�wg� a�-�-.U�um]��d�q�HH`�	J+n�Kk���V�
-d2�(h���P�V�j�U[���B&l� �̽��**�������>}��s��~ߛ;�[�!����{��ɧ~�D_�C}$���@_L���i1h�� R8�e9 r@ � �@@�8�O'���D_1�K��$�g������N9���\��vE(����a{CCҞ�8�rh\��5�yx��x�a9�t����D�"�p@^�=���*^�3%�� �	8P3wXM��o�B���ޢk7���u`��{AsI5r���� � :����f����Y+v��̟�
-̟���e_x��gB�VW�i�A���ˀ+�g�U�����".�� ��ա�X�CVx1X���W����C��}X��w3�W��)� g$q*�p  �<�q�P����>�J��J�$��p��U��t�̀+t���8(����g0�2"��@R�,��� ��)35��OȐ?�
-yC�|C�K��d��K�G�~}�	%D��}�7��l��
-���h!�=E��k�cY6��ĂY�f�������{	:�A�h�YĻ~0og�s ��"��x{���gl��r�=Y!�����I���yDܗ�����c��~�.��X��
-�\���9�c'�U������L ����As~,3�o?MP�kۺfy�L�;?n�"t��K��'�q�t�����MC-3:�xN��
-Q�h]x��m��w�3��4�R��D8PO����`�`~Fa��>��SƨKH���5�>g	!���0��(���$��R۶ϟ�e�E�Z�m�^*�I���s��-1����`�������]���0�J��7���Ƃq�8՜��z�0��c k툽���=R���Ј�9��Ƞ�[c��e�)����)�����2�Lby���
-��D4�@�r]ی�`������-�YY|
-ϲBW����F��X��l6�\�c����"_��Oe��ZK
-]=�>�aL��~�b��7�8��\Cy`AE�<{��z�	���#�yf��j����� 3�� woKt-k��~�.N,d�2B/)�����; �� {�7��BQ�氢�����gl\��0�D�V�|^����= .v��ZaD�C���!��#展N��t�'������{N$؍�Vt2+�����Ӓc�*��ڂ�$!E �j:�`ˀze�ۊ�����%N	��WWC�*('�D���%�š0�.��{U�?��)B/���qE�8m8*��X���b��98Å^6�WN,j��G��e��'���ɝ�����P���#@��+rLo�`�6EN���Z����1L�e5#�A��LD}�F���e�kԼv\�F��h�Q�C�>iֈ�����s��ˀ`�����Ǿ�C<�}Jd�0��^p3��a:��a yQ��HŚ���gF[]�>���F�j h�{�Ռ�u}�@��(�m]{��jUZK>�
-}J�7C�Ψ���d��$�S���X�����,4����jFD�����2�0xY;�U��m�Z��]��~��p9@�X-`�ˀ�ВP:ϰZ�]�^VW0� -ғP׶ˀH��g|$��V��i��]M5�W�*@�X%H�ˀ�08��"�����;����w�~㮲[ax]&2��h)G����#�ZS�O|`Ȩܼ��0���\�.V`@�/Q�?7��u3�h*�)�A"i��67sH]�d�Y�S"�-/��MS����K���
-���2`U��I<!_�pz��f`�L��#΂��-b�v�ٝA��lgF�;��	B'@�A��l �&Vx�hSX�Cp\0'd&9���, �/)�?�� �g����"�� b�0!Ly �����l�������1o��(�z5D�oT#�	v��ـ��.��˜�T�I~�d�c�v(r�������oAgu5�8)yV#��E�7Bʃy���J� ����	D��V~�lg��7ֳ2fIEl��X5�Թ�G0��n.v#Go_;�oW�cL�[,%��$�+�^�D=E	�8�@'0�H�?9�x���#[Ǯj��_GF<�}Rm��9$^vS51d_��7
-�"��[<_�����qc�h�m�/��~C岷��� ����d�j�4K,˲<�>��>+��Մ����7D��q���XA�H(/���[׭��?�{�J�^�q��}#�@?�sAK���y4�r���	�Yf�G���o"q����'��l$�sr"~O���"�h_p�.0��i����͉ްv���:c�_1w����7"�7�l��P�6��8�ߵkRB��L-�-�t� �p�]?�S��	�t.霱�'�}c=$��k@��.����)KdObv���k�+��E[Z3�d��	�� ��z�wٕɑ@��z"�X�Sj}S�j��ɀf��)1�$���ʀ�����xy�z��ݔ�Yo�_��aK��#fl]�r�i6�X�eso!��Mӯ�|~
-׵��?eC�^��bJ�1�ҍ �w�q�1����ep���K:��I(��M�醐�';�{m ��W �򐔅}c��ು�;d�3꧵�3>s��>D�IVpKaS�7��P:g?���R�fG�^u/�z��`ƿڶ�>�a&ڵ
--��J�Tk`N���-����W�}�i�Y=��5C��xr#ɣ�~����i��ZC�B��Dk`N����D��w�[�8��x�v,%���w5��K������	Z��Bw��{����@|}$������v�(���oAm�owu�0ɗ.���q-i�X��� �����bK��̉�cL�h��=N�=�8ԋX��]BD��=S�6̼Ճ�u��[�B�+�PU��9�����e����4�̎��~���/�E@��l,��ωK�W�i�
-W�B/�n'�Zr����YP�t��c4KC#K�$=`��2~<h)ъ���^^�+�櫄Zh�f�}[k�MV��e4'v�WV�S�Ϫ�MC,��yk��u�G�6o�O�B/�)8M�H���m��\X���-?�sٌ}rx��y�$�h+��̷F*Z��K�B/����R0v����ۺ��B=;ؙ�a�8wȨ\��3Dt�����-[[N�bNe,t������#Ƒ�c�����^���b�"�"����9���!���3���HUle��k#���>"q]�`lٟ9�O���mK�.��2P�rl*|D����{�H�_X�4�a�D襡�c�$��@R����?�]�r���5�	��55Jþ��	�d�JS�F���M�>qn�\�W)�j�3�T$����F��li&��{��/L�f_5?���L�j5�ZA�A��D�cK������[�ZfG�p\S{a��n�19/���D��,��XX���L|k"t@Y]�L�_&`�җ�ϬG"��S��řSj}��E �gf)�ފ�-��5�����	}ҽ�3��K�r3d���?!R����uaj����H�}�t�h�����U��u�!�P���m�����o�LW�eP�z��(�űt�`VD*be���v[M�^Z;�|��ٮ�wS!�;�E�ũ�w�8���y����0*2/�Z.�ğ�B/�3,�7�}�Fe��}�p�v.{de~�m�߾��a�x����Z[�Τ��BW��R�B-rjA�2?���pF�p���]MD�7�5�����Ob-?Y^�Do)�d5D���:�����oG޷�H�Ű�xV�"�q�5��>J���悙�nkm99�5!텮n��^E�wZ,Y&���"���\׾�P�By��"�W_���A-'d��]�'����C$V/��C��O]���kY�T������'y~d�5 �Aϟ�}��3`��'��yd��f [:mh�@/���S����*. �M$�5,���?zI�w����B�x��q��4k}�� _=ALԏ �-o����a��l%���l y^Kь����lͶ7�䚂�<�X��K����k9�R�����9�FJޜ� j�y�[,��T����c�Q���C&A�� �u��] ��$���ny�1��WI	���}u�DF�Z�/s������t�F�𔹅��ÖM���lb�g�@�itqp�j��5U�n ߾졀�*��t.��H��D$C�LP����d��+b7e¡�BG5DyA�� :+�V�����@�>V�b�U� ��s.VnC���w��F�
-�/�YV����Į�BW���0J�g:&��Y��Y?�bɟ���!n ����C0�!+!,�Ӭ0�5H�F1iֈ������m��r�����O3�f��U�j:]�x�7���e�*'��W?}�SqXѹ���И_G{���K�gN��/��A�K��ۘ��HEK��Ԇ	*�;��Xzخ�^h�u�i���qBg[����y�=�Λ�t/�5��9_�`� ��߻����@�"���9�{ㄾǔpa� R�U��aN0��#�5��� �ŕ~��z%�G�KЕ�K�2ʞң#0hJ�o�&+��|_��=�i����Q}��Y�������Y9�-�h��Ѿm�O�^?l�b��M	��&ѧHt�����9xS��J$^L���4b�EI�(��sՅ�BW�^�?���L?ʔ��3��H�E�SPFG������C/�7u��9W!z!�>�nIeu�o臙���?�����D�N��]u~e���yR�; ��j�"3RS�������^v>:S둅�����sPZW8�r���9���:_� ����V=*�+��m��.t��ڂ�B,#�������b'LH]b�W	/H/�"s+�h��.��9�%����E��Y���l�6/���;9W�y�}D�8�R^�u��Y6C�A������HH}	D'���U�
-������k������ �c{�Y�;R��7}w��t����j�'!���V��l�+�;O�?}�c�4��_qHJ�X]�}�.>O�4)�yl)T�ԉ��)6�F3��k^�M_�
-]vU��=��1":T���������M���Z�����۶^��n�Ut�i��Cs=�+ �����To�Eb-������}g�%�F�(o���!�G̛��~����?x7�z����U/���)�+\�4꭫��m�����o�2hK	]�44� !I������a��E-������� ʠ�z�U.Fc�v壬�p�ԋ?)=z�)�	}'��L���퉔XͰ��%�C
-~ْ�)gv?7P�~��{���c����aq��ǦlP�M'R�����9	�r�C:�ඬ�'�;�_N�j�+�eg�m������I��Z�;��5�d`ô���#/�'�_5�(�F*c7�ֲB�,��
-�
-!~MD�� @�2��Z���-���W]½Ǖ�O����1�@������zK��?^T��U�Vz2��y��,^�?�no)�흢�����m�a���B���{f󣈆��̈��5'I��ɳއ�l!t��+���x�D��s6���������u�����a�&e��	Y9�k����;w']��ܪG]	����bW���uyl#���O��M!�f_�>��=?��gZ�����M2�O�5:�w�|<ެ�[?�n��@�/oԞ3��L�����?�3&�	]%��v�Xx�%�lk�ʳ������Y�z�Y����5�.�$�s�8�7=E����p�6����SWٙ�KL�5k����l)t5��j���
-~! �l����4lipb��^M��F �4S�Wx!�BW���*m��F}�;頌<]i[��D�\S�CI��(�,3ڙ�+T����*1�Gqp@�`U����v�JS^�[�o�Sg�{ʶm��_��W��҃�=�Z����k�p���{喱�)>)X�W#��>��{At�f��A4�?����Pw���o�I��K���0�v���w����hL5�Y�	:�(��G�#%~��ʵ�Z�i��� �]"H�[ش�'Xޠ�yp=�Q;��o��6+	�O03t��QB���>��p���p����M�pudZK���'�`2���rHhw��y;�8ѹ�1<�4��v��+��&�\^_�F]�1�q��wa��¾�@�j�}f.��X��򈖇�*`��!�fbQ0 Aa�쩆X��Z�3h�mce��3��9��*
-�XP[�����u��ոiRط��ADצ{/X�Q�CQ��-���ք�H�m�-�z|�(�����paP�(�<iAe�"����B�/���F~����Lt!�SZ���)(�ÝJ�z�i�%4}��4Ws'r�4����v54X��G,/3{�&k���j�I�Q^�,���x�eJM�'s��+�}�VG�6.��0G{�|+CwioW;�2���hg�w��K�p49�;�#��"3r�1c#�m�V�.EW��&����p��h�#ZS��]�Z����Р�ԯ� r�^�cEy����R+���m~��6��3�@4�}��:�`�]ӒH�g�<��3�o"��nZ�1Q��v �3+�YPѪ��t8tm���t�}���֬���5��0��п5���������h���$뺁SB�)R[�y�z}���yh�}�Q|��+�=�:qѐ��������p>p~��}=d����1����� �����G4����^p�����j���o�e �GH�?�M�[��$�x[hy������/��ڒ
-���D4ԫj(��wJW�i�di���	ʹ��x˃ye<�9���7X�����?��iR�Zs�lk�ٹ�Cj�f�*��N3F����(��}������t��X"�G����m`43�k"�����z��- ��mm�����O�E��h�C����c��[TkV�f�P�܏>���	T�,��az�����f^���j�9E���h���N��}>�N�iv��#'�1�B�'C�|�#1=�U��0b�(b� ])��A�^��� &�𯁕��W�>e�[q�`%�B)�ջFq�|��gz�=;z9_����ȹM�_=���=�c%H�A�1�P�p�X�[�B��+��[��|Qp1]�U̻���B��5ꢥ��g�_�}x,�����4s���İ�|��#���KH��{Vh�v��v�#7[���1>|+��ۥP�0MCS�|3���.�`�h��u˙ݛA.]�<��p��� :�G�.[hz�9���A`qWW��Ef�p�8pأ�Y�e^&=�m�ڹB����^ q0�t)s��HWC�q&$��@��`/(��;�1�$ɷH��W]k��М�E�"�j�ӷ�r��������)�	G@H/�wx6��A��]�ͅ(P
- :
-������t�h0�Vih�'9_�Z�� ��)������:I�V{ њ������'���@�5���P���T����g��'=�~��w��q,�8�C�DD ��@>���7��?|�2+��EEN���Z�V��{�� ��?�\��P��~���iB(� 
-��Clz���Xz�TZ��m]�s�\%�A�w�G��$F�pf|��$�a;t���8��0cp�D��i��W�g����n*�hΥ�:h�A�%t� �����'�)dZ�.�2U�" m2L��� !�x H�4 �jz╂�oi_�q�L��_y9H�1U\�cn@4tiF6��9B/�2r� ^ �ѥ�����w3����q�܈h�bC|�ԉs�^CP 9�����B�.��t.}{����`�!��o�iv�Ћc!<� �d�E���'{��m��~��(G߲�X�h�$C|�ԉ��>n�(�y_�;��#l\qxV,�Yuҩ�ր�@d��b��hh�U�.cB�H������R��`��������I�/
-�ǳ
-���1�w���4ƙ=��[��+O��^��i���|4��
-�f��	�+!�Æ�g�ѐ�sJ[g�z��!��+��� :�9_jK�k-%��Σ � ��Z5R�Z4�ՕA�  �IDAT~��9'ڱ�Ћ*KA��w 󣈆��6����:��e>xr�������5��D�B��q�={
-�?m4�}=y3m�'���ŵ�֝v�d�8� ����2\��PS��l��B���w�wy��!�౲vhc��1�� W����B�����M����'��!���>�:�A�f��tf�w�D�0��1w�����������>vR?���u�9�E4tc���a�\��1�W��Е8K��L@iBXں���/�� ���.�i_���eh��+���N�.��@x���'�6#��aI�v�]�ǣ}�^R"!1�UP�R�w��8Kf���A��R/�ďL���_���2ŷ���G��� ��s�k�*��΁Z\q: �1�\���s���4��!���!�s� p�n�b^�hȽԐҐk��T��'���K�2M��G�8s�zQE9�T��o@�RDC:nt�P���@9���1�z�!.�.��̾��^R��W4p�(Ht��g��y��m��6�,�,��F4�t�yg^dZ{����U����*+�/щ#�d���q��թ �9 t(9�"��o":>��Y���BW�������<J�!:q�Y�:I6L����C_�h���k.7�-�[[�EU���y7ůck�n}l盿b&H�?=��կ�XSm��`]����g{�6�&��,>O�Ûuq˳����E��{ }��p�b4��_	��@3F`]�O��
-���J:#�hMq�L�Rc���ܴ��]Qv)��L���u��>�3{���P��vn��_q:<�����������RV�����W��zJ#��o��%��n�����5n*ʝh��efeOo�	�;��6O-��[2ט�ZTu#~c�ŕo��H .�����T�zB�W� �����1{�H�h
-�J5`�]/P3���F{a��]>�qnn��ٳ��+o�Δ{dLGsMM�!�-�d�P\��S�4�ݜy9Vn8+���%��̮�hߔ�CQ��TJ���0&��o:�to�wN�bk	]�	.�(�7��k�T3;���=30.p0�<o�0����P�Ǣi�?�h{W��%98tX3�Ū��])7�Nݼ�c���4֨�j�r,nCXG�ɉ����N���;�T�n�h;�	��Z`GuZmm�ޚz-�q����>���?X	�&���j��s]�~�n�=2��>��ȳK�N�|���Z
-��XC��m��Е�TDM�:��֔���m�W�*�IO��kA�Z��1�֮� 6KC��Ћ�� �zH�x�����8�L����`��� �׻�� ��L��GDk��ً#��BX:�PTu���7��m�{M�����6n� �l47c�^c�ѕ8K���0Ҭ�n�W���{�)�?�������Y9�Z��Ҏ��R-��b��uDC'�b;��/��@س��߄�m��ðxv,�K���������3b�oASH=k�>�`�|�U�!~��t�����2����K$�s1H<lZ&�ThW��d�D,�)�ݧ�+�1�y��eV|A�����7~/hsH�U �[Z�*�j5φc�� ;�y��0W�EU�@�� e�_��	�!5��b8��tH(
-L���-t#mOL* ��ZlO����d�WN�j��̊�%�u��vOqRM��1$<�_�=�k��!�1n�̆�\���� ��Y;z��t4���=�9>X����R�`6kf�g�{ؽ�w3�N�?K�J��ban@4tift8�7�x����~��������mG����'���v[:܊�P�����_y9 �)g�1`���ьhMQ���=2`�Ћ�7C�]="L�s���tq|[5�(������W������%sSKj���j����Ot��as��hw�fV�*���A��\�l��?H�Ǻc������!��w �i���!�Eh?��]��S��A|'�Y��j�=s�P������y^a��2/C4tAV����KKAt���a�y����*[|�$��gA����Û�e0�@4Ԑ-���8�t�$ t�M�W��D�F-��>1`�е8߾W>B�t��ڢO60S"a�>%�����j�_b�|��k5�cV�1G���K :EG��r+��w���:�K���_��qb��r�w�2�}ܸ\�9p�>�D�_��\4�<��S�&O��߂q�vgL��y%��óz}E'����Q�<���7ͪ��6�������3�	�_yH�pu��iP`�r�k�U, ��vc���Z$��w`_���9tm�O<���p£��ς�/S.Di�������c�LA���B/��BT�����g��x�.n�_m����D���5n�5�:�"�9��D�vm�е����Ш��[ۮ�iIp�n ���e~q�L�\�:�v&�jY�e�ҏkw=���G�H\�%u�1����k� ޮ.�U��':{3ɼz�A��p�I �­B�LaWMP��υX6k�)RuzA����Q�"��q�XL!�H�ގE��7;�6t�Ɋ	B~����G���4%�['��Zh�!�1	P�MRN��ع�����4�qs��<�&�j�"�M��7E��W�%$\�I��Xgnt�x�.�ASh�ޮ\�0���Z�� �\�T�*�'����Ћ�M
-��\װs!�ƀ�����C�zq�cˏ���,:��Aڶ5��~~�H���g��_���+�b�M��j�@���D�����ۥQ�J4��;O��nlg�X�_4�x��Y�%�k��$�'��ne��e&Ϡ˧��98L# �|u��UH�OGCC���\*�b�R���W�%�ւ�>�� � ^�m`�A�`� ��G T��3G t��o��1P���NĒ٫�0���=�
-�(���;Y� ����Uu����F�ct��?�0��r`�D��"����B/�����ܳf0-(�v�Ec��+�}f����g�;�g��gb��D�r`b��
-�(x�ib��kspW�����^��?x��#���k)�	�T,v��9&��Z�73`׷��P�h
-�$��D�zQ  �q��LpC]w��?�P����2`��'T\Iz��,` y0F>K�>Ȃh-��B8�s�g��)� c,�k���!��6+����Q����� �~=Pm���N�;���E}��5��c�0�i�����L����83(݁+t�cq�V �ƣ�� +k�)���5k\B�ŀ�B�W}�(k��ɘ�:0���Л�rh΀�B/�z�њG�4�2W�94�L��=3`����gAt�;(�a@�,߄�+�c� ��G@�º����c�b��e���c���f�� �%����0��m[϶i����~�,�ci�t[�5�k\��u�[����� ���w/�Ɠ�y��c�8�qY�x��D�XjFT��q0�D��%�A�^�&�U�w�5��7B��T�\C��)0G�*��D��.�d@��h����&][�0`�Ћ�<o�0Ș0]/2��|��2��v7�s�>n� �|	��L��u�$��!�.n[k1`��U��� ��Zt�h�� w�q-��Z�{3`���U��7w�Ͳh+d��=�n��I�yB��f[�����g Y�\LFӜ��;s=���BW�W���ܷ�C������
-4�FS��6�<�
-}B�$� �Z��� �~�+g"~9+�͢ ���kr��xD��t�'���Z�ׯ7�);0W�*c�gC���:�&N��J��S��#�LD�֑���
-�u��5�;��nhq���\��ˀ5�^Ty5���\�-Y
-�h��ƒ�\P�2`�������Ѿ�F��=j�rV�»��hh�rir>�z����s@����i7)B��:�0_���2�P�nM`�:B?.�žғt�	<d�K�O��O����N�#tQѴc �jB����sT�H�w`I�vmM�������޽?��$ف@�cd��RDk�▖,� ZO�����s :N����r��x]�aɼUY��^���U���Wz�]����U�72f��������V�nb��BW	� Z� ��	E�J�]�ܷ�1t�ŋu��Vz���k�؅Pq�+w���hh�M�Ặ V�J������{�u��� �M�2�=�jA�Y�Յ���F�%7 pW�9qVA��е�i,[�i�9�° ��Jڸq��s���l" �y4R�jz+��qŭnqC㨷�'{]e���:�~��ov�y��wbi� �Γ��n�z��j�	k'C�� �4�&�=1��h
-�i2׽���w0<>x4$��6�<]ȯ��'��'�vtۻ�d��BWя�:��_� ��!e|V���h����`La��B�I���J� m���q�[�x]��r�:���:���ա�O�,_
-!��~��Y���Ab6��ױ8��.�9Vo����/)x�v\ �N8����$�z,�{˴�:�
-�%��CvQ�/$q!(�:�uN��z(<	e�lZ�q�
-�Y"Hg
-}'�cJ�0��� �<�N�H�E�z�|�����2:��`�,��%�~v�p�п=��C^�� .x4�� {��z뫧Ԉ`��y@��3|)�Q��Q���ˀ�d��w�{L� �ӯ�<�@�� �4$���]*��.��A�f5��:b`e5��L ���[���MU������{���0;    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/spdr.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   ��Z=   bKGD � � �����  �IDATx���w�]U�����)S�`��RU����  �A,	�LH�I@�^)! ���Kϙ��KDDDz�&��2!$�v�^��c&1@�df�i��y��yȜ��:g��{�w��1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�cL��;�}�6[��T�]P�	�F^�W�I�LIKN���RP(��T!��-��L��Y�ڝu3fK�XCwݸtUYz��S����%нT��l2 4��P�����K<��)���b:S|�U���ݚT]����j��=;.�֛�aA�n?�}��*2@�Ţ=P ZY�^_�N�㩖5��j�a.̔h�&�m�Dy]��{%ZPht4x_ZV����R����x)Ud���/"c�(o�_7�:W"҂4Jɯ
-�5D�����hYU����W���>���y���R��W�TO�^GT�*Z%���Ԋ �Eߐ�LUkX�N���ܔ��{:�A� �GȠ�:(�<��w�)��뎭[���Z;��a���`=;O��WT �yO��}֫{!@�[5@�\W�����U���K���$��F�{��moD��*�/��^t�x�r�K-\=8J軣:��L�Ad6Bew���>��(x�H�Q�(�"�ϦD�_Z^xk�s�Zð�I���f�����ȏ���<:B�n�w`%�W�_�i}x�nl����[k2:8(�&IP��e����(��G�=�����\u����TT'uWu���"��'"S�S���կ^��[�%�y�sr�R�z��o
-!��"/�����Ƹ%���D��m���5e祍\�w�ȱ
-#{��l|Cp7��_?��S��z􌶞RȎ(G;u��)K�[�c��g�����%E�n<�����uD. �{3eC�x���Nު���+�,����T�Y��/0��s�8e���m�ἰ���p(��v���H�˴2�a�!׬��'��;zG��(OH����C��)���|G߈���1[ѽ3�������;��E�fZ����K�:z`���|l�=;7np���LU�SM�l� �"�4�uW�v�]��d�)n)64�o�AYoW��#��(W�Tp��گT窻:ٻ9��6S�����Ӈv��숡6�i��a)�\�2���r�&�U8!���N�doקG)�)2�XY9���~8������U8LT����Ӷ���:2��Bk�sr'm��G�6F-l�Sr?�Z��R� ��Z�d���y����Sv����(Ձ g��)���}�X~��������jo��T�TI�8}w��^��#����l������@�G��,|��f��L�ە�Im�2�0���0��0+Ie �����Mܱ�+����ֳٖ�\���/?�e���G��$�ם���;�B��+j��]��^�+|b鞽]��R80Rfoq���*9�(��C=�4�����
-r���F�V �����W�9���v"p�l�]��8p�.����uoW��U��i�o?u�������7���n����zEE� ,^�'�}���ܫ�����
-Q��Y��2y��'oQ]x��pD��⳽]� |�B���\G�� :"������F���ǧ�����o��=�����e�F�����k�U��V�m#��Q��gQ*��@�/�tz�^�=�_��Pu����T�|?�V�S��<��w������2�~�����
-X���~t�&/W	2��Z\�o���\�fݷ���`Iu�����;ܖoi=�!�+�I��P�⏛���Ь�Y-��ꀢ*"�P:�!C!%�hH%I�)N��K�m��X��� �0P�?U!@I#�E(Se m���RQ����}
-X�������;�CH�
-���~�|�S�n0��Y��p��9,���办�be����g;�������[��q��
-���X��%�~������Ҫ*�h,�M}N@E�,_h�v��9DV�7�9��Udo����RR��c�|dS�[�\u�Bj�-�����Y�S�3
-���'�չ�K�y7�G�iMA~֙'Uk\>S���F�AR�aH"sJ� !ڟ�z��~V`��E��rQv��;f���*��޵�<��N˔�Ө�%��n��җ覆��^]c�q����3Wˀ7�s��F�v���.��SvI�f�ɗ�(�#�:��9��+����[��^N>�9W��#J�jiD~8ZGͩ��	��Q
-�ꎻ�����wT�Ͽ�m�m��|ѫ��y��)�Ka�0�SEP�7;��B�xK���K��v����^�YTZD�lh}�������c~Րym�	��mÙ$���wx@X�q�5+gY�hf����8����d���.�#�C<��hx\���j�xH��B2%��l8��E}����XW��O��^2����o�rm�ѻNى>?��oXQx̉\O��(��e}z�)< l;:�7�8AD�Jh�%�ȡ��~R����_�:�	�&nY",�`G ���)�1�T�-}m�k��r�a��Q��S��+|����=~v��6�$.��K.�����0�珽�9Q7���:���n���C�0���#�o�-K�r��^�� Ab/e9�ft��&
-H/R���u����n�V����w���.H)��|O���_]���\���]q��7�,><tv3�_b�� �Z
-dET5���!���k<�����Y+g��SZ��.ߑ[h�ʟ�;�S�C�L���wD�4�w�u�����s-��H��Fi۫�o8/̆��*���N)����U���%��Ǝ��W��N�����H2X�-���~�H���y�p�lS�0�|?����aڜ�9�|�#Y�;K�34� ���.�9޴ ����ݧvn*!ni��!
-_Q�9��5���7MNf=p���կ	O���[�M��ݞu��F���]�o+����ADao�zmEe��i�o
-�����%)�T���#�N��[N֡�Ts<�`�����A �
-P�lx}z}�R�ǋ�'�Nsg�W��J��}�+�W�]�L��o0�J_�U��N����=���̋
-���0 �Ջ|���|s��:b�9w���Y7l�)�b��(!���%�} @Ok�ֆDh��2�A{U�"⚠=vVͬ��s'֫g�ă��#F(H��U�9=W�$^�9�멦��`�BW��o�V�*�P��/I�h����y�hF�M㔣��w�^F&PL�h�֋�u��F��
-�"��a�~�L�z�w���[
-�Z�ßΝ0:��v�l�3iAk�@��I.mHb���&#{���.	5t����j�Ҷ�i]� �RՂ��˯��l���'�O�����e��i��B�#��o�3bUw��')���B�&vQ*o�5Wot+��;
-s��C��;hX^����~��0,e���w�e��Y�W�,�-�Q��xy¥���6�������C��&����~�N��)3bQP�'���#�g�	�$�uW�鵉^>0���[=��S~�nW`_z���4�y��IIN.RzQw_����)���si��}:��/��U;�a�pΝ���q�����T��$R9ӭ�0t�iZ(�NE�&�е �?����������oM�s�Op�Z��~c�0T�@D�w�S�����;koO�T�����4Q�H:�ӝ��b�
-�*����K˃l��"���(�?w���J���Y�鈀₮l^�d�T\#�[�t��ܾD�|I~��q��y+*��]�7T�^p��M�c�%�BD�;1Y)ڎi��hu����i���ê���h��E.*hC������r�`[�u8P��G�
-7ܙ\&6�FA:>�G�*0`p:�Hŏ�"CQM*5y�p�{�������+��r��g�|��t68Չ�h��L7��8�E��²川{g�5�U�vO�I	�#;��Z����"�����#	j>HF#t9sr�W@�)w����c������C�]���vvu�Ҷd7�)^��S�r̔ܔ�!/}+U�KÚY�'1}^ID�*�?�Y�6:�=~v����=��>d�$����ݝ�U�Z����O��L��������횘�G|���Ág�<�~s�{��U7gJ��E8�-����>D��F*��;&�����0�[�]�]��M�6\}>*��p�Gv�ujf7C3����W�͔j4��3iK6��v�%BHG�R2�ܔ~���+�v�o��3/��[���1=ʣ�$��^����o�][�4<tv�G^�dz�ПR
-A9J�_	��~Sos�~W�����q����g��D�R'�wt�۽]�s�7���;�a����v4{��}Ik)�pu���][��t��^ �� �#d�D�;#�ȱ���3չ�_ws2���A�j]6��1<b���]!�3�!+P�o��e3��[����'���?����)�)�Aa����H�S��
-��22fz�� �������k�����`Jܬ`��/��s���VJ��Y�z�nR�Fiv��}Bh����ꇷm�XQ>h;	����k8����Fpݘzj��~8/���8���J�(I��~C�ū'\��tx�Y'r��Mi���}A멏���^��L�/wu_�0eX�w{%%�a�����aF�6�Y"*ψ㱨=S�����}��QTbI_[J�.%� 61%xo�����������lv��A�i��� 5��&�ae��I�� �G�i���aE�P$x���Ъ�kP�T�/�e�h���F�j���+
-[�Q�a��4A��%����]��� �|�����SBף��7v�u�n�=~�F�w}"�w{�5�����M�늕�q��v'��oiOk��pWW�|I��/�������������V��"�,+(�=��"z�5W�ՙ�M�M�ȭ�qө}f��̾��l�;��;�6 <���f�5ι朗⏫��x�-̅��X�-]zH�֠;&Q��8'��=�a�����ڍn:����獽�MDNU��Qa,�K;�L�K۲l|�"����q��9b��]č*U���u��=4uf��]�O�pޫw���#"���g�&^�`��g�ke�n9�$����,k�.���Px3jѮ�_�-�0��s���$��.l^���7A�J!��E�~>����_����A)�具�-�W5vC�2&�����W=D�q��a��e�͔7��o�<#�E�9�e��7���ANڎ~�B��EG	|u����3�=dT�o���E�5��A�r}K1��	U�OKw,<Y��M[k�I??�Q�I��X`��?�Ήk��b����V��=N9z`q���>��x�?W��8|�S8y+��`�$�S�=���I��4�|I�x=����qy\�.��	�Ut����\u�c��F7d��Ŕ�ɛ�g�0}�L�e�6Asp1��iK
-�Px*�J}6g�%�\�������(u8)��`1���$���ve�1]I�ב0]���{��)B^L�R&��n����ϝTMY4W��d���s�꾛�^Dԋ����������ҡ��˚�h��2dfAj�����\��=-�(�E���&Q'��{/t!-q탵��ɟ.�m� %�]�vrO�\�K�������>[p����� q��Ǫ!�}j����s�Lx@��� ����+vc��s﬽.�zՂ.쬒3n>�"]�r�x���Gy��+��1�1�Dp=����}6�,����Rt{i�]!�� ��o�V��Y�7�������VO�;!���b��uL��~�=�M
-`�]�O-x;�g�O����"�EN���Xq˴\�o[I����Fa��'V#�{��Op*�V�:������£�m".9�
-'����p]�ӵ��n��
-��p�mz������^�wb�C)Z�ʱ�M?�]x�[��]
-`�>����L�ND��୿����z���r)�9�~���yѥA��V�*qn��6��gg$��
-xT��6W=�@Y��������n�sk�)c���Oѝ��6O��-�v^Y�w��D�|����ݨ�@�G'��P���J[����?�}��dONy��\��n����[��~6����G{�Ú�0m΄�D�X ��U�r�*��z=�uw�K����E�%|�J��5�<���I�U���Iaf���Џ�Z�t�,�;v�p�9���@�����}�ߜ��
-�y��U�o����5���T��� �֞��<��>٩�c(K離�����V=L��3�轙T���|��B���}պI}0�uS�a���#9�;M$�r�����.��Gzx@Xʲ�A��]~p�"���i�w/�z&fü�k�?iǝ�W]]su��|�H� �B�cE�"_H�[�\���k�;��z�('�����i��(5���]ݧ� ��4����?����la�uߪ�{���ؽP�a.��������3�����{ĹA��)��BD���s�1�����s� R���-�Ϋ���[�� ��$R���|g��r��!�9�grM�P������4��>$��2s�W/���oP`��_�U�~?�k�|�[W�˗���8k� 
-�I�th�7nR�������a�B9��A�7ڻ)tUiR��?����^�rh�|s+^Rd��Q�b�y�u�͹�C۰��w���S ����b�&o"h_�z����S����գU%�̶�M�i;���@�&��t�+���:��P�u	���E��D��(�W�[]�vyt&3{��=$-y>ψ�%�}���[t�N�j�����gǽ2lA�"w �A��
-�Pd���j�5
-�8�q�4�����&���KҜ~Z%桐J����2������G�k�v�u���E�f��a���dQ���J�%�t���F�v��ۋ,Շ ƶXQ�"K�Vm���9��A|�-��^��J$�tJnJyE��S��x�,"�vUe{�N���������N��K�N��KCV'��KsSʖdW��Y�/S�o�/CW<X��W��ǳ�V�˔�_d��4.)��⡗�0��ee��֮��h٦�����ya�y��3�tF�{��g�Ix���Ԡ��A���"��N�N�	:X�2PQ���a�D,'����|>z��5�fQ�5��	��c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1�c�1Ƙ���.������    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/vaneck.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   ��Z=   sRGB ���  �IDATx^�	�=GU��ǾE�� *cT@����C AAB��qGq�I��E$P�B@�
-*&($lQ�b�� &�;�����cOO/U��޼���9�cd�U����uU�r�"���W ��B(��	t���@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+��p�S�� Z�m&���)P���if/1�ۛ����\UVKݫz]=U[P���fv��}M��VB���}�H`���mf�5�댘������z� >;��Ξ�p�� W���S��T�oy��ߠu�� �w�o�u�~m3�v��w�6v�o��S |���Q��^��3���ߌ�o/�+@ߴ��	�EcB� �D��S��	଩����}�~�%͛|}���U�����S��� ���o%wU�fvO � �o�s��*=�ܩR][Q����Eߊg�x���fv�J��?詛ˑ�����S���}�j��̞cfgO޽i�b���@?V�Pl���������-�/��� ����gf�L�5�	�O���f�z @O\|m��c3��L{��� �1�ݏ23vYآ�(���R��n��_ff���u3� �̸�P]��̷V0�| 'L��nbfw1�;��f�;�s`@o�����b���zz��}�L��?{%�o�T�nlfS.p�Z�<h��;{e�]�ܓ�w  ����3�?��/y�n�	�K����??�/W�g�
-w�3���:_�n5�w�0PWz�Gx�4����$��gsr�ckA���]�k��u��
-��A�r3{gO���5�uP��/�[�Q����햃���lN�m-�\���
-��o��B�J��LA�|�� .�v�\�~���-�:R
-�}���w?��~n�3qqĜ���m@�]�k[@O��Ǚٯ��Q�/�j���@�:3��9�v~s<�?�PϪ�Я�]!V�v��m=���h�}���)w�[3�����j ߼�������ּ#����f��4@'�k�PP��?jf�QP_ߥU���Α��J7��Zs��ܞ�o�U�l�k�L��C�L��7��+<�� �e�z�u�*����>��*-��;W+
-�}����L���i!Ēǻ�m�T����_nf�"�����::��-�Ⴂ���<k}JCw?������M-}����^k���6���r���?�F�`k�A7n�`y/��-��0�����o�ls�6�_�٦�Ч�g��~�AO]��r�Wɹ{{��E ���q�/�݂M�=�� �Vt�[�v&X���r8ۊgt�;�{L� Ѓ��f���	`rL`��n�U 8��RQw������B �SR��s������]r��\{�[���� �<�+�n��X:n0�1���}��c��|�ōz�A�+|����۞�v6��)�[���rMZ�'�W~nw�� .^���4L	#�1��{��������s�������$����L���O�l=�S���96L]�.�ݝ���՗�Lo�z���ݝ{IV����,�JW����| .��.��p����;7[�t7\�>�S` ���0}��>���=�Ub���R�S����`+��\���ܝ@�6�w��I ����tw�3{p���`�E[�wgb�-)�4E%�{;��y��ym��ߏ���-�`7�u�R�C��> ��fwd'a�{@�x�y��Y�Tl��?+eJe�RS�7swn�>}�>Ϳ�sLh�8��R��:���yP�םgfd�}/r�����.[�@pDI���� ��q�n�����Y��LG�`p������~jf�g�詋��o��%�V��ݚ��u������]p}�� �R�����^�$����cd�GwwfG~h�/2���@�h)=	�3��쒒�}ww~�pC�o����L���w{�P0�;�T1]Ui�)�ޥ�	�6�/-�t���	r:�V)Δ��_af��~����;Y1c�M��<t^r Y�4�zz^.�τS�w�`&E5����O�uIy�����?73*1v��y����;��~:,H��d ?3&��s������'v���F+�}�� ������������c�)�@O]u.9+��	���̦vOf��!Чr�=*��j2�v;C�꾧Sd�cz�����~���u�����g$����Q������ 09N1��[�LȳR��{���t3���&@�ݝٝ���� ���b�Ӄ��{ �փ�3w>:�Zv��ʺ@���M�<�w	gr���.C]7w禕Wͩ�8��},=r�6ٚ'�KN�����A�G3�M�/0�	i��sA�H��ݹ3�f�I ����V��1�o����}���<C�n���w�/`�n ��m�%Y��z�`�WT�9�tw���&o�3{	t���B�}}1�m��M��l*"�^�����c>��6��&���̃Xݺ@�/Ʌ�ݙɖ�tJ��<z���$3;��r3���r��N�gU�t��H��m�Ѣ�'���Ag�S�ñ0n�������k$�� �w��+���1���p��Ȩ��@��=JA�m��r�����e`����V�΀�Ԇ�F�\��n�7����V �} &׾�������K[�vJ�)��}p����c���@��JZ�}�r�}�]O�{���s�	[���~��宑(��-mO�e�{ʺ[tw�J3�����۫�����=u�^hf_�0���cO��G��D �~��>�ɑww�j����Z2tw���r�ѹ���h���7 :��7'�	�7�
-2u�R�9��4�� ������$��;w��2�S����vX�Y:�ԩ��t�'AO/yΣ�]�����C4�J�=f�>��o���;����$�\\������ �z�]Yb����,�p�!+�8����7��J�,Ї`/�0Ցsp�(�ǜ���} r�\�U_zr�q?y�+�W �l��}p�����/���G �f_����/���U)�0����[?%���+ �.A]G�>y#�I ~�D��kk�^#%�; ��C�8�] n9f`�Vd�'�L,Ѩ{A�ވ�$��	:9�3��� ��Nw��eO{�����ڠg@N��� ��<�AOpvW�L:�s��Fg��B �N�Ω�9���j�W2fw�[�gf�c�JZ�;����Yɨ;gn�O��8\
-[tw熔;�<� X�k�:7,4`���蒕O\1�9驍�h������ff<+S��e���ƻ;s������>��p���e�Y�ݯ4�����eo�z���������[�Z��H�%�|�����و�hf�S�]�͝rc�s�	��ٞ�~����[�B��b}{��/*>�'� ����R	��͌��%{�u_�U@O�f����Qfm�˽qZ�ɬ(\#�h�U.P���#:�/���Ο7.���؍wNjNh��=�gv�r��R%Йn��x��u��>\!����>`i뺧^w�+��L3cR�v9��F_IR���^����O\��UܽxĽ��䅒�0U���gܮ�٭z�=9{�jנ�h2������j�o�S�f���n-�>�9�Z����V2��k���lI�~k 9۱w�TtN�fd�iv M��̟�,e�azdf���������"�7���̏�Ǎ������Ո �����}�\� \T��3{�૟�u���A�;׸�f ��e#��U�[�kGq�ު�'؊�f���\ E[N��ҹ��9z�4 {��΄��9�&"-�9C��:��=��� �2���s�Y��NH�t�����{mT�Y�q����o΂�v5����%�p] �UV��(.ɨ| ��5z�s�S��fOy ��f�9����"�7��s�{R�6��C���\�#������F���cx�r�Пaf�f����ի����FLeTR������rV.��tn~�ʳ���p佩j1��μ�ܷ1x�Nm�+\(6�q�c�z�߭t���lb͊�AN�y�}�=v.�����=�/�N_���wAn4���o�U_��M�<ԫi�� �q��%��đ��W��Ao�2�=���e�]C��; �$7�ܝ�ߺ����y|��YG�^�U�Z��N��#���9�#4GO��s����{�1�03�Y����m~i���<���ǵ
-��:�+���w��q6B<���m~��Kb�����=z��ܙ�i�&cro5�=wi��I����=���A�k���Z5���V/Ό���}�ub.�G.�flv{<�cpK�A�.���wMi0�3�?^��y�s��S�8 �l�.�\�׺�6 xP��R{=�0�"����k[�=Wi��˘�BxcSz[�+��J̉��&S�ݯ�d��ى3~�U_7����C�j �����ݧ���� ���8�C�)���k����.��~ '�/�C��sw3�4-�$�)ع��y6]FS�5�fй��/�+�������d�C)�O`3x�7z�{��e�ε�Krs�:��ݛ�{�Y']��~��q��� �`�ނ�GM��^ �� �=���=�����{�o�M�>�� �� sw�������{�PseV��� eK�9�����}��q�GooԷI�ݙ=+�:�r��U�c'�N�V�uO�?&#Ih��~���&`φ<��O0��^Z��#�F��?��~r꺑�? ���lt��9 �-W �����+���)O��"��Qn�nE�[�;��qӳ L����s���U�<��;��S��|f��'�;s��MА!�]��9�gZ��S~;�r��Yz��@=� �=���AO"���5�7��b�Z6G[�lwUܝ�6�=�b�����4��n�gmny��e��γ��l�)�����;�$]�K������iт:yi�-?���v6���^�0 �1��;��YhKf��҉x��G�f=���lo
-tH3��g�N�8e�B��j0u���A$~R̙�����������Lt�īQ�2�*�\���.&|s�c���KK9?[��p̶"��˅�R/�Ժ3��Ff��ђV^r`�鮺��S?�;.��.͝S��g�i3�m�Yؓ�no���a�Zb��E�FS��;w�����9��� h�w��Խ憋��~��[�]�rwg�ܩ,�9��w�c<�B+>��%�+��<��,�E�̌>f��s���C�;?�y��Ҭ�t���=s�kuL�&Ao'�< �V��`��&}�w�1fƷ(�<�u�4
-�u�.�~Tʚ�:Y���쥓���N~[g?��]�n�yܹ��<q�}� ��^TXߺ/��[K���1˕t�M~��	�9�P��֋���/~ReQ��-��J�4��\����μ?7|��\�I�����	��2Ų��R`c�o��F
-H���B
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D) �R �=��e��)@���2Q
-tŀ��@�d�(�b@
-P@�p�L�]1 ( �8Y&J�����,��@WH� 
-� N��R@�+�@ z '�D)�	�%��O��    IEND�B`�
-```
-
-### `src/flows/us-stocks/assets/etf/vanguard.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   �F�   	pHYs  !8  !8E�1`   sRGB ���   gAMA  ���a  �IDATx��1L]U�SӴ�XK�0XYڤ����Ё�BL܌��&nm��S	�:uh�Fyn�9��jQ��IKq�.������{�w�{�w����8�x�����~��#�[QI/9"�D a�H�"�D a�H�"�D a�H�"�D a�H�"�D a�H�"�D a�H�"�D a�H�"�D a�H�"�D 9��{�W��~�δ���F�龹<����֐���[�`G��7���S�\6���n=CCn`j�Ui`�ڿ�
-GB>��ٓ'n�O�z�G�mz�Am��o�ъ[|����*�g8H�5~�_��R/���w!�h�Υ�w�<�+��@�h�Qޞ}�i
-Qc{��P�o:���9{������9�e��S%5R�D�5Q��E��N�/|v���rZB�؞��G�X��
-~I�gg���5��#�������b�F���^ףƶVV\HǺ_v��XE �4�B��[U�=m}A��2��ǜ���� ߅|�g_{��f������_1�D�c����!l,�}�����?xy�i	Uc�����P��E�=�5���{{}A�B��:�����R�/�z�lX����[�]�V�-x}������-|��{{��k���(�������[L�5��TL�� ���1���u���7^_o�� � �� YD]5��� +�&��мB�]c�}��~V��1�c���D�zw��k�wI��5�P�~bh�iЮ1�t��dfn,��Ԫ����g�������<-1 �+�Z5�z}�� i�i�X�����4���|/��k��d��|G7�#�m�0��9hVu��yl����W_`��.��fU�X{����i�7a.@��fU՘���j}�� i�UUc>�?��L>�Ls���Q�w��r}�� i���i����<Ͼޜ�3�щ� i���ף�?��n�n������C65��%5��q���Q�)�����Y���s�g���~̯֠Y��]M���t�4��Ԙ��O
-���8h�[c]���I�������QPc>D}fR�/0 �+�=v�s�/0 �A��+��1���T��xي֠Y�˵� � ���\�����a5�;��R}A�A��j��L-���d�9hvP����Z��$� ��^Q�T���:՘���`b���*�6�ә������kRR�4�oU����X_�T�4�^�1�׮���f�k���+� ��5:��a���Rr�k�y܄�����v���W�o��Q� �>4�w����^+KO\-#�#(�����3�}�/� i~pE�H�� � ��N�5�9VD�/˭J��������p��KﻐH:@گ�<H�g_{����C}A���(�K}A��9�Nr�/�"@��:/h�R_�E� G�:j%���l�3�Kw嗀z�ɩ� � ��o\w�r�/�*@���^��iȭ� � ���;�pf�[}A�,���oV�&ʭ� � �l��*�k/˭J�|��KZ��k� X|�`�<oq�/�,���_x��^���/��b�����W_����E}��Ϲ1@���޺��<੭���)���Ō*h�����[]��6_��'�����6���0a�}Ayw;f�dO2�0@$� �D"�0@$� �D"�0@$� �D"�0@$� �D"�0@$� �D"�0@$� �D"����`3(��C    IEND�B`�
-```
-
 ### `src/flows/us-stocks/assets/etf/watchlist.svg`
 
 ```tsx
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-```
-
-### `src/flows/us-stocks/assets/etf/wisdomtree.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   �F�   	pHYs  !8  !8E�1`   sRGB ���   gAMA  ���a  �IDATx��u�<����B@@@@@@@@@@@�
-�
-�����3$[�x�^�>�(��W��F���=ڴ4B��F� �!��!��!��!��!��!��!��!��!��!��!��!��!��!��!��q�Y!��i~���ܼy��
-�����ݹ�<y�|���999i�?�\j6+�޽{�����{m�o��Β�����K||�;�]H�^��\vV)�G�u~���Mk!�����cW�w��鞿}��;�ݻw�ϟ?w�C�s�[�3x�۷o���A�@mE7GGG]W���
-�t5�`���
-�^���C������s��Vp�ݻw�c��>}���~�z�:�{�M>{����(���*�0� l���B˃d��VP���:/S�g]�L���m�Y߅���*��ŋ�sto�]��;z��u�:���4�]!��vo<�cv�6�.�~�,Z@(`����r�q@$}#8���X�~�A�ae�s	��~��������h=|�p+T�*��_�>��*�T<8�����/�Ġ{?�#�y�#5܆�J�QS������&ts�:q��Ե��l����&;�FhJ�̕ Jv���} @���;� 0t{|�ca%�Hi�	]0,�k<�n� Fa^ ȍ�8Lf���OD��s%^E�d���8��Q���K����6~�V����^3��:1��^�����9�5b��\��f}��][!^3�k���㢦2^�|�|��i����@*3� �)LC �<}`Z���mƂ�|��w�2���G�
-��{���[�n]����, �8�� Y 3�9KD��	���q�~S��|��S't�K>ˀ��iQ[R����3�(,���A��$yA�/�]" ��!��$���u-it����@˄@�|,B�H�rf!T��)Y?�O=���0#�x�6����1~�c_��F�Q��>�� �TQe�򬀬�:�;� [�_Z ��n�Iht>���ss��~74����[(*�d�?�v�2Y�~�dH԰:����\�[�p��-g�l�K-����+���e�L7��c�nV��u}�������q������b��[���AYA�l ��P��fP_,�ࡑ
-+Z[1�<���u`s�î�v��]�wz����~|޶|� �K3rsv���}� ��|�!��	�ֆ�^R-�-��V)aqh�D��x|��V���5������ؼ{r���Z��o(Q�}�1���.����Ė8TH6���N�b~%�o}8'
-~hy��f>?�H��v� ���w�z�H4"�%�R{�o�h3��8i,nGBD�]�s{��_�6<��mԽ��9Z˴}̈5"���ի��Q�)(��c��P9�<v� x��MW�����
-R��lX��3�ܤ��~��w����uX'�1��k���Sv��s1��B���
-	�CX�!�>E�����K}>�MtHqM%��$;R��~Rnꅂ������8k���c#��FWv)Ü�Ɯb�����0��q�K��0�S���N����D��d���w��*��bX�<x�����E�8�_����>yM]�c��cʕKd�w������F��_�\�R�x�S8�J�S�	Ȯױ	V��n���3�b��s�a֘h����/P�le�q�����mV \���L�"18:����ᯥH@%az^�T]o��"*XJb�KU0��og�}�,~��@��*ЮG%�LJ�[,=qM!xN���%N�r��G�n��6�V�"�Y�����r�q�5�g.̚c�2UZ�p�=�7,�Nsu&��͕5�`w���M�\S=Y��8�K+���c;Sƥ��A��4M�b�FC�RKAlx�k�����K_���C��-���p���E����:�v#���c�X/�-�4�c��ߟ�E��5�{���gn4ȕ��?@nP2UJU/Ə�Xh\���C�f�l��}����x�R���]�#��k������毬R�ͺ��xީ�?�<��+<��]��
-C*/�sg%���4�:�,����6;���%^_�@�_�!� �F!xkk��a-p�E1��	�]Mk��Zvj+����@?�KV-I�}���ء/�ɻqX�r#Sl��k�3�ˁ>+D��&#_��.�h��X�h��L��y�Ȋ���� �sZd�R�ٲٽ٘���c�i}.G��iZG�t���j��v�8��Z_��%�Kh�l�P�eA���B��Ҝ#�J�{�(:��;�P<�dM6�ۉC.T��Ԉ��'�� y��p1���)�1��Z@���u��x���3��R�خbL܂�&�;ԓr�s�KY��M@���A<�J@}�Ե����ݚ�AJ���X����i��R4n��u�Vh��ZŸ�*��4�eX�6�g�&?�&�܌?��� ����@$$����D�F�w�MXY�7c���S݅�����a6�o���2@l~���ȏ>,o�K���-���濒d�k�����J�iZQl�[S�}7ej���`������x��S�o���E�����������>��k� 7�µ�����[��.}?�ԇ=�P��]�ﮦ\W�mԻ�	�$f�@s�_�!�8�6v3,��ǦAZ�Z`m���[񭆍�2fS@���Z�o��`�]C��kCrp/|)���2H@���6�	(Ȣ�ټ$� ��#
-P��.�+��Bt����������>��ׯ_���呮]�����o|���݌C��
-G$�%[�|Ϧ%��C|��%_:��G;�����r���?Ǖ�
-�'ҩ�"�	���NNN�7nl�O��* ΠC�|eؖh+׶`�|�&���������վ����A!1Q`��N���K-hAhE���k�Y�K��%��Q���3Ѿo���?|5�k*a��▸��6\�e�fW��/~�@��.��5FT���: �ZJ!�!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!$ B!�F���e    IEND�B`�
 ```
 
 ### `src/flows/us-stocks/assets/home/in-irfc.png`
@@ -22442,6 +22150,55 @@ export const usStocks: Flow = {
     { id: 'activated', title: 'Activated user' },
     { id: 'wallet', title: 'USD wallet' },
   ],
+  options: [
+    // The Boosted tab's note (3 Nov): one line on a strip, a small card, or a chip.
+    {
+      id: 'boostNote',
+      group: 'ETFs',
+      label: 'Boosted note',
+      values: [
+        { value: 'strip', label: 'Strip' },
+        { value: 'card', label: 'Card' },
+        { value: 'chip', label: 'Chip' },
+      ],
+      default: 'strip',
+      floatOn: ['us-stocks-71'],
+    },
+    // The Boosted note's colour (3 Nov).
+    {
+      id: 'boostTone',
+      group: 'ETFs',
+      label: 'Boosted line',
+      values: [
+        { value: 'grey', label: 'Grey' },
+        { value: 'green', label: 'Green' },
+        { value: 'gold', label: 'Gold' },
+        { value: 'blue', label: 'Blue' },
+        { value: 'purple', label: 'Purple' },
+      ],
+      default: 'grey',
+      floatOn: ['us-stocks-71'],
+    },
+    // Where a leveraged fund's leverage shows on its card (3 Nov): eight versions to compare (and A/B test).
+    {
+      id: 'levTag',
+      group: 'ETFs',
+      label: 'Leverage tag',
+      picker: 'dropdown',
+      values: [
+        { value: 'foot', label: 'V1 · Logo foot' },
+        { value: 'badge', label: 'V2 · Logo badge' },
+        { value: 'ring', label: 'V3 · Logo ring' },
+        { value: 'corner', label: 'V4 · Card corner' },
+        { value: 'heading', label: 'V5 · After heading (current)' },
+        { value: 'pill', label: 'V6 · Pill on foot' },
+        { value: 'slice', label: 'V7 · Slice' },
+        { value: 'notch', label: 'V8 · Notch' },
+      ],
+      default: 'heading',
+      floatOn: ['us-stocks-71'],
+    },
+  ],
   screens: registry.map((s) => ({
     id: s.id,
     name: s.name,
@@ -22618,9 +22375,10 @@ export const registry: UsScreenEntry[] = [
   { figma: '5852:98614', id: 'us-stocks-68', section: 'wallet', name: "W3b · 2 withdrawals pending", note: "Two or more withdrawals pending, grouped in one tracker." },
   { figma: '5852:98522', id: 'us-stocks-69', section: 'wallet', name: "W3c · Withdrawal requests sheet", note: "Sheet listing each pending withdrawal request." },
   { figma: '5852:98459', id: 'us-stocks-70', section: 'wallet', name: "W3d · Withdrawal taking longer", note: "Transfer delayed: taking longer than usual." },
-  { figma: '9001:1', id: 'us-stocks-71', badge: 'new', badgeNote: "ETF list: Regular / Leveraged tabs, region chips", section: 'activated', name: "ETFs · Regular & Leveraged", note: "The ETF list from the ETFs quick action: Regular and Leveraged tabs; leveraged ETFs come in long and short." },
+  { figma: '9001:1', id: 'us-stocks-71', badge: 'new', badgeNote: "ETF list: Regular / Boosted tabs", section: 'activated', name: "ETFs · Regular & Boosted", note: "The ETF list from the ETFs quick action. Regular: the Country / Sector filter under the tabs and fund cards named in plain words. Boosted (leveraged): a line on what 3x means that opens How Boosted ETFs work, then the long and short funds with their leverage (eight looks in the prototype settings)." },
   { figma: '9001:2', id: 'us-stocks-72', badge: 'new', badgeNote: "ETF page: price, chart, Overview / Events, Buy / Sell", section: 'activated', name: "ETF page", note: "An ETF in the stock page layout: price and chart, Overview (1D and 52W range, fund details) and Events. Leveraged ETFs trade long or short." },
   { figma: '9001:6', id: 'us-stocks-73', badge: 'new', badgeNote: "Jojo's first ETF page, kept to compare", section: 'activated', name: "ETF page · previous", note: "The first ETF page (31 Oct): price line, about, opposite side and holdings, kept to compare." },
+  { figma: '9001:12', id: 'us-stocks-78', badge: 'new', badgeNote: "Top holdings: the full list behind the ETF page's Others row", section: 'activated', name: "ETF · Top holdings", note: "Tap Others in the ETF page's Top holdings: a full page of the fund's top 50 holdings (as many as the sample has), biggest first — logo, name, ticker, a weight bar and the share. A row opens its stock page; back returns to the ETF page." },
 ]
 
 export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
@@ -22653,7 +22411,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 /* ≈ ₹ under the $ price: 10, secondary. */
 .priceInr {
-  font: var(--l3-text-description-10);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -23123,7 +22881,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   text-align: right;
 }
 
-/* FLAG: hand-made progress bar (L3 ProgressBar) */
+/* FLAG: hand-made progress bar (L3 ProgressBar). Fills take the surface accent colours (they are shapes, not text). */
 .track {
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-tertiary);
@@ -23153,15 +22911,15 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 .fill[data-tone="up"] {
-  background: var(--l3-content-accent-indicator-up-default);
+  background: var(--l3-surface-accent-indicator-up-default);
 }
 
 .fill[data-tone="warning"] {
-  background: var(--l3-content-accent-warning-default);
+  background: var(--l3-surface-accent-warning-default);
 }
 
 .fill[data-tone="down"] {
-  background: var(--l3-content-accent-indicator-down-default);
+  background: var(--l3-surface-accent-indicator-down-default);
 }
 
 .caption {
@@ -23216,6 +22974,15 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   margin: 0;
 }
 
+/* Collapsed: the first three lines; Read more shows the whole profile. */
+.about p[data-collapsed] {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
 .link {
   font: var(--l3-text-description-14);
   color: var(--l3-content-accent-discover-default);
@@ -23258,7 +23025,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .legend {
   gap: var(--l3-spacing-16);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   display: flex;
 }
@@ -23289,19 +23056,20 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .grid {
   border-top: 1px solid var(--l3-border-light);
-  width: calc(100% - 40px); /* FLAG: raw px */
+  width: calc(100% - var(--axis)); /* --axis: room for the longest label, set by Financials */
   position: absolute;
   left: 0;
 }
 
 .grid span {
-  width: 36px; /* FLAG: raw px */
-  font: var(--l3-text-label-10);
+  width: var(--axis);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   text-align: right;
+  white-space: nowrap;
   position: absolute;
   top: -6px; /* FLAG: raw px */
-  left: calc(100% + 4px); /* FLAG: raw px */
+  left: 100%;
 }
 
 .year {
@@ -23339,7 +23107,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 .fy {
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   white-space: nowrap;
   position: absolute;
@@ -23376,7 +23144,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .yoy {
   width: 72px; /* FLAG: raw px */
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   text-align: right;
 }
@@ -23569,15 +23337,15 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 .arcRed {
-  fill: var(--l3-content-accent-indicator-down-default);
+  fill: var(--l3-surface-accent-indicator-down-default);
 }
 
 .arcYellow {
-  fill: var(--l3-content-accent-warning-default);
+  fill: var(--l3-surface-accent-warning-default);
 }
 
 .arcGreen {
-  fill: var(--l3-content-accent-indicator-up-default);
+  fill: var(--l3-surface-accent-indicator-up-default);
 }
 
 .rateCard .gauge strong,
@@ -23606,20 +23374,20 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .rateCard .ratingLabel {
   width: auto;
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
 .rateCard .ratingValue {
   width: auto;
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   text-align: left;
 }
 
 .rateFoot {
   padding-top: var(--l3-spacing-12);
   border-top: 1px solid var(--l3-border-light);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   justify-content: space-between;
   align-items: center;
@@ -23634,9 +23402,13 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .fundGrid {
   gap: var(--l3-spacing-16);
-  padding: var(--l3-spacing-16) var(--l3-spacing-12);
+  padding: var(--l3-spacing-12);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   display: grid;
+}
+
+.fundGrid[data-columns="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .fundCell {
@@ -23647,7 +23419,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 .fundCell dt {
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -23720,7 +23492,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-primary);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   flex-direction: column;
   flex: none;
@@ -23787,7 +23559,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   height: var(--l3-size-24);
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-primary);
   flex: none;
   justify-content: center;
@@ -24055,7 +23827,7 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
               <AnalystRatings />
               <Fundamentals />
               <AboutCompany stock={stock} />
-              <Peers sym={stock.sym} />
+              <Peers stock={stock} />
               {/* Related ETFs (leveraged only) are off for now (2 Nov). */}
               {false && <RelatedEtfs sym={stock.sym} />}
               <KeyHolders />
@@ -24072,6 +23844,67 @@ export const StockKycPending = (props: { backdrop?: boolean }) => <StockPage sta
 export const StockNotActivated = (props: { backdrop?: boolean }) => <StockPage state="not-activated" {...props} />
 export const StockNoHoldings = (props: { backdrop?: boolean }) => <StockPage state="no-holdings" {...props} />
 export const StockHolding = (props: { backdrop?: boolean }) => <StockPage state="holding" {...props} />
+```
+
+### `src/flows/us-stocks/screens/activation/companyProfiles.ts`
+
+```ts
+// About Company: a real, short profile of each US company the prototype shows (what it does, where it's based, when it
+// was founded). The first sentence is the summary the card shows collapsed; Read more shows the rest.
+// A stock without a profile here falls back to a one-line note (see AboutCompany in sections.tsx).
+
+export const COMPANY_PROFILES: Record<string, string> = {
+  NVDA:
+    'NVIDIA designs graphics processors (GPUs) and the chips, systems and software that power AI data centres, gaming PCs and self-driving cars. Its data-centre GPUs and the CUDA software platform are the most widely used tools for training and running AI models. Founded in 1993 by Jensen Huang, who is still its CEO, it is based in Santa Clara, California.',
+  AAPL:
+    'Apple makes the iPhone, Mac, iPad, Apple Watch and AirPods, and runs services such as the App Store, iCloud, Apple Music and Apple Pay. The iPhone brings in about half of its revenue, while services are its fastest-growing part. Founded in 1976 by Steve Jobs, Steve Wozniak and Ronald Wayne, it is based in Cupertino, California.',
+  MSFT:
+    'Microsoft makes Windows and Office (Microsoft 365), runs the Azure cloud platform, and owns LinkedIn, GitHub and the Xbox gaming business. Azure and its AI services, built in partnership with OpenAI, are now its biggest source of growth. Founded in 1975 by Bill Gates and Paul Allen, it is based in Redmond, Washington.',
+  GOOGL:
+    'Alphabet is the parent company of Google: Search, YouTube, Android, Chrome, Gmail and Google Maps, plus Google Cloud and the Gemini AI models. Most of its revenue comes from advertising across Search and YouTube. It also owns Waymo (self-driving cars). Google was founded in 1998 by Larry Page and Sergey Brin; Alphabet is based in Mountain View, California.',
+  GOOG:
+    'Alphabet is the parent company of Google: Search, YouTube, Android, Chrome, Gmail and Google Maps, plus Google Cloud and the Gemini AI models. Most of its revenue comes from advertising across Search and YouTube. GOOG shares carry no voting rights (GOOGL shares do). Alphabet is based in Mountain View, California.',
+  TSLA:
+    'Tesla makes electric cars (Model 3, Model Y, Model S, Model X and the Cybertruck), home and grid batteries, and solar panels. It also builds its own self-driving software and is working on robotaxis and humanoid robots. Founded in 2003 and led by Elon Musk, it is based in Austin, Texas.',
+  AMZN:
+    'Amazon runs the world’s largest online store and Amazon Web Services (AWS), the biggest cloud computing platform. It also owns Prime Video, Alexa, Whole Foods and a fast-growing advertising business. Founded in 1994 by Jeff Bezos, it is based in Seattle, Washington.',
+  META:
+    'Meta Platforms owns Facebook, Instagram, WhatsApp and Messenger, used by over 3 billion people every day. Almost all its revenue comes from advertising; it also invests heavily in AI (the Llama models) and in virtual and augmented reality (Quest headsets, Ray-Ban Meta glasses). Founded as Facebook in 2004 by Mark Zuckerberg, it is based in Menlo Park, California.',
+  NFLX:
+    'Netflix is the world’s largest video streaming service, with over 300 million paid memberships in more than 190 countries. It makes and licenses films and series, and has added an ad-supported plan, live events and games. Founded in 1997 by Reed Hastings and Marc Randolph as a DVD-by-mail service, it is based in Los Gatos, California.',
+  NKE:
+    'Nike designs and sells sports shoes, clothing and equipment under the Nike, Jordan and Converse brands. It is the world’s largest sportswear company, selling through its own stores and app as well as through other retailers. Founded in 1964 by Phil Knight and Bill Bowerman, it is based in Beaverton, Oregon.',
+  MCD:
+    'McDonald’s is the world’s largest fast-food restaurant chain, with over 40,000 restaurants in more than 100 countries. About 95% of them are run by franchisees, who pay McDonald’s rent and royalties. The first McDonald’s opened in 1940; the company is based in Chicago, Illinois.',
+  KO:
+    'The Coca-Cola Company makes the syrups and concentrates behind Coca-Cola, Sprite, Fanta, Thums Up, Minute Maid and over 200 other drink brands, sold in more than 200 countries. Bottling partners mix, bottle and distribute most of the drinks. Founded in 1892, it is based in Atlanta, Georgia, and has raised its dividend every year for over 60 years.',
+  SBUX:
+    'Starbucks is the world’s largest coffeehouse chain, with about 40,000 stores across more than 80 countries. It also sells packaged coffee and ready-to-drink beverages through grocery stores. In India it runs as Tata Starbucks, a joint venture with Tata Consumer Products. Founded in 1971, it is based in Seattle, Washington.',
+  V:
+    'Visa runs the world’s largest card payments network, connecting banks, shops and card holders in over 200 countries. It doesn’t lend money or issue cards itself: it earns a small fee on each payment that goes over its network. Founded in 1958, it is based in San Francisco, California.',
+  UBER:
+    'Uber connects riders with drivers (Mobility), delivers food and groceries (Uber Eats), and matches shippers with truckers (Uber Freight), in about 70 countries. Founded in 2009 by Travis Kalanick and Garrett Camp, it is based in San Francisco, California.',
+  AMD:
+    'Advanced Micro Devices (AMD) designs processors and graphics chips: Ryzen CPUs for PCs, EPYC CPUs for servers, Radeon graphics, and Instinct accelerators for AI data centres. It also makes the custom chips inside the PlayStation and Xbox consoles. Its chips are made by TSMC. Founded in 1969, it is based in Santa Clara, California, and led by Lisa Su.',
+  AVGO:
+    'Broadcom designs chips for networking, wireless, broadband and storage, and custom AI chips for large cloud companies. Since buying VMware in 2023 it is also a big infrastructure software company. Based in Palo Alto, California, it is led by Hock Tan.',
+  MU:
+    'Micron Technology makes memory and storage chips — DRAM, NAND flash and the high-bandwidth memory (HBM) used next to AI processors — sold under the Micron and Crucial brands. It is the largest memory maker based in the US. Founded in 1978, it is based in Boise, Idaho, and is building a chip assembly and test plant in Sanand, Gujarat.',
+  QCOM:
+    'Qualcomm designs the Snapdragon processors and modems inside many Android phones, and licenses its wireless patents (4G, 5G) to almost every phone maker. It is growing into chips for cars, PCs and connected devices. Founded in 1985, it is based in San Diego, California.',
+  INTC:
+    'Intel designs and makes processors for PCs (Core) and servers (Xeon), and is building a contract chip-making business (Intel Foundry) to make chips for other companies. It is one of the few companies that both designs and manufactures its own chips. Founded in 1968 by Gordon Moore and Robert Noyce, it is based in Santa Clara, California.',
+  LULU:
+    'Lululemon Athletica designs and sells athletic and leisure clothing — yoga pants, running and training gear, and accessories — mostly through its own stores and website. Founded in 1998 in Vancouver, Canada, by Chip Wilson, it is now based there and in Seattle.',
+  JPM:
+    'JPMorgan Chase is the largest bank in the US by assets. It runs Chase (consumer banking, cards and home loans), J.P. Morgan (investment banking and markets) and a large asset and wealth management business. Its roots go back to 1799; it is based in New York and led by Jamie Dimon.',
+  LYFT:
+    'Lyft runs a ride-hailing app in the US and Canada, connecting riders with drivers, plus bike and scooter sharing in several cities. In 2025 it bought FreeNow, taking its service to Europe. Founded in 2012 by Logan Green and John Zimmer, it is based in San Francisco, California.',
+  ETSY:
+    'Etsy runs an online marketplace for handmade, vintage and one-of-a-kind items, with millions of independent sellers. It earns fees on listings, sales, payments and ads; it also owns the resale app Depop. Founded in 2005, it is based in Brooklyn, New York.',
+  SONO:
+    'Sonos makes wireless speakers, soundbars, headphones and home-theatre systems that connect over Wi-Fi and play together around the home. Founded in 2002, it is based in Santa Barbara, California.',
+}
 ```
 
 ### `src/flows/us-stocks/screens/activation/components/ImgIcon.tsx`
@@ -24100,6 +23933,12 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   background: var(--l3-surface-primary);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
   overflow: hidden;
+}
+
+/* The Overview / Returns / Ratios switcher in the header: discover blue, so it reads as tappable. */
+.viewSwitch.viewSwitch,
+.viewSwitch.viewSwitch * {
+  color: var(--l3-content-accent-discover-default);
 }
 
 .viewName {
@@ -24147,7 +23986,7 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   margin-bottom: var(--l3-spacing-04);
   padding-block: var(--l3-spacing-12);
   border-bottom: 1px solid var(--l3-border-light);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   cursor: default;
 }
@@ -24161,10 +24000,6 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   cursor: default;
 }
 
-.tr[data-self] .cardName {
-  color: var(--l3-content-accent-discover-default);
-}
-
 .company {
   align-items: center;
   gap: var(--l3-spacing-08);
@@ -24172,12 +24007,6 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   display: flex;
 }
 
-.companyText {
-  gap: var(--l3-spacing-04);
-  flex-direction: column;
-  min-width: 0;
-  display: flex;
-}
 
 .num {
   font: var(--l3-text-label-12);
@@ -24199,7 +24028,7 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   height: var(--l3-size-24);
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-tertiary);
-  font: var(--l3-text-label-10);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-primary);
   flex: none;
   place-items: center;
@@ -24223,11 +24052,6 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   padding: 0;
 }
 
-.ticker {
-  font: var(--l3-text-label-10);
-  letter-spacing: 0.08em;
-  color: var(--l3-content-secondary);
-}
 
 .cardName {
   font: var(--l3-text-label-12);
@@ -24236,19 +24060,33 @@ export function ImgIcon({ src, w, h = w, className }: { src: string; w: number; 
   white-space: nowrap;
   overflow: hidden;
 }
+
+/* The best figure of a % column: a light yellow highlight behind it. */
+.figure {
+  display: inline-block;
+  padding: var(--l3-spacing-02) var(--l3-spacing-04);
+  border-radius: var(--l3-radius-04);
+}
+
+.num[data-best] .figure {
+  background: var(--l3-surface-accent-warning-light);
+}
 ```
 
 ### `src/flows/us-stocks/screens/activation/components/PeerTable.tsx`
 
 ```tsx
-// "Peers" section: this stock and five peers; the header cell cycles Overview / Returns / Ratios, rows open the peer's page.
+// "Peers" section: this stock first (styled like the others, so it's easy to compare against) and five peers; the
+// header cell cycles Overview / Returns / Ratios, rows open the peer's page. In each % column the best figure sits on a
+// light yellow (warning light) highlight.
 // FLAG: hand-made table (div role=table) with row buttons and a hand-made logo disc — L3 has no table; the logo is not L3 Avatar / BrandLogo.
 // FLAG: layout is raw display:flex/grid + gap/padding instead of L3 Stack/Grid.
 import { useState } from 'react'
 import { Select } from '@l3/components/Select'
 import { Usd, formatUsd } from '../../../../../shared/money'
 import { homeLogoFor, isFullBleedLogo, logoFor, plateFor } from '../../../data'
-import { PEERS, type Peer } from '../data'
+import { PEERS, periodReturn, type Peer } from '../data'
+import type { UsStock } from '../../../data'
 import styles from './PeerTable.module.css'
 
 const percent = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
@@ -24273,7 +24111,8 @@ function CompanyLogo({ sym }: { sym: string }) {
 
 /** `usd`: the text is a $ amount, shown in the currency picked (inline, no ₹ line: it's a table cell). */
 type Cell = { text: string; tone?: 'up' | 'down'; usd?: boolean }
-type Column = { label: string; v: (p: Peer) => Cell }
+/** `best`: the column's figure to compare — the highest one gets the highlight. */
+type Column = { label: string; v: (p: Peer) => Cell; best?: (p: Peer) => number }
 
 const VIEWS = [
   { value: 'overview', label: 'Overview' },
@@ -24285,13 +24124,13 @@ type View = (typeof VIEWS)[number]['value']
 const COLUMNS: Record<View, Column[]> = {
   overview: [
     { label: 'Price', v: (p) => ({ text: formatUsd(p.price), usd: true }) },
-    { label: 'Today', v: (p) => ({ text: percent(p.change), tone: toneOf(p.change) }) },
+    { label: 'Today', v: (p) => ({ text: percent(p.change), tone: toneOf(p.change) }), best: (p) => p.change },
     { label: 'Mkt Cap', v: (p) => ({ text: p.cap, usd: true }) },
   ],
   returns: [
-    { label: '1M', v: (p) => ({ text: percent(p.r1m), tone: toneOf(p.r1m) }) },
-    { label: '3M', v: (p) => ({ text: percent(p.r3m), tone: toneOf(p.r3m) }) },
-    { label: '1Y', v: (p) => ({ text: percent(p.r1y), tone: toneOf(p.r1y) }) },
+    { label: '1M', v: (p) => ({ text: percent(p.r1m), tone: toneOf(p.r1m) }), best: (p) => p.r1m },
+    { label: '3M', v: (p) => ({ text: percent(p.r3m), tone: toneOf(p.r3m) }), best: (p) => p.r3m },
+    { label: '1Y', v: (p) => ({ text: percent(p.r1y), tone: toneOf(p.r1y) }), best: (p) => p.r1y },
   ],
   ratios: [
     { label: 'P/E', v: (p) => ({ text: p.pe }) },
@@ -24300,12 +24139,21 @@ const COLUMNS: Record<View, Column[]> = {
   ],
 }
 
-export function PeerTable({ sym, onOpen }: { sym: string; onOpen: (peer: { sym: string; name: string; logo?: string }) => void }) {
+/** The stock being looked at as a table row: its peer data where it has some, else its page's price and returns. */
+function selfRow(stock: UsStock): Peer {
+  const known = PEERS.find((p) => p.sym === stock.sym)
+  if (known) return known
+  const ret = (period: string) => periodReturn(stock.sym, period, stock.change)
+  return { sym: stock.sym, name: stock.name, price: stock.price, change: stock.change, cap: '—', pe: '—', pb: '—', r1m: ret('1M'), r3m: ret('3M'), r1y: ret('1Y') }
+}
+
+export function PeerTable({ stock, onOpen }: { stock: UsStock; onOpen: (peer: { sym: string; name: string; logo?: string }) => void }) {
   const [view, setView] = useState<View>('returns')
-  const self = PEERS.find((p) => p.sym === sym)
-  const rows = [...(self ? [self] : []), ...PEERS.filter((p) => p.sym !== sym).slice(0, 5)]
+  const self = selfRow(stock)
+  const rows = [self, ...PEERS.filter((p) => p.sym !== stock.sym).slice(0, 5)]
   const current = VIEWS.find((v) => v.value === view)!
   const columns = COLUMNS[view]
+  const bestOf = columns.map((c) => (c.best ? Math.max(...rows.map(c.best)) : undefined))
   return (
     <div className={styles.stack}>
       <div className={styles.table} role="table" aria-label="Peer comparison">
@@ -24314,6 +24162,7 @@ export function PeerTable({ sym, onOpen }: { sym: string; onOpen: (peer: { sym: 
             <Select
               size="sm"
               subtle
+              className={styles.viewSwitch}
               onClick={() => setView(VIEWS[(VIEWS.findIndex((v) => v.value === view) + 1) % VIEWS.length].value)}
               aria-label={`Showing ${current.label}, tap to switch`}
             >
@@ -24335,15 +24184,16 @@ export function PeerTable({ sym, onOpen }: { sym: string; onOpen: (peer: { sym: 
           >
             <span className={styles.company} role="cell">
               <CompanyLogo sym={p.sym} />
-              <span className={styles.companyText}>
-                <span className={styles.cardName}>{p.name}</span>
-                <span className={styles.ticker}>{p.sym}</span>
-              </span>
+              {/* The company's name only, no ticker line under it (3 Nov). */}
+              <span className={styles.cardName}>{p.name}</span>
             </span>
-            {columns.map((c) => {
+            {columns.map((c, i) => {
               const cell = c.v(p)
+              const best = c.best && c.best(p) === bestOf[i]
               return (
-                <span key={c.label} role="cell" className={styles.num} data-tone={cell.tone}>{cell.usd ? <Usd text={cell.text} layout="inline" /> : cell.text}</span>
+                <span key={c.label} role="cell" className={styles.num} data-tone={cell.tone} data-best={best || undefined}>
+                  <span className={styles.figure}>{cell.usd ? <Usd text={cell.text} layout="inline" /> : cell.text}</span>
+                </span>
               )
             })}
           </button>
@@ -24456,7 +24306,7 @@ export const PERIODS = ['1D', '1W', '1M', '1Y', '3Y', '5Y']
 
 /** How much NVDA moved over each chart period, in %; 1D is the live day change. Other stocks: their peer-table
  *  returns where they have them, else NVDA's scaled by a per-symbol factor (sample data). */
-export const PERIOD_RETURNS: Record<string, number> = { '1W': 3.2, '1M': 6.8, '1Y': 41.5, '3Y': 612.4, '5Y': 1840.6 }
+export const PERIOD_RETURNS: Record<string, number> = { '1W': 3.2, '1M': 6.8, '3M': 14.2, '1Y': 41.5, '3Y': 612.4, '5Y': 1840.6 }
 
 /** How far the price wanders around its trend per chart period (share of the price). */
 const PERIOD_VOLATILITY: Record<string, number> = { '1D': 0.004, '1W': 0.012, '1M': 0.025, '1Y': 0.06, '3Y': 0.1, '5Y': 0.12 }
@@ -24476,6 +24326,7 @@ export function periodReturn(sym: string, period: string, dayChangePct: number):
   if (period === '1D') return dayChangePct
   const peer = PEERS.find((p) => p.sym === sym)
   if (peer && period === '1M') return peer.r1m
+  if (peer && period === '3M') return peer.r3m
   if (peer && period === '1Y') return peer.r1y
   const factor = sym === 'NVDA' ? 1 : 0.15 + seeded(sym)() * 0.6
   return Number((PERIOD_RETURNS[period] * factor).toFixed(2))
@@ -24730,12 +24581,14 @@ export { StockHolding, StockKycPending, StockNoHoldings, StockNotActivated, Stoc
  */
 function StockForStatus(props: { backdrop?: boolean }) {
   const journey = useUsJourney()
-  if (journey === 'kyc') return <StockKycPending {...props} />
-  if (journey === 'activate') return <StockNotActivated {...props} />
-  if (journey === 'review' || journey === 'support' || journey === 'failed') return <StockPage state={journey} {...props} />
-  if (journey === 'holding' && currentStock().sym === 'NVDA') return <StockHolding {...props} />
+  // Keyed by the stock: opening another stock from this page (a peer) starts a fresh page — at the top, on Overview.
+  const sym = currentStock().sym
+  if (journey === 'kyc') return <StockKycPending key={sym} {...props} />
+  if (journey === 'activate') return <StockNotActivated key={sym} {...props} />
+  if (journey === 'review' || journey === 'support' || journey === 'failed') return <StockPage key={sym} state={journey} {...props} />
+  if (journey === 'holding' && sym === 'NVDA') return <StockHolding key={sym} {...props} />
   // Activated with $0 or money on the way: Buy goes to the empty-wallet pad.
-  return <StockPage state="no-holdings" emptyWallet={journey === 'activated' || journey === 'onTheWay'} {...props} />
+  return <StockPage key={sym} state="no-holdings" emptyWallet={journey === 'activated' || journey === 'onTheWay'} {...props} />
 }
 
 /** Screens of this part, by Figma node id. The not-activated frame's id is the one stock page that follows the user status. */
@@ -24756,7 +24609,7 @@ export const screens: UsScreenMap = {
 // The scrolling sections of the stock page, top to bottom: holdings (holding state only), daily performance, analyst
 // ratings, fundamentals, about, peers, related ETFs, key holders, company financials; and the News & Events tab (events, news).
 // FLAG: layout is raw display:flex + gap/padding (module CSS) instead of L3 Stack/Section/Inset/Grid; panels, rows and bars are hand-made.
-import { useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
 import { PriceChange } from '@l3/components/PriceChange'
@@ -24769,6 +24622,7 @@ import { useUsNav } from '../../nav'
 import { usQuote } from '../../../../shared/data/usStocks'
 import { Usd, formatUsd, useUsd } from '../../../../shared/money'
 import { setCurrentEtf } from '../etf/currentEtf'
+import { COMPANY_PROFILES } from './companyProfiles'
 import { PeerTable } from './components/PeerTable'
 import { RatingRing } from './components/RatingRing'
 import { SectionTitle } from './components/SectionTitle'
@@ -24881,11 +24735,12 @@ export function DailyPerformance({ stock, low, high }: { stock: UsStock; low: nu
           Last Traded Price : <Usd value={stock.price} layout="inline" />
         </p>
       </div>
-      <dl className={styles.panel} data-gap="12" data-rows="">
-        {dayStats(stock).map(([value, label], i) => (
-          <div className={styles.kv} data-sep={i > 0 || undefined} key={label}>
+      {/* The day's numbers as a 3 × 2 grid (label over value), like Fundamentals. */}
+      <dl className={styles.fundGrid} data-columns="3">
+        {dayStats(stock).map(([value, label]) => (
+          <div className={styles.fundCell} key={label}>
             <dt>{label}</dt>
-            <dd><Usd text={value} align="end" /></dd>
+            <dd><Usd text={value} /></dd>
           </div>
         ))}
       </dl>
@@ -24944,56 +24799,64 @@ export function Fundamentals() {
   )
 }
 
+/** About Company: the company's real profile (companyProfiles.ts), three lines until Read more expands it (Read less folds
+ *  it back). A stock with no profile gets a one-line note and no link. */
 export function AboutCompany({ stock }: { stock: UsStock }) {
-  const isNvda = stock.sym === 'NVDA'
+  const [open, setOpen] = useState(false)
+  const profile = COMPANY_PROFILES[stock.sym]
   return (
     <section className={styles.section}>
       <SectionTitle title="About Company" />
       <Card surface="primary">
         <div className={styles.about}>
-          <p>
-            {isNvda
-              ? 'NVIDIA designs graphics processors and chips for data centres, gaming and cars. Based in Santa Clara, California.'
-              : `${stock.name} trades on the ${stock.exchange ?? 'NASDAQ'} in US dollars. (Company details are sample text in this prototype.)`}
+          <p data-collapsed={(profile && !open) || undefined}>
+            {profile ?? `${stock.name} is listed on the ${stock.exchange ?? 'NASDAQ'} and trades in US dollars.`}
           </p>
-          <button type="button" className={styles.link}>Read more</button>
+          {profile && (
+            <button type="button" className={styles.link} aria-expanded={open} onClick={() => setOpen(!open)}>
+              {open ? 'Read less' : 'Read more'}
+            </button>
+          )}
         </div>
       </Card>
     </section>
   )
 }
 
-export function Peers({ sym }: { sym: string }) {
+/** The nearest part of the page that scrolls (the stock page's body). */
+function scrollParent(el: HTMLElement | null): HTMLElement | null {
+  for (let at = el?.parentElement; at; at = at.parentElement) {
+    if (/(auto|scroll)/.test(getComputedStyle(at).overflowY)) return at
+  }
+  return null
+}
+
+export function Peers({ stock }: { stock: UsStock }) {
   const { go } = useUsNav()
+  const section = useRef<HTMLElement>(null)
   return (
-    <section className={styles.section}>
+    <section ref={section} className={styles.section}>
       <SectionTitle title="Peers" />
       <PeerTable
-        sym={sym}
-        onOpen={(peer) =>
+        stock={stock}
+        onOpen={(peer) => {
+          // The peer opens on this same page: start it at the top, like a new page.
+          const body = scrollParent(section.current)
           openStock(go, stockFor(peer.sym, { name: peer.name, logo: peer.logo, plate: peer.logo ? plateFor(peer.sym) : undefined }))
-        }
+          if (body) body.scrollTop = 0
+        }}
       />
     </section>
   )
 }
 
+/** Key Holders: who holds the stock, for the latest quarter only (no quarter picker, 3 Nov). */
 export function KeyHolders() {
-  const [quarter, setQuarter] = useState(QUARTERS[0])
   return (
     <section className={styles.section}>
       <SectionTitle title="Key Holders" />
       <div className={styles.panel} data-gap="16">
-        <Tabs
-          appearance="pill"
-          emphasis="primary"
-          size="sm"
-          aria-label="Quarter"
-          value={quarter}
-          onChange={setQuarter}
-          items={QUARTERS.map((q) => ({ value: q, label: q }))}
-        />
-        {HOLDERS[quarter].map(([name, pct]) => (
+        {HOLDERS[QUARTERS[0]].map(([name, pct]) => (
           <div className={styles.holder} key={name}>
             <span className={styles.holderName}>{name}</span>
             <div className={styles.holderBar}>
@@ -25033,6 +24896,9 @@ export function Financials() {
   const top = step * 4
   // Chart pixels: the 0 line sits at 136px and the top line at 6px (130px for the axis' top value).
   const barTop = (v: number) => 136 - (v / top) * 130
+  // Axis labels drop trailing zeros ($200B, not $200.00B); the plot leaves room on its right for the longest one.
+  const axisLabels = [4, 3, 2, 1, 0].map((n) => (n === 0 ? usd(0, { decimals: 0 }) : billions(step * n).replace(/\.0+(?=\D*$)/, '')))
+  const axisWidth = `calc(${Math.max(...axisLabels.map((l) => l.length))}ch + var(--l3-spacing-08))`
   const third = (i: number) => (spec.thirdIsPercent ? (b[i] / a[i]) * 100 : a[i] - b[i])
   const change = (now: number, before: number, points: boolean) => (points ? now - before : ((now - before) / Math.abs(before)) * 100)
   const rows: [string, string, number, string][] = [
@@ -25064,12 +24930,13 @@ export function Financials() {
           </div>
           <div
             className={styles.bars}
+            style={{ '--axis': axisWidth } as CSSProperties}
             role="img"
             aria-label={`${spec.series[0]} and ${spec.series[1].toLowerCase()}, ${book.periods[1]} to ${book.periods[last]}. ${book.periods[picked]}: ${billions(a[picked])} and ${billions(b[picked])}.`}
           >
-            {[4, 3, 2, 1, 0].map((n, i) => (
-              <span className={styles.grid} style={{ top: 6 + i * 32.5 }} key={n}>
-                <span>{n === 0 ? usd(0, { decimals: 0 }) : billions(step * n)}</span>
+            {axisLabels.map((label, i) => (
+              <span className={styles.grid} style={{ top: 6 + i * 32.5 }} key={i}>
+                <span>{label}</span>
               </span>
             ))}
             {book.short.slice(1).map((label, k) => {
@@ -25079,7 +24946,7 @@ export function Financials() {
                   type="button"
                   className={styles.year}
                   data-active={i === picked || undefined}
-                  style={{ left: `calc((100% - 40px) * ${(17 + k * 52.75) / 264})` }}
+                  style={{ left: `calc((100% - var(--axis)) * ${(17 + k * 52.75) / 264})` }}
                   aria-label={`Show ${book.periods[i]}`}
                   onClick={() => setPicked(i)}
                   key={label}
@@ -29517,6 +29384,237 @@ export const lastLineY = 132
 export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 ```
 
+### `src/flows/us-stocks/screens/etf/BoostStrip.tsx`
+
+```tsx
+// The Boosted strip (3 Nov): one line on a tinted strip with a 2 bar on the left — "↗ Market moves +1% → [3x Long] moves
+// +3%" — that opens How Boosted ETFs work. With two or more lines it is a ticker: they take turns, sliding up every
+// 2.5 s (5 s a cycle). Used on the ETF list's Boosted tab and on a Boosted ETF's page. Screen readers hear `label`; with
+// reduced motion the first line stays. FLAG: hand-made (Etf.module.css).
+import { Icon } from '@l3/components/Icon'
+import { Tag } from '@l3/components/Tag'
+import { msArrowForward, msTrendingDown, msTrendingUp } from '@l3/icons/material'
+import { infoIcon } from './icons'
+import styles from './Etf.module.css'
+
+/** One line: what moves (and by how much, `up` sets the colour), then the Boosted side — a side tag and / or a name — and its gain. */
+export type BoostLine = { up: boolean; subject: string; move: string; tag?: { text: string; long: boolean }; name?: string; gain: string }
+
+export function BoostStrip({ lines, tone, label, onOpen }: { lines: BoostLine[]; tone: string; label: string; onOpen: () => void }) {
+  const line = (t: BoostLine, i: number) => (
+    <span key={i} className={styles.boostText}>
+      <Icon icon={t.up ? msTrendingUp : msTrendingDown} size={16} className={t.up ? styles.boostIcon : styles.boostIconDown} />
+      {t.subject} moves<b className={styles.boostMarket} data-down={t.up ? undefined : ''}>{t.move}</b>
+      <Icon icon={msArrowForward} size={14} className={styles.boostArrowIcon} />
+      {t.tag && <Tag variant="secondary" color={t.tag.long ? 'profit' : 'loss'} size="sm">{t.tag.text}</Tag>}
+      {t.name}
+      {t.name ? ' moves' : 'moves'}<b className={styles.boostGain}>{t.gain}</b>
+    </span>
+  )
+  return (
+    <button type="button" className={styles.boostLine} data-tone={tone} aria-haspopup="dialog" aria-label={`${label} How Boosted ETFs work`} onClick={onOpen}>
+      <span className={styles.boostTicker} aria-hidden="true">
+        {lines.length > 1 ? <span className={styles.boostTickerReel}>{[...lines, lines[0]].map(line)}</span> : line(lines[0], 0)}
+      </span>
+      <Icon icon={infoIcon} size={14} className={styles.boostInfoEnd} />
+    </button>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/etf/BoostedSheet.module.css`
+
+```css
+/* "How Boosted ETFs work" sheet (3 Nov). L3 tokens only. FLAG: hand-made bars and animation. */
+.body {
+  gap: var(--l3-spacing-20);
+  padding: 0 var(--l3-spacing-16) var(--l3-spacing-16);
+  flex-direction: column;
+  display: flex;
+}
+
+/* Three columns of bars around a middle line: up bars grow up from it, the short bar grows down. One unit (1%) is 12. */
+.demo {
+  --unit: var(--l3-spacing-12);
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  margin: 0;
+  padding: var(--l3-spacing-16) var(--l3-spacing-12) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-secondary);
+  display: grid;
+  position: relative;
+}
+
+.col {
+  grid-template-rows: auto calc(var(--unit) * 3) calc(var(--unit) * 3) auto;
+  justify-items: center;
+  row-gap: 0;
+  display: grid;
+}
+
+.move {
+  grid-row: 1;
+  margin-bottom: var(--l3-spacing-04);
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-accent-indicator-down-default);
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  animation: boost-label 4s ease-out infinite;
+}
+
+.move[data-up] {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+/* The bar's half: above the line for up, below it for down. */
+.track {
+  width: var(--l3-size-32);
+  grid-row: 2;
+  align-items: flex-end;
+  display: flex;
+}
+
+.track:not([data-up]) {
+  grid-row: 3;
+  align-items: flex-start;
+}
+
+.bar {
+  width: 100%;
+  height: calc(var(--unit) * var(--share));
+  border-radius: var(--l3-radius-04) var(--l3-radius-04) 0 0;
+  background: var(--l3-content-accent-indicator-up-default);
+  transform-origin: bottom;
+  animation: boost-grow 4s cubic-bezier(.2, 0, 0, 1) infinite;
+}
+
+.bar[data-key='market'] {
+  background: var(--l3-content-secondary);
+}
+
+.bar:not([data-up]) {
+  border-radius: 0 0 var(--l3-radius-04) var(--l3-radius-04);
+  background: var(--l3-content-accent-indicator-down-default);
+  transform-origin: top;
+}
+
+.name {
+  grid-row: 4;
+  margin-top: var(--l3-spacing-08);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+/* The day's starting line, across the middle of the bars. */
+.axis {
+  height: 1px;
+  background: var(--l3-border-intense);
+  position: absolute;
+  left: var(--l3-spacing-12);
+  right: var(--l3-spacing-12);
+  top: calc(var(--l3-spacing-16) + var(--l3-size-20) + var(--l3-spacing-04) + var(--unit) * 3);
+}
+
+.caption {
+  grid-column: 1 / -1;
+  margin-top: var(--l3-spacing-12);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+/* Grow (0–30%), hold, then fade out just before the loop starts again. */
+@keyframes boost-grow {
+  0% { transform: scaleY(0); opacity: 1; }
+  30%, 85% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+@keyframes boost-label {
+  0%, 15% { opacity: 0; }
+  30%, 85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar, .move { animation: none; opacity: 1; }
+}
+
+.points {
+  gap: var(--l3-spacing-12);
+  margin: 0;
+  padding: 0 0 0 var(--l3-spacing-16);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+  flex-direction: column;
+  display: flex;
+}
+
+.points b {
+  font-weight: 750;
+  color: var(--l3-content-primary);
+}
+```
+
+### `src/flows/us-stocks/screens/etf/BoostedSheet.tsx`
+
+```tsx
+// "How Boosted ETFs work" (3 Nov): the bottom sheet behind the (i) on the ETF list's Boosted tab. An animation plays one
+// day: the market's bar rises 1%, the 3x Long bar rises 3%, the 3x Short bar falls 3% — then three plain points (long,
+// short, it resets daily) and Got it. The animation loops; with reduced motion the bars stand at their end.
+// FLAG: copy not in copy.json yet (hard-coded); the bars and the animation are hand-made (module CSS).
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { useSheetLayer } from '../../components/Phone'
+import styles from './BoostedSheet.module.css'
+
+const BARS = [
+  { key: 'market', name: 'Market', move: '▲ 1%', share: 1, up: true },
+  { key: 'long', name: '3x Long', move: '▲ 3%', share: 3, up: true },
+  { key: 'short', name: '3x Short', move: '▼ 3%', share: 3, up: false },
+]
+
+export function BoostedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const layer = useSheetLayer()
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      container={layer}
+      aria-labelledby="boosted-title"
+      header={<BottomSheetHeader heading="How Boosted ETFs work" headingId="boosted-title" />}
+      footer={
+        <ButtonGroup aria-label="Boosted ETFs">
+          <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
+        </ButtonGroup>
+      }
+    >
+      <div className={styles.body}>
+        <figure className={styles.demo} aria-label="In one day the market rises 1%. A 3x Long ETF aims to rise 3%; a 3x Short ETF aims to fall 3%.">
+          <span className={styles.axis} aria-hidden="true" />
+          {BARS.map((b, i) => (
+            <span key={b.key} className={styles.col} aria-hidden="true">
+              <span className={styles.move} data-up={b.up || undefined} style={{ animationDelay: `${0.4 + i * 0.5}s` }}>{b.move}</span>
+              <span className={styles.track} data-up={b.up || undefined}>
+                <span className={styles.bar} data-key={b.key} data-up={b.up || undefined} style={{ '--share': b.share, animationDelay: `${i * 0.5}s` } as React.CSSProperties} />
+              </span>
+              <span className={styles.name}>{b.name}</span>
+            </span>
+          ))}
+          <figcaption className={styles.caption}>One day on the market</figcaption>
+        </figure>
+        <ul className={styles.points}>
+          <li><b>Long</b> moves the same way as the market, 2x or 3x as much.</li>
+          <li><b>Short</b> moves the opposite way, 2x or 3x as much.</li>
+          <li><b>It resets every day.</b> Over weeks, the result can differ from 2x or 3x the market's move.</li>
+        </ul>
+      </div>
+    </BottomSheet>
+  )
+}
+```
+
 ### `src/flows/us-stocks/screens/etf/Etf.module.css`
 
 ```css
@@ -29528,6 +29626,9 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 .chips{width:100%;padding:0 var(--l3-spacing-16)}
 
 .holdings{gap:var(--l3-spacing-08);flex-direction:column;margin:0;padding:0;list-style:none;display:flex}
+
+/* 16 between ETF cards, as between the Market page's stock cards (3 Nov). */
+.list{gap:var(--l3-spacing-16)}
 
 .rowCard[data-interactive]{align-items:stretch;gap:var(--l3-spacing-08);flex-direction:column}
 
@@ -29546,51 +29647,9 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 /* "+500" in a circle after the logos (FLAG: hand-made; L3 Avatar has no count variant). Widens to a pill for "+3.6k". */
 .logoStack>.moreCount{margin-left:calc(-1 * var(--l3-spacing-04))}
 
-.moreCount{z-index:1;position:relative;min-width:var(--l3-size-24);height:var(--l3-size-24);padding:0 var(--l3-spacing-06);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);font:var(--l3-text-label-10);color:var(--l3-content-secondary);font-variant-numeric:tabular-nums;place-items:center;display:grid}
-
-/* Inside the ETF card (2 Nov), on L3 Card's own 12 padding. A grid: the logo square spans both lines; line 1 is
-   name | price (both heading-14), line 2 is "SPY · description" | % change (both 12), so each line reads straight
-   across. 12 from the square to the text, 16 from the text to the numbers; the text column shrinks (ends in "…"),
-   the numbers never do. */
-.etfGrid{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-content:center;align-items:center;row-gap:var(--l3-spacing-04);column-gap:var(--l3-spacing-12);text-align:left;display:grid}
-
-/* The square: 2×2 cells of 20, touching (40 × 40) — exactly the height of the two text lines (20 + 4 + 16), so the
-   logos never make the card taller. Up to four holdings: all their logos; more than four: two logos on top and an L3
-   Tag with the rest ("+501") across the bottom row.
-   FLAG: L3 Avatar's smallest size is 24; this sets its --av-size to 20 (L3 gap: a 20 Avatar). */
-.logoSquare{grid-template-columns:repeat(2,var(--l3-size-20));grid-template-rows:repeat(2,var(--l3-size-20));grid-area:1/1/3/2;display:grid}
-
-.logoSquare>[data-avatar][data-size]{--av-size:var(--l3-size-20);--av-font:var(--l3-text-label-10)}
-
-/* Only two holdings: two 28 logos on the diagonal (top-left, bottom-right), overlapping by 16 so they fill the same
-   40 × 40; the second sits on top with a 2 ring in the card colour. One holding: a single 40 logo. */
-.logoSquare[data-layout]{width:var(--l3-size-40);height:var(--l3-size-40);display:block;position:relative}
-
-.logoSquare[data-layout='pair']>[data-avatar][data-size]{--av-size:var(--l3-size-28);position:absolute}
-
-.logoSquare[data-layout='pair']>:first-child{top:0;left:0}
-
-.logoSquare[data-layout='pair']>:last-child{bottom:0;right:0;box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary)}
-
-.logoSquare[data-layout='single']>[data-avatar][data-size]{--av-size:var(--l3-size-40);--av-font:var(--l3-text-label-14)}
-
-/* The count across the bottom row: an L3 Tag (tertiary, discover blue, sm = 16 tall, radius 04; chosen after trying the other colours), centred in the 20 row and stretched to the
-   square's 40 width with its label centred. Over 999 reads "+3k". */
-.squareCount{grid-column:1/3;align-self:center;justify-content:center;width:100%;font-variant-numeric:tabular-nums}
-
-.etfName,.etfDesc{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
-
-.etfName{font:var(--l3-text-heading-14);color:var(--l3-content-primary);grid-area:1/2;align-self:end}
-
-.etfDesc{font:var(--l3-text-label-12);color:var(--l3-content-tertiary);grid-area:2/2;align-self:start}
+.moreCount{z-index:1;position:relative;min-width:var(--l3-size-24);height:var(--l3-size-24);padding:0 var(--l3-spacing-06);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);font:var(--l3-text-label-12);color:var(--l3-content-secondary);font-variant-numeric:tabular-nums;place-items:center;display:grid}
 
 .etfSym{color:var(--l3-content-secondary)}
-
-.etfPrice,.etfChange{white-space:nowrap;justify-self:end;padding-left:var(--l3-spacing-04)}
-
-.etfPrice{font:var(--l3-text-heading-14);color:var(--l3-content-primary);font-variant-numeric:tabular-nums;grid-area:1/3;align-self:end}
-
-.etfChange{grid-area:2/3;align-self:start;display:flex}
 
 .rowText{gap:var(--l3-spacing-04);text-align:left;flex-direction:column;flex:1;min-width:0;display:flex}
 
@@ -29598,13 +29657,16 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 .rowSub{font:var(--l3-text-label-12);color:var(--l3-content-secondary);text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 
-.disc{width:var(--l3-size-32);height:var(--l3-size-32);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);box-shadow:inset 0 0 0 1px var(--l3-border-light);font:var(--l3-text-heading-10);color:var(--l3-content-primary);letter-spacing:0;flex:none;place-items:center;display:grid}
+.disc{width:var(--l3-size-32);height:var(--l3-size-32);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);box-shadow:inset 0 0 0 1px var(--l3-border-light);font:var(--l3-text-heading-12);color:var(--l3-content-primary);letter-spacing:0;flex:none;place-items:center;display:grid}
 
 .disc[data-size="40"]{width:var(--l3-size-40);height:var(--l3-size-40);font:var(--l3-text-heading-12)}
 
-.disc[data-size="24"]{width:var(--l3-size-24);height:var(--l3-size-24);font:var(--l3-text-label-10)}
+.disc[data-size="24"]{width:var(--l3-size-24);height:var(--l3-size-24);font:var(--l3-text-label-12)}
 
 .disc>img{object-fit:contain;width:72%;height:72%}
+
+/* A logo on its plate needs no edge: the grey ring read as a dark outline against the card (3 Nov). */
+.disc[data-plate]{box-shadow:none}
 
 .disc[data-fill]{overflow:hidden}
 
@@ -29710,6 +29772,212 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 
 /* The chips scroll on their own; 16 after the last one. Room for the raised shadow above and below. */
 .filterRow>.filterTabs{flex:1;min-width:0;margin-block:calc(-1 * var(--l3-spacing-04));padding:var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-04) 0}
+
+/* The ETF card (3 Nov), inside the L3 ListCell card like the Market page's stock rows. Left column: two holding logos
+   (28) overlapping on the diagonal in a 40 × 40 box — the front one with a 2 gap cut out of the one behind, so it is
+   always the card's colour — and the "+501" Tag under them, centred. */
+.diagCol{align-items:center;gap:var(--l3-spacing-04);flex-direction:column;flex:none;display:flex}
+
+/* ListCell's icon slot is a 24 box that stretches any span inside it; this column keeps its own size (like an Avatar). */
+span:has(>.diagCol){width:auto;height:auto}
+
+.diagCol.diagCol.diagCol{width:auto;height:auto}
+
+.diagPair{width:var(--l3-size-40);height:var(--l3-size-40);display:block;position:relative}
+
+.diagPair>[data-avatar][data-size]{--av-size:var(--l3-size-28);position:absolute}
+
+.diagPair>:first-child{top:0;left:0;-webkit-mask:radial-gradient(circle var(--l3-spacing-16) at calc(var(--l3-size-28) - var(--l3-spacing-02)) calc(var(--l3-size-28) - var(--l3-spacing-02)),transparent 98%,#000 100%);mask:radial-gradient(circle var(--l3-spacing-16) at calc(var(--l3-size-28) - var(--l3-spacing-02)) calc(var(--l3-size-28) - var(--l3-spacing-02)),transparent 98%,#000 100%)}
+
+.diagPair>:last-child{bottom:0;right:0}
+
+.cellPrice{align-items:flex-end;gap:var(--l3-spacing-02);white-space:nowrap;flex-direction:column;max-width:var(--l3-size-96);display:flex}
+
+.cellValue{font:var(--l3-text-label-16);color:var(--l3-content-primary);font-variant-numeric:tabular-nums}
+
+/* Widths (3 Nov). At 360 the card has 304 inside: the logo column 40 + 12, numbers at most 96 (fits $10,142.73) + 16
+   leave 140 for the name and ticker together; the ticker is at most 56 (BOTZ, INDA at 16); the name ends in "…" first.
+   Name block at the left, numbers at the right edge; spare width goes between. */
+.cellName{align-items:baseline;gap:var(--l3-spacing-06);max-width:calc(var(--l3-size-128) + var(--l3-spacing-12));min-width:0;display:flex}
+
+.cellNameText{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}
+
+.cellSym{color:var(--l3-content-secondary);text-overflow:ellipsis;white-space:nowrap;flex:none;max-width:var(--l3-size-56);overflow:hidden}
+
+.cellPrice{align-items:flex-end;gap:var(--l3-spacing-02);white-space:nowrap;flex-direction:column;max-width:var(--l3-size-96);display:flex}
+
+.cellValue{font:var(--l3-text-label-16);color:var(--l3-content-primary);font-variant-numeric:tabular-nums}
+
+.twoPlain{font:var(--l3-text-label-12);color:var(--l3-content-secondary);text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}
+
+.twoLogos{align-items:center;gap:var(--l3-spacing-04);flex:none;display:flex}
+
+/* 16 holding logos, overlapping by 6; the gap cut out of the logo behind (a mask), so it is the card's own colour. */
+.twoLogos .logoStack>*{box-shadow:none}
+
+.twoLogos .logoStack>*+*{margin-left:calc(-1 * var(--l3-spacing-06))}
+
+.twoLogos .logoStack>[data-avatar][data-size]{--av-size:var(--l3-size-16);--av-font:var(--l3-text-label-08)}
+
+.twoLogos .logoStack>:not(:last-child){-webkit-mask:radial-gradient(circle var(--l3-spacing-10) at calc(var(--l3-size-16) + var(--l3-spacing-02)) 50%,transparent 98%,#000 100%);mask:radial-gradient(circle var(--l3-spacing-10) at calc(var(--l3-size-16) + var(--l3-spacing-02)) 50%,transparent 98%,#000 100%)}
+/* "Fund logo" card (3 Nov): under the plain-name heading, the ticker (secondary) then the fund name (secondary), one
+   line; the name ends in "…". */
+.fundTitle{align-items:baseline;gap:var(--l3-spacing-04);min-width:0;display:flex}
+
+.fundSym{color:var(--l3-content-secondary);flex:none}
+
+.fundSym:after{content:"·";padding-left:var(--l3-spacing-04)}
+
+.fundName{color:var(--l3-content-secondary);text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}
+
+
+
+/* A leveraged card's heading (3 Nov): the short name, then the "3x Long" Tag 6 after it, centred on the line. */
+.levHead{align-items:center;gap:var(--l3-spacing-06);min-width:0;display:flex}
+
+.levHeadText{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}
+
+.levHead>[data-variant]{flex:none}
+
+/* The other leverage tag versions (3 Nov, flow option "Leverage tag"), to compare with V5 above. FLAG: hand-made pills,
+   band and mask; overridden Tag radii. */
+.levPill{align-items:center;gap:var(--l3-spacing-02);height:var(--l3-size-16);padding:0 var(--l3-spacing-04);border-radius:var(--l3-radius-full);background:var(--l3-surface-accent-indicator-down-light);color:var(--l3-content-accent-indicator-down-default);box-shadow:inset 0 0 0 1px var(--l3-border-accent-indicator-down-light),0 0 0 var(--l3-spacing-02) var(--l3-surface-primary);font:var(--l3-text-heading-12);white-space:nowrap;display:inline-flex}
+
+.levPill[data-up]{background:var(--l3-surface-accent-indicator-up-light);color:var(--l3-content-accent-indicator-up-default);box-shadow:inset 0 0 0 1px var(--l3-border-accent-indicator-up-light),0 0 0 var(--l3-spacing-02) var(--l3-surface-primary)}
+
+.levTri{border-top:var(--l3-spacing-04) solid currentColor;border-right:var(--l3-spacing-04) solid transparent;border-left:var(--l3-spacing-04) solid transparent;width:0;height:0}
+
+.levPill[data-up] .levTri,.levSlice[data-up] .levTri{border-top:0;border-bottom:var(--l3-spacing-04) solid currentColor}
+
+.diagCol:has(>.levPill),.diagCol:has(>.levBadge){position:relative}
+
+/* V1: across the logo's foot, sticking out 4 on the left, both ends round. */
+.levBadge.levBadge{white-space:nowrap;max-width:none;width:max-content;border-radius:var(--l3-radius-full);box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary);position:absolute;bottom:calc(-1 * var(--l3-spacing-04));left:calc(-1 * var(--l3-spacing-04))}
+
+/* V2: on the logo's top-right. */
+.levPillBadge{position:absolute;top:calc(-1 * var(--l3-spacing-06));right:calc(-1 * var(--l3-spacing-04))}
+
+/* V3 / V6: centred on the logo's foot, 8 below it; V3 rings the logo in the side's colour. */
+.levPillFoot{position:absolute;bottom:calc(-1 * var(--l3-spacing-08));left:50%;translate:-50% 0}
+
+.diagCol[data-ring]>span:first-child{box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary),0 0 0 var(--l3-spacing-04) var(--l3-content-accent-indicator-down-default)}
+
+.diagCol[data-ring="long"]>span:first-child{box-shadow:0 0 0 var(--l3-spacing-02) var(--l3-surface-primary),0 0 0 var(--l3-spacing-04) var(--l3-content-accent-indicator-up-default)}
+
+/* V4: the card's top-right corner. */
+.levWrap{position:relative}
+
+.levCorner.levCorner{border-radius:0 var(--l3-radius-12) 0 var(--l3-radius-08);pointer-events:none;position:absolute;top:0;right:0}
+
+/* V7: the 40 logo circle clips a 14 band across its foot — solid down / up colour, "3x ▼" in white Label 8. */
+.diagCol[data-slice]{border-radius:var(--l3-radius-full);position:relative;overflow:hidden}
+
+.levSlice{justify-content:center;align-items:center;gap:var(--l3-spacing-02);height:var(--l3-spacing-14);padding-bottom:var(--l3-spacing-02);background:var(--l3-surface-accent-indicator-down-default);color:var(--l3-static-white);font:var(--l3-text-label-08);font-weight:750;white-space:nowrap;display:flex;position:absolute;bottom:0;left:0;right:0}
+
+.levSlice[data-up]{background:var(--l3-surface-accent-indicator-up-default)}
+
+/* V8: the pill (30 wide) on the logo's foot, the logo cut around it — a pill-shaped hole 2 wider on every side. */
+.levPillNotch{justify-content:center;width:calc(var(--l3-size-28) + var(--l3-spacing-02));box-shadow:inset 0 0 0 1px var(--l3-border-accent-indicator-down-light);position:absolute;bottom:calc(-1 * var(--l3-spacing-08));left:50%;translate:-50% 0}
+
+.levPillNotch[data-up]{box-shadow:inset 0 0 0 1px var(--l3-border-accent-indicator-up-light)}
+
+.diagCol[data-notch]>span:first-child{-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0z M13 30h14a10 10 0 0 1 0 20H13a10 10 0 0 1 0-20z'/%3E%3C/svg%3E") 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0z M13 30h14a10 10 0 0 1 0 20H13a10 10 0 0 1 0-20z'/%3E%3C/svg%3E") 0 0/100% 100%}
+
+/* The Boosted tab's note (3 Nov), a button that opens How Boosted ETFs work: one line on a solid tint with a 2 bar on
+   the left in the accent — square on the left so the bar runs straight, radius 2 on the right — trend-up icon, "Market
+   moves +1%", an arrow, the [3x Long] tag "moves +3%", then (a ticker) the market moving −1% and [3x Short] "moves +3%";
+   a quiet (i) at the end. Tone (flow option "Boosted line"):
+   grey (the default, a neutral bar), green (the up colour), gold (zing), blue (discover) or purple. */
+.boostLine{--boost-bg:var(--l3-surface-accent-indicator-up-light);--boost-accent:var(--l3-content-accent-indicator-up-default);justify-content:flex-start;align-items:center;gap:var(--l3-spacing-06);width:100%;margin:0;padding:var(--l3-spacing-08) var(--l3-spacing-12) var(--l3-spacing-08) var(--l3-spacing-14);border-radius:var(--l3-radius-00) var(--l3-radius-02) var(--l3-radius-02) var(--l3-radius-00);background:var(--boost-bg);box-shadow:inset var(--l3-spacing-02) 0 0 var(--boost-accent);font:var(--l3-text-label-12);color:var(--l3-content-primary);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;border:0;display:flex}
+
+.boostLine[data-tone="gold"]{--boost-bg:var(--l3-surface-accent-zing-light);--boost-accent:var(--l3-surface-accent-zing-default)}
+
+.boostLine[data-tone="blue"]{--boost-bg:var(--l3-surface-accent-discover-light);--boost-accent:var(--l3-content-accent-discover-default)}
+
+.boostLine[data-tone="purple"]{--boost-bg:var(--l3-surface-accent-purple-light);--boost-accent:var(--l3-content-accent-purple-default)}
+
+.boostLine[data-tone="grey"]{--boost-bg:var(--l3-surface-secondary);--boost-accent:var(--l3-content-tertiary)}
+
+/* On grey the +3% and the up icon keep the up colour (the bar alone goes neutral). */
+.boostLine[data-tone="grey"] .boostGain,.boostLine[data-tone="grey"] .boostIcon{color:var(--l3-content-accent-indicator-up-default)}
+
+.boostText{align-items:center;gap:var(--l3-spacing-04);height:var(--l3-size-16);white-space:nowrap;display:flex}
+
+/* The ticker: a 16-tall window; the reel holds both lines and the first again, and steps up one line at a time — hold
+   2.1 s, slide 0.4 s, 5 s a cycle — so the loop never jumps. */
+.boostTicker{flex:1;min-width:0;height:var(--l3-size-16);overflow:hidden}
+
+.boostTickerReel{flex-direction:column;display:flex;animation:boost-tick 5s cubic-bezier(.2,0,0,1) infinite}
+
+@keyframes boost-tick{0%,42%{transform:translateY(0)}50%,92%{transform:translateY(calc(-1 * var(--l3-size-16)))}100%{transform:translateY(calc(-2 * var(--l3-size-16)))}}
+
+@media (prefers-reduced-motion:reduce){.boostTickerReel{animation:none}}
+
+/* The market's move: up in the up colour, down in the down colour (the icon too). */
+.boostMarket{font:var(--l3-text-heading-12);color:var(--l3-content-accent-indicator-up-default)}
+
+.boostMarket[data-down]{color:var(--l3-content-accent-indicator-down-default)}
+
+.boostIconDown{flex:none;color:var(--l3-content-accent-indicator-down-default)}
+
+/* "You make +3%" in the accent; the arrow and the end (i) quiet. */
+.boostGain{font:var(--l3-text-heading-12);color:var(--boost-accent)}
+
+.boostArrowIcon{color:var(--l3-content-tertiary)}
+
+.boostInfoEnd{color:var(--l3-content-tertiary);flex:none;margin-left:auto}
+
+.boostIcon{flex:none;color:var(--boost-accent)}
+
+
+/* The Boosted note's other looks (3 Nov, flow option "Boosted note"). Both use the tone's accent (--boost-accent) for
+   the bolt and the boosted "3%" only; the rest stays the page's own colours. FLAG: hand-made. */
+.boostCard,.boostChip{--boost-accent:var(--l3-surface-accent-zing-default);--boost-soft:var(--l3-surface-accent-zing-light);color:var(--l3-content-primary);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;border:0;align-items:center;display:flex}
+
+.boostCard[data-tone="green"],.boostChip[data-tone="green"]{--boost-accent:var(--l3-content-accent-indicator-up-default);--boost-soft:var(--l3-surface-accent-indicator-up-light)}
+
+.boostCard[data-tone="blue"],.boostChip[data-tone="blue"]{--boost-accent:var(--l3-content-accent-discover-default);--boost-soft:var(--l3-surface-accent-discover-light)}
+
+.boostCard[data-tone="purple"],.boostChip[data-tone="purple"]{--boost-accent:var(--l3-content-accent-purple-default);--boost-soft:var(--l3-surface-accent-purple-light)}
+
+/* "Market ▲ 1% → 3x Boosted ▲ 3%": the market's move in the text colour, the boosted one in the accent. */
+.boostSum{align-items:baseline;gap:var(--l3-spacing-06);font:var(--l3-text-label-12);color:var(--l3-content-secondary);white-space:nowrap;display:inline-flex}
+
+.boostSum b{font:var(--l3-text-heading-12);font-variant-numeric:tabular-nums}
+
+.boostUp{color:var(--l3-content-primary)}
+
+.boostHot{color:var(--boost-accent)}
+
+.boostArrow{color:var(--l3-content-secondary)}
+
+/* Card: like the fund cards (12 radius, hairline, the page's surface), 12 padding; a 32 tile in the soft accent with
+   the bolt, the sum over a one-line sub, the (i) at the right. */
+.boostCard{gap:var(--l3-spacing-10);width:100%;padding:var(--l3-spacing-10) var(--l3-spacing-12);border-radius:var(--l3-radius-12);background:var(--l3-surface-primary);box-shadow:inset 0 0 0 1px var(--l3-border-light)}
+
+.boostTile{width:var(--l3-size-32);height:var(--l3-size-32);border-radius:var(--l3-radius-08);background:var(--boost-soft);color:var(--boost-accent);flex:none;place-items:center;display:grid}
+
+.boostCardText{gap:var(--l3-spacing-02);flex-direction:column;flex:1;min-width:0;display:flex}
+
+.boostCardSub{font:var(--l3-text-label-12);color:var(--l3-content-secondary)}
+
+.boostCardInfo{color:var(--l3-content-tertiary);flex:none}
+
+/* Chip: one line, hugging its content, 28 tall, the soft accent behind. */
+.boostChip{gap:var(--l3-spacing-06);align-self:flex-start;height:var(--l3-size-28);padding:0 var(--l3-spacing-10);border-radius:var(--l3-radius-full);background:var(--boost-soft)}
+
+.boostChip .boostIcon{color:var(--boost-accent)}
+
+.boostChipInfo{color:var(--l3-content-secondary);flex:none}
+
+/* The Boosted ETF page's strip (3 Nov): the same strip with the gradient (the tint full on the left, fading to none on
+   the right) and a two-line sentence. */
+.boostLine[data-gradient]{align-items:center;padding-top:var(--l3-spacing-10);padding-bottom:var(--l3-spacing-10);background:linear-gradient(to right,var(--boost-bg),transparent)}
+
+.boostSentence{-webkit-line-clamp:2;-webkit-box-orient:vertical;flex:1;min-width:0;display:-webkit-box;overflow:hidden}
+
+/* On the ETF page's strip the fund's "up 3%" is in the up colour, not the gold (3 Nov). */
+.boostLine[data-gradient] .boostGain{color:var(--l3-content-accent-indicator-up-default)}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfHoldings.module.css`
@@ -29742,7 +30010,7 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
   padding-bottom: var(--l3-spacing-08);
   box-shadow: inset 0 -1px 0 var(--l3-border-light); /* 1px hairline */
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   display: flex;
 }
 
@@ -29867,7 +30135,7 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 .sym {
   margin-left: var(--l3-spacing-06);
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* Share of the fund, against the biggest holding. */
@@ -29897,9 +30165,67 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 .others {
   align-items: center;
   gap: var(--l3-spacing-12);
+  width: 100%;
   padding: var(--l3-spacing-12) 0 0;
   box-shadow: inset 0 1px 0 var(--l3-border-light); /* 1px hairline */
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: none;
+  border: 0;
   display: flex;
+}
+
+/* "Others" opens the full Top holdings page (3 Nov): a chevron after the share says so. */
+.othersChevron {
+  flex: none;
+  margin-left: calc(-1 * var(--l3-spacing-04));
+  color: var(--l3-content-tertiary);
+}
+
+/* The full Top holdings page (3 Nov): "Top 50 of 503 · Weight", then the Market page's cards, 16 apart. */
+.fullPage {
+  padding: var(--l3-spacing-16);
+}
+
+.fullHead {
+  justify-content: space-between;
+  margin: 0 0 var(--l3-spacing-12);
+  padding: 0 var(--l3-spacing-04);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+  display: flex;
+}
+
+.cards {
+  gap: var(--l3-spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-direction: column;
+  display: flex;
+}
+
+/* Under the ticker: the company name, then a thin bar of its weight, 6 below. */
+.cardSub {
+  gap: var(--l3-spacing-06);
+  flex-direction: column;
+  min-width: 0;
+  display: flex;
+}
+
+.cardName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cardWeight {
+  font: var(--l3-text-label-16);
+  color: var(--l3-content-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .othersName {
@@ -29923,13 +30249,31 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 // FLAG: copy not in copy.json yet (hard-coded). Holding rows and sector bars are hand-made (module CSS) — L3 ListCell
 // has no weight bar; the "+497" circle is hand-made (L3 Avatar has no count variant), as on the ETF list.
 import { SECTOR_NAMES, holdingsBeyond, otherHoldings, sectorsFor, shortCount, stockName, topHoldings, type Etf } from './data'
+import { Icon } from '@l3/components/Icon'
+import { msChevronRight } from '@l3/icons/material'
 import { HoldingLogo } from './parts'
 import listStyles from './Etf.module.css'
 import styles from './EtfHoldings.module.css'
 
 const TOP = 6
 
-export function TopHoldings({ etf, onOpen }: { etf: Etf; onOpen: (sym: string) => void }) {
+/** One holding row: logo, name and ticker over a weight bar (against `biggest`), then its share. Opens the stock. */
+export function HoldingRow({ sym, weight, biggest, onOpen }: { sym: string; weight: number; biggest: number; onOpen: (sym: string) => void }) {
+  const name = stockName(sym)
+  return (
+    <button type="button" className={styles.row} onClick={() => onOpen(sym)} aria-label={`${name}, ${weight}% of the ETF. Open stock`}>
+      <HoldingLogo sym={sym} size={32} />
+      <span className={styles.text}>
+        <span className={styles.name}>{name}<span className={styles.sym}>{sym}</span></span>
+        <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(weight / biggest) * 100}%` }} /></span>
+      </span>
+      <span className={styles.weight}>{weight.toFixed(1)}%</span>
+    </button>
+  )
+}
+
+/** The ETF page's Top holdings: six rows, then "Others", which opens the full Top holdings page (`onOthers`, 3 Nov). */
+export function TopHoldings({ etf, onOpen, onOthers }: { etf: Etf; onOpen: (sym: string) => void; onOthers?: () => void }) {
   const top = topHoldings(etf, TOP)
   const biggest = top[0]?.weight ?? 100
   const others = otherHoldings(etf, TOP)
@@ -29938,29 +30282,22 @@ export function TopHoldings({ etf, onOpen }: { etf: Etf; onOpen: (sym: string) =
     <div className={styles.panel}>
       <p className={styles.head} aria-hidden="true"><span>{total.toLocaleString('en-US')} positions</span><span>Weight</span></p>
       <ul className={styles.list}>
-      {top.map((h) => {
-        const name = stockName(h.sym)
-        return (
-          <li key={h.sym}>
-            <button type="button" className={styles.row} onClick={() => onOpen(h.sym)} aria-label={`${name}, ${h.weight}% of the ETF. Open stock`}>
-              <HoldingLogo sym={h.sym} size={32} />
-              <span className={styles.text}>
-                <span className={styles.name}>{name}<span className={styles.sym}>{h.sym}</span></span>
-                <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(h.weight / biggest) * 100}%` }} /></span>
-              </span>
-              <span className={styles.weight}>{h.weight.toFixed(1)}%</span>
-            </button>
-          </li>
-        )
-      })}
+      {top.map((h) => (
+        <li key={h.sym}>
+          <HoldingRow sym={h.sym} weight={h.weight} biggest={biggest} onOpen={onOpen} />
+        </li>
+      ))}
       {others.count > 0 && others.weight > 0 && (
-        <li className={styles.others} aria-label={`Others: ${others.count} more companies, ${others.weight.toFixed(1)}% of the ETF`}>
-          <span className={listStyles.logoStack} aria-hidden="true">
-            {others.logos.map((sym) => <HoldingLogo key={sym} sym={sym} size={24} />)}
-            <span className={listStyles.moreCount}>+{shortCount(others.count)}</span>
-          </span>
-          <span className={styles.othersName}>Others</span>
-          <span className={styles.weight}>{others.weight.toFixed(1)}%</span>
+        <li>
+          <button type="button" className={styles.others} onClick={onOthers} aria-label={`Others: ${others.count} more companies, ${others.weight.toFixed(1)}% of the ETF. See top holdings`}>
+            <span className={listStyles.logoStack} aria-hidden="true">
+              {others.logos.map((sym) => <HoldingLogo key={sym} sym={sym} size={24} />)}
+              <span className={listStyles.moreCount}>+{shortCount(others.count)}</span>
+            </span>
+            <span className={styles.othersName}>Others</span>
+            <span className={styles.weight}>{others.weight.toFixed(1)}%</span>
+            <Icon icon={msChevronRight} size={16} className={styles.othersChevron} />
+          </button>
         </li>
       )}
       </ul>
@@ -30011,39 +30348,110 @@ export function Allocation({ etf }: { etf: Etf }) {
 }
 ```
 
+### `src/flows/us-stocks/screens/etf/EtfHoldingsScreen.tsx`
+
+```tsx
+// 9001:12 · Top holdings (3 Nov): the full list behind the ETF page's "Others" row — the fund's top 50 holdings (or as
+// many as the sample has), biggest first, as the Market page's cards: the company's logo (40), the ticker over the name,
+// a thin weight bar under it (against the biggest holding) and the share on the right. A card opens its stock page. The
+// header says how many of the fund's stocks the list shows (a Boosted fund: of the index it follows).
+// FLAG: copy not in copy.json yet (hard-coded); the header line and the weight bar are hand-made.
+import { Actionbar } from '@l3/components/Actionbar'
+import { ListCell } from '@l3/components/ListCell'
+import { Phone } from '../../components/Phone'
+import { useUsNav } from '../../nav'
+import { getCurrentEtf } from './currentEtf'
+import { ETF_PAGE, holdingsBeyond, openHolding, stockName, stocksBehind, topHoldings } from './data'
+import { HoldingLogo } from './parts'
+import styles from './EtfHoldings.module.css'
+
+const FULL = 50
+
+export function EtfHoldingsScreen({ backdrop }: { backdrop?: boolean }) {
+  const { go, back } = useUsNav()
+  const etf = getCurrentEtf()
+  const top = topHoldings(etf, FULL)
+  const total = stocksBehind(etf)?.count ?? holdingsBeyond(etf, 0)
+  const biggest = top[0]?.weight ?? 100
+  return (
+    <Phone label={`${etf.sym} top holdings`} header={<Actionbar onBack={() => back(ETF_PAGE)} title="Top holdings" description={etf.name} />} gesture="none">
+      <div className={styles.fullPage}>
+        <p className={styles.fullHead} aria-hidden="true">
+          <span>Top {top.length} of {total.toLocaleString('en-US')}</span>
+          <span>Weight</span>
+        </p>
+        <ul className={styles.cards} aria-label={`${etf.sym}: top ${top.length} of ${total} holdings`}>
+          {top.map((h) => {
+            const name = stockName(h.sym)
+            return (
+              <li key={h.sym}>
+                <ListCell
+                  variant="card"
+                  as="button"
+                  iconLeft={<HoldingLogo sym={h.sym} size={40} />}
+                  label={h.sym}
+                  description={
+                    <span className={styles.cardSub}>
+                      <span className={styles.cardName}>{name}</span>
+                      <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(h.weight / biggest) * 100}%` }} /></span>
+                    </span>
+                  }
+                  trailing={<span className={styles.cardWeight}>{h.weight.toFixed(1)}%</span>}
+                  aria-label={`${name}, ${h.weight}% of the ETF. Open stock`}
+                  onClick={() => { if (!backdrop) openHolding(go, h.sym) }}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </Phone>
+  )
+}
+```
+
 ### `src/flows/us-stocks/screens/etf/EtfListScreen.tsx`
 
 ```tsx
 // 9001:1 · ETFs · Regular & Leveraged — the list from the ETFs quick action. Regular tab: a filter row fixed under the
 // tabs (in the Actionbar's bottom, with them) — a switcher chip (Country ⇄ Sector, as Top Movers' cap chip on Home), a
-// divider, then that filter's chips (countries with round flags, or sectors) — and the shared StockListCard rows; Leveraged tab: one SectionHeader per index with its long / short cards.
+// divider, then that filter's chips (countries with round flags, or sectors) — and the shared StockListCard rows, named
+// in plain words ("Top 500 US stocks", SPY · fund name under it). Boosted tab (leveraged, jojo's design of 3 Nov): the
+// Boosted note (strip / card / chip, flow options) opening "How Boosted ETFs work", then one list of fund-logo cards
+// with the leverage shown one of eight ways (flow option "Leverage tag").
 // A row opens the ETF page (9001:2).
 // FLAG: copy not in copy.json yet (hard-coded).
 // FLAG: hand-made switcher chip and divider (as the Stocks home's Top Movers row) — L3 has no cycling chip.
 // FLAG: issuer logos are our own square images (assets/etf/logos: logo on its plate) in the L3 Avatar — L3 has no ETF / issuer logo. "All" has L3's globe icon; the
 // country flags are our own round SVGs (shared/ui/Flag).
+// FLAG: the Boosted note, leverage pills / slices and the fund-logo disc are hand-made (Etf.module.css).
 import { useState } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
 import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { msGlobe } from '@l3/icons/material'
+import { ListCell } from '@l3/components/ListCell'
 import { Section } from '@l3/components/Section'
-import { SectionHeader } from '@l3/components/SectionHeader'
 import { Tabs } from '@l3/components/Tabs'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
 import { Usd } from '../../../../shared/money'
 import { Flag, type FlagCode } from '../../../../shared/ui/Flag'
 import { StockListCard } from '../../../../shared/ui/StockListCard'
+import { useFlowOption } from '../../../../shared/prototype'
+import { BoostedSheet } from './BoostedSheet'
+import { BoostStrip, type BoostLine } from './BoostStrip'
 import { setCurrentEtf } from './currentEtf'
-import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, leveragedGroups, type Etf } from './data'
-import { SideTag, etfLogoUrl } from './parts'
+import { boltIcon, infoIcon } from './icons'
+import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, leveragedGroups, plainFor, type Etf } from './data'
+import { EtfDisc, EtfMove, SideTag, etfLogoUrl } from './parts'
 import styles from './Etf.module.css'
 
 const TABS = [
   { value: 'normal', label: 'Regular' },
-  { value: 'leveraged', label: 'Leveraged' },
+  // "Boosted" (jojo, 3 Nov): the app's word for leveraged ETFs, with a bolt.
+  { value: 'leveraged', label: 'Boosted', iconLeft: <Icon icon={boltIcon} size={16} /> },
 ]
 
 /** What the filter chips pick: the switcher chip cycles between them. */
@@ -30052,28 +30460,168 @@ const FILTER_BY: Record<FilterBy, string> = { country: 'Country', sector: 'Secto
 
 const FLAGS: Record<string, FlagCode> = { US: 'us', India: 'in', China: 'cn', Japan: 'jp', Europe: 'eu', Korea: 'kr' }
 
-/** What each leveraged group does, one line (Description 12 under the section title). */
-const groupNote = (tracks: string) => `Long gains when ${tracks} rises, short when it falls`
-const INTRO = 'Leveraged ETFs multiply a day’s move, 2x or 3x. Go long if you expect a rise, short if you expect a fall.'
-
-/** One ETF as the shared stock card: issuer logo · symbol over fund name · price over day change. */
+/**
+ * One regular ETF as the shared stock card: issuer logo · the plain name ("Top 500 US stocks") over "SPY · fund name"
+ * (jojo's naming, 3 Nov) · price over day change.
+ */
 function EtfCard({ etf, onOpen }: { etf: Etf; onOpen: () => void }) {
+  const { plain } = plainFor(etf)
   return (
     <li>
       <StockListCard
-        symbol={etf.sym}
-        name={etf.name}
+        symbol={plain}
+        name={`${etf.sym} · ${etf.name}`}
         logoUrl={etfLogoUrl(etf.sym)}
         initials={etf.sym.slice(0, 2)}
-        tag={etf.kind === 'leveraged' ? <SideTag etf={etf} /> : undefined}
         price={<Usd value={etf.price} align="end" />}
         changePct={etf.change}
         onOpen={onOpen}
-        aria-label={`${etf.name}, ${etf.sym}`}
+        aria-label={`${plain}, ${etf.sym}, ${etf.name}`}
       />
     </li>
   )
 }
+
+/**
+ * "Fund logo" ETF card (3 Nov, flow option "ETF card", the default): the fund's own logo (40) on the left; the plain
+ * name is the heading ("Top 500 US stocks"), then the ticker and the fund name under it ("SPY · SPDR S&P 500 ETF" —
+ * the ticker always shows, the name ends in "…"); $ price over the change on the right.
+ */
+function FundRow({ etf, onClick }: { etf: Etf; onClick: () => void }) {
+  const { plain } = plainFor(etf)
+  // Where a leveraged fund's leverage shows (3 Nov, flow option "Leverage tag" in the prototype settings): eight
+  // versions to compare; V5 After heading is the default.
+  const levTag = useFlowOption('us-stocks', 'levTag', 'heading')
+  const lev = etf.kind === 'leveraged' ? levTag : undefined
+  const cell = (
+    <ListCell
+      variant="card"
+      as="button"
+      iconLeft={
+        <span className={styles.diagCol} data-ring={lev === 'ring' ? etf.side : undefined} data-slice={lev === 'slice' ? '' : undefined} data-notch={lev === 'notch' ? '' : undefined}>
+          <EtfDisc sym={etf.sym} size={40} />
+          {/* V1 Logo foot: "3x Long" (L3 Tag) across the logo's foot, both ends round. */}
+          {lev === 'foot' && <SideTag etf={etf} className={styles.levBadge} />}
+          {/* V2 Logo badge: a "3x ▲" pill on the logo's top-right, like a notification badge. */}
+          {lev === 'badge' && <LevPill etf={etf} className={styles.levPillBadge} />}
+          {/* V3 Logo ring: the logo ringed green (long) / red (short), the pill on its foot. V6: the pill, no ring. */}
+          {(lev === 'ring' || lev === 'pill') && <LevPill etf={etf} className={styles.levPillFoot} />}
+          {/* V7 Slice: the logo's bottom cut off by a band in the up / down colour, "3x ▲" in it. */}
+          {lev === 'slice' && <LevSlice etf={etf} />}
+          {/* V8 Notch: the pill, and the logo's circle curves around it. */}
+          {lev === 'notch' && <LevPill etf={etf} className={styles.levPillNotch} />}
+        </span>
+      }
+      label={
+        lev === 'heading' ? (
+          // V5 After heading: what it follows, then "3x Long" (L3 Tag) right after — "Nasdaq 100 [3x Long]". The name
+          // ends in "…" first; the tag always shows.
+          <span className={styles.levHead}>
+            <span className={styles.levHeadText}>{plain}</span>
+            <SideTag etf={etf} />
+          </span>
+        ) : (
+          plain
+        )
+      }
+      description={
+        <span className={styles.fundTitle}>
+          <span className={styles.fundSym}>{etf.sym}</span>
+          <span className={styles.fundName}>{etf.name}</span>
+        </span>
+      }
+      trailing={
+        <span className={styles.cellPrice}>
+          <span className={styles.cellValue}><Usd value={etf.price} layout="inline" /></span>
+          <EtfMove change={etf.change} />
+        </span>
+      }
+      onClick={onClick}
+    />
+  )
+  if (lev !== 'corner') return cell
+  // V4 Card corner: "3x Long" cut into the card's top-right corner (square on the card's edges, round inside).
+  return (
+    <div className={styles.levWrap}>
+      {cell}
+      <SideTag etf={etf} className={styles.levCorner} />
+    </div>
+  )
+}
+
+/** V7: the logo's bottom slice, a band across the circle's foot clipped by the circle, "3x" and an arrow in white. */
+function LevSlice({ etf }: { etf: Etf }) {
+  const long = etf.side === 'long'
+  return (
+    <span className={styles.levSlice} data-up={long || undefined} aria-label={`${etf.lev} ${long ? 'Long' : 'Short'}`}>
+      {etf.lev}
+      <span className={styles.levTri} aria-hidden="true" />
+    </span>
+  )
+}
+
+/** A short leverage pill: "3x" and an arrow (up = long, down = short) in the up / down colours. FLAG: hand-made. */
+function LevPill({ etf, className }: { etf: Etf; className?: string }) {
+  const long = etf.side === 'long'
+  return (
+    <span className={`${styles.levPill} ${className ?? ''}`} data-up={long || undefined} aria-label={`${etf.lev} ${long ? 'Long' : 'Short'}`}>
+      {etf.lev}
+      <span className={styles.levTri} aria-hidden="true" />
+    </span>
+  )
+}
+
+/**
+ * The Boosted tab's note (3 Nov): what a 3x fund does, in one glance — "Market ▲ 1% → 3x Boosted ▲ 3%" — and a button to
+ * "How Boosted ETFs work". Three looks, all small: a card, a chip, or the strip with the sentence. FLAG: hand-made.
+ */
+// The Boosted ticker's lines: whichever way the market moves, one side is up 3%.
+const TICKER: BoostLine[] = [
+  { up: true, subject: 'Market', move: '+1%', tag: { text: '3x Long', long: true }, gain: '+3%' },
+  { up: false, subject: 'Market', move: '−1%', tag: { text: '3x Short', long: false }, gain: '+3%' },
+]
+
+function BoostNote({ kind, tone, onOpen }: { kind: string; tone: string; onOpen: () => void }) {
+  if (kind === 'strip') {
+    return (
+      <BoostStrip
+        lines={TICKER}
+        tone={tone}
+        label="Market moves +1%: a 3x Long Boosted ETF moves +3%. Market moves −1%: a 3x Short Boosted ETF moves +3%."
+        onOpen={onOpen}
+      />
+    )
+  }
+
+  const sum = (
+    <span className={styles.boostSum} aria-hidden="true">
+      <span>Market <b className={styles.boostUp}>▲ 1%</b></span>
+      <span className={styles.boostArrow}>→</span>
+      <span>3x Boosted <b className={styles.boostHot}>▲ 3%</b></span>
+    </span>
+  )
+  const label = 'If the market goes up 1% in a day, a 3x Boosted ETF aims to go up 3%. How Boosted ETFs work'
+  if (kind === 'chip') {
+    return (
+      <button type="button" className={styles.boostChip} data-tone={tone} aria-haspopup="dialog" aria-label={label} onClick={onOpen}>
+        <Icon icon={boltIcon} size={14} className={styles.boostIcon} />
+        {sum}
+        <Icon icon={infoIcon} size={14} className={styles.boostChipInfo} />
+      </button>
+    )
+  }
+  return (
+    <button type="button" className={styles.boostCard} data-tone={tone} aria-haspopup="dialog" aria-label={label} onClick={onOpen}>
+      <span className={styles.boostTile} aria-hidden="true"><Icon icon={boltIcon} size={16} /></span>
+      <span className={styles.boostCardText}>
+        {sum}
+        <span className={styles.boostCardSub}>In one day · Tap to see how it works</span>
+      </span>
+      <Icon icon={infoIcon} size={16} className={styles.boostCardInfo} />
+    </button>
+  )
+}
+
 
 export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   const { go, back } = useUsNav()
@@ -30095,6 +30643,10 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
     setCurrentEtf(sym)
     go(ETF_PAGE)
   }
+  const [boostOpen, setBoostOpen] = useState(false)
+  // The Boosted note's look and colour (jojo, 3 Nov, flow options "Boosted note" / "Boosted line").
+  const boostNote = useFlowOption('us-stocks', 'boostNote', 'strip')
+  const boostTone = useFlowOption('us-stocks', 'boostTone', 'grey')
   const regular = ETFS.filter((e) => e.kind === 'normal' && (filterBy === 'country' ? country === 'all' || e.country === country : sector === 'all' || e.sector === sector))
   // Switching Country ⇄ Sector starts the new filter at All.
   const switchFilter = () => {
@@ -30163,22 +30715,20 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
           </Section>
         </Section>
       ) : (
-        <Section paddingBlock="16" gap="24">
-          {leveragedGroups().map((g, i) => (
-            <Section key={g.tracks} as="section" paddingInline="16" gap="16" aria-label={g.tracks}>
-              <SectionHeader
-                title={g.tracks}
-                description={i === 0 ? INTRO : groupNote(g.tracks)}
-              />
-              <Section as="ul" gap="12">
-                {g.etfs.map((e) => (
-                  <EtfCard key={e.sym} etf={e} onOpen={() => open(e.sym)} />
-                ))}
-              </Section>
-            </Section>
-          ))}
+        // Boosted (jojo, 3 Nov): what Boosted means, quiet but always there (a tap opens "How Boosted ETFs work"), then
+        // one list, long then short for each index; the leverage sits on each card.
+        <Section paddingBlock="16" paddingInline="16" gap="16">
+          <BoostNote kind={boostNote} tone={boostTone} onOpen={() => setBoostOpen(true)} />
+          <Section as="ul" gap="12" aria-label="Boosted ETFs">
+            {leveragedGroups().flatMap((g) => g.etfs).map((e) => (
+              <li key={e.sym}>
+                <FundRow etf={e} onClick={() => open(e.sym)} />
+              </li>
+            ))}
+          </Section>
         </Section>
       )}
+      {!backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
     </Phone>
   )
 }
@@ -30212,7 +30762,7 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 
 /* ≈ ₹ under the $ price: 10, secondary. */
 .priceInr {
-  font: var(--l3-text-description-10);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -30238,7 +30788,7 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 /* The ticker and the fund's own name, under the plain name (2 Nov). */
 .alias {
   font: var(--l3-text-label-12);
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
   margin: 0;
 }
 
@@ -30264,8 +30814,10 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   color: var(--l3-content-accent-indicator-up-default);
 }
 
+/* 12 under the price line, not the header's 24, so the tags read as part of it (3 Nov). */
 .tagsRow {
   height: var(--l3-size-24);
+  margin-top: calc(-1 * var(--l3-spacing-12));
   justify-content: space-between;
   align-items: center;
   display: flex;
@@ -30274,6 +30826,45 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 .tags {
   gap: var(--l3-spacing-08);
   display: flex;
+}
+
+/* What's inside (3 Nov), at the right of the tags: three holding logos (24) and a "+35" capsule, each overlapping the
+   one before by 8 — a 2 gap cut out of the one behind, so it is always the page colour. */
+.inside {
+  flex: none;
+  align-items: center;
+  display: flex;
+}
+
+.insideLogos {
+  align-items: center;
+  display: flex;
+}
+
+.insideLogos > * + * {
+  margin-left: calc(-1 * var(--l3-spacing-08));
+}
+
+.insideLogos > :not(:last-child) {
+  -webkit-mask: radial-gradient(circle calc(var(--l3-spacing-12) + var(--l3-spacing-02)) at calc(var(--l3-size-24) + var(--l3-spacing-04)) 50%, transparent 98%, #000 100%);
+  mask: radial-gradient(circle calc(var(--l3-spacing-12) + var(--l3-spacing-02)) at calc(var(--l3-size-24) + var(--l3-spacing-04)) 50%, transparent 98%, #000 100%);
+}
+
+/* FLAG: hand-made count capsule (L3 Avatar has no "+N" and Tag has no full radius): 24 tall like the logos, round ends,
+   the tags' grey and type. */
+.insideCount {
+  height: var(--l3-size-24);
+  min-width: var(--l3-size-24);
+  padding: 0 var(--l3-spacing-06);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
 }
 
 /* FLAG: overrides L3 Tag colours — restyling an L3 component */
@@ -30550,10 +31141,60 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 }
 
 /* "About this ETF": a short paragraph on what's inside the fund (2 Nov). */
+.section.aboutSection {
+  gap: var(--l3-spacing-08);
+}
+
+/* "About" (3 Nov): a light heading, then the text with no box, 3 lines until Read more opens it. */
+.aboutTitle {
+  font: var(--l3-text-heading-16);
+  color: var(--l3-content-primary);
+  margin: 0;
+}
+
 .about {
   font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
   margin: 0;
+}
+
+/* Boosted funds' About: 3 lines until "… more" opens it (regular funds show it whole in their panel). */
+.aboutText .about {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.aboutText .about[data-open] {
+  -webkit-line-clamp: unset;
+}
+
+/* The text and its inline "… more", which sits over the end of the last shown line (a fade from the page colour). */
+.aboutText {
+  position: relative;
+}
+
+.moreInline {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 0 0 var(--l3-spacing-24);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+  cursor: pointer;
+  background: linear-gradient(to right, transparent, var(--l3-surface-default) var(--l3-spacing-24));
+  border: 0;
+}
+
+/* FLAG: hand-made text link (L3 Button has no inline link style), as the stock page's Read more. */
+.readMore {
+  padding: 0;
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+  background: none;
+  border: 0;
 }
 
 .newsMeta {
@@ -30601,12 +31242,12 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 
 ```tsx
 // 9001:2 · ETF page — an ETF in the stock page layout: fund name over its ticker, price, ETF tag, line chart with a period picker,
-// Overview (About this ETF — what's inside it, Allocation by sector and Top holdings (EtfHoldings), Daily Performance, Fundamentals — the yearly fee lives there, not up top) and Events tabs, Buy / Sell dock (Go Long / Go Short on leveraged ETFs).
+// Overview (a plain line on what it is — "SPY tracks …" —, Allocation by sector and Top holdings (EtfHoldings), Daily Performance, Fundamentals — the yearly fee lives there, not up top) and Events tabs, Buy / Sell dock (Go Long / Go Short on leveraged ETFs).
 // Reads the current ETF (setCurrentEtf; SPY by default).
 // FLAG: copy not in copy.json yet (hard-coded).
 // FLAG: price block, chart, range meter and info buttons are hand-made
 // (EtfPage.module.css, copied from the stock page) instead of L3 Chart; same as the stock page.
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 import { Actionbar, ActionbarAction } from '@l3/components/Actionbar'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
@@ -30620,11 +31261,14 @@ import { useUsNav } from '../../nav'
 import { useUsJourney } from '../../../../shared/userStatus'
 import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { activationFooter, type StockState } from '../activation/StockPage'
+import { catalogue } from '../../data'
 import { getCurrentEtf } from './currentEtf'
-import { BUY_PAD, ETF_LIST, PERIODS, aboutFor, detailsFor, issuerLogo, issuerName, openHolding, percent } from './data'
+import { BUY_PAD, ETF_HOLDINGS, ETF_LIST, PERIODS, aboutFor, detailsFor, issuerLogo, stocksBehind, issuerName, openHolding, percent, tagsFor } from './data'
+import { BoostedSheet } from './BoostedSheet'
+import listStyles from './Etf.module.css'
 import { Allocation, TopHoldings } from './EtfHoldings'
 import { boltIcon, infoIcon } from './icons'
-import { EtfMove } from './parts'
+import { EtfMove, HoldingLogo } from './parts'
 import styles from './EtfPage.module.css'
 
 /** T03 · Buy · Empty US wallet. */
@@ -30663,11 +31307,31 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
   const d = detailsFor(etf)
   const leveraged = etf.kind === 'leveraged'
   const long = etf.side === 'long'
+  const behind = stocksBehind(etf)
   const logo = issuerLogo(etf.sym)
   const issuer = issuerName(etf.sym)
   const dayChangeAbs = (etf.price * etf.change) / (100 + etf.change)
   const [period, setPeriod] = useState('1D')
   const [section, setSection] = useState('overview')
+  const [aboutOpen, setAboutOpen] = useState(false)
+  const [boostOpen, setBoostOpen] = useState(false)
+  // "… more" only when the About text is longer than its 3 lines (a one-line text has nothing more to show).
+  const [aboutEl, setAboutEl] = useState<HTMLParagraphElement | null>(null)
+  const [aboutClamped, setAboutClamped] = useState(false)
+  useLayoutEffect(() => {
+    const p = aboutEl
+    if (!p || aboutOpen) return
+    const check = () => setAboutClamped(p.scrollHeight > p.clientHeight + 1)
+    check()
+    // Again once styles and fonts have settled, and whenever the text's box changes.
+    const frame = requestAnimationFrame(check)
+    const ro = new ResizeObserver(check)
+    ro.observe(p)
+    return () => {
+      cancelAnimationFrame(frame)
+      ro.disconnect()
+    }
+  }, [aboutEl, aboutOpen, etf.sym])
   const [body, setBody] = useState<HTMLDivElement | null>(null)
   // The Actionbar shows symbol + price once the big price has scrolled away.
   const [scrolled, setScrolled] = useState(false)
@@ -30727,9 +31391,10 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
       <div className={styles.assetHeader}>
         <div className={styles.titleRow}>
           <div className={styles.namePrice}>
-            {/* The fund's name, its ticker under it (2 Nov) — no plain name here; About this ETF explains it. */}
+            {/* The fund's name, its ticker under it (2 Nov) — no plain name here; Overview's first line explains it. */}
             <h1 className={styles.name}>{etf.name}</h1>
-            <p className={styles.alias}>{etf.sym}</p>
+            {/* Ticker · exchange (3 Nov, after Perplexity's "TTWO · NASDAQ"), the exchange from the US snapshot. */}
+            <p className={styles.alias}>{catalogue[etf.sym]?.exchange ? `${etf.sym} · ${catalogue[etf.sym].exchange}` : etf.sym}</p>
             <div className={styles.priceRow}>
               <span className={styles.price}><Usd value={etf.price} layout="inline" /></span>
               <span className={styles.change}>
@@ -30745,16 +31410,31 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
             <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>
           </div>
           <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
-            {logo ? <img src={asset(`assets/etf/${logo.file}.png`)} alt="" /> : etf.sym[0]}
+            {logo ? <img src={logo.src} alt="" /> : etf.sym[0]}
           </span>
         </div>
         <div className={styles.tagsRow}>
           <div className={styles.tags}>
             <Tag variant="tertiary" color="neutral" size="md">ETF</Tag>
+            {/* What's in it, in a word or two (3 Nov): "Top 500", "US"; "Chips", "Global". */}
+            {tagsFor(etf).map((tag) => <Tag key={tag} variant="tertiary" color="neutral" size="md">{tag}</Tag>)}
             {leveraged && (
               <Tag variant="secondary" color={long ? 'profit' : 'loss'} size="md">{etf.lev} {long ? 'Long' : 'Short'}</Tag>
             )}
           </div>
+          {/* What's inside (3 Nov): up to three of the biggest holdings' logos, then a "+35" capsule tucked under the last
+              one — the stocks of the index a Boosted fund follows. */}
+          {/* Boosted funds only (playground, 3 Nov): regular funds keep the playground's header. */}
+          {leveraged && behind && (
+            <span className={styles.inside} aria-label={`${behind.follows ? 'Follows' : 'Holds'} ${behind.count.toLocaleString('en-US')} ${behind.count === 1 ? 'stock' : 'stocks'}`}>
+              <span className={styles.insideLogos} aria-hidden="true">
+                {etf.holdings.slice(0, Math.min(3, behind.count)).map((h) => <HoldingLogo key={h.sym} sym={h.sym} size={24} />)}
+                {behind.count > 3 && (
+                  <span className={styles.insideCount}>+{(behind.count - Math.min(3, etf.holdings.length)).toLocaleString('en-US')}</span>
+                )}
+              </span>
+            </span>
+          )}
         </div>
       </div>
 
@@ -30800,12 +31480,39 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
             </div>
           ) : (
             <div className={styles.overview}>
-              <section className={styles.section}>
-                <SectionTitle title="About this ETF" />
-                <div className={styles.panel}>
-                  <p className={styles.about}>{aboutFor(etf)}</p>
+              {/* A Boosted fund (3 Nov): what its leverage does, in one sentence on the gold strip, above About. */}
+              {leveraged && <LeverageStrip etf={etf} onOpen={act(() => setBoostOpen(true))} />}
+              {/* What the ETF is (3 Nov, after N26's fund page): a light "About" heading, the text with no box — "SPY
+                  tracks …" — cut to 3 lines with Read more / Read less. */}
+              {/* Regular funds keep the playground's boxed "About this ETF" panel, with jojo's text (3 Nov). */}
+              {!leveraged && (
+                <section className={styles.section}>
+                  <SectionTitle title="About this ETF" />
+                  <div className={styles.panel}>
+                    <p className={styles.about}>{aboutFor(etf)}</p>
+                  </div>
+                </section>
+              )}
+              {leveraged && (
+              <section className={`${styles.section} ${styles.aboutSection}`} aria-label="About">
+                <h2 className={styles.aboutTitle}>About</h2>
+                {/* Read more is inline (3 Nov, after Finimize): "… more" over the end of the 3rd line while closed,
+                    "Less" right after the last word once open. */}
+                <div className={styles.aboutText}>
+                  <p className={styles.about} data-open={aboutOpen || undefined} ref={setAboutEl}>
+                    {aboutFor(etf)}
+                    {aboutOpen && (
+                      <> <button type="button" className={styles.readMore} onClick={() => setAboutOpen(false)} aria-expanded>Less</button></>
+                    )}
+                  </p>
+                  {!aboutOpen && aboutClamped && (
+                    <button type="button" className={styles.moreInline} onClick={() => setAboutOpen(true)} aria-expanded={false}>
+                      <span aria-hidden="true">… </span><span className={styles.readMore}>more</span>
+                    </button>
+                  )}
                 </div>
               </section>
+              )}
               {!leveraged && (
                 <section className={styles.section}>
                   <SectionTitle title="Allocation" />
@@ -30814,7 +31521,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
               )}
               <section className={styles.section}>
                 <SectionTitle title={leveraged ? 'Tracks' : 'Top holdings'} />
-                <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} />
+                <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} onOthers={act(() => go(ETF_HOLDINGS))} />
               </section>
               <section className={styles.section}>
                 <SectionTitle title="Daily Performance" />
@@ -30855,7 +31562,36 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
           )}
         </div>
       </div>
+      {leveraged && !backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
     </Phone>
+  )
+}
+
+// The index a leveraged fund follows, as a reader says it ("the Nasdaq-100"), for its Boosted strip.
+// The playground's catalogue names them by their full index ('Nasdaq-100', 'ICE Semiconductor').
+const INDEX_SAID: Record<string, string> = {
+  'Nasdaq 100': 'the Nasdaq-100', 'Nasdaq-100': 'the Nasdaq-100', Semiconductors: 'the chip index', 'ICE Semiconductor': 'the chip index',
+  NVIDIA: 'NVIDIA', 'S&P 500': 'the S&P 500',
+}
+
+/**
+ * A Boosted ETF's strip, above About (3 Nov): two lines on a gold gradient (full on the left, fading right) with the gold
+ * bar — "If the Nasdaq-100 moves up 1% in a day, TQQQ aims to move up 3%." (a short fund: "moves down 1% … aims to move
+ * up 3%"), the move up in green. The (i) leads; a tap opens How Boosted ETFs work. FLAG: hand-made (Etf.module.css).
+ */
+function LeverageStrip({ etf, onOpen }: { etf: ReturnType<typeof getCurrentEtf>; onOpen: () => void }) {
+  const long = etf.side === 'long'
+  const times = Number.parseFloat(etf.lev ?? '1')
+  const index = INDEX_SAID[etf.tracks] ?? etf.tracks
+  const sentence = `If ${index} moves ${long ? 'up' : 'down'} 1% in a day, ${etf.sym} aims to move up ${times}%.`
+  return (
+    <button type="button" className={listStyles.boostLine} data-tone="gold" data-gradient="" aria-haspopup="dialog" aria-label={`${sentence} How Boosted ETFs work`} onClick={onOpen}>
+      <Icon icon={infoIcon} size={16} className={listStyles.boostIcon} />
+      <span className={listStyles.boostSentence} aria-hidden="true">
+        If {index} moves <b className={listStyles.boostMarket} data-down={long ? undefined : ''}>{long ? 'up' : 'down'} 1%</b> in a day,{' '}
+        {etf.sym} aims to move <b className={listStyles.boostGain}>up&nbsp;{times}%</b>.
+      </span>
+    </button>
   )
 }
 ```
@@ -31074,16 +31810,25 @@ const weights = (...rows: [string, number][]): EtfHolding[] => rows.map(([sym, w
 
 // Sample holdings (the ETF page sorts them by weight; the first three written are the card's logos, so a well-known
 // name with a logo goes first — e.g. NVIDIA before TSMC, which has no logo file yet). The big index funds
-// carry about 20 so "View all" has a real list to show; the API would send the fund's full daily holdings file.
+// carry their top 50 (3 Nov) for the full "Top holdings" page; the API would send the fund's full daily holdings file.
+// Weights are rounded sample figures, biggest first.
 const SP500 = weights(
   ['NVDA', 7.6], ['MSFT', 6.7], ['AAPL', 6.3], ['AMZN', 3.9], ['META', 2.9], ['AVGO', 2.6], ['GOOGL', 2.1], ['TSLA', 1.9],
-  ['JPM', 1.5], ['V', 1.1], ['WMT', 1.0], ['XOM', 0.9], ['MA', 0.9], ['NFLX', 0.8], ['COST', 0.8], ['ORCL', 0.8],
-  ['HD', 0.7], ['JNJ', 0.7], ['UNH', 0.6], ['KO', 0.4],
+  ['GOOG', 1.7], ['BRK.B', 1.6], ['JPM', 1.5], ['LLY', 1.2], ['V', 1.1], ['WMT', 1.0], ['XOM', 0.9], ['MA', 0.9],
+  ['NFLX', 0.8], ['COST', 0.8], ['ORCL', 0.8], ['JNJ', 0.7], ['HD', 0.7], ['PG', 0.7], ['ABBV', 0.6], ['BAC', 0.6],
+  ['UNH', 0.6], ['PLTR', 0.6], ['KO', 0.5], ['GE', 0.5], ['CSCO', 0.5], ['CVX', 0.5], ['IBM', 0.4], ['WFC', 0.4],
+  ['AMD', 0.4], ['PM', 0.4], ['CRM', 0.4], ['MS', 0.4], ['ABT', 0.4], ['LIN', 0.4], ['INTU', 0.3], ['MCD', 0.3],
+  ['DIS', 0.3], ['AXP', 0.3], ['T', 0.3], ['GS', 0.3], ['NOW', 0.3], ['MRK', 0.3], ['RTX', 0.3], ['ISRG', 0.3],
+  ['UBER', 0.3], ['PEP', 0.3],
 )
 const NASDAQ = weights(
   ['NVDA', 9.8], ['MSFT', 8.9], ['AAPL', 8.1], ['AVGO', 5.6], ['AMZN', 5.4], ['META', 3.8], ['GOOGL', 3.4], ['TSLA', 3.1],
-  ['NFLX', 2.6], ['COST', 2.5], ['PLTR', 2.1], ['AMD', 1.6], ['CSCO', 1.4], ['PEP', 1.2], ['ADBE', 1.0], ['QCOM', 1.0],
-  ['SBUX', 0.6], ['INTC', 0.6], ['PYPL', 0.4], ['ABNB', 0.4],
+  ['GOOG', 3.0], ['NFLX', 2.6], ['COST', 2.5], ['PLTR', 2.1], ['AMD', 1.6], ['CSCO', 1.4], ['TMUS', 1.3], ['LIN', 1.2],
+  ['PEP', 1.2], ['INTU', 1.1], ['ISRG', 1.1], ['ADBE', 1.0], ['QCOM', 1.0], ['BKNG', 1.0], ['TXN', 0.9], ['AMGN', 0.9],
+  ['SHOP', 0.9], ['AMAT', 0.8], ['MU', 0.8], ['GILD', 0.7], ['HON', 0.7], ['LRCX', 0.7], ['PANW', 0.7], ['CMCSA', 0.6],
+  ['ADP', 0.6], ['KLAC', 0.6], ['APP', 0.6], ['VRTX', 0.6], ['ADI', 0.5], ['SBUX', 0.5], ['CRWD', 0.5], ['MELI', 0.5],
+  ['INTC', 0.5], ['CEG', 0.4], ['ORLY', 0.4], ['CDNS', 0.4], ['SNPS', 0.4], ['DASH', 0.4], ['CTAS', 0.4], ['MAR', 0.3],
+  ['PYPL', 0.3], ['ABNB', 0.3],
 )
 const SEMIS = weights(
   ['NVDA', 19.8], ['AVGO', 8.6], ['AMD', 5.2], ['TSM', 10.4], ['ASML', 4.9], ['QCOM', 4.6], ['MU', 4.3], ['INTC', 3.9],
@@ -31140,35 +31885,83 @@ export const COUNTRIES = ['US', 'China', 'Japan', 'Europe', 'Korea']
 /** Sector chips on the Regular tab (after "All"), the other filter the switcher chip picks. */
 export type EtfSector = 'Broad market' | 'Technology' | 'Financials' | 'Healthcare' | 'Energy' | 'Industrials'
 export const SECTORS: EtfSector[] = ['Broad market', 'Technology', 'Financials', 'Healthcare', 'Energy', 'Industrials']
+
+// The ETF list's Sector chips (3 Nov), in everyday words. Funds that hold a whole market or a country's big companies
+// (SPY, VTI, the country funds) have no sector: they show under All.
+export const ETF_SECTORS = ['Technology', 'Chips', 'Oil & gas', 'Defence', 'Robots & AI', 'Space', 'Internet']
+const SECTOR_OF: Record<string, string> = {
+  QQQ: 'Technology', SMH: 'Chips', XLE: 'Oil & gas', ITA: 'Defence', BOTZ: 'Robots & AI', UFO: 'Space', KWEB: 'Internet',
+  // Leveraged (3 Nov, for the Leveraged tab's Sector chips); the S&P 500 pair has none.
+  TQQQ: 'Technology', SQQQ: 'Technology', SOXL: 'Chips', SOXS: 'Chips', NVDL: 'Chips', NVD: 'Chips',
+}
+
+/** The ETF list's sector for a fund, or undefined for the whole-market and country funds. */
+export const etfSector = (etf: Etf): string | undefined => SECTOR_OF[etf.sym]
+
 // What each ETF does, in plain English (2 Nov): a ticker (QQQ, VTI, SMH) means nothing to a new user, so cards lead
-// with a plain name and keep the ticker as an alias ("Top 500 US companies · SPY", like Zomato / Eternal). `known` is
+// with a plain name and keep the ticker as an alias ("Top 500 US stocks · SPY", like Zomato / Eternal). `known` is
 // 2–3 companies people recognise (picked by name recognition, not weight); `does` answers "what does SPY do?" in one
 // short, plain sentence: "Owns …" (no value-chain arrows — too much, 2 Nov).
 export type EtfPlain = { plain: string; known: string[]; does: string }
 const PLAIN: Record<string, EtfPlain> = {
-  SPY: { plain: 'Top 500 US companies', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Owns the 500 biggest companies in the US.' },
-  QQQ: { plain: 'Top 100 tech-heavy US companies', known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns the 100 biggest companies on the Nasdaq, mostly tech.' },
-  VTI: { plain: 'The whole US stock market', known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns 3,600+ US companies, big and small.' },
-  SMH: { plain: 'Chip makers', known: ['NVIDIA', 'Broadcom', 'AMD'], does: 'Owns companies that make computer chips.' },
-  ITA: { plain: 'US defence & aerospace', known: ['GE Aerospace', 'Lockheed Martin', 'Boeing'], does: 'Owns companies that build planes, jets and defence systems.' },
-  XLE: { plain: 'US oil & gas', known: ['ExxonMobil', 'Chevron', 'ConocoPhillips'], does: 'Owns the biggest US oil and gas companies.' },
-  BOTZ: { plain: 'Robots & AI', known: ['NVIDIA', 'ABB', 'Intuitive Surgical'], does: 'Owns companies that make robots and AI.' },
-  UFO: { plain: 'Space companies', known: ['Rocket Lab', 'Garmin', 'AST SpaceMobile'], does: 'Owns companies that earn from rockets and satellites.' },
-  INDA: { plain: 'Big Indian companies, in dollars', known: ['HDFC Bank', 'Reliance', 'Infosys'], does: "Owns India's biggest companies, in dollars." },
-  EPI: { plain: 'Profitable Indian companies', known: ['Reliance', 'Infosys', 'HDFC Bank'], does: 'Owns Indian companies that make a profit.' },
-  MCHI: { plain: 'Big Chinese companies', known: ['Alibaba', 'Tencent', 'Xiaomi'], does: "Owns China's biggest companies." },
-  KWEB: { plain: 'Chinese internet companies', known: ['Alibaba', 'Tencent', 'Temu (PDD)'], does: "Owns China's biggest internet companies." },
-  EWJ: { plain: 'Big Japanese companies', known: ['Toyota', 'Sony', 'Nintendo'], does: "Owns Japan's biggest companies." },
-  VGK: { plain: 'Big European companies', known: ['Nestlé', 'Louis Vuitton', 'ASML'], does: 'Owns 1,200+ companies across Europe.' },
-  EWY: { plain: 'Big South Korean companies', known: ['Samsung', 'SK Hynix', 'Hyundai'], does: "Owns South Korea's biggest companies." },
+  SPY: { plain: 'Top 500 US stocks', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Owns the 500 biggest companies in the US.' },
+  QQQ: { plain: "Nasdaq's top 100", known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns the 100 biggest companies on the Nasdaq, mostly tech.' },
+  VTI: { plain: 'The whole US market', known: ['Apple', 'Microsoft', 'Amazon'], does: 'Owns 3,600+ US companies, big and small.' },
+  SMH: { plain: 'Top 25 chip stocks', known: ['NVIDIA', 'Broadcom', 'AMD'], does: 'Owns companies that make computer chips.' },
+  ITA: { plain: 'US defence stocks', known: ['GE Aerospace', 'Lockheed Martin', 'Boeing'], does: 'Owns companies that build planes, jets and defence systems.' },
+  XLE: { plain: 'US oil & gas stocks', known: ['ExxonMobil', 'Chevron', 'ConocoPhillips'], does: 'Owns the biggest US oil and gas companies.' },
+  BOTZ: { plain: 'Robotics & AI stocks', known: ['NVIDIA', 'ABB', 'Intuitive Surgical'], does: 'Owns companies that make robots and AI.' },
+  UFO: { plain: 'Space stocks', known: ['Rocket Lab', 'Garmin', 'AST SpaceMobile'], does: 'Owns companies that earn from rockets and satellites.' },
+  INDA: { plain: 'Big Indian stocks', known: ['HDFC Bank', 'Reliance', 'Infosys'], does: "Owns India's biggest companies, in dollars." },
+  EPI: { plain: 'Profitable Indian stocks', known: ['Reliance', 'Infosys', 'HDFC Bank'], does: 'Owns Indian companies that make a profit.' },
+  MCHI: { plain: 'Big Chinese stocks', known: ['Alibaba', 'Tencent', 'Xiaomi'], does: "Owns China's biggest companies." },
+  KWEB: { plain: 'China internet stocks', known: ['Alibaba', 'Tencent', 'Temu (PDD)'], does: "Owns China's biggest internet companies." },
+  EWJ: { plain: 'Big Japanese stocks', known: ['Toyota', 'Sony', 'Nintendo'], does: "Owns Japan's biggest companies." },
+  VGK: { plain: 'Big European stocks', known: ['Nestlé', 'Louis Vuitton', 'ASML'], does: 'Owns 1,200+ companies across Europe.' },
+  EWY: { plain: 'Big Korean stocks', known: ['Samsung', 'SK Hynix', 'Hyundai'], does: "Owns South Korea's biggest companies." },
+  // The playground's extra funds (Stocks home's Discover ETFs, sector chips), written the same way (3 Nov).
+  XLF: { plain: 'US bank & finance stocks', known: ['Berkshire Hathaway', 'JPMorgan', 'Visa'], does: 'Owns the banks, insurers and payment companies of the S&P 500.' },
+  XLV: { plain: 'US healthcare stocks', known: ['Eli Lilly', 'UnitedHealth', 'Johnson & Johnson'], does: 'Owns the drug makers, insurers and hospitals of the S&P 500.' },
+  FXI: { plain: 'Top 50 Chinese stocks', known: ['Tencent', 'Alibaba', 'Meituan'], does: 'Owns the 50 biggest Chinese companies listed in Hong Kong.' },
+  CQQQ: { plain: 'Chinese tech stocks', known: ['Tencent', 'Baidu', 'Kuaishou'], does: 'Owns Chinese tech companies, from chips to apps.' },
+  DXJ: { plain: 'Japanese exporters, yen-proof', known: ['Toyota', 'Mitsubishi UFJ', 'Honda'], does: 'Owns Japanese exporters, protected from swings in the yen.' },
+  HEWJ: { plain: 'Big Japanese stocks, yen-proof', known: ['Toyota', 'Sony', 'Hitachi'], does: "Owns Japan's biggest companies, protected from swings in the yen." },
+  SCJ: { plain: 'Small Japanese stocks', known: ['Sanrio', 'Square Enix', 'Ryohin Keikaku'], does: 'Owns smaller Japanese companies.' },
+  FEZ: { plain: 'Top 50 Eurozone stocks', known: ['ASML', 'SAP', 'Louis Vuitton'], does: 'Owns the 50 biggest companies of the countries that use the euro.' },
+  EZU: { plain: 'Big Eurozone stocks', known: ['ASML', 'SAP', 'Siemens'], does: 'Owns large and mid-size companies of the countries that use the euro.' },
+  IEUR: { plain: 'The whole European market', known: ['ASML', 'Nestlé', 'Novo Nordisk'], does: 'Owns 1,000+ companies of every size across Europe.' },
+  FLKR: { plain: 'Big Korean stocks, low cost', known: ['Samsung', 'SK Hynix', 'Hyundai'], does: "Owns South Korea's biggest companies, at a low cost." },
+  // Leveraged (3 Nov): the index or stock they follow, short — the card's heading carries a "3x Long" tag after it.
+  TQQQ: { plain: 'Nasdaq 100', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Aims to move 3x the Nasdaq-100 each day.' },
+  SQQQ: { plain: 'Nasdaq 100', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Aims to move 3x opposite to the Nasdaq-100 each day.' },
+  SOXL: { plain: 'Chip stocks', known: ['NVIDIA', 'Broadcom', 'AMD'], does: 'Aims to move 3x a chip-stock index each day.' },
+  SOXS: { plain: 'Chip stocks', known: ['NVIDIA', 'Broadcom', 'AMD'], does: 'Aims to move 3x opposite to a chip-stock index each day.' },
+  NVDL: { plain: 'NVIDIA', known: ['NVIDIA'], does: 'Aims to move 2x NVIDIA each day.' },
+  NVD: { plain: 'NVIDIA', known: ['NVIDIA'], does: 'Aims to move 2x opposite to NVIDIA each day.' },
+  SPXL: { plain: 'S&P 500', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Aims to move 3x the S&P 500 each day.' },
+  SPXS: { plain: 'S&P 500', known: ['Apple', 'Microsoft', 'NVIDIA'], does: 'Aims to move 3x opposite to the S&P 500 each day.' },
 }
+// Short tags beside "ETF" on the ETF page (3 Nov): what's in it, in a word or two. Plain facts — what it tracks and
+// where — no "best" / "safe" style labels.
+const TAGS: Record<string, string[]> = {
+  SPY: ['Top 500', 'US'], QQQ: ['Top 100', 'Tech-heavy'], VTI: ['Whole market', 'US'], SMH: ['Chips', 'Global'],
+  ITA: ['Defence', 'US'], XLE: ['Oil & gas', 'US'], BOTZ: ['Robots & AI', 'Global'], UFO: ['Space', 'Global'],
+  INDA: ['India', 'Large & mid'], EPI: ['India', 'Profitable'], MCHI: ['China', 'Large & mid'], KWEB: ['China', 'Internet'],
+  EWJ: ['Japan', 'Large & mid'], VGK: ['Europe', 'Large & mid'], EWY: ['South Korea', 'Large & mid'],
+  XLF: ['Finance', 'US'], XLV: ['Healthcare', 'US'], FXI: ['China', 'Top 50'], CQQQ: ['China', 'Tech'],
+  DXJ: ['Japan', 'Yen-hedged'], HEWJ: ['Japan', 'Yen-hedged'], SCJ: ['Japan', 'Small cap'], FEZ: ['Eurozone', 'Top 50'],
+  EZU: ['Eurozone', 'Large & mid'], IEUR: ['Europe', 'All sizes'], FLKR: ['South Korea', 'Large & mid'],
+}
+/** The ETF page's tags after "ETF" (none for leveraged ones, which show their long / short tag). */
+export const tagsFor = (etf: Etf) => TAGS[etf.sym] ?? []
+
 /** The plain-English side of an ETF; leveraged ones (off for now) fall back to the fund's name. */
 export const plainFor = (etf: Etf): EtfPlain => PLAIN[etf.sym] ?? { plain: etf.name, known: [], does: etf.tracks }
 
-// "About this ETF" on the ETF page (2 Nov): a short paragraph on what's inside — which kinds of companies, the
-// biggest names, and how many it holds. Sample copy; the API would send it with the fund.
+// The ETF page's description (2–3 Nov): a short paragraph on what's inside — which kinds of companies, the biggest
+// names, and how many it holds. Written to follow the ticker ("SPY tracks …"). Sample copy; the API would send it with the fund.
 const ABOUT: Record<string, string> = {
-  SPY: "Tracks the S&P 500 — the 500 largest companies listed in the US. The biggest are tech names like Apple, Microsoft, NVIDIA and Amazon, alongside banks (JPMorgan), healthcare (Eli Lilly), retail (Walmart) and more. Buying one share spreads your money across all 500.",
+  SPY: "Tracks the S&P 500 — the 500 largest companies listed in the US. The biggest are tech names like Apple, Microsoft, NVIDIA and Amazon, alongside banks (JPMorgan), healthcare (Eli Lilly), retail (Walmart) and more.",
   QQQ: 'Tracks the Nasdaq-100 — the 100 biggest non-financial companies on the Nasdaq exchange. Mostly tech: Apple, Microsoft, NVIDIA, Amazon, Meta, Alphabet (Google) and Broadcom, plus names like Costco, Netflix and PepsiCo.',
   VTI: 'Holds almost every listed US company — about 3,600 of them, from giants like Apple, Microsoft and Amazon down to small companies most people haven’t heard of. Bigger companies make up more of the fund.',
   SMH: 'Holds about 25 of the biggest companies that design or make computer chips: NVIDIA, Taiwan Semiconductor (TSMC), Broadcom, AMD, ASML, Qualcomm and Micron. Their chips go into phones, laptops, cars and the data centres that run AI.',
@@ -31183,9 +31976,24 @@ const ABOUT: Record<string, string> = {
   EWJ: "Holds about 185 of Japan's biggest companies: Toyota, Sony, Mitsubishi UFJ (a bank), Hitachi, Nintendo, Keyence and more — carmakers, electronics, banks and industry.",
   VGK: 'Holds about 1,200 European companies across the UK, France, Switzerland, Germany and more: ASML, Novo Nordisk, Nestlé, LVMH (Louis Vuitton), SAP, Shell and AstraZeneca.',
   EWY: "Holds about 90 South Korean companies. Samsung Electronics is the biggest by far, then SK Hynix (memory chips), Hyundai, Kia, KB Financial and Naver.",
+  // Boosted (leveraged) funds (3 Nov): what each is built on — the index or stock, what's in it — and how the 2x / 3x works.
+  TQQQ: "Aims to move 3x the Nasdaq-100's move each day — the index QQQ tracks: the 100 biggest non-financial companies on the Nasdaq, mostly tech like Apple, Microsoft, NVIDIA and Amazon. It gets the 3x mostly through swaps with banks, and resets every day, so over weeks the result can differ from 3x the index.",
+  SQQQ: "Aims to move 3x opposite to the Nasdaq-100 each day — the index QQQ tracks: the 100 biggest non-financial companies on the Nasdaq, mostly tech like Apple, Microsoft, NVIDIA and Amazon. When the index falls 1% in a day it aims to rise 3%, and the other way round. It holds swaps, not the stocks, and resets every day.",
+  SOXL: 'Aims to move 3x the ICE Semiconductor Index each day — about 30 US-listed chip companies like NVIDIA, Broadcom, AMD and Qualcomm. It gets the 3x mostly through swaps with banks, and resets every day, so over weeks the result can differ from 3x the index.',
+  SOXS: 'Aims to move 3x opposite to the ICE Semiconductor Index each day — about 30 US-listed chip companies like NVIDIA, Broadcom, AMD and Qualcomm. When the index falls 1% in a day it aims to rise 3%, and the other way round. It holds swaps, not the stocks, and resets every day.',
+  NVDL: "Aims to move 2x NVIDIA's share price each day. It follows one stock, not an index, and gets the 2x mostly through swaps with banks. It resets every day, so over weeks the result can differ from 2x NVIDIA's move.",
+  NVD: "Aims to move 2x opposite to NVIDIA's share price each day: when NVIDIA falls 1% it aims to rise 2%, and the other way round. It follows one stock, holds swaps rather than shares, and resets every day.",
+  SPXL: 'Aims to move 3x the S&P 500 each day — the index SPY tracks: the 500 largest companies listed in the US, led by Apple, Microsoft, NVIDIA and Amazon. It gets the 3x mostly through swaps with banks, and resets every day, so over weeks the result can differ from 3x the index.',
+  SPXS: 'Aims to move 3x opposite to the S&P 500 each day — the index SPY tracks: the 500 largest companies listed in the US. When the index falls 1% in a day it aims to rise 3%, and the other way round. It holds swaps, not the stocks, and resets every day.',
 }
-/** The "About this ETF" paragraph; leveraged ones (off for now) fall back to the plain line. */
-export const aboutFor = (etf: Etf) => ABOUT[etf.sym] ?? plainFor(etf).does
+/**
+ * The ETF page's opening line, led by the ticker: "SPY tracks the S&P 500 — …", "SMH holds about 25 …" (3 Nov). Plain
+ * facts only — no "spreads your money" advice. Leveraged ones (off for now) fall back to the plain line.
+ */
+export const aboutFor = (etf: Etf) => {
+  const text = ABOUT[etf.sym]
+  return text ? `${etf.sym} ${text[0].toLowerCase()}${text.slice(1)}` : plainFor(etf).does
+}
 
 // "Allocation" on the ETF page (3 Nov, after Revolut's portfolio allocation): the fund split by sector, biggest first,
 // four sectors and "Other" for the rest. Names stay short (no wider than "Oil producers") so the legend fits two columns at
@@ -31222,6 +32030,14 @@ export const holdingsBeyond = (etf: Etf, shown: number) => {
   const total = Number((HOLDING_COUNT[etf.sym] ?? `${etf.holdings.length}`).replace(',', ''))
   return Math.max(0, total - shown)
 }
+/**
+ * The stocks behind a fund, for the ETF page's logo stack: how many it holds (regular), or how many are in the index it
+ * follows (leveraged, `follows`). Undefined when we don't know.
+ */
+export const stocksBehind = (etf: Etf): { count: number; follows: boolean } | undefined => {
+  if (etf.kind === 'leveraged') return FOLLOWS_COUNT[etf.sym] ? { count: FOLLOWS_COUNT[etf.sym], follows: true } : undefined
+  return HOLDING_COUNT[etf.sym] ? { count: Number(HOLDING_COUNT[etf.sym].replace(',', '')), follows: false } : undefined
+}
 /** A count for a 24 circle: 497 → "497", 3609 → "3k" (thousands, rounded down, so it fits and never overstates). */
 export const shortCount = (n: number) => (n >= 1000 ? `${Math.floor(n / 1000)}k` : `${n}`)
 
@@ -31254,37 +32070,20 @@ export const leveragedGroups = () =>
 /** Open a stock (a holding of the ETF) on its stock page. */
 export const openHolding = (go: (figma: string) => void, sym: string) => openStock(go, stockFor(sym))
 
-// Issuers (logo + plate behind it) and which issuer runs which ETF.
-type Issuer = { file: string; plate: string; name: string; fill?: boolean }
-const ISSUERS: Record<string, Issuer> = {
-  spdr: { file: 'spdr', plate: 'var(--l3-static-white)', name: 'State Street (SPDR)' },
-  invesco: { file: 'invesco', plate: 'var(--l3-static-black)', name: 'Invesco' },
-  vanguard: { file: 'vanguard', plate: 'var(--l3-static-white)', name: 'Vanguard' },
-  vaneck: { file: 'vaneck', plate: 'var(--l3-static-black)', name: 'VanEck' },
-  ishares: { file: 'ishares', plate: 'var(--l3-static-black)', name: 'BlackRock (iShares)', fill: true },
-  globalx: { file: 'globalx', plate: 'var(--l3-static-white)', name: 'Global X' },
-  procure: { file: 'procure', plate: 'var(--l3-static-white)', name: 'Procure', fill: true },
-  wisdomtree: { file: 'wisdomtree', plate: 'var(--l3-static-white)', name: 'WisdomTree' },
-  kraneshares: { file: 'kraneshares', plate: 'var(--l3-static-white)', name: 'KraneShares', fill: true },
-  proshares: { file: 'proshares', plate: 'var(--l3-static-white)', name: 'ProShares' },
-  direxion: { file: 'direxion', plate: 'var(--l3-static-white)', name: 'Direxion' },
-  graniteshares: { file: 'graniteshares', plate: 'var(--l3-static-white)', name: 'GraniteShares', fill: true },
-}
-const ISSUER_OF: Record<string, string> = {
-  SPY: 'spdr', XLE: 'spdr', XLF: 'spdr', XLV: 'spdr', QQQ: 'invesco', VTI: 'vanguard', VGK: 'vanguard', SMH: 'vaneck', ITA: 'ishares', INDA: 'ishares',
-  MCHI: 'ishares', EWJ: 'ishares', EWY: 'ishares', FXI: 'ishares', HEWJ: 'ishares', SCJ: 'ishares', EZU: 'ishares', IEUR: 'ishares', CQQQ: 'invesco', DXJ: 'wisdomtree', FEZ: 'spdr', BOTZ: 'globalx', UFO: 'procure', EPI: 'wisdomtree', KWEB: 'kraneshares',
-  TQQQ: 'proshares', SQQQ: 'proshares', SOXL: 'direxion', SOXS: 'direxion', SPXL: 'direxion', SPXS: 'direxion',
-  NVDL: 'graniteshares', NVD: 'graniteshares', SGOV: 'ishares', SHV: 'ishares', BIL: 'spdr',
-}
-/** The issuer's logo file (assets/etf/<file>.png), the plate behind it and whether it fills the circle. */
-export const issuerLogo = (sym: string) => {
-  const issuer = ISSUERS[ISSUER_OF[sym]]
-  return issuer && { file: issuer.file, plate: issuer.plate, fill: !!issuer.fill }
-}
-export const issuerName = (sym: string) => ISSUERS[ISSUER_OF[sym]]?.name
+// Issuers (logo + plate behind it) live in src/shared/data/etfIssuers (3 Nov), shared with the Stocks home.
+export { etfIssuerLogo as issuerLogo, etfIssuerName as issuerName } from '../../../../shared/data/etfIssuers'
 
 // Number of holdings of the big index funds (the leveraged ones list only what the sample has).
-const HOLDING_COUNT: Record<string, string> = { SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', XLF: '72', XLV: '60', EWJ: '186', MCHI: '558', FXI: '50', CQQQ: '148', DXJ: '434', HEWJ: '186', SCJ: '772', FEZ: '50', EZU: '221', IEUR: '1,009', FLKR: '153' }
+// BOTZ, UFO, INDA, EPI, KWEB, EWY added 3 Nov from the funds' holdings pages (Global X, StockAnalysis, ETF Central,
+// Oct 2026; EPI counts its equity holdings).
+const HOLDING_COUNT: Record<string, string> = {
+  SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', EWJ: '186', MCHI: '558',
+  BOTZ: '81', UFO: '68', INDA: '169', EPI: '558', KWEB: '45', EWY: '82',
+  XLF: '72', XLV: '60', FXI: '50', CQQQ: '148', DXJ: '434', HEWJ: '186', SCJ: '772', FEZ: '50', EZU: '221', IEUR: '1,009', FLKR: '153',
+}
+// Leveraged funds hold mostly swaps, not the stocks: the ETF page shows the stocks of the index each one follows —
+// Nasdaq-100, S&P 500, the ICE Semiconductor Index (30), or NVIDIA alone.
+const FOLLOWS_COUNT: Record<string, number> = { TQQQ: 101, SQQQ: 101, SPXL: 503, SPXS: 503, SOXL: 30, SOXS: 30, NVDL: 1, NVD: 1 }
 
 /** Everything the ETF page shows beyond the catalogue row: the day's range, 52-week range, NAV, yield and events. */
 export function detailsFor(etf: Etf) {
@@ -31315,6 +32114,7 @@ export const percent = (n: number) => `${n.toFixed(2)}%`
 export const ETF_LIST = '9001:1'
 export const ETF_PAGE = '9001:2'
 export const ETF_PAGE_PREVIOUS = '9001:6'
+export const ETF_HOLDINGS = '9001:12'
 /** The order pad (Buy). */
 export const BUY_PAD = '5837:95201'
 /** Stocks home (stocks-01, follows the user status) — the back fallback of the ETF list. */
@@ -31328,6 +32128,14 @@ const HOLDING_NAMES: Record<string, string> = {
   RKLB: 'Rocket Lab', ASTS: 'AST SpaceMobile', GRMN: 'Garmin', HDB: 'HDFC Bank', IBN: 'ICICI Bank', INFY: 'Infosys',
   BABA: 'Alibaba', PDD: 'PDD (Temu)', BIDU: 'Baidu', TM: 'Toyota', SONY: 'Sony', MUFG: 'Mitsubishi UFJ', NVO: 'Novo Nordisk',
   SAP: 'SAP', SSNLF: 'Samsung Electronics', HXSCL: 'SK Hynix',
+  // The rest of the S&P 500 and Nasdaq-100 top 50 (3 Nov).
+  GOOG: 'Alphabet (Class C)', 'BRK.B': 'Berkshire Hathaway', LLY: 'Eli Lilly', PG: 'Procter & Gamble', ABBV: 'AbbVie',
+  BAC: 'Bank of America', CVX: 'Chevron', IBM: 'IBM', WFC: 'Wells Fargo', PM: 'Philip Morris', MS: 'Morgan Stanley',
+  ABT: 'Abbott', LIN: 'Linde', INTU: 'Intuit', AXP: 'American Express', T: 'AT&T', GS: 'Goldman Sachs', NOW: 'ServiceNow',
+  MRK: 'Merck', TMUS: 'T-Mobile US', BKNG: 'Booking Holdings', AMGN: 'Amgen', GILD: 'Gilead Sciences', HON: 'Honeywell',
+  PANW: 'Palo Alto Networks', CMCSA: 'Comcast', ADP: 'ADP', APP: 'AppLovin', VRTX: 'Vertex Pharmaceuticals',
+  MELI: 'MercadoLibre', CEG: 'Constellation Energy', ORLY: "O'Reilly Automotive", CDNS: 'Cadence Design', SNPS: 'Synopsys',
+  DASH: 'DoorDash', CTAS: 'Cintas', MAR: 'Marriott',
 }
 /** A holding's display name (the catalogue's, a known name, or the symbol). */
 export const stockName = (sym: string) => {
@@ -31372,6 +32180,7 @@ export const infoIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 // FLAG: own screen frame (components/Phone) and hand-made rows / chart, see each screen.
 import type { UsScreenMap } from '../types'
 import { EtfListScreen } from './EtfListScreen'
+import { EtfHoldingsScreen } from './EtfHoldingsScreen'
 import { EtfPage } from './EtfPage'
 import { EtfPreviousScreen } from './EtfPreviousScreen'
 
@@ -31379,6 +32188,7 @@ export const screens: UsScreenMap = {
   '9001:1': EtfListScreen, // ETFs · Regular & Leveraged
   '9001:2': EtfPage, // ETF page
   '9001:6': EtfPreviousScreen, // ETF page · previous
+  '9001:12': EtfHoldingsScreen, // Top holdings (the full list behind "Others")
 }
 ```
 
@@ -31398,7 +32208,7 @@ import styles from './Etf.module.css'
  * A company the ETF holds: its logo in an L3 Avatar (initials when there's none), on a white or black plate when the
  * logo is a transparent mark (logoPlate). FLAG: the plate colours the Avatar's image background (L3 has no plate prop).
  */
-export function HoldingLogo({ sym, size }: { sym: string; size: 24 | 32 }) {
+export function HoldingLogo({ sym, size }: { sym: string; size: 24 | 32 | 40 }) {
   const plate = logoPlate(sym)
   return <Avatar src={logoFor(sym)} initials={sym} size={size} className={plate === 'black' ? styles.plateBlack : plate === 'white' ? styles.plateWhite : undefined} />
 }
@@ -31410,8 +32220,8 @@ export function EtfDisc({ sym, size = 32 }: { sym: string; size?: 24 | 32 | 40 }
     return <span className={styles.disc} data-size={size} aria-hidden="true">{sym.slice(0, size === 40 ? 4 : size === 24 ? 2 : 3)}</span>
   }
   return (
-    <span className={styles.disc} data-size={size} data-fill={logo.fill || undefined} style={{ background: logo.plate }} aria-hidden="true">
-      <img src={asset(`assets/etf/${logo.file}.png`)} alt="" />
+    <span className={styles.disc} data-size={size} data-fill={logo.fill || undefined} data-plate="" style={{ background: logo.plate }} aria-hidden="true">
+      <img src={logo.src} alt="" />
     </span>
   )
 }
@@ -31437,11 +32247,11 @@ export function EtfMove({ change, size = 'sm' }: { change: number; size?: 'sm' |
 }
 
 /** "3x Long" / "3x Short" on leveraged ETFs, nothing on regular ones. */
-export function SideTag({ etf, size = 'sm' }: { etf: Etf; size?: 'sm' | 'md' }) {
+export function SideTag({ etf, size = 'sm', className }: { etf: Etf; size?: 'sm' | 'md'; className?: string }) {
   if (etf.kind !== 'leveraged') return null
   const long = etf.side === 'long'
   return (
-    <Tag variant="secondary" color={long ? 'profit' : 'loss'} size={size}>
+    <Tag variant="secondary" color={long ? 'profit' : 'loss'} size={size} className={className}>
       {etf.lev} {long ? 'Long' : 'Short'}
     </Tag>
   )
@@ -36779,6 +37589,53 @@ export function companiesByChange(direction: 'gainers' | 'losers'): Company[] {
   const list = Object.values(companies).filter((c) => c.market)
   return list.sort((a, b) => (direction === 'gainers' ? b.market!.changePct - a.market!.changePct : a.market!.changePct - b.market!.changePct))
 }
+```
+
+### `src/shared/data/etfIssuers.ts`
+
+```ts
+// The companies that run the ETFs (issuers), their logos and which issuer runs which ETF — shared by the ETF list
+// (us-stocks) and the Stocks home's Discover ETFs (stocks), 3 Nov. Logos are PNGs in src/shared/assets/etf-issuers.
+
+const logoFiles = import.meta.glob('../assets/etf-issuers/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
+const logoByFile = new Map(Object.entries(logoFiles).map(([path, url]) => [path.slice(path.lastIndexOf('/') + 1, -'.png'.length), url]))
+
+// Each logo sits on a plate (the colour it was drawn for); `fill` logos cover the whole circle.
+type Issuer = { file: string; plate: string; name: string; fill?: boolean }
+const ISSUERS: Record<string, Issuer> = {
+  spdr: { file: 'spdr', plate: 'var(--l3-static-white)', name: 'State Street (SPDR)' },
+  invesco: { file: 'invesco', plate: 'var(--l3-static-black)', name: 'Invesco' },
+  vanguard: { file: 'vanguard', plate: 'var(--l3-static-white)', name: 'Vanguard' },
+  vaneck: { file: 'vaneck', plate: 'var(--l3-static-black)', name: 'VanEck' },
+  ishares: { file: 'ishares', plate: 'var(--l3-static-black)', name: 'BlackRock (iShares)', fill: true },
+  globalx: { file: 'globalx', plate: 'var(--l3-static-white)', name: 'Global X' },
+  procure: { file: 'procure', plate: 'var(--l3-static-white)', name: 'Procure', fill: true },
+  wisdomtree: { file: 'wisdomtree', plate: 'var(--l3-static-white)', name: 'WisdomTree' },
+  kraneshares: { file: 'kraneshares', plate: 'var(--l3-static-white)', name: 'KraneShares', fill: true },
+  proshares: { file: 'proshares', plate: 'var(--l3-static-white)', name: 'ProShares' },
+  direxion: { file: 'direxion', plate: 'var(--l3-static-white)', name: 'Direxion' },
+  graniteshares: { file: 'graniteshares', plate: 'var(--l3-static-white)', name: 'GraniteShares', fill: true },
+}
+const ISSUER_OF: Record<string, string> = {
+  SPY: 'spdr', XLE: 'spdr', XLF: 'spdr', XLV: 'spdr', FEZ: 'spdr', QQQ: 'invesco', CQQQ: 'invesco', VTI: 'vanguard', VGK: 'vanguard', SMH: 'vaneck', ITA: 'ishares', INDA: 'ishares',
+  MCHI: 'ishares', EWJ: 'ishares', EWY: 'ishares', FXI: 'ishares', HEWJ: 'ishares', SCJ: 'ishares', EZU: 'ishares',
+  IEUR: 'ishares', DXJ: 'wisdomtree', BOTZ: 'globalx', UFO: 'procure', EPI: 'wisdomtree', KWEB: 'kraneshares',
+  TQQQ: 'proshares', SQQQ: 'proshares', SOXL: 'direxion', SOXS: 'direxion', SPXL: 'direxion', SPXS: 'direxion',
+  NVDL: 'graniteshares', NVD: 'graniteshares', SGOV: 'ishares', SHV: 'ishares', BIL: 'spdr',
+}
+
+/**
+ * The issuer's logo (PNG URL), its file name (for the square logo-on-plate images some screens use), the plate behind it
+ * and whether it fills the circle; undefined when there is none.
+ */
+export const etfIssuerLogo = (sym: string): { src: string; file: string; plate: string; fill: boolean } | undefined => {
+  const issuer = ISSUERS[ISSUER_OF[sym]]
+  const src = issuer && logoByFile.get(issuer.file)
+  return issuer && src ? { src, file: issuer.file, plate: issuer.plate, fill: !!issuer.fill } : undefined
+}
+
+/** The issuer's name ("Vanguard"), for the ETF page. */
+export const etfIssuerName = (sym: string): string | undefined => ISSUERS[ISSUER_OF[sym]]?.name
 ```
 
 ### `src/shared/data/live.ts`
@@ -58760,9 +59617,9 @@ export const usLogo = (symbol: string): string | undefined => logoBySymbol.get(s
 
 // Logos from financialmodelingprep.com (2 Nov, ETF holdings) are transparent marks drawn for a white page: they sit on
 // a static white plate so dark marks (Intuitive Surgical, Rocket Lab, Sony) show in dark mode too; the white marks
-// (Northrop Grumman, Samsung) sit on black.
-const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LMT LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
-const PLATED_BLACK = new Set(['NOC', 'SSNLF'])
+// (Lockheed Martin, Northrop Grumman, Samsung) sit on black.
+const PLATED_WHITE = new Set('ABB ADI AMAT ASML ASTS BABA BIDU COP GE GRMN HXSCL ISRG KLAC LRCX MRVL MUFG NVO NXPI PDD RKLB RTX SAP SONY TM TSM TXN'.split(' '))
+const PLATED_BLACK = new Set(['LMT', 'NOC', 'SSNLF'])
 /** The plate a US logo needs inside an Avatar ('white' / 'black'), or undefined when the file brings its own. */
 export const usLogoPlate = (symbol: string): 'white' | 'black' | undefined =>
   PLATED_BLACK.has(symbol) ? 'black' : PLATED_WHITE.has(symbol) ? 'white' : undefined
