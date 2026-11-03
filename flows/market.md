@@ -24558,12 +24558,20 @@ type StockListCardProps = {
   /** Logo image URL (a square image; ETFs pass their issuer logo on its plate). Without one the Avatar shows `initials`. Always the L3 Avatar at 40, so every list looks the same. */
   logoUrl?: string
   initials?: string
-  /** A small Tag after the symbol, e.g. "3x Long" (ListCell's label suffix). */
+  /**
+   * The logo itself, for a list that marks it (e.g. a Boosted ETF's "3x" pill on the logo's foot). Build it around the
+   * same L3 Avatar at 40; without it the card draws that Avatar from `logoUrl` / `initials`.
+   */
+  logo?: ReactNode
+  /** A small Tag after the symbol, e.g. "3x Long" (an L3 Tag, keeping its own colour; ListCell's label suffix). */
   tag?: ReactNode
   /** The price, already formatted by the caller: `<Usd value>` for US, `inr()` for India. */
   price: ReactNode
-  /** The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). */
-  changePct: number
+  /**
+   * The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). Leave it
+   * out when the right side is one number that isn't a price, e.g. a holding's weight in an ETF's Top holdings.
+   */
+  changePct?: number
   /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
   onOpen?: () => void
   'aria-label'?: string
@@ -24575,13 +24583,13 @@ type StockListCardProps = {
  *
  * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
-export function StockListCard({ symbol, name, logoUrl, initials, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
   return (
     <ListCell
       variant="card"
       as={onOpen ? 'button' : undefined}
       raised={false}
-      iconLeft={<Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
       labelSize="14"
@@ -24590,7 +24598,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, tag, price, cha
       trailing={
         <span className={styles.price}>
           <span className={styles.value}>{price}</span>
-          <PriceChange value={changePct} size="sm" />
+          {changePct !== undefined && <PriceChange value={changePct} size="sm" />}
         </span>
       }
       onClick={onOpen}

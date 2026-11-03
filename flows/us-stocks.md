@@ -114,11 +114,28 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — **Boosted strip versions from jojo:** the ETF list's Boosted strip has jojo's five ticker layouts (flow option "Boosted ticker": V1 Arrows at the edges, V2 Compact, V3 Two chips, V4 Big number, V5 Bolt lead) on jojo's gradient, the "Text" note (gold bolt sliding in, "For every 1% …"), and the gold bolt on the Boosted tab. A Boosted ETF's page has its own option, "ETF page strip": the sentence (default), jojo's bolt-led sentence, or any of the five ticker layouts with that fund's line. Kept from the playground: no tertiary text, nothing under 12 (jojo's 10s raised), "+" / "−" not ▲ / ▼, the grey default tone.
+- 2026-11-03 — **Top holdings weight, five versions to test** (prototype option "Holding weight", on the ETF page): V1 bar under the name, V2 no bar, V3 a short 40 bar just before the % (now the default), V4 the % on a pill shaded Discover-light as far as its share against the biggest, V5 the % on a plain Discover-light pill.
+- 2026-11-03 — **News (stock and ETF pages):** stories with a hairline between them (16 above and below each), a 64 × 80 picture with 12 corners (as tall as a two-line title, source and reason), the title in Label 14, source · time in Description 12 and the ▲ / ▼ reason in Label 12. Events are unchanged.
+- 2026-11-03 — **Top holdings page (us-stocks-78) audit:** the Actionbar's line shows from the start (`Phone topLine`; other US screens still show it once scrolled); the page is L3 `Section`s — 24 under the bar, 16 at the sides, cards 12 apart as the Market list (was 16 all round, cards 16 apart). The list ends with a note: "That's the top 50 of 503. The other 453 stocks are 40.4% of the fund together." — big funds hold up to thousands of stocks, the page lists the biggest 50.
+- 2026-11-03 — ETF page: the holdings logos and "+500" on the right of the tags row open the Top holdings page (us-stocks-78).
+- 2026-11-03 — ETF page header: "QQQ · NASDAQ" now sits above the fund's name, and the name is Heading 14 (was 18).
+- 2026-11-03 — **ETF page takes the stock page's sections:** About Fund is the stock page's About card (`AboutCard`:
+  card, three lines, Read more / Read less); Daily Performance is the stock page's `DailyPerformance` (range meter, then
+  the day's numbers as a 3 × 2 grid: Open, Prev. Close, AUM, Volume, 52-week high / low); the second tab is **News &
+  Events**, as on the stock page (Events / News pills, the stock page's `Events` and `News`; ETF news from `newsFor`).
+  **Allocation is a donut** now, laid out like the Analyst Ratings card: the donut on the left with the biggest sector's
+  share and name in the middle, the legend beside it (dot, name, share; "Other" grey). The stacked bar, its two-column
+  legend and the `SECTOR_NAMES` sizer are gone from the page. Fundamentals keeps its rows.
+- 2026-11-03 — **Top holdings page (us-stocks-78) on the shared stock card:** its rows are now `StockListCard` (flat, no shadow, as the Market list and the ETF list): logo · ticker over company name · weight on the right. `StockListCard`'s `changePct` is optional for rows whose number isn't a price. Every other imported list already used it (ETF list, Boosted, S&P 500, US home); the ETF page's six-row Top holdings panel keeps its weight bars, and Portfolio holding cards and the stock page's peer table are not stock list cards.
+- 2026-11-03 — **One stock card everywhere:** the Boosted ETF rows are now the shared `StockListCard` (as the Regular tab and the Market list): Avatar logo, name in Label 14 with the "3x Long" Tag after it, "TQQQ · fund name", price over the signed change. `StockListCard` gained a `logo` slot so the leverage versions (logo foot, badge, ring, pill, slice, notch) still mark the logo. Day changes are "+" / "−" with no ▲ / ▼ across US Stocks: `EtfMove` is now L3 PriceChange (ETF page, scrolled headers), and the Boosted note and sheet read "+1% → +3%".
+- 2026-11-03 — ETFs page: the fund cards (Regular and Boosted) are flat — no raised shadow, only the hairline border.
 - 2026-11-03 — Stock page: Company financials' y-axis no longer runs off the card — labels drop trailing zeros ($200B) and the plot leaves room for the longest one (also in ₹).
 - 2026-11-03 — Stock page: About Company shows each company's real profile (what it does, where it's based, when it was founded — `screens/activation/companyProfiles.ts`, 25 companies), three lines until Read more expands it (Read less folds it back); a stock without one gets a one-line listing note and no link. Text stays 14 (description 14). Daily Performance's and Fundamentals' grids have 12 padding on every side. Tapping a peer opens its page fresh: at the top, on Overview. Key Holders shows the latest quarter only (the quarter pills are gone).
 - 2026-11-03 — Stock page Daily Performance: Open, Prev. Close, Mkt. Cap, Volume and the 52-week high / low are a 3 × 2 grid (label over value, as in Fundamentals), not one long list.
 - 2026-11-03 — Stock page Analyst Ratings (and every progress bar on the page): the Buy / Hold / Sell bars and the ring's arcs take L3's surface accent colours (indicator up, warning, indicator down) instead of the darker text colours, so Hold is yellow, not mustard.
 - 2026-11-03 — Stock page Peers: the stock itself is always the first row (styled like the other rows); the Overview / Returns / Ratios switcher in the header is discover blue; rows show the company name only (no ticker line), also for stocks outside the peer list (their page's price and returns). The best figure in each % column (Today, 1M, 3M, 1Y) has a light yellow highlight (warning light). Stock and ETF pages: no 10px text left — every 10 text style is now its 12 (Lemonn's minimum; the 10s came from CoinSwitch).
+- 2026-11-03 — **ETF page (us-stocks-72) imported from jojo for every fund**: no more playground-only layout for regular funds — the "About" heading with the text cut to 3 lines and "… more", the logos of the stocks inside with a "+N" capsule in the header, and Top holdings' Others opening the full list. The Top holdings page (us-stocks-78) is jojo's plain Market cards: name over ticker, the share on the right, no weight bar. How Boosted ETFs work is off on the page (`BOOST_SHEET = false`): the Boosted strip is a plain note led by a trend icon. Kept from the playground: the ≈ ₹ line under the price (no $ / ₹ switch), Buy / Sell in the buy / sell colours (as the stock page), the three-stop day-range gradient, the 10 price axis and secondary (not tertiary) text.
 - 2026-11-03 — Chart price axis (stock and ETF pages): the y-axis labels are Description 10 (were 12).
 - 2026-11-03 — **ETFs from the jojo branch.** Content for every fund: plain names ("Top 500 US stocks"; the playground's 11 extra funds written the same way), the list card reads plain name over "SPY · fund name", the ETF page's ticker · exchange line, short tags after "ETF", jojo's About text ("SPY tracks …") and Others in Top holdings opening the full Top holdings page (new us-stocks-78, 9001:12; issuers moved to `shared/data/etfIssuers`). Regular funds keep the playground's design (Country / Sector bar, StockListCard rows, the boxed "About this ETF"). The leveraged side takes jojo's whole redesign: the tab is **Boosted** (bolt), with the Boosted note (strip / card / chip, "Boosted note" and "Boosted line" options) that opens How Boosted ETFs work, one list of fund-logo cards with the leverage shown eight ways ("Leverage tag" option, V5 After heading by default); a Boosted ETF page gets the gold strip above About, About cut to 3 lines with "… more", and the logos of the stocks behind it. No filter row on the Boosted tab (every fund is US-listed). Tertiary text in these parts is secondary.
 - 2026-11-03 — Portfolio holding cards: the top-right figure is today's return, labelled “1D Returns” (the holding's 1D %, the same number Sort's 1D returns uses), not the total Returns% again.
@@ -21937,6 +21954,7 @@ export function Phone({
   overlay,
   label,
   bodyRef,
+  topLine,
   className,
   style,
 }: {
@@ -21952,6 +21970,8 @@ export function Phone({
   overlay?: ReactNode
   label?: string
   bodyRef?: Ref<HTMLDivElement>
+  /** The top bar's line from the start (L3's own default), not only once the page has scrolled under it. */
+  topLine?: boolean
   className?: string
   style?: CSSProperties
 }) {
@@ -21966,7 +21986,7 @@ export function Phone({
           {layer && (
             <>
               {backdropArt && <div className={styles.art} aria-hidden="true">{backdropArt}</div>}
-              <header className={styles.top} data-statusbar={statusbar ?? surface} data-scrolled={scrolled || undefined}>{header}</header>
+              <header className={styles.top} data-statusbar={statusbar ?? surface} data-scrolled={topLine || scrolled || undefined}>{header}</header>
               <div className={styles.body} ref={bodyRef} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}>{children}</div>
               {overlay}
               {footer && <footer className={styles.footer} data-surface={surface === 'default' ? undefined : surface}>{footer}</footer>}
@@ -22158,11 +22178,61 @@ export const usStocks: Flow = {
       label: 'Boosted note',
       values: [
         { value: 'strip', label: 'Strip' },
-        { value: 'card', label: 'Card' },
+        { value: 'card', label: 'Text' },
         { value: 'chip', label: 'Chip' },
       ],
       default: 'strip',
       floatOn: ['us-stocks-71'],
+    },
+    // The Boosted ticker's layout (3 Nov, from jojo): five versions to compare.
+    {
+      id: 'boostTicker',
+      group: 'ETFs',
+      label: 'Boosted ticker',
+      picker: 'dropdown',
+      values: [
+        { value: 'edges', label: 'V1 · Arrows at the edges' },
+        { value: 'compact', label: 'V2 · Compact' },
+        { value: 'chips', label: 'V3 · Two chips' },
+        { value: 'big', label: 'V4 · Big number' },
+        { value: 'bolt', label: 'V5 · Bolt lead' },
+      ],
+      default: 'edges',
+      floatOn: ['us-stocks-71'],
+    },
+    // A Boosted ETF's strip on its page (3 Nov): the sentence, jojo's bolt-led sentence, or one of the ticker layouts.
+    {
+      id: 'etfBoostStrip',
+      group: 'ETFs',
+      label: 'ETF page strip',
+      picker: 'dropdown',
+      values: [
+        { value: 'sentence', label: 'Sentence (current)' },
+        { value: 'bolt', label: 'Bolt sentence' },
+        { value: 'edges', label: 'V1 · Arrows at the edges' },
+        { value: 'compact', label: 'V2 · Compact' },
+        { value: 'chips', label: 'V3 · Two chips' },
+        { value: 'big', label: 'V4 · Big number' },
+        { value: 'bolt-lead', label: 'V5 · Bolt lead' },
+      ],
+      default: 'sentence',
+      floatOn: ['us-stocks-72'],
+    },
+    // How a Top holdings row shows its share of the fund (3 Nov): five versions to test.
+    {
+      id: 'holdingWeight',
+      group: 'ETFs',
+      label: 'Holding weight',
+      picker: 'dropdown',
+      values: [
+        { value: 'bar', label: 'V1 · Bar under name' },
+        { value: 'none', label: 'V2 · No bar' },
+        { value: 'mini', label: 'V3 · Small bar before % (current)' },
+        { value: 'fill', label: 'V4 · % on a filled pill' },
+        { value: 'pill', label: 'V5 · % on a Discover pill' },
+      ],
+      default: 'mini',
+      floatOn: ['us-stocks-72'],
     },
     // The Boosted note's colour (3 Nov).
     {
@@ -23191,8 +23261,9 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 /* FLAG: hand-made news list (L3 ListCell) */
+/* News (3 Nov, stock and ETF pages): stories one under another with a hairline between, 16 above and below each. */
 .news {
-  gap: var(--l3-spacing-16);
+  gap: 0;
   flex-direction: column;
   margin: 0;
   padding: 0;
@@ -23203,11 +23274,24 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 .news li {
   align-items: flex-start;
   gap: var(--l3-spacing-12);
+  padding-block: var(--l3-spacing-16);
   display: flex;
 }
 
+.news li:first-child { padding-top: 0; }
+.news li:last-child { padding-bottom: 0; }
+
+.news li + li {
+  box-shadow: inset 0 1px 0 var(--l3-border-light); /* 1px hairline */
+}
+
+/* A story's source · time a little apart (title Label 14, meta Description 12, reason Label 12 — in step). */
+.news .newsMeta { gap: var(--l3-spacing-06); }
+
 .news img {
-  border-radius: var(--l3-radius-08);
+  width: var(--l3-size-64);
+  height: var(--l3-size-80); /* as tall as a story's two-line title, source and reason */
+  border-radius: var(--l3-radius-12);
   object-fit: cover;
   flex: none;
 }
@@ -23443,7 +23527,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 
 .why {
   align-items: center;
-  gap: var(--l3-spacing-04);
+  gap: var(--l3-spacing-06);
   margin: var(--l3-spacing-04) 0 0;
   font: var(--l3-text-label-12);
   color: var(--l3-content-accent-indicator-up-default);
@@ -23619,7 +23703,7 @@ import { ImgIcon } from './components/ImgIcon'
 import { NEWS, PERIODS, periodReturn, priceSeries, type NewsItem } from './data'
 import { swapIcon } from './icons'
 import {
-  AboutCompany, AnalystRatings, DailyPerformance, Events, Financials, Fundamentals, HoldingsSection, KeyHolders, News, Peers, RelatedEtfs,
+  AboutCompany, AnalystRatings, DailyPerformance, Events, Financials, Fundamentals, HoldingsSection, KeyHolders, News, Peers, RelatedEtfs, stockDayStats,
 } from './sections'
 import {
   BUY_PAD, KYC_START, RISK_DISCLOSURE, SELL_PAD_HOLDING, SELL_PAD_NO_HOLDINGS,
@@ -23823,7 +23907,7 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
           ) : (
             <div className={styles.overview}>
               {state === 'holding' && <HoldingsSection stock={stock} dayChange={dayChangeAbs} />}
-              <DailyPerformance stock={stock} low={low} high={high} />
+              <DailyPerformance price={stock.price} low={low} high={high} stats={stockDayStats(stock)} />
               <AnalystRatings />
               <Fundamentals />
               <AboutCompany stock={stock} />
@@ -24609,7 +24693,7 @@ export const screens: UsScreenMap = {
 // The scrolling sections of the stock page, top to bottom: holdings (holding state only), daily performance, analyst
 // ratings, fundamentals, about, peers, related ETFs, key holders, company financials; and the News & Events tab (events, news).
 // FLAG: layout is raw display:flex + gap/padding (module CSS) instead of L3 Stack/Section/Inset/Grid; panels, rows and bars are hand-made.
-import { useRef, useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Card } from '@l3/components/Card'
 import { Icon } from '@l3/components/Icon'
 import { PriceChange } from '@l3/components/PriceChange'
@@ -24628,7 +24712,7 @@ import { RatingRing } from './components/RatingRing'
 import { SectionTitle } from './components/SectionTitle'
 import { Stat } from './components/Stat'
 import {
-  DAY_STATS, EVENTS, FINANCIALS, FUNDAMENTALS, HOLDERS, QUARTERS, RATINGS, STATEMENTS, relatedEtfs, type Frequency, type NewsItem, type Statement,
+  DAY_STATS, EVENTS, FINANCIALS, FUNDAMENTALS, HOLDERS, QUARTERS, RATINGS, STATEMENTS, relatedEtfs, type EventItem, type Frequency, type NewsItem, type Statement,
 } from './data'
 import { boltIcon, chevronLeftIcon, chevronRightIcon, historyIcon, infoIcon } from './icons'
 import styles from './StockPage.module.css'
@@ -24647,6 +24731,11 @@ function dayStats(stock: UsStock): [string, string][] {
     '52-week low': q.low52 != null ? formatUsd(q.low52) : undefined,
   }
   return DAY_STATS.map(([value, label]) => [real[label] ?? value, label])
+}
+
+/** The stock's day stats as Daily Performance cells: label, then the value in the currency picked. */
+export function stockDayStats(stock: UsStock): [string, ReactNode][] {
+  return dayStats(stock).map(([value, label]) => [label, <Usd text={value} />])
 }
 
 /** The sample holding: 12 shares bought at $172.50; its value follows the live price. */
@@ -24704,9 +24793,11 @@ export function HoldingsSection({ stock, dayChange }: { stock: UsStock; dayChang
   )
 }
 
-export function DailyPerformance({ stock, low, high }: { stock: UsStock; low: number; high: number }) {
+/** Daily Performance (stock and ETF pages): the day's low → high with the last traded price on it, then the day's
+ *  numbers (`stats`: label, value) as a 3 × 2 grid. */
+export function DailyPerformance({ price, low, high, stats }: { price: number; low: number; high: number; stats: [string, ReactNode][] }) {
   const usd = useUsd()
-  const at = Math.min(100, Math.max(0, ((stock.price - low) / (high - low)) * 100))
+  const at = Math.min(100, Math.max(0, ((price - low) / (high - low)) * 100))
   return (
     <section className={styles.section}>
       <SectionTitle title="Daily Performance" info />
@@ -24721,8 +24812,8 @@ export function DailyPerformance({ stock, low, high }: { stock: UsStock; low: nu
           aria-label="Last traded price within today's range"
           aria-valuemin={low}
           aria-valuemax={high}
-          aria-valuenow={stock.price}
-          aria-valuetext={`${usd(stock.price)}, between ${usd(low)} and ${usd(high)}`}
+          aria-valuenow={price}
+          aria-valuetext={`${usd(price)}, between ${usd(low)} and ${usd(high)}`}
           style={{ '--at': `${at}%` } as CSSProperties}
         >
           <span className={styles.dayTick} />
@@ -24732,15 +24823,15 @@ export function DailyPerformance({ stock, low, high }: { stock: UsStock; low: nu
         </div>
         <p className={styles.ltp}>
           <Icon icon={boltIcon} size={12} />
-          Last Traded Price : <Usd value={stock.price} layout="inline" />
+          Last Traded Price : <Usd value={price} layout="inline" />
         </p>
       </div>
       {/* The day's numbers as a 3 × 2 grid (label over value), like Fundamentals. */}
       <dl className={styles.fundGrid} data-columns="3">
-        {dayStats(stock).map(([value, label]) => (
+        {stats.map(([label, value]) => (
           <div className={styles.fundCell} key={label}>
             <dt>{label}</dt>
-            <dd><Usd text={value} /></dd>
+            <dd>{value}</dd>
           </div>
         ))}
       </dl>
@@ -24802,17 +24893,23 @@ export function Fundamentals() {
 /** About Company: the company's real profile (companyProfiles.ts), three lines until Read more expands it (Read less folds
  *  it back). A stock with no profile gets a one-line note and no link. */
 export function AboutCompany({ stock }: { stock: UsStock }) {
-  const [open, setOpen] = useState(false)
   const profile = COMPANY_PROFILES[stock.sym]
+  return profile
+    ? <AboutCard title="About Company" text={profile} />
+    : <AboutCard title="About Company" text={`${stock.name} is listed on the ${stock.exchange ?? 'NASDAQ'} and trades in US dollars.`} short />
+}
+
+/** The About card (stock and ETF pages): the text in a card, three lines until Read more (Read less folds it back).
+ *  `short`: a one-liner with no link. */
+export function AboutCard({ title, text, short }: { title: string; text: string; short?: boolean }) {
+  const [open, setOpen] = useState(false)
   return (
     <section className={styles.section}>
-      <SectionTitle title="About Company" />
+      <SectionTitle title={title} />
       <Card surface="primary">
         <div className={styles.about}>
-          <p data-collapsed={(profile && !open) || undefined}>
-            {profile ?? `${stock.name} is listed on the ${stock.exchange ?? 'NASDAQ'} and trades in US dollars.`}
-          </p>
-          {profile && (
+          <p data-collapsed={(!short && !open) || undefined}>{text}</p>
+          {!short && (
             <button type="button" className={styles.link} aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? 'Read less' : 'Read more'}
             </button>
@@ -25027,12 +25124,13 @@ export function News({ items, stock }: { items: NewsItem[]; stock: string }) {
   )
 }
 
-export function Events() {
+/** Events (stock and ETF pages): date block, title, detail and a type Tag. `items`: the ETF passes its own. */
+export function Events({ items = EVENTS }: { items?: EventItem[] }) {
   return (
     <section className={styles.section}>
       <SectionTitle title="Events" />
       <ul className={styles.events}>
-        {EVENTS.map((e) => (
+        {items.map((e) => (
           <li key={e.title}>
             <span className={styles.eventDate} aria-hidden="true">
               <b>{e.day}</b>
@@ -29394,28 +29492,85 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 import { Icon } from '@l3/components/Icon'
 import { Tag } from '@l3/components/Tag'
 import { msArrowForward, msTrendingDown, msTrendingUp } from '@l3/icons/material'
-import { infoIcon } from './icons'
+import { boltIcon, infoIcon } from './icons'
 import styles from './Etf.module.css'
 
 /** One line: what moves (and by how much, `up` sets the colour), then the Boosted side — a side tag and / or a name — and its gain. */
 export type BoostLine = { up: boolean; subject: string; move: string; tag?: { text: string; long: boolean }; name?: string; gain: string }
 
-export function BoostStrip({ lines, tone, label, onOpen }: { lines: BoostLine[]; tone: string; label: string; onOpen: () => void }) {
-  const line = (t: BoostLine, i: number) => (
-    <span key={i} className={styles.boostText}>
-      <Icon icon={t.up ? msTrendingUp : msTrendingDown} size={16} className={t.up ? styles.boostIcon : styles.boostIconDown} />
-      {t.subject} moves<b className={styles.boostMarket} data-down={t.up ? undefined : ''}>{t.move}</b>
-      <Icon icon={msArrowForward} size={14} className={styles.boostArrowIcon} />
-      {t.tag && <Tag variant="secondary" color={t.tag.long ? 'profit' : 'loss'} size="sm">{t.tag.text}</Tag>}
-      {t.name}
-      {t.name ? ' moves' : 'moves'}<b className={styles.boostGain}>{t.gain}</b>
+/** How a ticker line is laid out (3 Nov, flow option "Boosted ticker", five versions to compare). */
+export type BoostLook = 'edges' | 'compact' | 'chips' | 'big' | 'bolt'
+
+export function BoostStrip({ lines, tone, label, onOpen, gradient, look = 'edges' }: { lines: BoostLine[]; tone: string; label: string; onOpen?: () => void; gradient?: boolean; look?: BoostLook }) {
+  const trend = (up: boolean, end?: boolean) => (
+    <Icon icon={up ? msTrendingUp : msTrendingDown} size={14} className={[up ? styles.boostTrendUp : styles.boostTrendDown, end ? styles.boostTrendEnd : ''].join(' ')} />
+  )
+  const arrow = <Icon icon={msArrowForward} size={14} className={styles.boostArrowIcon} />
+  const tag = (t: BoostLine) => t.tag && <Tag variant="secondary" color={t.tag.long ? 'profit' : 'loss'} size="sm">{t.tag.text}</Tag>
+  const market = (t: BoostLine) => <b className={styles.boostMarket} data-down={t.up ? undefined : ''}>{t.move}</b>
+  const gain = (t: BoostLine) => <b className={styles.boostGain}>{t.gain}</b>
+  const line = (t: BoostLine, i: number) => {
+    // V2 Compact: no "moves", centred — "↗ Market +1% → [3x Long] +3%".
+    if (look === 'compact') {
+      return <span key={i} className={styles.boostText} data-look="compact">{trend(t.up)}{t.subject}{market(t)}{arrow}{tag(t)}{t.name}{gain(t)}</span>
+    }
+    // V3 Two chips: each side in its own small pill — "[Market ▲1%] → [3x Long ▲3%]".
+    if (look === 'chips') {
+      return (
+        <span key={i} className={styles.boostText} data-look="chips">
+          <span className={styles.boostChipSide}>{trend(t.up)}{t.subject}{market(t)}</span>
+          {arrow}
+          <span className={styles.boostChipSide}>{t.tag ? t.tag.text : t.name}{trend(true)}{gain(t)}</span>
+        </span>
+      )
+    }
+    // V4 Big number: the market's move small, the Boosted +3% large at the right — "Market +1% → [3x Long]  +3%".
+    if (look === 'big') {
+      return (
+        <span key={i} className={styles.boostText} data-look="big">
+          {t.subject}{market(t)}{arrow}{tag(t)}{t.name}
+          <b className={`${styles.boostGain} ${styles.boostGainBig}`}>{t.gain}</b>
+        </span>
+      )
+    }
+    // V5 Bolt lead: a gold ⚡ badge first — "[⚡ 3x] Market +1% → Long +3%".
+    if (look === 'bolt') {
+      const lev = t.tag?.text.split(' ')[0] ?? ''
+      const side = t.tag ? t.tag.text.split(' ').slice(1).join(' ') : t.name
+      return (
+        <span key={i} className={styles.boostText} data-look="bolt">
+          <span className={styles.boostBoltBadge}><Icon icon={boltIcon} size={12} />{lev}</span>
+          {t.subject}{market(t)}{arrow}
+          <span className={styles.boostSide} data-short={t.tag && !t.tag.long ? '' : undefined}>{side}</span>{gain(t)}
+        </span>
+      )
+    }
+    // V1 Edges: a trend arrow at each end of the strip — the market's up or down at the left edge, the Boosted side's up
+    // pinned to the right edge.
+    return (
+      <span key={i} className={styles.boostText}>
+        {trend(t.up)}
+        {t.subject} moves{market(t)}
+        {arrow}
+        {tag(t)}
+        {t.name}
+        {t.name ? ' moves' : 'moves'}{gain(t)}
+        {trend(true, true)}
+      </span>
+    )
+  }
+  const ticker = (
+    <span className={styles.boostTicker} aria-hidden="true">
+      {lines.length > 1 ? <span className={styles.boostTickerReel}>{[...lines, lines[0]].map(line)}</span> : line(lines[0], 0)}
     </span>
   )
+  // With no sheet to open (BOOST_SHEET off) it is a plain note: no button, no (i).
+  if (!onOpen) {
+    return <p className={styles.boostLine} data-tone={tone} data-gradient={gradient ? '' : undefined} data-static="" aria-label={label}>{ticker}</p>
+  }
   return (
-    <button type="button" className={styles.boostLine} data-tone={tone} aria-haspopup="dialog" aria-label={`${label} How Boosted ETFs work`} onClick={onOpen}>
-      <span className={styles.boostTicker} aria-hidden="true">
-        {lines.length > 1 ? <span className={styles.boostTickerReel}>{[...lines, lines[0]].map(line)}</span> : line(lines[0], 0)}
-      </span>
+    <button type="button" className={styles.boostLine} data-tone={tone} data-gradient={gradient ? '' : undefined} aria-haspopup="dialog" aria-label={`${label} How Boosted ETFs work`} onClick={onOpen}>
+      {ticker}
       <Icon icon={infoIcon} size={14} className={styles.boostInfoEnd} />
     </button>
   )
@@ -29569,10 +29724,13 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { useSheetLayer } from '../../components/Phone'
 import styles from './BoostedSheet.module.css'
 
+// Off for now (jojo, 3 Nov): the ETF page's Boosted strip doesn't open this sheet and shows no (i). Set true to bring it back.
+export const BOOST_SHEET = false
+
 const BARS = [
-  { key: 'market', name: 'Market', move: '▲ 1%', share: 1, up: true },
-  { key: 'long', name: '3x Long', move: '▲ 3%', share: 3, up: true },
-  { key: 'short', name: '3x Short', move: '▼ 3%', share: 3, up: false },
+  { key: 'market', name: 'Market', move: '+1%', share: 1, up: true },
+  { key: 'long', name: '3x Long', move: '+3%', share: 3, up: true },
+  { key: 'short', name: '3x Short', move: '−3%', share: 3, up: false },
 ]
 
 export function BoostedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -29896,7 +30054,7 @@ span:has(>.diagCol){width:auto;height:auto}
 
 .boostLine[data-tone="purple"]{--boost-bg:var(--l3-surface-accent-purple-light);--boost-accent:var(--l3-content-accent-purple-default)}
 
-.boostLine[data-tone="grey"]{--boost-bg:var(--l3-surface-secondary);--boost-accent:var(--l3-content-tertiary)}
+.boostLine[data-tone="grey"]{--boost-bg:var(--l3-surface-secondary);--boost-accent:var(--l3-content-secondary)}
 
 /* On grey the +3% and the up icon keep the up colour (the bar alone goes neutral). */
 .boostLine[data-tone="grey"] .boostGain,.boostLine[data-tone="grey"] .boostIcon{color:var(--l3-content-accent-indicator-up-default)}
@@ -29923,9 +30081,9 @@ span:has(>.diagCol){width:auto;height:auto}
 /* "You make +3%" in the accent; the arrow and the end (i) quiet. */
 .boostGain{font:var(--l3-text-heading-12);color:var(--boost-accent)}
 
-.boostArrowIcon{color:var(--l3-content-tertiary)}
+.boostArrowIcon{color:var(--l3-content-secondary)}
 
-.boostInfoEnd{color:var(--l3-content-tertiary);flex:none;margin-left:auto}
+.boostInfoEnd{color:var(--l3-content-secondary);flex:none;margin-left:auto}
 
 .boostIcon{flex:none;color:var(--boost-accent)}
 
@@ -29961,7 +30119,7 @@ span:has(>.diagCol){width:auto;height:auto}
 
 .boostCardSub{font:var(--l3-text-label-12);color:var(--l3-content-secondary)}
 
-.boostCardInfo{color:var(--l3-content-tertiary);flex:none}
+.boostCardInfo{color:var(--l3-content-secondary);flex:none}
 
 /* Chip: one line, hugging its content, 28 tall, the soft accent behind. */
 .boostChip{gap:var(--l3-spacing-06);align-self:flex-start;height:var(--l3-size-28);padding:0 var(--l3-spacing-10);border-radius:var(--l3-radius-full);background:var(--boost-soft)}
@@ -29978,6 +30136,74 @@ span:has(>.diagCol){width:auto;height:auto}
 
 /* On the ETF page's strip the fund's "up 3%" is in the up colour, not the gold (3 Nov). */
 .boostLine[data-gradient] .boostGain{color:var(--l3-content-accent-indicator-up-default)}
+
+/* The Boosted tab's bolt (3 Nov): gold (the brand's zing), selected or not. */
+.boostTabBolt.boostTabBolt{color:var(--l3-surface-accent-zing-default)}
+
+/* A Boosted strip with nothing to open (How Boosted ETFs work is off, 3 Nov): no pointer; on the ETF page the leading
+   trend icon takes the up colour, like the move it points at. */
+.boostLine[data-static]{cursor:default}
+
+.boostLine[data-static][data-gradient] .boostIcon{color:var(--l3-content-accent-indicator-up-default)}
+
+/* The trend arrows after each move in the Boosted ticker (3 Nov): up green, down red. */
+.boostTrendUp{flex:none;color:var(--l3-content-accent-indicator-up-default)}
+
+.boostTrendDown{flex:none;color:var(--l3-content-accent-indicator-down-default)}
+
+/* The ticker on the gold gradient (the ETF page's card), one line: the gradient's taller padding, the +3% in green. */
+.boostLine[data-gradient]:not(:has(.boostSentence)) .boostGain{color:var(--l3-content-accent-indicator-up-default)}
+
+/* On a gold strip the icons are gold (3 Nov): the trend arrows at each end and the "→"; the words stay white, the moves
+   keep their up / down colours, the tags their own. */
+.boostLine[data-tone="gold"] .boostTrendUp,.boostLine[data-tone="gold"] .boostTrendDown,.boostLine[data-tone="gold"] .boostArrowIcon,.boostLine[data-tone="gold"][data-static][data-gradient] .boostIcon,.boostLine[data-tone="gold"] .boostIconDown{color:var(--l3-surface-accent-zing-default)}
+
+/* The Boosted ticker's last arrow sits at the strip's right edge (3 Nov): each line spans the strip. */
+.boostTicker .boostText{width:100%}
+
+.boostTrendEnd{margin-left:auto}
+
+/* Boosted ticker versions (3 Nov, flow option "Boosted ticker"). V1 Edges is the base above. FLAG: hand-made. */
+/* V2 Compact: centred, no "moves". */
+.boostText[data-look="compact"]{justify-content:center}
+
+/* V3 Two chips: each side in a small pill on the strip. */
+.boostText[data-look="chips"]{justify-content:center;gap:var(--l3-spacing-06)}
+
+.boostChipSide{align-items:center;gap:var(--l3-spacing-04);height:var(--l3-size-16);padding:0 var(--l3-spacing-06);border-radius:var(--l3-radius-full);background:var(--l3-surface-secondary);display:inline-flex}
+
+/* V4 Big number: the Boosted move large, pinned right. */
+.boostText[data-look="big"]{overflow:visible}
+
+.boostGainBig.boostGainBig{font:var(--l3-text-heading-14);margin-left:auto}
+
+/* V5 Bolt lead: a gold badge with the bolt and the leverage; the side's name in its colour. */
+.boostBoltBadge{align-items:center;gap:var(--l3-spacing-02);height:var(--l3-size-16);padding:0 var(--l3-spacing-04);border-radius:var(--l3-radius-04);background:var(--l3-surface-accent-zing-default);color:var(--l3-static-black);font:var(--l3-text-heading-12);flex:none;display:inline-flex}
+
+.boostSide{font:var(--l3-text-heading-12);color:var(--l3-content-accent-indicator-up-default)}
+
+.boostSide[data-short]{color:var(--l3-content-accent-indicator-down-default)}
+
+/* The note's "Text" look (3 Nov, was the Card): no box, border or tile — the bolt alone in the accent, then the text. */
+.boostCard[data-text]{margin:0;padding:0;background:none;box-shadow:none;cursor:default}
+
+.boostCard[data-text] .boostTile{width:auto;height:auto;background:none}
+
+/* The "Text" look (3 Nov): a description like About's on the ETF page's gold strip (the gold gradient, the 2 gold bar on
+   the left) — Description 12 in the secondary colour (two lines at 360), the 1% and 3% in solid white — led by the Boosted tab's gold bolt (20, no tile), which slides in from the left when the tab opens. Reduced motion: no slide. */
+.boostCard[data-text]{align-items:center;gap:var(--l3-spacing-12);padding:var(--l3-spacing-10) var(--l3-spacing-12) var(--l3-spacing-10) var(--l3-spacing-14);border-radius:var(--l3-radius-00) var(--l3-radius-02) var(--l3-radius-02) var(--l3-radius-00);background:linear-gradient(to right,var(--l3-surface-accent-zing-light),transparent);box-shadow:inset var(--l3-spacing-02) 0 0 var(--l3-surface-accent-zing-default)}
+
+.boostTextIconWrap{flex:none;place-items:center;display:grid;overflow:hidden}
+
+.boostTextIcon{color:var(--l3-surface-accent-zing-default);animation:boost-slide-in .6s cubic-bezier(.2,0,0,1) .15s both}
+
+@keyframes boost-slide-in{0%{opacity:0;transform:translateX(calc(-1 * var(--l3-spacing-16)))}100%{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion:reduce){.boostTextIcon{animation:none}}
+
+.boostTextSentence{font:var(--l3-text-description-12);color:var(--l3-content-secondary);flex:1;min-width:0}
+
+.boostTextUp{font-weight:750;color:var(--l3-content-primary)}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfHoldings.module.css`
@@ -30161,6 +30387,38 @@ span:has(>.diagCol){width:auto;height:auto}
   flex: none;
 }
 
+/* "Holding weight" versions (3 Nov, to test). Mini: a short bar just before the number. */
+.miniBar {
+  width: var(--l3-size-40);
+  flex: none;
+}
+
+/* Fill / Pill: the number on a Discover-light pill — Fill shades it as far as the share against the biggest. */
+.weightPill {
+  min-width: var(--l3-size-64);
+  padding: var(--l3-spacing-04) var(--l3-spacing-08);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+  text-align: right;
+  flex: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.weightPill[data-look='pill'] {
+  background: var(--l3-surface-accent-discover-light);
+}
+
+.weightFill {
+  background: var(--l3-surface-accent-discover-light);
+  position: absolute;
+  inset: 0 auto 0 0;
+}
+
+.weightPill .weight {
+  position: relative;
+}
+
 /* The "Others" row: a few logos + "+497", the word Others, their share together. */
 .others {
   align-items: center;
@@ -30181,57 +30439,111 @@ span:has(>.diagCol){width:auto;height:auto}
 .othersChevron {
   flex: none;
   margin-left: calc(-1 * var(--l3-spacing-04));
-  color: var(--l3-content-tertiary);
+  color: var(--l3-content-secondary);
 }
 
 /* The full Top holdings page (3 Nov): "Top 50 of 503 · Weight", then the Market page's cards, 16 apart. */
-.fullPage {
-  padding: var(--l3-spacing-16);
-}
-
 .fullHead {
   justify-content: space-between;
-  margin: 0 0 var(--l3-spacing-12);
+  margin: 0;
   padding: 0 var(--l3-spacing-04);
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   display: flex;
 }
 
-.cards {
-  gap: var(--l3-spacing-16);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  flex-direction: column;
-  display: flex;
-}
-
-/* Under the ticker: the company name, then a thin bar of its weight, 6 below. */
-.cardSub {
-  gap: var(--l3-spacing-06);
-  flex-direction: column;
-  min-width: 0;
-  display: flex;
-}
-
-.cardName {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.cardWeight {
-  font: var(--l3-text-label-16);
-  color: var(--l3-content-primary);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+.fullEnd {
+  margin: var(--l3-spacing-12) 0 0;
+  padding: 0 var(--l3-spacing-16);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+  text-align: center;
 }
 
 .othersName {
   font: var(--l3-text-heading-14);
   color: var(--l3-content-secondary);
   flex: 1;
+}
+
+/* Allocation as a donut (3 Nov): the stock page's Analyst Ratings card — donut on the left, legend beside it. */
+.allocCard {
+  align-items: center;
+  gap: var(--l3-spacing-20);
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px hairline */
+  display: flex;
+}
+
+.donut {
+  flex: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: var(--l3-size-96);
+  height: var(--l3-size-96);
+  display: flex;
+  position: relative;
+}
+
+.donut svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  rotate: -90deg;
+}
+
+.donut circle {
+  fill: none;
+  background: none;
+}
+
+.donut circle[data-colour='discover'] { stroke: var(--l3-surface-accent-discover-default); }
+.donut circle[data-colour='purple'] { stroke: var(--l3-surface-accent-purple-default); }
+.donut circle[data-colour='teal'] { stroke: var(--l3-surface-accent-teal-default); }
+.donut circle[data-colour='zing'] { stroke: var(--l3-surface-accent-zing-default); }
+.donut circle[data-colour='other'] { stroke: var(--l3-content-tertiary); }
+
+.donut strong {
+  font: var(--l3-text-heading-16);
+  color: var(--l3-content-primary);
+}
+
+.donut span {
+  max-width: 70%;
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.donutLegend {
+  gap: var(--l3-spacing-10);
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.donutLegend li {
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  display: flex;
+}
+
+.donutLegend .sectorName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ```
 
@@ -30248,26 +30560,46 @@ span:has(>.diagCol){width:auto;height:auto}
 // splits barely move, and a date mostly reads as "this is old" to a new user.)
 // FLAG: copy not in copy.json yet (hard-coded). Holding rows and sector bars are hand-made (module CSS) — L3 ListCell
 // has no weight bar; the "+497" circle is hand-made (L3 Avatar has no count variant), as on the ETF list.
-import { SECTOR_NAMES, holdingsBeyond, otherHoldings, sectorsFor, shortCount, stockName, topHoldings, type Etf } from './data'
+import { holdingsBeyond, otherHoldings, sectorsFor, shortCount, stockName, topHoldings, type Etf } from './data'
 import { Icon } from '@l3/components/Icon'
 import { msChevronRight } from '@l3/icons/material'
+import { useFlowOption } from '../../../../shared/prototype'
 import { HoldingLogo } from './parts'
 import listStyles from './Etf.module.css'
 import styles from './EtfHoldings.module.css'
 
 const TOP = 6
 
-/** One holding row: logo, name and ticker over a weight bar (against `biggest`), then its share. Opens the stock. */
-export function HoldingRow({ sym, weight, biggest, onOpen }: { sym: string; weight: number; biggest: number; onOpen: (sym: string) => void }) {
+/**
+ * How a row shows its share of the fund (3 Nov, prototype option "Holding weight", to test):
+ * - `bar` — a bar under the name, against the biggest holding (before 3 Nov);
+ * - `none` — no bar, only the number;
+ * - `mini` — a short bar just before the number (the default, 3 Nov);
+ * - `fill` — the number on a Discover-light pill, filled as far as its share against the biggest;
+ * - `pill` — the number on a plain Discover-light pill.
+ */
+export type WeightLook = 'bar' | 'none' | 'mini' | 'fill' | 'pill'
+
+/** One holding row: logo, name and ticker, then its share — shown as `look` says (against `biggest`). Opens the stock. */
+export function HoldingRow({ sym, weight, biggest, onOpen, look = 'bar' }: { sym: string; weight: number; biggest: number; onOpen: (sym: string) => void; look?: WeightLook }) {
   const name = stockName(sym)
+  const share = `${(weight / biggest) * 100}%`
   return (
-    <button type="button" className={styles.row} onClick={() => onOpen(sym)} aria-label={`${name}, ${weight}% of the ETF. Open stock`}>
+    <button type="button" className={styles.row} data-look={look} onClick={() => onOpen(sym)} aria-label={`${name}, ${weight}% of the ETF. Open stock`}>
       <HoldingLogo sym={sym} size={32} />
       <span className={styles.text}>
         <span className={styles.name}>{name}<span className={styles.sym}>{sym}</span></span>
-        <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(weight / biggest) * 100}%` }} /></span>
+        {look === 'bar' && <span className={styles.bar} aria-hidden="true"><span style={{ width: share }} /></span>}
       </span>
-      <span className={styles.weight}>{weight.toFixed(1)}%</span>
+      {look === 'mini' && <span className={`${styles.bar} ${styles.miniBar}`} aria-hidden="true"><span style={{ width: share }} /></span>}
+      {look === 'fill' || look === 'pill' ? (
+        <span className={styles.weightPill} data-look={look}>
+          {look === 'fill' && <span className={styles.weightFill} style={{ width: share }} aria-hidden="true" />}
+          <span className={styles.weight}>{weight.toFixed(1)}%</span>
+        </span>
+      ) : (
+        <span className={styles.weight}>{weight.toFixed(1)}%</span>
+      )}
     </button>
   )
 }
@@ -30278,13 +30610,14 @@ export function TopHoldings({ etf, onOpen, onOthers }: { etf: Etf; onOpen: (sym:
   const biggest = top[0]?.weight ?? 100
   const others = otherHoldings(etf, TOP)
   const total = holdingsBeyond(etf, 0)
+  const look = useFlowOption('us-stocks', 'holdingWeight', 'mini') as WeightLook
   return (
     <div className={styles.panel}>
       <p className={styles.head} aria-hidden="true"><span>{total.toLocaleString('en-US')} positions</span><span>Weight</span></p>
       <ul className={styles.list}>
       {top.map((h) => (
         <li key={h.sym}>
-          <HoldingRow sym={h.sym} weight={h.weight} biggest={biggest} onOpen={onOpen} />
+          <HoldingRow sym={h.sym} weight={h.weight} biggest={biggest} onOpen={onOpen} look={look} />
         </li>
       ))}
       {others.count > 0 && others.weight > 0 && (
@@ -30308,38 +30641,55 @@ export function TopHoldings({ etf, onOpen, onOthers }: { etf: Etf; onOpen: (sym:
 /** Sector colours, in order (L3 accent surfaces; no green / red / orange — those mean up, down and warning here). */
 const SECTOR_COLOURS = ['discover', 'purple', 'teal', 'zing']
 
+/** The donut's size (viewBox units): radius and ring width; a small gap between the parts. */
+const RING = { r: 42, width: 10, gap: 2 }
+
 /**
- * The "Allocation" block: one thin bar split by sector (each part its share of 100%), then a two-column legend — colour
- * dot, name and share — "Other" in grey. (V2, the share written inside a taller bar, was tried on 3 Nov and dropped.)
+ * The "Allocation" block (3 Nov, after the stock page's Analyst Ratings card): a donut split by sector — the biggest
+ * sector's share and name in the middle — and beside it the legend, one sector a row: colour dot, name, share; "Other"
+ * last in grey. (Before: one thin stacked bar over a two-column legend — harder to read.)
+ * FLAG: hand-drawn donut (raw SVG circles) — L3 has no pie / donut chart.
  */
 export function Allocation({ etf }: { etf: Etf }) {
   const sectors = sectorsFor(etf)
   if (sectors.length === 0) return null
   const colour = (name: string, i: number) => (name === 'Other' ? 'other' : SECTOR_COLOURS[i % SECTOR_COLOURS.length])
+  const total = sectors.reduce((sum, s) => sum + s.weight, 0)
+  const length = 2 * Math.PI * RING.r
+  const biggest = sectors.filter((s) => s.name !== 'Other').sort((a, b) => b.weight - a.weight)[0] ?? sectors[0]
+  let start = 0
+  const parts = sectors.map((s, i) => {
+    const size = (s.weight / total) * length
+    const part = { ...s, colour: colour(s.name, i), dash: Math.max(size - RING.gap, 0.5), offset: -start }
+    start += size
+    return part
+  })
   return (
-    <div className={styles.panel}>
-      <span className={styles.stack} aria-hidden="true">
-        {sectors.map((s, i) => (
-          <span key={s.name} data-colour={colour(s.name, i)} style={{ flexGrow: s.weight }} />
-        ))}
-      </span>
-      <ul className={styles.legend} aria-label="Share of the fund by sector">
-        {/* A zero-height row with every sector name any fund has: it sets the name columns to the widest one, so both
-            columns line up the same on every ETF. */}
-        <li className={styles.sizer} aria-hidden="true">
-          {[0, 1].map((col) => (
-            <span key={col} className={styles.sector}>
-              <span className={styles.dot} />
-              <span className={styles.sectorName}>{SECTOR_NAMES.map((n) => <span key={n}>{n}</span>)}</span>
-              <span className={styles.sectorWeight}>99%</span>
-            </span>
+    <div className={styles.allocCard}>
+      <div className={styles.donut} role="img" aria-label={`Biggest sector: ${biggest.name}, ${biggest.weight}% of the fund`}>
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          {parts.map((p) => (
+            <circle
+              key={p.name}
+              cx="50"
+              cy="50"
+              r={RING.r}
+              data-colour={p.colour}
+              strokeWidth={RING.width}
+              strokeDasharray={`${p.dash} ${length - p.dash}`}
+              strokeDashoffset={p.offset}
+            />
           ))}
-        </li>
-        {sectors.map((s, i) => (
-          <li key={s.name} className={styles.sector} aria-label={`${s.name}, ${s.weight}% of the ETF`}>
-            <span className={styles.dot} data-colour={colour(s.name, i)} aria-hidden="true" />
-            <span className={styles.sectorName}>{s.name}</span>
-            <span className={styles.sectorWeight}>{s.weight}%</span>
+        </svg>
+        <strong>{biggest.weight}%</strong>
+        <span>{biggest.name}</span>
+      </div>
+      <ul className={styles.donutLegend} aria-label="Share of the fund by sector">
+        {parts.map((p) => (
+          <li key={p.name} aria-label={`${p.name}, ${p.weight}% of the ETF`}>
+            <span className={styles.dot} data-colour={p.colour} aria-hidden="true" />
+            <span className={styles.sectorName}>{p.name}</span>
+            <span className={styles.sectorWeight}>{p.weight}%</span>
           </li>
         ))}
       </ul>
@@ -30352,12 +30702,14 @@ export function Allocation({ etf }: { etf: Etf }) {
 
 ```tsx
 // 9001:12 · Top holdings (3 Nov): the full list behind the ETF page's "Others" row — the fund's top 50 holdings (or as
-// many as the sample has), biggest first, as the Market page's cards: the company's logo (40), the ticker over the name,
-// a thin weight bar under it (against the biggest holding) and the share on the right. A card opens its stock page. The
-// header says how many of the fund's stocks the list shows (a Boosted fund: of the index it follows).
-// FLAG: copy not in copy.json yet (hard-coded); the header line and the weight bar are hand-made.
+// many as the sample has), biggest first, as the shared StockListCard (the Market page's flat card, no shadow, 3 Nov):
+// the company's logo (40), the ticker over the name and the share on the right (no weight bar here). A card opens its stock page. The header says how many of the
+// fund's stocks the list shows (a Boosted fund: of the index it follows).
+// FLAG: copy not in copy.json yet (hard-coded); the header line and the end note are hand-made text (L3 has no list
+// header / end-of-list note).
 import { Actionbar } from '@l3/components/Actionbar'
-import { ListCell } from '@l3/components/ListCell'
+import { Section } from '@l3/components/Section'
+import { StockListCard } from '../../../../shared/ui/StockListCard'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
 import { getCurrentEtf } from './currentEtf'
@@ -30372,39 +30724,46 @@ export function EtfHoldingsScreen({ backdrop }: { backdrop?: boolean }) {
   const etf = getCurrentEtf()
   const top = topHoldings(etf, FULL)
   const total = stocksBehind(etf)?.count ?? holdingsBeyond(etf, 0)
-  const biggest = top[0]?.weight ?? 100
+  const rest = total - top.length
+  const restWeight = Math.max(0, 100 - top.reduce((sum, h) => sum + h.weight, 0))
   return (
-    <Phone label={`${etf.sym} top holdings`} header={<Actionbar onBack={() => back(ETF_PAGE)} title="Top holdings" description={etf.name} />} gesture="none">
-      <div className={styles.fullPage}>
+    <Phone
+      label={`${etf.sym} top holdings`}
+      header={<Actionbar onBack={() => back(ETF_PAGE)} title="Top holdings" description={etf.name} />}
+      gesture="none"
+      topLine
+    >
+      {/* 24 under the bar, 16 at the sides; the cards 12 apart, as the Market list (3 Nov). */}
+      <Section paddingInline="16" paddingBlock="24" gap="12">
         <p className={styles.fullHead} aria-hidden="true">
           <span>Top {top.length} of {total.toLocaleString('en-US')}</span>
           <span>Weight</span>
         </p>
-        <ul className={styles.cards} aria-label={`${etf.sym}: top ${top.length} of ${total} holdings`}>
+        <Section as="ul" gap="12" aria-label={`${etf.sym}: top ${top.length} of ${total} holdings`}>
           {top.map((h) => {
             const name = stockName(h.sym)
             return (
               <li key={h.sym}>
-                <ListCell
-                  variant="card"
-                  as="button"
-                  iconLeft={<HoldingLogo sym={h.sym} size={40} />}
-                  label={h.sym}
-                  description={
-                    <span className={styles.cardSub}>
-                      <span className={styles.cardName}>{name}</span>
-                      <span className={styles.bar} aria-hidden="true"><span style={{ width: `${(h.weight / biggest) * 100}%` }} /></span>
-                    </span>
-                  }
-                  trailing={<span className={styles.cardWeight}>{h.weight.toFixed(1)}%</span>}
+                <StockListCard
+                  symbol={h.sym}
+                  name={name}
+                  logo={<HoldingLogo sym={h.sym} size={40} />}
+                  price={`${h.weight.toFixed(1)}%`}
+                  onOpen={() => { if (!backdrop) openHolding(go, h.sym) }}
                   aria-label={`${name}, ${h.weight}% of the ETF. Open stock`}
-                  onClick={() => { if (!backdrop) openHolding(go, h.sym) }}
                 />
               </li>
             )
           })}
-        </ul>
-      </div>
+        </Section>
+        {/* The end of the list (3 Nov): big funds hold hundreds or thousands of stocks, so the page lists only the
+            biggest — this says so, and how much of the fund the rest are together. */}
+        {rest > 0 && (
+          <p className={styles.fullEnd}>
+            {`That's the top ${top.length} of ${total.toLocaleString('en-US')}. The other ${rest.toLocaleString('en-US')} ${rest === 1 ? 'stock is' : 'stocks are'} ${restWeight.toFixed(1)}% of the fund together.`}
+          </p>
+        )}
+      </Section>
     </Phone>
   )
 }
@@ -30417,8 +30776,8 @@ export function EtfHoldingsScreen({ backdrop }: { backdrop?: boolean }) {
 // tabs (in the Actionbar's bottom, with them) — a switcher chip (Country ⇄ Sector, as Top Movers' cap chip on Home), a
 // divider, then that filter's chips (countries with round flags, or sectors) — and the shared StockListCard rows, named
 // in plain words ("Top 500 US stocks", SPY · fund name under it). Boosted tab (leveraged, jojo's design of 3 Nov): the
-// Boosted note (strip / card / chip, flow options) opening "How Boosted ETFs work", then one list of fund-logo cards
-// with the leverage shown one of eight ways (flow option "Leverage tag").
+// Boosted note (strip / card / chip, flow options) opening "How Boosted ETFs work", then one list of the same shared
+// StockListCard rows, with the leverage shown one of eight ways (flow option "Leverage tag").
 // A row opens the ETF page (9001:2).
 // FLAG: copy not in copy.json yet (hard-coded).
 // FLAG: hand-made switcher chip and divider (as the Stocks home's Top Movers row) — L3 has no cycling chip.
@@ -30431,7 +30790,7 @@ import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
 import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { msGlobe } from '@l3/icons/material'
-import { ListCell } from '@l3/components/ListCell'
+import { Avatar } from '@l3/components/Avatar'
 import { Section } from '@l3/components/Section'
 import { Tabs } from '@l3/components/Tabs'
 import { Phone } from '../../components/Phone'
@@ -30441,17 +30800,17 @@ import { Flag, type FlagCode } from '../../../../shared/ui/Flag'
 import { StockListCard } from '../../../../shared/ui/StockListCard'
 import { useFlowOption } from '../../../../shared/prototype'
 import { BoostedSheet } from './BoostedSheet'
-import { BoostStrip, type BoostLine } from './BoostStrip'
+import { BoostStrip, type BoostLine, type BoostLook } from './BoostStrip'
 import { setCurrentEtf } from './currentEtf'
 import { boltIcon, infoIcon } from './icons'
 import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, leveragedGroups, plainFor, type Etf } from './data'
-import { EtfDisc, EtfMove, SideTag, etfLogoUrl } from './parts'
+import { SideTag, etfLogoUrl } from './parts'
 import styles from './Etf.module.css'
 
 const TABS = [
   { value: 'normal', label: 'Regular' },
-  // "Boosted" (jojo, 3 Nov): the app's word for leveraged ETFs, with a bolt.
-  { value: 'leveraged', label: 'Boosted', iconLeft: <Icon icon={boltIcon} size={16} /> },
+  // "Boosted" (jojo, 3 Nov): the app's word for leveraged ETFs, with a gold bolt.
+  { value: 'leveraged', label: 'Boosted', iconLeft: <Icon icon={boltIcon} size={16} className={styles.boostTabBolt} /> },
 ]
 
 /** What the filter chips pick: the switcher chip cycles between them. */
@@ -30493,13 +30852,18 @@ function FundRow({ etf, onClick }: { etf: Etf; onClick: () => void }) {
   // versions to compare; V5 After heading is the default.
   const levTag = useFlowOption('us-stocks', 'levTag', 'heading')
   const lev = etf.kind === 'leveraged' ? levTag : undefined
+  const marked = lev === 'foot' || lev === 'badge' || lev === 'ring' || lev === 'pill' || lev === 'slice' || lev === 'notch'
   const cell = (
-    <ListCell
-      variant="card"
-      as="button"
-      iconLeft={
+    // The shared stock card (as the Regular tab and the Market list): logo · plain name over "SPY · fund name" · price
+    // over the signed change. Each leverage version only adds its mark to the logo or a Tag after the name.
+    <StockListCard
+      symbol={plain}
+      name={`${etf.sym} · ${etf.name}`}
+      logoUrl={etfLogoUrl(etf.sym)}
+      initials={etf.sym.slice(0, 2)}
+      logo={marked ? (
         <span className={styles.diagCol} data-ring={lev === 'ring' ? etf.side : undefined} data-slice={lev === 'slice' ? '' : undefined} data-notch={lev === 'notch' ? '' : undefined}>
-          <EtfDisc sym={etf.sym} size={40} />
+          <Avatar src={etfLogoUrl(etf.sym)} initials={etf.sym.slice(0, 2)} size={40} label={etf.name} />
           {/* V1 Logo foot: "3x Long" (L3 Tag) across the logo's foot, both ends round. */}
           {lev === 'foot' && <SideTag etf={etf} className={styles.levBadge} />}
           {/* V2 Logo badge: a "3x ▲" pill on the logo's top-right, like a notification badge. */}
@@ -30511,32 +30875,13 @@ function FundRow({ etf, onClick }: { etf: Etf; onClick: () => void }) {
           {/* V8 Notch: the pill, and the logo's circle curves around it. */}
           {lev === 'notch' && <LevPill etf={etf} className={styles.levPillNotch} />}
         </span>
-      }
-      label={
-        lev === 'heading' ? (
-          // V5 After heading: what it follows, then "3x Long" (L3 Tag) right after — "Nasdaq 100 [3x Long]". The name
-          // ends in "…" first; the tag always shows.
-          <span className={styles.levHead}>
-            <span className={styles.levHeadText}>{plain}</span>
-            <SideTag etf={etf} />
-          </span>
-        ) : (
-          plain
-        )
-      }
-      description={
-        <span className={styles.fundTitle}>
-          <span className={styles.fundSym}>{etf.sym}</span>
-          <span className={styles.fundName}>{etf.name}</span>
-        </span>
-      }
-      trailing={
-        <span className={styles.cellPrice}>
-          <span className={styles.cellValue}><Usd value={etf.price} layout="inline" /></span>
-          <EtfMove change={etf.change} />
-        </span>
-      }
-      onClick={onClick}
+      ) : undefined}
+      // V5 After heading (the default): what it follows, then "3x Long" (L3 Tag) right after — "Nasdaq 100 [3x Long]".
+      tag={lev === 'heading' ? <SideTag etf={etf} /> : undefined}
+      price={<Usd value={etf.price} align="end" />}
+      changePct={etf.change}
+      onOpen={onClick}
+      aria-label={`${plain}, ${etf.sym}, ${etf.name}${etf.kind === 'leveraged' ? `, ${etf.lev} ${etf.side === 'long' ? 'Long' : 'Short'}` : ''}`}
     />
   )
   if (lev !== 'corner') return cell
@@ -30572,7 +30917,7 @@ function LevPill({ etf, className }: { etf: Etf; className?: string }) {
 }
 
 /**
- * The Boosted tab's note (3 Nov): what a 3x fund does, in one glance — "Market ▲ 1% → 3x Boosted ▲ 3%" — and a button to
+ * The Boosted tab's note (3 Nov): what a 3x fund does, in one glance — "Market +1% → 3x Boosted +3%" — and a button to
  * "How Boosted ETFs work". Three looks, all small: a card, a chip, or the strip with the sentence. FLAG: hand-made.
  */
 // The Boosted ticker's lines: whichever way the market moves, one side is up 3%.
@@ -30581,7 +30926,8 @@ const TICKER: BoostLine[] = [
   { up: false, subject: 'Market', move: '−1%', tag: { text: '3x Short', long: false }, gain: '+3%' },
 ]
 
-function BoostNote({ kind, tone, onOpen }: { kind: string; tone: string; onOpen: () => void }) {
+function BoostNote({ kind, tone, onOpen }: { kind: string; tone: string; onOpen?: () => void }) {
+  const look = useFlowOption('us-stocks', 'boostTicker', 'edges') as BoostLook
   if (kind === 'strip') {
     return (
       <BoostStrip
@@ -30589,15 +30935,17 @@ function BoostNote({ kind, tone, onOpen }: { kind: string; tone: string; onOpen:
         tone={tone}
         label="Market moves +1%: a 3x Long Boosted ETF moves +3%. Market moves −1%: a 3x Short Boosted ETF moves +3%."
         onOpen={onOpen}
+        gradient
+        look={look}
       />
     )
   }
 
   const sum = (
     <span className={styles.boostSum} aria-hidden="true">
-      <span>Market <b className={styles.boostUp}>▲ 1%</b></span>
+      <span>Market <b className={styles.boostUp}>+1%</b></span>
       <span className={styles.boostArrow}>→</span>
-      <span>3x Boosted <b className={styles.boostHot}>▲ 3%</b></span>
+      <span>3x Boosted <b className={styles.boostHot}>+3%</b></span>
     </span>
   )
   const label = 'If the market goes up 1% in a day, a 3x Boosted ETF aims to go up 3%. How Boosted ETFs work'
@@ -30610,18 +30958,25 @@ function BoostNote({ kind, tone, onOpen }: { kind: string; tone: string; onOpen:
       </button>
     )
   }
-  return (
-    <button type="button" className={styles.boostCard} data-tone={tone} aria-haspopup="dialog" aria-label={label} onClick={onOpen}>
-      <span className={styles.boostTile} aria-hidden="true"><Icon icon={boltIcon} size={16} /></span>
-      <span className={styles.boostCardText}>
-        {sum}
-        <span className={styles.boostCardSub}>In one day · Tap to see how it works</span>
+  // Text (3 Nov, was a small card): on the gold strip — a description, about returns (the 1% and 3% in white): the Boosted tab's gold bolt (no tile, sliding
+  // in from the left), then "For every 1% the market goes up in a day, a 3x Boosted ETF aims to return 3%."
+  // With the sheet on, the (i) comes back and it is a button.
+  const body = (
+    <>
+      <span className={styles.boostTextIconWrap} aria-hidden="true"><Icon icon={boltIcon} size={20} className={styles.boostTextIcon} /></span>
+      <span className={styles.boostTextSentence}>
+        For every <b className={styles.boostTextUp}>1%</b> the market goes up in a day, a 3x Boosted ETF aims to return&nbsp;<b className={styles.boostTextUp}>3%</b>.
       </span>
+    </>
+  )
+  if (!onOpen) return <p className={styles.boostCard} data-tone={tone} data-text="" aria-label={label.replace(' How Boosted ETFs work', '')}>{body}</p>
+  return (
+    <button type="button" className={styles.boostCard} data-tone={tone} data-text="" aria-haspopup="dialog" aria-label={label} onClick={onOpen}>
+      {body}
       <Icon icon={infoIcon} size={16} className={styles.boostCardInfo} />
     </button>
   )
 }
-
 
 export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   const { go, back } = useUsNav()
@@ -30760,7 +31115,7 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   display: flex;
 }
 
-/* ≈ ₹ under the $ price: 10, secondary. */
+/* ≈ ₹ under the $ price (playground): secondary. */
 .priceInr {
   font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
@@ -30780,12 +31135,12 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 }
 
 .name {
-  font: var(--l3-text-heading-18);
+  font: var(--l3-text-heading-14); /* 14 (3 Nov), under the ticker line */
   color: var(--l3-content-primary);
   margin: 0;
 }
 
-/* The ticker and the fund's own name, under the plain name (2 Nov). */
+/* Ticker · exchange, above the fund's name (3 Nov). */
 .alias {
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
@@ -30833,6 +31188,10 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 .inside {
   flex: none;
   align-items: center;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: 0;
   display: flex;
 }
 
@@ -31153,20 +31512,16 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 }
 
 .about {
+  -webkit-line-clamp: 3;
   font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
-  margin: 0;
-}
-
-/* Boosted funds' About: 3 lines until "… more" opens it (regular funds show it whole in their panel). */
-.aboutText .about {
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  margin: 0;
   display: -webkit-box;
   overflow: hidden;
 }
 
-.aboutText .about[data-open] {
+.about[data-open] {
   -webkit-line-clamp: unset;
 }
 
@@ -31236,23 +31591,33 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 .events {
   padding: var(--l3-spacing-24) var(--l3-spacing-16);
 }
+
+/* News & Events: the Events / News pills over the list, as on the stock page. */
+.feed {
+  gap: var(--l3-spacing-24);
+  flex-direction: column;
+  display: flex;
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfPage.tsx`
 
 ```tsx
 // 9001:2 · ETF page — an ETF in the stock page layout: fund name over its ticker, price, ETF tag, line chart with a period picker,
-// Overview (a plain line on what it is — "SPY tracks …" —, Allocation by sector and Top holdings (EtfHoldings), Daily Performance, Fundamentals — the yearly fee lives there, not up top) and Events tabs, Buy / Sell dock (Go Long / Go Short on leveraged ETFs).
+// Overview (About Fund — "SPY tracks …" —, Allocation by sector as a donut and Top holdings (EtfHoldings), Daily Performance,
+// Fundamentals — the yearly fee lives there, not up top) and News & Events tabs, Buy / Sell dock (Go Long / Go Short on
+// leveraged ETFs). About, Daily Performance (3 × 2 grid) and News & Events are the stock page's own sections (3 Nov).
 // Reads the current ETF (setCurrentEtf; SPY by default).
 // FLAG: copy not in copy.json yet (hard-coded).
 // FLAG: price block, chart, range meter and info buttons are hand-made
 // (EtfPage.module.css, copied from the stock page) instead of L3 Chart; same as the stock page.
-import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Actionbar, ActionbarAction } from '@l3/components/Actionbar'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { MaskIcon } from '@l3/components/MaskIcon'
+import { msTrendingDown, msTrendingUp } from '@l3/icons/material'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
@@ -31261,10 +31626,13 @@ import { useUsNav } from '../../nav'
 import { useUsJourney } from '../../../../shared/userStatus'
 import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { activationFooter, type StockState } from '../activation/StockPage'
+import { AboutCard, DailyPerformance, Events, News } from '../activation/sections'
 import { catalogue } from '../../data'
 import { getCurrentEtf } from './currentEtf'
-import { BUY_PAD, ETF_HOLDINGS, ETF_LIST, PERIODS, aboutFor, detailsFor, issuerLogo, stocksBehind, issuerName, openHolding, percent, tagsFor } from './data'
-import { BoostedSheet } from './BoostedSheet'
+import { BUY_PAD, ETF_HOLDINGS, ETF_LIST, PERIODS, aboutFor, detailsFor, issuerLogo, newsFor, stocksBehind, issuerName, openHolding, percent, tagsFor } from './data'
+import { useFlowOption } from '../../../../shared/prototype'
+import { BOOST_SHEET, BoostedSheet } from './BoostedSheet'
+import { BoostStrip, type BoostLine, type BoostLook } from './BoostStrip'
 import listStyles from './Etf.module.css'
 import { Allocation, TopHoldings } from './EtfHoldings'
 import { boltIcon, infoIcon } from './icons'
@@ -31276,7 +31644,7 @@ const BUY_PAD_EMPTY_WALLET = '5837:96155'
 
 const SECTIONS = [
   { value: 'overview', label: 'Overview' },
-  { value: 'events', label: 'Events' },
+  { value: 'news', label: 'News & Events' },
 ]
 const Y_STEPS = [1.006, 1.004, 1.002, 1, 0.998, 0.996, 0.994, 0.993]
 
@@ -31286,15 +31654,6 @@ function SectionTitle({ title }: { title: string }) {
       <div className={styles.sectionHeading}><h2>{title}</h2></div>
       {/* FLAG: hand-made info button (L3 has Tooltip / BottomSheetHeader info) */}
       <button type="button" className={styles.info} aria-label={`About ${title}`}><Icon icon={infoIcon} size={16} /></button>
-    </div>
-  )
-}
-
-function Stat({ label, value, end }: { label: string; value: ReactNode; end?: boolean }) {
-  return (
-    <div className={styles.stat} data-end={end || undefined}>
-      <span className={styles.statLabel}>{label}</span>
-      <span className={styles.statValue}>{value}</span>
     </div>
   )
 }
@@ -31313,25 +31672,8 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
   const dayChangeAbs = (etf.price * etf.change) / (100 + etf.change)
   const [period, setPeriod] = useState('1D')
   const [section, setSection] = useState('overview')
-  const [aboutOpen, setAboutOpen] = useState(false)
+  const [feed, setFeed] = useState('events')
   const [boostOpen, setBoostOpen] = useState(false)
-  // "… more" only when the About text is longer than its 3 lines (a one-line text has nothing more to show).
-  const [aboutEl, setAboutEl] = useState<HTMLParagraphElement | null>(null)
-  const [aboutClamped, setAboutClamped] = useState(false)
-  useLayoutEffect(() => {
-    const p = aboutEl
-    if (!p || aboutOpen) return
-    const check = () => setAboutClamped(p.scrollHeight > p.clientHeight + 1)
-    check()
-    // Again once styles and fonts have settled, and whenever the text's box changes.
-    const frame = requestAnimationFrame(check)
-    const ro = new ResizeObserver(check)
-    ro.observe(p)
-    return () => {
-      cancelAnimationFrame(frame)
-      ro.disconnect()
-    }
-  }, [aboutEl, aboutOpen, etf.sym])
   const [body, setBody] = useState<HTMLDivElement | null>(null)
   // The Actionbar shows symbol + price once the big price has scrolled away.
   const [scrolled, setScrolled] = useState(false)
@@ -31366,13 +31708,14 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
 
   // No "≈ ₹" lines on the ETF page (3 Nov): every amount is inline <Usd>.
   // Values are $ numbers or $ text ('$672B'); <Usd> shows them in the currency picked. Volume is shares / a $ figure as written.
+  // A 3 × 2 grid under the day's range, as on the stock page.
   const dayStats: [string, ReactNode][] = [
-    ['Open', <Usd value={etf.price - dayChangeAbs * 0.6} layout="inline" />],
-    ['Prev. Close', <Usd value={etf.price - dayChangeAbs} layout="inline" />],
-    ['AUM', <Usd text={etf.aum} layout="inline" />],
-    ['Volume', <Usd text={d.volume} layout="inline" />],
-    ['52-week high', <Usd value={d.high52} layout="inline" />],
-    ['52-week low', <Usd value={d.low52} layout="inline" />],
+    ['Open', <Usd value={etf.price - dayChangeAbs * 0.6} />],
+    ['Prev. Close', <Usd value={etf.price - dayChangeAbs} />],
+    ['AUM', <Usd text={etf.aum} />],
+    ['Volume', <Usd text={d.volume} />],
+    ['52-week high', <Usd value={d.high52} />],
+    ['52-week low', <Usd value={d.low52} />],
   ]
   const fundamentals: [string, ReactNode][] = [
     // The expense ratio, said plainly (most users don't know their own mutual fund's): what it costs per $100 a year.
@@ -31384,17 +31727,16 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
     ['Holdings', d.holdings],
     ...(leveraged ? ([['Leverage', `${etf.lev} daily, ${long ? 'long' : 'short'}`]] as [string, ReactNode][]) : []),
   ]
-  const at = Math.min(100, Math.max(0, ((etf.price - d.low) / (d.high - d.low)) * 100))
 
   return (
     <Phone label={etf.name} header={header} footer={footer} gesture="none" bodyRef={setBody} className={backdrop ? styles.still : undefined}>
       <div className={styles.assetHeader}>
         <div className={styles.titleRow}>
           <div className={styles.namePrice}>
-            {/* The fund's name, its ticker under it (2 Nov) — no plain name here; Overview's first line explains it. */}
-            <h1 className={styles.name}>{etf.name}</h1>
-            {/* Ticker · exchange (3 Nov, after Perplexity's "TTWO · NASDAQ"), the exchange from the US snapshot. */}
+            {/* Ticker · exchange (after Perplexity's "TTWO · NASDAQ"), the exchange from the US snapshot; the fund's name
+                under it in 14 (3 Nov). */}
             <p className={styles.alias}>{catalogue[etf.sym]?.exchange ? `${etf.sym} · ${catalogue[etf.sym].exchange}` : etf.sym}</p>
+            <h1 className={styles.name}>{etf.name}</h1>
             <div className={styles.priceRow}>
               <span className={styles.price}><Usd value={etf.price} layout="inline" /></span>
               <span className={styles.change}>
@@ -31406,7 +31748,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
                 </span>
               </span>
             </div>
-            {/* The price in rupees at the live rate, always, small under the $ (no $ / ₹ switch on this page). */}
+            {/* The price in rupees at the live rate, always, small under the $ (playground: no $ / ₹ switch on this page). */}
             <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>
           </div>
           <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
@@ -31423,17 +31765,22 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
             )}
           </div>
           {/* What's inside (3 Nov): up to three of the biggest holdings' logos, then a "+35" capsule tucked under the last
-              one — the stocks of the index a Boosted fund follows. */}
-          {/* Boosted funds only (playground, 3 Nov): regular funds keep the playground's header. */}
-          {leveraged && behind && (
-            <span className={styles.inside} aria-label={`${behind.follows ? 'Follows' : 'Holds'} ${behind.count.toLocaleString('en-US')} ${behind.count === 1 ? 'stock' : 'stocks'}`}>
+              one — the rest of the fund's stocks. A leveraged fund shows the stocks of the index it follows. A tap opens
+              the Top holdings page (3 Nov). */}
+          {behind && (
+            <button
+              type="button"
+              className={styles.inside}
+              onClick={act(() => go(ETF_HOLDINGS))}
+              aria-label={`${behind.follows ? 'Follows' : 'Holds'} ${behind.count.toLocaleString('en-US')} ${behind.count === 1 ? 'stock' : 'stocks'}. See top holdings`}
+            >
               <span className={styles.insideLogos} aria-hidden="true">
                 {etf.holdings.slice(0, Math.min(3, behind.count)).map((h) => <HoldingLogo key={h.sym} sym={h.sym} size={24} />)}
                 {behind.count > 3 && (
                   <span className={styles.insideCount}>+{(behind.count - Math.min(3, etf.holdings.length)).toLocaleString('en-US')}</span>
                 )}
               </span>
-            </span>
+            </button>
           )}
         </div>
       </div>
@@ -31461,58 +31808,28 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
         />
         <div className={styles.tabsBlock}>
           <Tabs appearance="underline" width="fill" aria-label="ETF sections" className={styles.flatTabs} value={section} onChange={setSection} items={SECTIONS} />
-          {section === 'events' ? (
-            <div className={styles.overview}>
-              <section className={styles.section}>
-                <ul className={styles.events}>
-                  {d.events.map((e) => (
-                    <li key={e.title}>
-                      <span className={styles.eventDate} aria-hidden="true"><b>{e.day}</b>{e.month}</span>
-                      <div>
-                        <p className={styles.newsTitle}>{e.title}</p>
-                        <p className={styles.newsMeta}>{e.detail}</p>
-                        <Tag variant="secondary" color="neutral" size="sm" className={styles.impact}>{e.type}</Tag>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+          {section === 'news' ? (
+            // News & Events, as on the stock page: Events / News pills, then the list.
+            <div className={styles.feed}>
+              <Tabs
+                appearance="pill"
+                size="sm"
+                aria-label="Show"
+                value={feed}
+                onChange={setFeed}
+                items={[
+                  { value: 'events', label: 'Events' },
+                  { value: 'news', label: 'News' },
+                ]}
+              />
+              {feed === 'events' ? <Events items={d.events} /> : <News items={newsFor(etf)} stock={etf.sym} />}
             </div>
           ) : (
             <div className={styles.overview}>
               {/* A Boosted fund (3 Nov): what its leverage does, in one sentence on the gold strip, above About. */}
-              {leveraged && <LeverageStrip etf={etf} onOpen={act(() => setBoostOpen(true))} />}
-              {/* What the ETF is (3 Nov, after N26's fund page): a light "About" heading, the text with no box — "SPY
-                  tracks …" — cut to 3 lines with Read more / Read less. */}
-              {/* Regular funds keep the playground's boxed "About this ETF" panel, with jojo's text (3 Nov). */}
-              {!leveraged && (
-                <section className={styles.section}>
-                  <SectionTitle title="About this ETF" />
-                  <div className={styles.panel}>
-                    <p className={styles.about}>{aboutFor(etf)}</p>
-                  </div>
-                </section>
-              )}
-              {leveraged && (
-              <section className={`${styles.section} ${styles.aboutSection}`} aria-label="About">
-                <h2 className={styles.aboutTitle}>About</h2>
-                {/* Read more is inline (3 Nov, after Finimize): "… more" over the end of the 3rd line while closed,
-                    "Less" right after the last word once open. */}
-                <div className={styles.aboutText}>
-                  <p className={styles.about} data-open={aboutOpen || undefined} ref={setAboutEl}>
-                    {aboutFor(etf)}
-                    {aboutOpen && (
-                      <> <button type="button" className={styles.readMore} onClick={() => setAboutOpen(false)} aria-expanded>Less</button></>
-                    )}
-                  </p>
-                  {!aboutOpen && aboutClamped && (
-                    <button type="button" className={styles.moreInline} onClick={() => setAboutOpen(true)} aria-expanded={false}>
-                      <span aria-hidden="true">… </span><span className={styles.readMore}>more</span>
-                    </button>
-                  )}
-                </div>
-              </section>
-              )}
+              {leveraged && <LeverageStrip etf={etf} onOpen={BOOST_SHEET ? act(() => setBoostOpen(true)) : undefined} />}
+              {/* What the ETF is: the stock page's About card ("SPY tracks …"), three lines until Read more. */}
+              <AboutCard title="About Fund" text={aboutFor(etf)} />
               {!leveraged && (
                 <section className={styles.section}>
                   <SectionTitle title="Allocation" />
@@ -31523,33 +31840,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
                 <SectionTitle title={leveraged ? 'Tracks' : 'Top holdings'} />
                 <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} onOthers={act(() => go(ETF_HOLDINGS))} />
               </section>
-              <section className={styles.section}>
-                <SectionTitle title="Daily Performance" />
-                <div className={styles.panel} data-gap="04">
-                  <div className={styles.lowHigh}>
-                    <Stat label="1D Low" value={<Usd value={d.low} layout="inline" />} />
-                    <Stat label="1D High" value={<Usd value={d.high} layout="inline" />} end />
-                  </div>
-                  <div
-                    className={styles.dayRange}
-                    role="meter"
-                    aria-label="Last traded price within today's range"
-                    aria-valuemin={d.low}
-                    aria-valuemax={d.high}
-                    aria-valuenow={etf.price}
-                    style={{ '--at': `${at}%` } as React.CSSProperties}
-                  >
-                    <span className={styles.dayTick} />
-                    <span className={styles.dayBolt}><Icon icon={boltIcon} size={16} /></span>
-                  </div>
-                  <p className={styles.ltp}><Icon icon={boltIcon} size={12} />Last Traded Price : <Usd value={etf.price} layout="inline" /></p>
-                </div>
-                <dl className={styles.panel} data-gap="12" data-rows="">
-                  {dayStats.map(([k, v], i) => (
-                    <div className={styles.kv} data-sep={i > 0 || undefined} key={k}><dt>{k}</dt><dd>{v}</dd></div>
-                  ))}
-                </dl>
-              </section>
+              <DailyPerformance price={etf.price} low={d.low} high={d.high} stats={dayStats} />
               <section className={styles.section}>
                 <SectionTitle title="Fundamentals" />
                 <dl className={styles.panel} data-gap="12" data-rows="">
@@ -31562,7 +31853,7 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
           )}
         </div>
       </div>
-      {leveraged && !backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
+      {BOOST_SHEET && leveraged && !backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
     </Phone>
   )
 }
@@ -31575,22 +31866,45 @@ const INDEX_SAID: Record<string, string> = {
 }
 
 /**
- * A Boosted ETF's strip, above About (3 Nov): two lines on a gold gradient (full on the left, fading right) with the gold
- * bar — "If the Nasdaq-100 moves up 1% in a day, TQQQ aims to move up 3%." (a short fund: "moves down 1% … aims to move
- * up 3%"), the move up in green. The (i) leads; a tap opens How Boosted ETFs work. FLAG: hand-made (Etf.module.css).
+ * A Boosted ETF's strip, above About (3 Nov), in one of seven versions (flow option "ETF page strip"):
+ * - Sentence (default): two lines on a gold gradient with the gold bar — "If the Nasdaq-100 moves up 1% in a day, TQQQ
+ *   aims to move up 3%." (a short fund: "moves down 1% … aims to move up 3%"), the move up in green, led by the trend icon.
+ * - Bolt sentence (jojo): the same sentence led by the Boosted tab's gold bolt, sliding in from the left.
+ * - V1–V5: the ETF list's Boosted ticker layouts with this fund's one line — "Nasdaq-100 moves +1% → [3x Long] moves +3%".
+ * With the sheet on, a tap opens How Boosted ETFs work. FLAG: hand-made (Etf.module.css).
  */
-function LeverageStrip({ etf, onOpen }: { etf: ReturnType<typeof getCurrentEtf>; onOpen: () => void }) {
+function LeverageStrip({ etf, onOpen }: { etf: ReturnType<typeof getCurrentEtf>; onOpen?: () => void }) {
+  const version = useFlowOption('us-stocks', 'etfBoostStrip', 'sentence')
   const long = etf.side === 'long'
   const times = Number.parseFloat(etf.lev ?? '1')
   const index = INDEX_SAID[etf.tracks] ?? etf.tracks
   const sentence = `If ${index} moves ${long ? 'up' : 'down'} 1% in a day, ${etf.sym} aims to move up ${times}%.`
+  if (version !== 'sentence' && version !== 'bolt') {
+    const line: BoostLine = { up: long, subject: etf.tracks, move: long ? '+1%' : '−1%', tag: { text: `${etf.lev} ${long ? 'Long' : 'Short'}`, long }, gain: `+${times}%` }
+    return <BoostStrip lines={[line]} tone="gold" gradient look={(version === 'bolt-lead' ? 'bolt' : version) as BoostLook} label={sentence} onOpen={onOpen} />
+  }
+  const text = (
+    <span className={listStyles.boostSentence} aria-hidden="true">
+      If {index} moves <b className={listStyles.boostMarket} data-down={long ? undefined : ''}>{long ? 'up' : 'down'} 1%</b> in a day,{' '}
+      {etf.sym} aims to move <b className={listStyles.boostGain}>up&nbsp;{times}%</b>.
+    </span>
+  )
+  const lead = version === 'bolt'
+    ? <span className={listStyles.boostTextIconWrap} aria-hidden="true"><Icon icon={boltIcon} size={20} className={listStyles.boostTextIcon} /></span>
+    : <Icon icon={long ? msTrendingUp : msTrendingDown} size={16} className={long ? listStyles.boostIcon : listStyles.boostIconDown} />
+  // With no sheet to open (BOOST_SHEET off) it is a plain note led by its icon; with the sheet, a button led by the (i).
+  if (!onOpen) {
+    return (
+      <p className={listStyles.boostLine} data-tone="gold" data-gradient="" data-static="" aria-label={sentence}>
+        {lead}
+        {text}
+      </p>
+    )
+  }
   return (
     <button type="button" className={listStyles.boostLine} data-tone="gold" data-gradient="" aria-haspopup="dialog" aria-label={`${sentence} How Boosted ETFs work`} onClick={onOpen}>
       <Icon icon={infoIcon} size={16} className={listStyles.boostIcon} />
-      <span className={listStyles.boostSentence} aria-hidden="true">
-        If {index} moves <b className={listStyles.boostMarket} data-down={long ? undefined : ''}>{long ? 'up' : 'down'} 1%</b> in a day,{' '}
-        {etf.sym} aims to move <b className={listStyles.boostGain}>up&nbsp;{times}%</b>.
-      </span>
+      {text}
     </button>
   )
 }
@@ -31781,6 +32095,7 @@ export const getCurrentEtf = (): Etf => {
 // ETF page shows. Sample numbers — the API would return the same shapes.
 // FLAG: copy not in copy.json yet — all UI text in this part is hard-coded.
 import { catalogue, stockFor, openStock } from '../../data'
+import type { NewsItem } from '../activation/data'
 
 export type EtfHolding = { sym: string; weight: number }
 export type Etf = {
@@ -32106,6 +32421,17 @@ export function detailsFor(etf: Etf) {
   }
 }
 
+/** The ETF page's News (3 Nov, as the stock page's News & Events): stories about the fund and the market it follows. */
+export function newsFor(etf: Etf): NewsItem[] {
+  const index = etf.kind === 'leveraged' ? etf.tracks : `the ${etf.tracks}`
+  return [
+    { title: `${etf.sym} draws fresh money as US stocks open higher`, source: 'The Economic Times', time: '25m ago', img: 'news-1.png', impact: 'positive', why: 'More buyers in the fund' },
+    { title: `Rate worries weigh on ${index}`, source: 'Reuters', time: '2h ago', img: 'news-2.png', impact: 'negative', why: 'Could slow the index this week' },
+    { title: 'Big tech earnings lift US markets', source: 'Team Lemonn', time: '5h ago', img: 'news-1.png', impact: 'positive', why: 'Its biggest holdings are up' },
+    { title: `What ${etf.sym} holds and why it matters`, source: 'Team Lemonn', time: '2 days ago', img: 'news-2.png', impact: 'neutral' },
+  ]
+}
+
 export const PERIODS = ['1D', '1W', '1M', '1Y', '3Y', '5Y']
 export const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 export const percent = (n: number) => `${n.toFixed(2)}%`
@@ -32196,8 +32522,9 @@ export const screens: UsScreenMap = {
 
 ```tsx
 // Small pieces the ETF screens share: the issuer logo disc, a holding's logo, the day-change figure and the leveraged tag.
-// FLAG: hand-made logo disc and change figure (module CSS) — L3 has no ETF / issuer logo. The ETF list rows use StockListCard (PriceChange); EtfMove is only for the ETF page.
+// FLAG: hand-made logo disc (module CSS) — L3 has no ETF / issuer logo. Changes are L3 PriceChange (EtfMove), as StockListCard.
 import { Avatar } from '@l3/components/Avatar'
+import { PriceChange } from '@l3/components/PriceChange'
 import { Tag } from '@l3/components/Tag'
 import { asset } from '../../asset'
 import { logoFor, logoPlate } from '../../data'
@@ -32233,17 +32560,11 @@ export const etfLogoUrl = (sym: string) => {
 }
 
 /**
- * A day change: ▲ / ▼ in the up / down colour, then the size of the move. No "+" / "−" (3 Nov): the arrow already says
- * which way. Screen readers get the word. `lg` is the ETF page's big change next to the price.
+ * A day change: L3 PriceChange, "+" / "−" in the up / down colour, no arrow — as every stock card in the app (3 Nov).
+ * `lg` is the ETF page's big change next to the price.
  */
 export function EtfMove({ change, size = 'sm' }: { change: number; size?: 'sm' | 'lg' }) {
-  const up = change >= 0
-  return (
-    <span className={styles.move} data-up={up || undefined} data-size={size === 'lg' ? 'lg' : undefined} aria-label={`${up ? 'up' : 'down'} ${Math.abs(change).toFixed(2)}%`}>
-      <span className={styles.tri} aria-hidden="true" />
-      <span aria-hidden="true">{Math.abs(change).toFixed(2)}%</span>
-    </span>
-  )
+  return <PriceChange value={change} size={size} />
 }
 
 /** "3x Long" / "3x Short" on leveraged ETFs, nothing on regular ones. */
@@ -60658,12 +60979,20 @@ type StockListCardProps = {
   /** Logo image URL (a square image; ETFs pass their issuer logo on its plate). Without one the Avatar shows `initials`. Always the L3 Avatar at 40, so every list looks the same. */
   logoUrl?: string
   initials?: string
-  /** A small Tag after the symbol, e.g. "3x Long" (ListCell's label suffix). */
+  /**
+   * The logo itself, for a list that marks it (e.g. a Boosted ETF's "3x" pill on the logo's foot). Build it around the
+   * same L3 Avatar at 40; without it the card draws that Avatar from `logoUrl` / `initials`.
+   */
+  logo?: ReactNode
+  /** A small Tag after the symbol, e.g. "3x Long" (an L3 Tag, keeping its own colour; ListCell's label suffix). */
   tag?: ReactNode
   /** The price, already formatted by the caller: `<Usd value>` for US, `inr()` for India. */
   price: ReactNode
-  /** The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). */
-  changePct: number
+  /**
+   * The day's change in %, shown with its sign in green / red — never an arrow too (the user's rule, 3 Nov). Leave it
+   * out when the right side is one number that isn't a price, e.g. a holding's weight in an ETF's Top holdings.
+   */
+  changePct?: number
   /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
   onOpen?: () => void
   'aria-label'?: string
@@ -60675,13 +61004,13 @@ type StockListCardProps = {
  *
  * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
-export function StockListCard({ symbol, name, logoUrl, initials, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
   return (
     <ListCell
       variant="card"
       as={onOpen ? 'button' : undefined}
       raised={false}
-      iconLeft={<Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
       labelSize="14"
@@ -60690,7 +61019,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, tag, price, cha
       trailing={
         <span className={styles.price}>
           <span className={styles.value}>{price}</span>
-          <PriceChange value={changePct} size="sm" />
+          {changePct !== undefined && <PriceChange value={changePct} size="sm" />}
         </span>
       }
       onClick={onOpen}
