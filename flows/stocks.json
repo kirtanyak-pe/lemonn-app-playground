@@ -4,7 +4,7 @@
   "description": "The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "9448ca7",
+    "commit": "4afbde2",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -188,7 +188,7 @@
       "id": "stocks-19",
       "name": "Home · US tab · under review · Contact Support",
       "figma": "5776:80202",
-      "note": "Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\\",
+      "note": "Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\\",
       "goesTo": [],
       "figmaUrl": ""
     },
@@ -274,6 +274,7 @@
     "src/flows/stocks/components/us/sheets/UsFtuxSheet.tsx",
     "src/flows/stocks/components/us/sheets/UsSheets.module.css",
     "src/flows/stocks/components/us/useAutoSlide.ts",
+    "src/flows/stocks/components/us/useLiveHeatmap.ts",
     "src/flows/stocks/components/useSwipeBetween.ts",
     "src/flows/stocks/copy.json",
     "src/flows/stocks/copy.ts",
@@ -315,6 +316,7 @@
     "src/shared/money.module.css",
     "src/shared/money.tsx",
     "src/shared/prototype.ts",
+    "src/shared/support.ts",
     "src/shared/ui/Flag.module.css",
     "src/shared/ui/Flag.tsx",
     "src/shared/ui/MainNav.tsx",

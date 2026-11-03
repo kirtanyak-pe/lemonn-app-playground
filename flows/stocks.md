@@ -1,6 +1,6 @@
 # Flow: Stocks (`stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `9448ca7` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.
 
@@ -28,7 +28,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-15` | Home · US tab · activated · add money | [5776:81870]() | `us-stocks-20` | US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too. |
 | `stocks-16` | Home · US tab · money ready | [5796:87332]() | `stocks-17` | Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59). |
 | `stocks-17` | Home · US tab · activated · holding | [5826:92885]() | — | US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet. |
-| `stocks-19` | Home · US tab · under review · Contact Support | [5776:80202]() | — | Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\ |
+| `stocks-19` | Home · US tab · under review · Contact Support | [5776:80202]() | — | Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\ |
 | `stocks-20` | Home · US tab · money on the way | [5796:86490]() | `us-stocks-28` | After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\ |
 | `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13`, `us-stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
 
@@ -293,6 +293,11 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-03 — US tab shortcuts are Analysis · ETFs · Watchlist · Referral again, as on the IND tab (Fractional and Market hours removed; their icons stay in assets/shortcuts, unused).
+- 2026-11-03 — US tab: Top analyst picks is a list by default — four stock rows (logo · symbol over name; the recommendation, green / red, over "7D" and the real 7-day move); View all → Market, in the header and as a tertiary Small button (flat, chevron) under the four rows. The cards with the 7-day line stay as the "Analyst picks: Cards" option.
+- 2026-11-03 — US tab: the heatmap section is titled "Heatmap" (was "Sectors"). Pill tabs at least 48 wide now come from L3 (tabs 1.14.0, pin 4afbde2).
+- 2026-11-03 — US tab: Top analyst picks (after Top Movers) and the Sectors heatmap (after Brands You Know) are back, from jojo. A pick card is the Top Movers card: its line and "7D" are the real last 7 days (snapshot closes to the ticking price), the recommendation is a sample. Sectors: S&P 500 / Nasdaq 100 / Dow Jones switcher, cap chip, sector pills, nine live tiles, biggest rise top left.
+- 2026-11-03 — Home states are one page: moving between them (activation submitted → under review → approved sheet, money on the way, ready) no longer slides; only the card or sheet changes. Contact Support (under review after a day) opens an email to support@lemonn.co, no longer the risk disclosure (that shows once, when activating).
 - 2026-11-03 — Theme page: no logo stack or big title (the Actionbar's name is the title); the description and disclaimer sit in a flat, rounded Aerobar on surface-default with a light border, then the stocks. Theme cards are compact (about 2.2 across): 3 overlapping 32 logos + "+n", name in Label 14, two-line description, "N stocks ›".
 - 2026-11-03 — Explore by themes is a rail of big theme cards (logo collage, name, description, "N stocks ›") instead of a 2-column grid of small ones, and each opens a new theme page (`stocks-23` … `28`): back + name in the Actionbar, the explanation (logo stack, description, disclaimer) in its own section, the stocks as StockListCards, then More themes. Six themes, with real US tickers (leveraged ETFs stays out). Reworked from the old app's "Invest in Ideas" (references/2026-11-03/home): its dark header with back, title, description and disclaimer all in the bar area is split so the bar stays light; the stock list leads straight after the intro; the idea cards at the end are the More themes rail. Differences: no dark hero, cards show their logos as a collage, not a 3 × 2 tile grid of a fixed size, themes are static samples.
 
@@ -23622,21 +23627,134 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   color: var(--l3-content-primary);
   font: var(--l3-text-label-10);
 }
+
+/* ---- Top analyst picks: the Top Movers card's foot as two labelled figures, Recommendation (left) and 7D (right) ---- */
+.pickFoot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 126px; /* FLAG: raw px — the titan card's inner width */
+  font: var(--l3-text-label-10);
+  color: var(--l3-content-tertiary);
+}
+
+.pickFoot > span {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+}
+
+.pickFoot > span[data-end] {
+  align-items: flex-end;
+}
+
+.pickFoot b {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-accent-success-default);
+}
+
+.pickFoot b[data-tone='down'] {
+  color: var(--l3-content-accent-error-default);
+}
+
+/* Top analyst picks, list view: the consensus where the price goes (Label 14, green / red), "7D" + the move under it. */
+.pickRating {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-accent-success-default);
+}
+
+.pickRating[data-tone='down'] {
+  color: var(--l3-content-accent-error-default);
+}
+
+.pickWeek {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}
+
+/* ---- Sectors heatmap ---- */
+.heatmap {
+  overflow: hidden;
+  border-radius: var(--l3-radius-12);
+}
+
+/* FLAG: hand-made heatmap tile (button) instead of L3 Card */
+.tile {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  height: 72px; /* FLAG: raw px */
+  padding: var(--l3-spacing-10) 0 0;
+  border: 0;
+  background: var(--l3-surface-primary);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--l3-surface-accent-indicator-down-default);
+  opacity: var(--heat);
+  transition: opacity 0.9s var(--l3-motion-easing-standard), background-color 0.9s var(--l3-motion-easing-standard);
+}
+
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 0.5px var(--l3-border-light); /* hairline */
+  pointer-events: none;
+}
+
+.tile[data-up]::before {
+  background: var(--l3-surface-accent-indicator-up-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile::before {
+    transition: none;
+  }
+}
+
+.tileSym {
+  font: var(--l3-text-heading-12);
+}
+
+.tileChange {
+  font: var(--l3-text-heading-14);
+}
+
+.tilePrice {
+  font: var(--l3-text-description-10);
+}
 ```
 
 ### `src/flows/stocks/components/us/UsHome.tsx`
 
 ```tsx
 // The US Stocks tab's feed: the activation card for the user's state (activate / under review / failed / activated /
-// money ready; none once they hold US stocks), shortcuts, Top Movers, Brands You Know
-// and themes. Ported from the
+// money ready; none once they hold US stocks), shortcuts, Top Movers, Top analyst picks, Brands You Know, the Sectors
+// heatmap and themes. Ported from the
 // US Stocks prototype's Home (src/flows/us-stocks/screens/home/UsHome.tsx), rebuilt with L3 layout blocks.
-// FLAG: hand-made chips, titan / brand cards' insides and logo stacks — see UsHome.module.css.
-import { useId, useState } from 'react'
+// FLAG: hand-made chips, titan / brand cards' insides, heatmap tiles and logo stacks — see UsHome.module.css.
+import { useId, useState, type CSSProperties } from 'react'
 import { Avatar } from '@l3/components/Avatar'
+import { Button } from '@l3/components/Button'
 import { Card } from '@l3/components/Card'
+import { Grid } from '@l3/components/Grid'
 import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
+import { ListCell } from '@l3/components/ListCell'
+import { PriceChange } from '@l3/components/PriceChange'
 import { SectionHeader } from '@l3/components/SectionHeader'
 import { Stack } from '@l3/components/Stack'
 import { Tabs } from '@l3/components/Tabs'
@@ -23646,12 +23764,21 @@ import { handToMarket } from '../../../../shared/data/marketHandoff'
 import { useLiveQuote } from '../../../../shared/data/live'
 import { usLogo, usQuote, viewUsStock } from '../../../../shared/data/usStocks'
 import { Usd, useUsd } from '../../../../shared/money'
+import { useFlowOption } from '../../../../shared/prototype'
 import { usShortcuts } from '../../data'
 import { t } from '../../copy'
 import { Shortcuts } from '../Discover'
 import {
+  analystPicks,
+  type AnalystPick,
   brandRows,
   capBuckets,
+  formatPct,
+  heatSectors,
+  heatStrength,
+  heatmapIndices,
+  sectorSymbols,
+  type HeatSector,
   moverFilters,
   moversFor,
   usStock,
@@ -23663,6 +23790,7 @@ import {
 } from './data'
 import { ThemeRail } from './ThemeCard'
 import { UsActivationCard } from './UsActivationCard'
+import { useLiveHeatmap } from './useLiveHeatmap'
 import styles from './UsHome.module.css'
 
 type UsHomeProps = {
@@ -23687,6 +23815,16 @@ const sign = (up: boolean) => (up ? '+' : '-')
 export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, card = true }: UsHomeProps) {
   const [filter, setFilter] = useState<MoverFilter>('gainers')
   const [cap, setCap] = useState<CapValue>('mega')
+  // Top analyst picks: a list (default, so it doesn't read as a second Top Movers rail) or the cards (prototype option).
+  const picksView = useFlowOption('stocks', 'picksView', 'list')
+  const [index, setIndex] = useState<(typeof heatmapIndices)[number]>('sp')
+  const [heatCap, setHeatCap] = useState<CapValue>('mega')
+  const [sector, setSector] = useState<HeatSector>('all')
+  // Sectors: the cap tier and sector pick the nine tiles; biggest rise top left, biggest fall bottom right.
+  const heat = [...useLiveHeatmap(sectorSymbols(sector, capBuckets.indexOf(heatCap)))].sort((a, b) => b.pct - a.pct)
+  const cycleHeatCap = () => setHeatCap(capBuckets[(capBuckets.indexOf(heatCap) + 1) % capBuckets.length])
+  const heatCapName = t(`us.cap.${heatCap}`)
+  const nextIndex = () => setIndex(heatmapIndices[(heatmapIndices.indexOf(index) + 1) % heatmapIndices.length])
 
   const cycleCap = () => setCap(capBuckets[(capBuckets.indexOf(cap) + 1) % capBuckets.length])
   const capName = t(`us.cap.${cap}`)
@@ -23701,11 +23839,15 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
     handToMarket({ market: 'us', tab: filter === 'gainers' || filter === 'losers' ? filter : 'all', filters: { cap: [`us-${cap}`] } })
     onMarket?.()
   }
+  const openMarket = () => {
+    handToMarket({ market: 'us', tab: 'all' })
+    onMarket?.()
+  }
 
   return (
     <>
       {card && usState !== 'holding' && usState !== 'ready' && <Inset paddingInline="16" paddingBlock="00"><UsActivationCard state={usState} onCta={onActivate} /></Inset>}
-      <Shortcuts items={usShortcuts} onOpen={(id) => { if (id === 'etfs') onEtfs?.(); else if (id === 'fractional' || id === 'hours') onMarket?.() }} />
+      <Shortcuts items={usShortcuts} onOpen={(id) => { if (id === 'etfs') onEtfs?.() }} />
 
       <div data-home="movers">
         <Stack as="section" gap="16" aria-label={t('us.movers.title')}>
@@ -23736,6 +23878,26 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
         </Stack>
       </div>
 
+      <Stack as="section" gap="16" aria-label={t('us.picks.title')}>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.picks.title')} action={{ type: 'view-all', onClick: openMarket }} /></Inset>
+        {picksView === 'list' ? (
+          <Inset paddingInline="16" paddingBlock="00">
+            <Stack gap="12">
+              {analystPicks.slice(0, PICKS_IN_LIST).map((pick) => <PickRow key={pick.sym} pick={pick} onOpen={open} />)}
+              {/* The rest of the picks: a tertiary View all closing the list (L3 Button rule). Small, flat and with a chevron
+                  (the user's call, 3 Nov — an exception to Large buttons). */}
+              <Button variant="tertiary" size="sm" raised="none" fullWidth iconRight={<Icon icon={msChevronRight} />} onClick={openMarket}>{t('us.picks.viewAll')}</Button>
+            </Stack>
+          </Inset>
+        ) : (
+          <div className={styles.scroller} role="region" aria-label={t('us.picks.railLabel')}>
+            <div className={styles.row}>
+              {analystPicks.map((pick) => <PickCard key={pick.sym} pick={pick} onOpen={open} />)}
+            </div>
+          </div>
+        )}
+      </Stack>
+
       <Stack as="section" gap="16" aria-label={t('us.brands.title')}>
         <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.brands.title')} action={{ type: 'view-all', onClick: () => {} }} /></Inset>
         <div className={styles.scroller} role="region" aria-label={t('us.brands.railLabel')}>
@@ -23755,6 +23917,38 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
             ))}
           </div>
         </div>
+      </Stack>
+
+      <Stack as="section" gap="16" aria-label={t('us.heatmap.title')}>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.heatmap.title')} action={{ type: 'switcher', label: t(`us.heatmap.${index}`), onClick: nextIndex, 'aria-label': t('us.heatmap.indexLabel') }} /></Inset>
+        <Stack direction="horizontal" align="center" gap="12" className={styles.chips}>
+          {/* FLAG: hand-made cap chip, as Top Movers' */}
+          <button type="button" className={styles.capChip} aria-label={t('us.cap.switch', { cap: heatCapName })} onClick={cycleHeatCap}>
+            <span className={styles.capName} key={heatCap}>{heatCapName}</span>
+            <Icon icon={lmSwitchArrowVertical} size={16} />
+          </button>
+          <span className={styles.chipDivider} aria-hidden="true" />
+          <Tabs
+            appearance="pill"
+            aria-label={t('us.sectors.tabsLabel')}
+            items={heatSectors.map((value) => ({ value, label: value === 'all' ? t('us.sectors.all') : t(`us.sector.${value}`) }))}
+            value={sector}
+            onChange={(v) => setSector(v as HeatSector)}
+            className={styles.chipTabs}
+          />
+        </Stack>
+        {/* FLAG: heatmap tiles are hand-made buttons with computed colour strength; real prices, ticking with live.ts */}
+        <Inset paddingInline="16" paddingBlock="00">
+          <Grid columns={3} gap="00" className={styles.heatmap}>
+            {heat.map((tile) => (
+              <button key={tile.sym} type="button" className={styles.tile} data-up={tile.pct >= 0 || undefined} style={{ '--heat': heatStrength(tile.pct) } as CSSProperties} onClick={() => open(tile.sym)}>
+                <span className={styles.tileSym}>{tile.sym}</span>
+                <span className={styles.tileChange}>{formatPct(tile.pct)}</span>
+                <span className={styles.tilePrice}><Usd value={tile.price} layout="inline" /></span>
+              </button>
+            ))}
+          </Grid>
+        </Inset>
       </Stack>
 
       <Stack as="section" gap="16" aria-label={t('us.themes.title')}>
@@ -23812,6 +24006,72 @@ function MoverCard({ mover, onOpen }: { mover: MoverToday; onOpen: (sym: string)
       <span className={styles.titanFoot}>
         <Usd value={live.price} layout="inline" />
         <span className={styles.titanChange} data-up={up || undefined}>{sign(up)}{pct.toFixed(2)}%</span>
+      </span>
+    </Card>
+  )
+}
+
+/** How many picks the list shows (View all → the rest on Market). */
+const PICKS_IN_LIST = 4
+
+/** A pick's last 7 days: the snapshot's last week of closes to today's ticking price, and the move over them. */
+function usePickWeek(pick: AnalystPick) {
+  const stock = usStock(pick.sym, pick.name)
+  const live = useLiveQuote(pick.sym, stock.price, stock.change)
+  const week = [...(usQuote(pick.sym)?.closes ?? []).slice(-6), live.price]
+  const weekPct = ((live.price - week[0]) / week[0]) * 100
+  return { week, weekPct, up: weekPct >= 0 }
+}
+
+const pickLabel = (pick: AnalystPick, weekPct: number) =>
+  t('us.picks.label', { name: pick.name, sym: pick.sym, rating: pick.rating, direction: weekPct >= 0 ? 'up' : 'down', pct: Math.abs(weekPct).toFixed(2) })
+
+/** A Top analyst picks row (the list view): the stock row recipe (logo · symbol over name), with the analysts'
+ *  consensus where the price goes and the real 7-day move under it. */
+function PickRow({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) => void }) {
+  const { weekPct } = usePickWeek(pick)
+  return (
+    <ListCell
+      variant="card"
+      raised={false}
+      onClick={() => onOpen(pick.sym)}
+      iconLeft={<Avatar src={usLogo(pick.sym)} initials={pick.sym.slice(0, 2)} size={40} label={pick.name} />}
+      labelSize="14"
+      label={pick.sym}
+      description={pick.name}
+      trailing={<span className={styles.pickRating} data-tone={pick.rating === 'Sell' ? 'down' : 'up'}>{pick.rating}</span>}
+      caption={<span className={styles.pickWeek}>{t('us.picks.week')}<PriceChange value={weekPct} size="sm" /></span>}
+      aria-label={pickLabel(pick, weekPct)}
+    />
+  )
+}
+
+/** A Top analyst picks card (the cards view): the Top Movers card with the analysts' consensus under the line, and the
+ *  real 7-day move, which the line also shows. */
+function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) => void }) {
+  const { week, weekPct, up } = usePickWeek(pick)
+  return (
+    <Card
+      onClick={() => onOpen(pick.sym)}
+      surface="default"
+      className={styles.titan}
+      aria-label={pickLabel(pick, weekPct)}
+    >
+      <span className={styles.titanHead}>
+        <Avatar src={usLogo(pick.sym)} initials={pick.sym} size={24} />
+        <span className={styles.titanName}>{pick.name}</span>
+        <span className={styles.titanArrow}><Icon icon={msChevronRight} size={16} /></span>
+      </span>
+      <MonthLine closes={week} up={up} />
+      <span className={styles.pickFoot}>
+        <span>
+          {t('us.picks.recommendation')}
+          <b data-tone={pick.rating === 'Sell' ? 'down' : 'up'}>{pick.rating}</b>
+        </span>
+        <span data-end="">
+          {t('us.picks.week')}
+          <b data-tone={up ? 'up' : 'down'}>{formatPct(weekPct)}</b>
+        </span>
       </span>
     </Card>
   )
@@ -23886,7 +24146,8 @@ export type CardSpec = {
   slides?: Benefit[]
   /** The button ends with an arrow. */
   arrow?: boolean
-  /** The CTA moves money (add money): brand colour, the app's rule for transaction buttons. */
+  /** The CTA moves money (add money): brand colour, the app's rule for transaction buttons. Not on the activated card's
+   *  "Add Money to US wallet" (3 Nov): an exception, it stays Primary like the card's other CTAs. */
   money?: boolean
   /** The line over the benefits, with a lock ("Start to unlock exclusive benefits"); `unlocked`: an open lock. */
   lockLine?: CopyKey
@@ -23919,7 +24180,7 @@ export const cardSpecs: Record<Exclude<UsState, 'holding'>, CardSpec> = {
   review: { tone: 'honey', title: 'us.review.title', subtitle: 'us.review.subtitle', icon: 'hourglass', lockLine: 'us.lock.soon', slides: lockedBenefits },
   support: { tone: 'honey', title: 'us.review.title', subtitle: 'us.review.subtitle', cta: 'us.support.cta', icon: 'hourglass', lockLine: 'us.lock.soon', slides: lockedBenefits },
   failed: { tone: 'red', title: 'us.failed.title', subtitle: 'us.failed.subtitle', cta: 'us.failed.cta', icon: 'error', lockLine: 'us.lock.activate', slides: lockedBenefits },
-  activated: { tone: 'green', title: 'us.activated.title', subtitle: 'us.activated.subtitle', cta: 'us.activated.cta', money: true, lockLine: 'us.lock.open', unlocked: true, slides: [benefit('stocks'), benefit('fractional'), benefit('evening')] },
+  activated: { tone: 'green', title: 'us.activated.title', subtitle: 'us.activated.subtitle', cta: 'us.activated.cta', lockLine: 'us.lock.open', unlocked: true, slides: [benefit('stocks'), benefit('fractional'), benefit('evening')] },
   onTheWay: { tone: 'honey', title: 'us.onTheWay.title', subtitle: 'us.onTheWay.subtitle', cta: 'us.onTheWay.cta', icon: 'clock', transfer: true },
   ready: { tone: 'green', title: 'us.ready.title', subtitle: 'us.ready.subtitle', cta: 'us.ready.cta', icon: 'check', arrow: true },
 }
@@ -24131,6 +24392,47 @@ export const brandRows: Brand[][] = [
 
 export const formatPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
 export const formatUsd = (n: number) => `$${n.toFixed(2)}`
+/** Tile colour strength: 0.55 at flat up to 1 at ±3%. */
+export const heatStrength = (pct: number) => Math.min(1, 0.55 + (Math.abs(pct) / 3) * 0.45)
+
+// ---- Top analyst picks (US Stocks design, 2 Nov; from jojo) ----
+
+/** The analysts' consensus (sample). The card is the Top Movers card: logo · name · the last 7 days' line, then
+ *  "Recommendation" and "7D" (the real 7-day move, from the snapshot's closes). */
+export type AnalystPick = { sym: string; name: string; rating: 'Strong Buy' | 'Buy' | 'Sell' }
+export const analystPicks: AnalystPick[] = [
+  { sym: 'AMZN', name: 'Amazon', rating: 'Strong Buy' },
+  { sym: 'NVDA', name: 'NVIDIA', rating: 'Strong Buy' },
+  { sym: 'MSFT', name: 'Microsoft', rating: 'Strong Buy' },
+  { sym: 'AVGO', name: 'Broadcom', rating: 'Strong Buy' },
+  { sym: 'META', name: 'Meta', rating: 'Buy' },
+  { sym: 'UBER', name: 'Uber', rating: 'Buy' },
+]
+
+// ---- Sectors heatmap (US Stocks design, 2 Nov; from jojo) ----
+
+/** The index the heatmap shows. Labels: copy `us.heatmap.<value>`. */
+export const heatmapIndices: ('sp' | 'ndx' | 'dow')[] = ['sp', 'ndx', 'dow']
+export type HeatValue = { sym: string; pct: number; price: number }
+/** The nine tiles of "All". Their change % and price are the snapshot's, ticking with live.ts (useLiveHeatmap). */
+export const heatSymbols = ['NVDA', 'AMD', 'AVGO', 'TSLA', 'MU', 'LULU', 'META', 'SLB', 'UNH']
+
+export type HeatSector = 'all' | 'tech' | 'fin' | 'health' | 'consumer' | 'energy' | 'industrials'
+/** Pill labels: copy `us.sector.<value>` ('all' → `us.sectors.all`). */
+export const heatSectors: HeatSector[] = ['all', 'tech', 'fin', 'health', 'consumer', 'energy', 'industrials']
+const SECTOR_SYMBOLS: Record<Exclude<HeatSector, 'all'>, string[]> = {
+  tech: ['NVDA', 'MSFT', 'AAPL', 'ORCL', 'AMD', 'INTC', 'CRM', 'ADBE', 'AVGO'],
+  fin: ['JPM', 'BAC', 'GS', 'WFC', 'MS', 'C', 'V', 'AXP', 'MA'],
+  health: ['LLY', 'PFE', 'UNH', 'MRK', 'ABBV', 'JNJ', 'ISRG', 'BMY', 'TMO'],
+  consumer: ['AMZN', 'NKE', 'COST', 'SBUX', 'MCD', 'TGT', 'KO', 'LULU', 'WMT'],
+  energy: ['XOM', 'CVX', 'COP', 'OXY', 'SLB', 'HAL', 'EOG', 'MPC', 'PSX'],
+  industrials: ['GE', 'BA', 'CAT', 'UPS', 'HON', 'MMM', 'RTX', 'DE', 'LMT'],
+}
+/** The nine tiles for a sector and cap tier (each tier starts the list at a different stock, so the map changes). */
+export const sectorSymbols = (sector: HeatSector, capIndex: number) => {
+  const list = sector === 'all' ? heatSymbols : SECTOR_SYMBOLS[sector]
+  return list.map((_, i) => list[(i + capIndex * 2) % list.length])
+}
 
 // ---- Explore by themes ----
 
@@ -24829,6 +25131,24 @@ export function useAutoSlide(count: number, { every = 3000, slideMs = 500, still
 }
 ```
 
+### `src/flows/stocks/components/us/useLiveHeatmap.ts`
+
+```ts
+import { liveQuote, useLiveTick } from '../../../../shared/data/live'
+import { heatSymbols, usStock, type HeatValue } from './data'
+
+/** The heatmap's tiles: each stock's real price and day change (the US snapshot), moving every 2 s with live.ts.
+ *  `symbols`: the tiles to show (the Sectors heatmap passes a sector's); default the nine on the original heatmap. */
+export function useLiveHeatmap(symbols: string[] = heatSymbols): HeatValue[] {
+  const at = useLiveTick()
+  return symbols.map((sym) => {
+    const stock = usStock(sym)
+    const live = liveQuote(sym, stock.price, stock.change, at)
+    return { sym, pct: live.changePct, price: live.price }
+  })
+}
+```
+
 ### `src/flows/stocks/components/useSwipeBetween.ts`
 
 ```ts
@@ -25154,6 +25474,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.cap.switch": "{cap}, tap to switch",
   "us.brands.title": "Brands You Know",
   "us.brands.railLabel": "Brands",
+  "us.support.subject": "US Stocks activation still under review",
   "us.themes.title": "Explore by themes",
   "us.themes.railLabel": "Themes",
   "us.themes.more": "More themes",
@@ -25256,7 +25577,28 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "switcher.holdings.none": "No holdings",
   "switcher.holdings.some": "Holds NVDA",
   "switcher.header.page": "Header · page",
-  "switcher.header.card": "Header · card"
+  "switcher.header.card": "Header · card",
+  "us.heatmap.title": "Heatmap",
+  "us.heatmap.index": "Index",
+  "us.heatmap.indexLabel": "Index, tap to switch",
+  "us.heatmap.tabsLabel": "Heatmap index",
+  "us.heatmap.sp": "S&P 500",
+  "us.heatmap.ndx": "Nasdaq 100",
+  "us.heatmap.dow": "Dow Jones",
+  "us.picks.title": "Top analyst picks",
+  "us.picks.railLabel": "Top analyst picks",
+  "us.picks.recommendation": "Recommendation",
+  "us.picks.week": "7D",
+  "us.picks.viewAll": "View all",
+  "us.picks.label": "{name}, {sym}: recommendation {rating}; {direction} {pct}% in the last 7 days",
+  "us.sectors.tabsLabel": "Sector",
+  "us.sectors.all": "All",
+  "us.sector.tech": "Technology",
+  "us.sector.fin": "Financials",
+  "us.sector.health": "Healthcare",
+  "us.sector.consumer": "Consumer",
+  "us.sector.energy": "Energy",
+  "us.sector.industrials": "Industrials"
 }
 ```
 
@@ -25310,14 +25652,15 @@ export const shortcuts: Shortcut[] = [
 ]
 
 /**
- * The US Stocks tab's shortcuts: Analysis · ETFs · Fractional · Market hours (no badges). The US home's quick access
- * lives here, in the white body; the grey summary has no product tiles on the US tab.
+ * The US Stocks tab's shortcuts: Analysis · ETFs · Watchlist · Referral (no badges), the last two as on the IND tab
+ * (3 Nov: no Fractional or Market hours). The US home's quick access lives here, in the white body; the grey summary
+ * has no product tiles on the US tab.
  */
 export const usShortcuts: Shortcut[] = [
   { id: 'analysis', label: 'Analysis', art: 'analysis' },
   { id: 'etfs', label: 'ETFs', art: 'etf' },
-  { id: 'fractional', label: 'Fractional', art: 'fractional' },
-  { id: 'hours', label: 'Market hours', art: 'hours' },
+  { id: 'watchlist', label: 'Watchlist', art: 'watchlist' },
+  { id: 'referral', label: 'Referral', art: 'referral' },
 ]
 
 /**
@@ -25410,6 +25753,7 @@ export { disclosure } from '../../shared/data/broker'
 ### `src/flows/stocks/index.tsx`
 
 ```tsx
+import { emailSupport } from '../../shared/support'
 import { useEffect, useState, type ComponentProps } from 'react'
 import type { Flow } from '../types'
 import { goToTab } from '../../shared/ui/MainNav'
@@ -25457,6 +25801,7 @@ function UsTabInState({ go, state, extra }: { go: Go; state: UsState; extra: Par
 const stateTaps = (go: Go, usState: UsState): Partial<ComponentProps<typeof Home>> => {
   switch (usState) {
     case 'kyc': return { onActivateUs: () => go('kyc-01'), onUsStock: () => go('us-stocks-74') }
+    case 'support': return { onActivateUs: () => emailSupport(t('us.support.subject')) }
     case 'activated': return { onActivateUs: () => go('us-stocks-20') }
     case 'onTheWay': return { onActivateUs: () => go('us-stocks-28') }
     case 'ready': return { onActivateUs: () => go('stocks-17') }
@@ -25508,6 +25853,8 @@ export const stocks: Flow = {
       default: 'page',
       floatOn: ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21'],
     },
+    // US tab, Top analyst picks: a list of four rows (default, 3 Nov) or the swipeable cards with the 7-day line.
+    { id: 'picksView', group: 'Home', label: 'Analyst picks', values: [{ value: 'list', label: 'List' }, { value: 'cards', label: 'Cards' }], default: 'list' },
     { id: 'shortcuts', group: 'Home', label: 'Shortcuts', values: [{ value: 'v1', label: 'V1' }, { value: 'v2', label: 'V2' }], default: 'v1' },
     { id: 'switchGuide', group: 'Home', label: 'Market switch guide', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
   ],
@@ -25530,7 +25877,7 @@ export const stocks: Flow = {
     { id: 'stocks-15', hidden: true, name: 'Home · US tab · activated · add money', figma: '5776:81870', note: 'US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too.', tab: true, render: (go) => usHome(go, 'activated', { onActivateUs: () => go('us-stocks-20') }) },
     { id: 'stocks-16', hidden: true, name: 'Home · US tab · money ready', figma: '5796:87332', note: 'Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59).', tab: true, render: (go) => usHome(go, 'ready', { onActivateUs: () => go('stocks-17') }) },
     { id: 'stocks-17', hidden: true, name: 'Home · US tab · activated · holding', figma: '5826:92885', note: 'US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet.', tab: true, render: (go) => usHome(go, 'holding', { onUsStock: (sym) => go(sym === 'NVDA' ? 'us-stocks-32' : 'us-stocks-31') }) },
-    { id: 'stocks-19', hidden: true, name: 'Home · US tab · under review · Contact Support', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Under review · Contact Support)', figma: '5776:80202', group: 'us-review', note: 'Activation still under review after a working day: the honey card gains a Contact Support button. Figma has no support screen, so the button goes nowhere yet (L3 gap / missing screen). The wallet opens the wallet\'s Contact Support state (us-stocks-57).', tab: true, render: (go) => usHome(go, 'support') },
+    { id: 'stocks-19', hidden: true, name: 'Home · US tab · under review · Contact Support', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Under review · Contact Support)', figma: '5776:80202', group: 'us-review', note: 'Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\'s Contact Support state (us-stocks-57).', tab: true, render: (go) => usHome(go, 'support', stateTaps(go, 'support')) },
     { id: 'stocks-20', hidden: true, name: 'Home · US tab · money on the way', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Money on the way)', figma: '5796:86490', note: 'After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\'s transfer in progress (us-stocks-28). In the prototype it moves on to "money ready" (stocks-16) by itself after 2 s, as in his prototype.', tab: true, render: (go) => usHome(go, 'onTheWay', { onActivateUs: () => go('us-stocks-28'), autoNext: 'stocks-16' }) },
     { id: 'stocks-18', name: 'Home · activation submitted sheet', figma: '5756:73797', group: 'us-review', note: 'The under-review US tab with the "US Stocks activation under review" sheet (we\'ll let you know as soon as it\'s active). Okay → the under-review Home (stocks-13). Reached from Confirm details in the US Stocks flow.', tab: true, render: (go) => usHome(go, 'review', { sheet: <ActivationSubmittedSheet onOkay={() => go('stocks-13')} /> }) },
     ...themes.map((theme, i) => ({
@@ -49130,6 +49477,20 @@ export function useFlowOptionsChanged(flow: { id: string; options?: { id: string
  */
 export function useSystemKeyboard() {
   return typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+}
+```
+
+### `src/shared/support.ts`
+
+```ts
+/**
+ * Contact support = an email to Lemonn support, opened in the phone's mail app (no in-app support screen). Every
+ * "Contact support" button calls `emailSupport`, with a subject saying what it's about.
+ */
+export const SUPPORT_EMAIL = 'support@lemonn.co'
+
+export function emailSupport(subject: string) {
+  window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}`
 }
 ```
 

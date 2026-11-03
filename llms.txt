@@ -1,6 +1,6 @@
 # Lemonn app · L3
 
-> The Lemonn trading app rebuilt flow by flow from the Figma designs with the Lemonnade V3 (L3) design system (@ `9448ca7`). Each flow below is ONE self-contained markdown file — spec, screens, navigation and all its source — written so an AI agent can convert it to Flutter, iOS or web.
+> The Lemonn trading app rebuilt flow by flow from the Figma designs with the Lemonnade V3 (L3) design system (@ `4afbde2`). Each flow below is ONE self-contained markdown file — spec, screens, navigation and all its source — written so an AI agent can convert it to Flutter, iOS or web.
 
 Start with [CONVERT.md](https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md) (how to convert a flow), then open the flow you were given.
 

@@ -1,6 +1,6 @@
 # Flow: US Stocks (`us-stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `9448ca7` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 Activate US Stocks, add money to the USD wallet, buy and sell, withdraw (teammate import, under review).
 
@@ -113,6 +113,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-03 — ETF list (us-stocks-71): the Regular tab's filters are fixed at the top with the tabs (Actionbar bottom), as one bar. First a switcher chip (Country ⇄ Sector, like Top Movers' cap chip on Home) and a divider, then that filter's chips: countries with flags, or sectors (Broad market · Technology · Financials · Healthcare · Energy · Industrials; switching starts at All). Every regular ETF has a `sector`; two sector funds added (XLF, XLV).
 - 2026-11-03 — Bank accounts (User status → Bank accounts): the add-money bank row has a chevron that opens “Pay from” (us-stocks-76: pick a bank, add another → deposit-12); no bank → us-stocks-75 (“Add bank account”). The wallet with no bank shows an “Add a bank account to deposit or withdraw” bar, Deposit opens the no-bank add money, Withdraw is off. “Add $X” carries the ₹ it costs in small type: “Add $1,000 (₹86,950)”.
 - 2026-11-03 — Add money is entered in US dollars, Groww-style: big $ amount, "You pay ≈ ₹X · incl. charges" (opens the charges sheet) under it, +$ chips, bank ListCell, number keypad and "Add $X" in the dock. New `inrForUsd` (inverse of `depositBreakdown`); M03 / M07 are $ states; add-money copy moved to `copy.json`.
 - 2026-11-03 — ETF list: Regular rows are the shared `StockListCard` (issuer logo, flat, 16 apart); country chips have round flags (new shared `Flag`, `shared/assets/flags`, All = L3 globe); Leveraged tab is a SectionHeader per index (24 apart) with the same cards and a "3x Long / 3x Short" tag.
@@ -23748,6 +23749,7 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 // stock tapped last (currentStock()), scaled from the NVIDIA sample numbers.
 // FLAG: copy not in copy.json yet (all UI text in this part is hard-coded).
 // FLAG: price block, chart and period picker are hand-made (module CSS) instead of L3 Chart; see StockPage.module.css.
+import { emailSupport } from '../../../../shared/support'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { Actionbar, ActionbarAction } from '@l3/components/Actionbar'
 import { Button } from '@l3/components/Button'
@@ -23790,8 +23792,7 @@ export function activationFooter(state: StockState, go: (figma: string) => void)
     state === 'kyc-pending' ? <Button variant="primary" size="lg" fullWidth onClick={() => go(KYC_START)}>Complete KYC</Button>
     : state === 'not-activated' ? <Button variant="primary" size="lg" fullWidth onClick={() => go(RISK_DISCLOSURE)}>Activate US Stocks</Button>
     : state === 'review' ? <Button variant="primary" size="lg" fullWidth disabled>Activation under review</Button>
-    // FLAG: Contact support has no destination yet.
-    : state === 'support' ? <Button variant="primary" size="lg" fullWidth onClick={() => {}}>Contact support</Button>
+    : state === 'support' ? <Button variant="primary" size="lg" fullWidth onClick={() => emailSupport('US Stocks activation still under review')}>Contact support</Button>
     : state === 'failed' ? <Button variant="primary" size="lg" fullWidth onClick={() => go(RISK_DISCLOSURE)}>Retry activation</Button>
     : null
   if (!button) return null
@@ -29552,20 +29553,44 @@ export const timeLabels = ['9:15', '10:15', '11:15', '1:15', '2:15', '3:15']
 .weightBar>span{border-radius:inherit;background:var(--l3-content-accent-discover-default);height:100%;display:block}
 
 .weight{font:var(--l3-text-heading-12);color:var(--l3-content-primary);font-variant-numeric:tabular-nums;flex:none}
+
+/* ---- The Regular tab's filter row, fixed under the tabs (Actionbar bottom): switcher chip · divider · filter chips.
+   12 above and below, the chip 16 from the edge; the chips scroll to the screen's right edge (as the Stocks home's
+   Top Movers row). ---- */
+.filterRow{min-width:0;padding:var(--l3-spacing-12) 0 var(--l3-spacing-12) var(--l3-spacing-16)}
+
+/* FLAG: hand-made switcher chip (outlined pill that cycles Country / Sector), as the home's cap chip, at the chips' height */
+.switchChip{display:flex;flex:none;align-items:center;gap:var(--l3-spacing-02);box-sizing:border-box;height:var(--l3-size-32);padding:0 calc(var(--l3-spacing-12) - 1px);border:1px solid var(--l3-content-primary);border-radius:var(--l3-radius-full);background:var(--l3-surface-default);color:var(--l3-content-primary);font:var(--l3-text-label-12);cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+.switchName{animation:.22s cubic-bezier(.2,0,0,1) switch-in}
+
+@keyframes switch-in{0%{opacity:0;translate:0 var(--l3-spacing-04)}}
+
+@media (prefers-reduced-motion:reduce){.switchName{animation:none}}
+
+/* FLAG: hand-made divider between the switcher chip and the chips */
+.filterDivider{flex:none;width:1px;height:var(--l3-size-28);background:var(--l3-border-intense)}
+
+/* The chips scroll on their own; 16 after the last one. Room for the raised shadow above and below. */
+.filterRow>.filterTabs{flex:1;min-width:0;margin-block:calc(-1 * var(--l3-spacing-04));padding:var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-04) 0}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfListScreen.tsx`
 
 ```tsx
-// 9001:1 · ETFs · Regular & Leveraged — the list from the ETFs quick action. Regular tab: country chips (with round
-// flags) and the shared StockListCard rows; Leveraged tab: one SectionHeader per index with its long / short cards.
+// 9001:1 · ETFs · Regular & Leveraged — the list from the ETFs quick action. Regular tab: a filter row fixed under the
+// tabs (in the Actionbar's bottom, with them) — a switcher chip (Country ⇄ Sector, as Top Movers' cap chip on Home), a
+// divider, then that filter's chips (countries with round flags, or sectors) — and the shared StockListCard rows; Leveraged tab: one SectionHeader per index with its long / short cards.
 // A row opens the ETF page (9001:2).
 // FLAG: copy not in copy.json yet (hard-coded).
+// FLAG: hand-made switcher chip and divider (as the Stocks home's Top Movers row) — L3 has no cycling chip.
 // FLAG: issuer logos are our own square images (assets/etf/logos: logo on its plate) in the L3 Avatar — L3 has no ETF / issuer logo. "All" has L3's globe icon; the
 // country flags are our own round SVGs (shared/ui/Flag).
 import { useState } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Icon } from '@l3/components/Icon'
+import { Stack } from '@l3/components/Stack'
+import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { msGlobe } from '@l3/icons/material'
 import { Section } from '@l3/components/Section'
 import { SectionHeader } from '@l3/components/SectionHeader'
@@ -29576,7 +29601,7 @@ import { Usd } from '../../../../shared/money'
 import { Flag, type FlagCode } from '../../../../shared/ui/Flag'
 import { StockListCard } from '../../../../shared/ui/StockListCard'
 import { setCurrentEtf } from './currentEtf'
-import { COUNTRIES, ETFS, ETF_PAGE, HOME_IND, leveragedGroups, type Etf } from './data'
+import { COUNTRIES, ETFS, SECTORS, ETF_PAGE, HOME_IND, leveragedGroups, type Etf } from './data'
 import { SideTag, etfLogoUrl } from './parts'
 import styles from './Etf.module.css'
 
@@ -29584,6 +29609,10 @@ const TABS = [
   { value: 'normal', label: 'Regular' },
   { value: 'leveraged', label: 'Leveraged' },
 ]
+
+/** What the filter chips pick: the switcher chip cycles between them. */
+type FilterBy = 'country' | 'sector'
+const FILTER_BY: Record<FilterBy, string> = { country: 'Country', sector: 'Sector' }
 
 const FLAGS: Record<string, FlagCode> = { US: 'us', India: 'in', China: 'cn', Japan: 'jp', Europe: 'eu', Korea: 'kr' }
 
@@ -29622,13 +29651,55 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
       return 'normal'
     }
   })
+  const [filterBy, setFilterBy] = useState<FilterBy>('country')
   const [country, setCountry] = useState('all')
+  const [sector, setSector] = useState('all')
   const open = (sym: string) => {
     if (backdrop) return
     setCurrentEtf(sym)
     go(ETF_PAGE)
   }
-  const regular = ETFS.filter((e) => e.kind === 'normal' && (country === 'all' || e.country === country))
+  const regular = ETFS.filter((e) => e.kind === 'normal' && (filterBy === 'country' ? country === 'all' || e.country === country : sector === 'all' || e.sector === sector))
+  // Switching Country ⇄ Sector starts the new filter at All.
+  const switchFilter = () => {
+    setFilterBy(filterBy === 'country' ? 'sector' : 'country')
+    setCountry('all')
+    setSector('all')
+  }
+
+  const filters = (
+    <Stack direction="horizontal" align="center" gap="12" className={styles.filterRow}>
+      <button type="button" className={styles.switchChip} aria-label={`Filter by ${FILTER_BY[filterBy]}, tap to switch`} onClick={switchFilter}>
+        <span className={styles.switchName} key={filterBy}>{FILTER_BY[filterBy]}</span>
+        <Icon icon={lmSwitchArrowVertical} size={16} />
+      </button>
+      <span className={styles.filterDivider} aria-hidden="true" />
+      {filterBy === 'country' ? (
+        <Tabs
+          appearance="pill"
+          behavior="filter"
+          aria-label="Country"
+          className={styles.filterTabs}
+          items={[
+            { value: 'all', label: 'All', iconLeft: <Icon icon={msGlobe} size={16} /> },
+            ...COUNTRIES.map((c) => ({ value: c, label: c, iconLeft: FLAGS[c] ? <Flag code={FLAGS[c]} /> : undefined })),
+          ]}
+          value={country}
+          onChange={setCountry}
+        />
+      ) : (
+        <Tabs
+          appearance="pill"
+          behavior="filter"
+          aria-label="Sector"
+          className={styles.filterTabs}
+          items={[{ value: 'all', label: 'All' }, ...SECTORS.map((v) => ({ value: v, label: v }))]}
+          value={sector}
+          onChange={setSector}
+        />
+      )}
+    </Stack>
+  )
 
   return (
     <Phone
@@ -29637,25 +29708,18 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
         <Actionbar
           title="ETFs"
           onBack={() => back(HOME_IND)}
-          bottom={<Tabs appearance="underline" width="fill" aria-label="ETF type" items={TABS} value={tab} onChange={setTab} />}
+          bottom={
+            <>
+              <Tabs appearance="underline" width="fill" aria-label="ETF type" items={TABS} value={tab} onChange={setTab} />
+              {tab === 'normal' && filters}
+            </>
+          }
         />
       }
       gesture="none"
     >
       {tab === 'normal' ? (
         <Section paddingBlock="16" gap="16">
-          <Tabs
-            appearance="pill"
-            behavior="filter"
-            aria-label="Country"
-            className={styles.chips}
-            items={[
-              { value: 'all', label: 'All', iconLeft: <Icon icon={msGlobe} size={16} /> },
-              ...COUNTRIES.map((c) => ({ value: c, label: c, iconLeft: FLAGS[c] ? <Flag code={FLAGS[c]} /> : undefined })),
-            ]}
-            value={country}
-            onChange={setCountry}
-          />
           <Section as="ul" paddingInline="16" gap="12" aria-label="Regular ETFs">
             {regular.map((e) => (
               <EtfCard key={e.sym} etf={e} onOpen={() => open(e.sym)} />
@@ -30520,6 +30584,8 @@ export type Etf = {
   side?: 'long' | 'short'
   lev?: '2x' | '3x'
   country: string
+  /** Regular ETFs: the sector filter's pick (SECTORS). A country or whole-market fund is 'Broad market'. */
+  sector?: EtfSector
   price: number
   /** Day change in %. */
   change: number
@@ -30538,21 +30604,23 @@ const NASDAQ = weights(['NVDA', 8.3], ['AAPL', 7.4], ['MSFT', 5.8], ['MU', 5.0],
 const SEMIS = weights(['NVDA', 19.3], ['TSM', 9.3], ['AMD', 5.5], ['AVGO', 5.3], ['MU', 4.9], ['AMAT', 4.7])
 
 export const ETFS: Etf[] = [
-  { sym: 'SPY', name: 'SPDR S&P 500 ETF Trust', description: 'The 500 biggest US companies in one fund', tracks: 'S&P 500', kind: 'normal', country: 'US', price: 682.4, change: 0.34, expense: 0.09, aum: '$809B', holdings: SP500 },
-  { sym: 'QQQ', name: 'Invesco QQQ Trust', description: 'The 100 biggest non-financial Nasdaq companies', tracks: 'Nasdaq-100', kind: 'normal', country: 'US', price: 618.9, change: 0.52, expense: 0.18, aum: '$499B', holdings: NASDAQ },
-  { sym: 'VTI', name: 'Vanguard Total Stock Market ETF', description: 'The whole US stock market, big to small', tracks: 'CRSP US Total Market', kind: 'normal', country: 'US', price: 334.2, change: 0.29, expense: 0.03, aum: '$2.3T', holdings: weights(['NVDA', 7.1], ['AAPL', 6.6], ['MSFT', 5.2], ['AMZN', 3.3], ['GOOGL', 2.8], ['AVGO', 2.3]) },
-  { sym: 'SMH', name: 'VanEck Semiconductor ETF', description: 'The 25 biggest US-listed chip companies', tracks: 'MVIS US Listed Semiconductor 25', kind: 'normal', country: 'US', price: 312.6, change: 1.84, expense: 0.35, aum: '$75B', holdings: weights(['NVDA', 19.3], ['TSM', 9.3], ['AMD', 5.5], ['AVGO', 5.3], ['MU', 4.9], ['AMAT', 4.7]) },
-  { sym: 'ITA', name: 'iShares U.S. Aerospace & Defense ETF', description: 'US aircraft makers and defence contractors', tracks: 'Dow Jones US Select Aerospace & Defense', kind: 'normal', country: 'US', price: 198.3, change: 0.61, expense: 0.37, aum: '$12B', holdings: weights(['GE', 21.0], ['RTX', 16.2], ['BA', 7.5], ['HWM', 4.6], ['LMT', 4.6], ['TDG', 4.6]) },
-  { sym: 'XLE', name: 'Energy Select Sector SPDR Fund', description: 'The energy companies of the S&P 500', tracks: 'Energy Select Sector', kind: 'normal', country: 'US', price: 89.7, change: -0.48, expense: 0.08, aum: '$39B', holdings: weights(['XOM', 24.0], ['CVX', 18.1], ['COP', 6.7], ['VLO', 4.7], ['MPC', 4.7], ['PSX', 4.6]) },
-  { sym: 'BOTZ', name: 'Global X Robotics & Artificial Intelligence ETF', description: 'Companies building robots, automation and AI', tracks: 'Indxx Robotics & AI', kind: 'normal', country: 'US', price: 34.8, change: 1.22, expense: 0.68, aum: '$3.3B', holdings: weights(['ISRG', 8.6], ['FANUY', 8.2], ['KYCCF', 8.2], ['NVDA', 8.0], ['ABBNY', 7.8], ['SMCAY', 4.9]) },
-  { sym: 'UFO', name: 'Procure Space ETF', description: 'Companies that earn from space and satellites', tracks: 'S-Network Space', kind: 'normal', country: 'US', price: 31.6, change: 2.04, expense: 0.75, aum: '$0.5B', holdings: weights(['RKLB', 5.4], ['GRMN', 5.1], ['TRMB', 4.9], ['ASTS', 4.8], ['SATS', 4.7], ['VSAT', 4.6]) },
-  { sym: 'INDA', name: 'iShares MSCI India ETF', description: 'Large and mid-size Indian companies, in dollars', tracks: 'MSCI India', kind: 'normal', country: 'India', price: 54.2, change: 0.18, expense: 0.61, aum: '$5.8B', holdings: weights(['HDB', 6.4], ['IBN', 5.6], ['RELIANCE', 5.4], ['BHARTIARTL', 3.9], ['INFY', 2.4]) },
-  { sym: 'EPI', name: 'WisdomTree India Earnings Fund', description: 'Indian companies weighted by how much they earn', tracks: 'WisdomTree India Earnings', kind: 'normal', country: 'India', price: 47.9, change: 0.26, expense: 0.84, aum: '$1.8B', holdings: weights(['RELIANCE', 0.6], ['HINDPETRO', 0.6], ['ONGC', 0.5], ['IBN', 0.5], ['HDB', 0.5]) },
-  { sym: 'MCHI', name: 'iShares MSCI China ETF', description: 'Large and mid-size Chinese companies', tracks: 'MSCI China', kind: 'normal', country: 'China', price: 61.3, change: -0.92, expense: 0.59, aum: '$6.0B', holdings: weights(['TCEHY', 13.8], ['BABA', 9.3], ['CICHY', 4.3], ['IDCBY', 2.6], ['XIACY', 2.2], ['PDD', 1.6]) },
-  { sym: 'KWEB', name: 'KraneShares CSI China Internet ETF', description: 'China\'s biggest internet and tech companies', tracks: 'CSI Overseas China Internet', kind: 'normal', country: 'China', price: 38.4, change: -1.31, expense: 0.69, aum: '$4.5B', holdings: weights(['TCEHY', 10.3], ['BABA', 8.6], ['PDD', 8.1], ['MPNGY', 7.0], ['NTES', 6.6], ['LNVGY', 6.2]) },
-  { sym: 'EWJ', name: 'iShares MSCI Japan ETF', description: 'Large and mid-size Japanese companies', tracks: 'MSCI Japan', kind: 'normal', country: 'Japan', price: 74.6, change: 0.44, expense: 0.49, aum: '$24B', holdings: weights(['MUFG', 4.7], ['TM', 3.3], ['TOELY', 3.1], ['SMFG', 3.0], ['ATEYY', 3.0], ['HTHIY', 2.9]) },
-  { sym: 'VGK', name: 'Vanguard FTSE Europe ETF', description: 'Large and mid-size companies across Europe', tracks: 'FTSE Developed Europe All Cap', kind: 'normal', country: 'Europe', price: 78.1, change: 0.12, expense: 0.06, aum: '$37B', holdings: weights(['ASML', 4.5], ['HSBC', 2.2], ['RHHBY', 1.9], ['SHEL', 1.8], ['NVS', 1.7], ['AZN', 1.6]) },
-  { sym: 'EWY', name: 'iShares MSCI South Korea ETF', description: 'Large and mid-size South Korean companies', tracks: 'MSCI Korea 25/50', kind: 'normal', country: 'Korea', price: 72.3, change: 0.87, expense: 0.59, aum: '$26B', holdings: weights(['HXSCF', 23.7], ['SSNLF', 22.8], ['SKSQF', 3.1], ['SMSEF', 2.7], ['KB', 1.9]) },
+  { sym: 'SPY', name: 'SPDR S&P 500 ETF Trust', description: 'The 500 biggest US companies in one fund', tracks: 'S&P 500', kind: 'normal', country: 'US', sector: 'Broad market', price: 682.4, change: 0.34, expense: 0.09, aum: '$809B', holdings: SP500 },
+  { sym: 'QQQ', name: 'Invesco QQQ Trust', description: 'The 100 biggest non-financial Nasdaq companies', tracks: 'Nasdaq-100', kind: 'normal', country: 'US', sector: 'Technology', price: 618.9, change: 0.52, expense: 0.18, aum: '$499B', holdings: NASDAQ },
+  { sym: 'VTI', name: 'Vanguard Total Stock Market ETF', description: 'The whole US stock market, big to small', tracks: 'CRSP US Total Market', kind: 'normal', country: 'US', sector: 'Broad market', price: 334.2, change: 0.29, expense: 0.03, aum: '$2.3T', holdings: weights(['NVDA', 7.1], ['AAPL', 6.6], ['MSFT', 5.2], ['AMZN', 3.3], ['GOOGL', 2.8], ['AVGO', 2.3]) },
+  { sym: 'SMH', name: 'VanEck Semiconductor ETF', description: 'The 25 biggest US-listed chip companies', tracks: 'MVIS US Listed Semiconductor 25', kind: 'normal', country: 'US', sector: 'Technology', price: 312.6, change: 1.84, expense: 0.35, aum: '$75B', holdings: weights(['NVDA', 19.3], ['TSM', 9.3], ['AMD', 5.5], ['AVGO', 5.3], ['MU', 4.9], ['AMAT', 4.7]) },
+  { sym: 'ITA', name: 'iShares U.S. Aerospace & Defense ETF', description: 'US aircraft makers and defence contractors', tracks: 'Dow Jones US Select Aerospace & Defense', kind: 'normal', country: 'US', sector: 'Industrials', price: 198.3, change: 0.61, expense: 0.37, aum: '$12B', holdings: weights(['GE', 21.0], ['RTX', 16.2], ['BA', 7.5], ['HWM', 4.6], ['LMT', 4.6], ['TDG', 4.6]) },
+  { sym: 'XLE', name: 'Energy Select Sector SPDR Fund', description: 'The energy companies of the S&P 500', tracks: 'Energy Select Sector', kind: 'normal', country: 'US', sector: 'Energy', price: 89.7, change: -0.48, expense: 0.08, aum: '$39B', holdings: weights(['XOM', 24.0], ['CVX', 18.1], ['COP', 6.7], ['VLO', 4.7], ['MPC', 4.7], ['PSX', 4.6]) },
+  { sym: 'XLF', name: 'Financial Select Sector SPDR Fund', description: 'The banks, insurers and payment companies of the S&P 500', tracks: 'Financial Select Sector', kind: 'normal', country: 'US', sector: 'Financials', price: 52.4, change: 0.38, expense: 0.08, aum: '$53B', holdings: weights(['BRK-B', 12.1], ['JPM', 10.6], ['V', 7.6], ['MA', 6.2], ['BAC', 4.6], ['WFC', 3.6]) },
+  { sym: 'XLV', name: 'Health Care Select Sector SPDR Fund', description: 'The drug makers, insurers and hospitals of the S&P 500', tracks: 'Health Care Select Sector', kind: 'normal', country: 'US', sector: 'Healthcare', price: 141.8, change: -0.21, expense: 0.08, aum: '$36B', holdings: weights(['LLY', 13.2], ['UNH', 6.9], ['JNJ', 6.8], ['ABBV', 6.1], ['MRK', 4.0], ['ISRG', 3.8]) },
+  { sym: 'BOTZ', name: 'Global X Robotics & Artificial Intelligence ETF', description: 'Companies building robots, automation and AI', tracks: 'Indxx Robotics & AI', kind: 'normal', country: 'US', sector: 'Technology', price: 34.8, change: 1.22, expense: 0.68, aum: '$3.3B', holdings: weights(['ISRG', 8.6], ['FANUY', 8.2], ['KYCCF', 8.2], ['NVDA', 8.0], ['ABBNY', 7.8], ['SMCAY', 4.9]) },
+  { sym: 'UFO', name: 'Procure Space ETF', description: 'Companies that earn from space and satellites', tracks: 'S-Network Space', kind: 'normal', country: 'US', sector: 'Industrials', price: 31.6, change: 2.04, expense: 0.75, aum: '$0.5B', holdings: weights(['RKLB', 5.4], ['GRMN', 5.1], ['TRMB', 4.9], ['ASTS', 4.8], ['SATS', 4.7], ['VSAT', 4.6]) },
+  { sym: 'INDA', name: 'iShares MSCI India ETF', description: 'Large and mid-size Indian companies, in dollars', tracks: 'MSCI India', kind: 'normal', country: 'India', sector: 'Broad market', price: 54.2, change: 0.18, expense: 0.61, aum: '$5.8B', holdings: weights(['HDB', 6.4], ['IBN', 5.6], ['RELIANCE', 5.4], ['BHARTIARTL', 3.9], ['INFY', 2.4]) },
+  { sym: 'EPI', name: 'WisdomTree India Earnings Fund', description: 'Indian companies weighted by how much they earn', tracks: 'WisdomTree India Earnings', kind: 'normal', country: 'India', sector: 'Broad market', price: 47.9, change: 0.26, expense: 0.84, aum: '$1.8B', holdings: weights(['RELIANCE', 0.6], ['HINDPETRO', 0.6], ['ONGC', 0.5], ['IBN', 0.5], ['HDB', 0.5]) },
+  { sym: 'MCHI', name: 'iShares MSCI China ETF', description: 'Large and mid-size Chinese companies', tracks: 'MSCI China', kind: 'normal', country: 'China', sector: 'Broad market', price: 61.3, change: -0.92, expense: 0.59, aum: '$6.0B', holdings: weights(['TCEHY', 13.8], ['BABA', 9.3], ['CICHY', 4.3], ['IDCBY', 2.6], ['XIACY', 2.2], ['PDD', 1.6]) },
+  { sym: 'KWEB', name: 'KraneShares CSI China Internet ETF', description: 'China\'s biggest internet and tech companies', tracks: 'CSI Overseas China Internet', kind: 'normal', country: 'China', sector: 'Technology', price: 38.4, change: -1.31, expense: 0.69, aum: '$4.5B', holdings: weights(['TCEHY', 10.3], ['BABA', 8.6], ['PDD', 8.1], ['MPNGY', 7.0], ['NTES', 6.6], ['LNVGY', 6.2]) },
+  { sym: 'EWJ', name: 'iShares MSCI Japan ETF', description: 'Large and mid-size Japanese companies', tracks: 'MSCI Japan', kind: 'normal', country: 'Japan', sector: 'Broad market', price: 74.6, change: 0.44, expense: 0.49, aum: '$24B', holdings: weights(['MUFG', 4.7], ['TM', 3.3], ['TOELY', 3.1], ['SMFG', 3.0], ['ATEYY', 3.0], ['HTHIY', 2.9]) },
+  { sym: 'VGK', name: 'Vanguard FTSE Europe ETF', description: 'Large and mid-size companies across Europe', tracks: 'FTSE Developed Europe All Cap', kind: 'normal', country: 'Europe', sector: 'Broad market', price: 78.1, change: 0.12, expense: 0.06, aum: '$37B', holdings: weights(['ASML', 4.5], ['HSBC', 2.2], ['RHHBY', 1.9], ['SHEL', 1.8], ['NVS', 1.7], ['AZN', 1.6]) },
+  { sym: 'EWY', name: 'iShares MSCI South Korea ETF', description: 'Large and mid-size South Korean companies', tracks: 'MSCI Korea 25/50', kind: 'normal', country: 'Korea', sector: 'Broad market', price: 72.3, change: 0.87, expense: 0.59, aum: '$26B', holdings: weights(['HXSCF', 23.7], ['SSNLF', 22.8], ['SKSQF', 3.1], ['SMSEF', 2.7], ['KB', 1.9]) },
   { sym: 'TQQQ', name: 'ProShares UltraPro QQQ', description: 'Aims for 3x the Nasdaq-100\'s daily move', tracks: 'Nasdaq-100', kind: 'leveraged', side: 'long', lev: '3x', country: 'US', price: 104.2, change: 1.58, expense: 0.78, aum: '$38B', holdings: NASDAQ },
   { sym: 'SQQQ', name: 'ProShares UltraPro Short QQQ', description: 'Aims for 3x the opposite of the Nasdaq-100\'s daily move', tracks: 'Nasdaq-100', kind: 'leveraged', side: 'short', lev: '3x', country: 'US', price: 15.6, change: -1.6, expense: 0.94, aum: '$2.1B', holdings: NASDAQ },
   { sym: 'SOXL', name: 'Direxion Daily Semiconductor Bull 3X Shares', description: 'Aims for 3x the daily move of 30 big chip stocks', tracks: 'ICE Semiconductor', kind: 'leveraged', side: 'long', lev: '3x', country: 'US', price: 38.9, change: 5.42, expense: 0.75, aum: '$24B', holdings: SEMIS },
@@ -30571,6 +30639,10 @@ for (const etf of ETFS) {
 }
 
 export const COUNTRIES = ['US', 'China', 'Japan', 'Europe', 'Korea']
+
+/** Sector chips on the Regular tab (after "All"), the other filter the switcher chip picks. */
+export type EtfSector = 'Broad market' | 'Technology' | 'Financials' | 'Healthcare' | 'Energy' | 'Industrials'
+export const SECTORS: EtfSector[] = ['Broad market', 'Technology', 'Financials', 'Healthcare', 'Energy', 'Industrials']
 
 export const etfFor = (sym: string): Etf => ETFS.find((e) => e.sym === sym) ?? ETFS[0]
 /** Leveraged ETFs on one index / theme (the long and the short). */
@@ -30602,7 +30674,7 @@ const ISSUERS: Record<string, Issuer> = {
   graniteshares: { file: 'graniteshares', plate: 'var(--l3-static-white)', name: 'GraniteShares', fill: true },
 }
 const ISSUER_OF: Record<string, string> = {
-  SPY: 'spdr', XLE: 'spdr', QQQ: 'invesco', VTI: 'vanguard', VGK: 'vanguard', SMH: 'vaneck', ITA: 'ishares', INDA: 'ishares',
+  SPY: 'spdr', XLE: 'spdr', XLF: 'spdr', XLV: 'spdr', QQQ: 'invesco', VTI: 'vanguard', VGK: 'vanguard', SMH: 'vaneck', ITA: 'ishares', INDA: 'ishares',
   MCHI: 'ishares', EWJ: 'ishares', EWY: 'ishares', BOTZ: 'globalx', UFO: 'procure', EPI: 'wisdomtree', KWEB: 'kraneshares',
   TQQQ: 'proshares', SQQQ: 'proshares', SOXL: 'direxion', SOXS: 'direxion', SPXL: 'direxion', SPXS: 'direxion',
   NVDL: 'graniteshares', NVD: 'graniteshares', SGOV: 'ishares', SHV: 'ishares', BIL: 'spdr',
@@ -30615,7 +30687,7 @@ export const issuerLogo = (sym: string) => {
 export const issuerName = (sym: string) => ISSUERS[ISSUER_OF[sym]]?.name
 
 // Number of holdings of the big index funds (the leveraged ones list only what the sample has).
-const HOLDING_COUNT: Record<string, string> = { SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', EWJ: '186', MCHI: '558' }
+const HOLDING_COUNT: Record<string, string> = { SPY: '503', QQQ: '101', VTI: '3,612', SMH: '26', VGK: '1,284', ITA: '38', XLE: '22', XLF: '72', XLV: '60', EWJ: '186', MCHI: '558' }
 
 /** Everything the ETF page shows beyond the catalogue row: the day's range, 52-week range, NAV, yield and events. */
 export function detailsFor(etf: Etf) {
@@ -58096,6 +58168,20 @@ export function useFlowOptionsChanged(flow: { id: string; options?: { id: string
  */
 export function useSystemKeyboard() {
   return typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+}
+```
+
+### `src/shared/support.ts`
+
+```ts
+/**
+ * Contact support = an email to Lemonn support, opened in the phone's mail app (no in-app support screen). Every
+ * "Contact support" button calls `emailSupport`, with a subject saying what it's about.
+ */
+export const SUPPORT_EMAIL = 'support@lemonn.co'
+
+export function emailSupport(subject: string) {
+  window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}`
 }
 ```
 

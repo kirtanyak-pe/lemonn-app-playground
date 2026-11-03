@@ -4,7 +4,7 @@
   "description": "The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "9448ca7",
+    "commit": "4afbde2",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {

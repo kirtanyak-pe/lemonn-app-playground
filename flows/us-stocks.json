@@ -4,7 +4,7 @@
   "description": "Activate US Stocks, add money to the USD wallet, buy and sell, withdraw (teammate import, under review).",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "9448ca7",
+    "commit": "4afbde2",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -270,6 +270,7 @@
     "src/shared/money.module.css",
     "src/shared/money.tsx",
     "src/shared/prototype.ts",
+    "src/shared/support.ts",
     "src/shared/ui/AmountEntry.module.css",
     "src/shared/ui/AmountEntry.tsx",
     "src/shared/ui/BankPicker.tsx",
