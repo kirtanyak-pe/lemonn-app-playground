@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-04T11:47:06.974Z",
+ "fetchedAt": "2026-11-04T17:48:43.578Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -7955,7 +7955,7 @@
    "changePct": 2.23,
    "dayHigh": 283.5,
    "dayLow": 272.1,
-   "high52": 414.5,
+   "high52": 413.3,
    "low52": 252.8,
    "volume": 42446833,
    "longName": "ITC Limited",
@@ -13668,7 +13668,7 @@
    "dayHigh": 4754.4,
    "dayLow": 4471.5,
    "high52": 5186.7,
-   "low52": 3715,
+   "low52": 3736,
    "volume": 1323543,
    "longName": "Titan Company Limited",
    "closes": [
