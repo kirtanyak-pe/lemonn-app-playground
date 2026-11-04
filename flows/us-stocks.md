@@ -151,6 +151,8 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disc
 
 ### Changelog
 
+- 2026-11-04 — **Wallet tabs stay on the page:** the wallet's INR and USD screens (us-stocks-53 / 54) are one page (screen group `wallet`), so tapping USD Wallet no longer pushes a new screen. Only the wallet content swaps, as it already did going back to INR.
+- 2026-11-04 — **Order type switch stays on the page:** the order pads are one page (screen group `order-pad`), so Market / Limit / SL no longer pushes a new screen. The header, tabs and dock stay put and only the fields under the tabs slide in: from the right going Market → Limit → SL, from the left going back.
 - 2026-11-03 — **Analyst Ratings ring has gaps between its arcs:** Buy, Hold and Sell are drawn from their shares (78.13 / 18.75 / 3.12%), starting at the top, with a small gap between each one like the Allocation donut. Before, three fixed overlapping paths.
 - 2026-11-03 — **Key Holders drawn like the ETF's Allocation:** a donut with the biggest holder's share in the middle (47.24% Institutions) and the legend beside it, in place of four progress bars. One component for both, `ShareDonut` in `screens/etf/EtfHoldings.tsx`.
 - 2026-11-03 — **Portfolio Positions are F&O only:** the Indian / US tabs are gone (F&O is Indian; US buys land in Holdings), the empty state's Explore F&O opens the F&O tab (fno-01). US positions and Position Details (us-stocks-80) are no longer reached from Portfolio. **US holding card** presses (scale to `motion/scale/press-default`) and hovers like a clickable L3 Card. **Orders:** the All orders · Stocks · ETFs picker steps on each tap (no sheet); order cards have no shadow, border only (L3 gap: a clickable Card has no shadow-free option — `OrderCard.module.css`); the USD / IND pill is one width (`size/80`), so switching doesn't move the Open / History pills.
@@ -22205,6 +22207,7 @@ import type { Flow } from '../types'
 import { UsNavProvider } from './nav'
 import { registry } from './registry'
 import { allScreens } from './screens'
+import { orderPads } from './screens/trade/orderPads'
 
 /**
  * US Stocks — happy flow, imported from the teammate's prototype (US-Stocks-Happy-Flow.html, 2026-10-30) on branch
@@ -22331,6 +22334,9 @@ export const usStocks: Flow = {
     badge: s.badge,
     badgeNote: s.badgeNote,
     hidden: s.hidden,
+    // Every order pad (Buy / Sell, Market / Limit / SL, amount / shares) is one page in different states: switching the
+    // order type swaps the body in place instead of pushing a new screen. Same for the wallet's INR / USD tabs.
+    group: s.figma in orderPads ? 'order-pad' : s.group,
     render: (go) => {
       const Screen = allScreens[s.figma]
       return (
@@ -22435,7 +22441,9 @@ export type UsScreenEntry = {
   tab?: 'stocks' | 'market' | 'portfolio' | 'mutualFund'
   id: string; section: 'entry' | 'ftux' | 'activated' | 'wallet'; name: string; note: string; badge?: 'new' | 'changed'; badgeNote?: string
   /** A state the user-status settings already show on another screen (the stock page, the wallet's US tab): not listed in the preview, still a screen taps go to. */
-  hidden?: boolean }
+  hidden?: boolean
+  /** Screens of one group are one page in different states: moving between them doesn't push (the wallet's INR / USD tabs). */
+  group?: string }
 
 export const registry: UsScreenEntry[] = [
   { figma: '5796:89422', id: 'us-stocks-02', section: 'entry', name: "E1a · S&P 500 index · market open", note: "S&P 500 index page while the US market is open." },
@@ -22481,8 +22489,8 @@ export const registry: UsScreenEntry[] = [
   { figma: '5837:95391', id: 'us-stocks-50', section: 'activated', name: "H11 · Sell · Open buy order", note: "An open buy order exists, so some shares are on hold." },
   { figma: '5837:95371', id: 'us-stocks-51', section: 'activated', name: "H06 · Sell result · executed", note: "Sell order executed. Proceeds withdrawable after 1 working day." },
   { figma: '5837:95352', id: 'us-stocks-52', section: 'activated', name: "H07 · Sell result · rejected", note: "Sell order rejected." },
-  { figma: '5852:99084', id: 'us-stocks-53', section: 'wallet', name: "W0 · Wallet · Indian tab", note: "Wallet opens on the INR tab. USD Wallet tab is marked NEW." },
-  { figma: '5852:99057', id: 'us-stocks-54', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'wallet', name: "W0 · Wallet · US tab", note: "The USD wallet in the user status picked in the prototype settings (User status): not activated → Activate US Stocks card; under review, contact support, failed (us-stocks-55–57); activated → $0 (us-stocks-58), money on the way (us-stocks-28) or funded (us-stocks-59). The Indian tab's USD tab opens it." },
+  { figma: '5852:99084', id: 'us-stocks-53', group: 'wallet', section: 'wallet', name: "W0 · Wallet · Indian tab", note: "Wallet opens on the INR tab. USD Wallet tab is marked NEW." },
+  { figma: '5852:99057', id: 'us-stocks-54', group: 'wallet', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'wallet', name: "W0 · Wallet · US tab", note: "The USD wallet in the user status picked in the prototype settings (User status): not activated → Activate US Stocks card; under review, contact support, failed (us-stocks-55–57); activated → $0 (us-stocks-58), money on the way (us-stocks-28) or funded (us-stocks-59). The Indian tab's USD tab opens it." },
   { figma: '5852:99028', id: 'us-stocks-55', hidden: true, badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'wallet', name: "W0 · Wallet · US tab · Activation under review", note: "Activation under review, up to 1 working day." },
   { figma: '5852:98999', id: 'us-stocks-56', hidden: true, badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'wallet', name: "W0 · Wallet · US tab · Activation failed", note: "Activation failed: PAN couldn't be verified. Retry Activation." },
   { figma: '5852:98970', id: 'us-stocks-57', hidden: true, badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'wallet', name: "W0 · Wallet · US tab · Under review · Contact Support", note: "Review taking longer than 1 day. Contact Support." },
@@ -35823,7 +35831,7 @@ function FeeBreakdownSheet({ onClose }: { onClose: () => void }) {
 .contractPrice { display: inline-flex; align-items: center; gap: var(--l3-spacing-08); font: var(--l3-text-label-12); color: var(--l3-content-primary); }
 .exchange { font: var(--l3-text-label-12); color: var(--l3-content-primary); }
 
-.body { padding: var(--l3-spacing-16); }
+.body { padding: var(--l3-spacing-16); overflow-x: clip; }
 
 /* A field row: label, value, compact stepper at the right — bordered, 08 radius. */
 .field { display: flex; align-items: center; gap: var(--l3-spacing-08); min-height: var(--l3-size-40); padding: var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-04) var(--l3-spacing-12); border: 1px solid var(--l3-border-light); border-radius: var(--l3-radius-08); }
@@ -35860,7 +35868,7 @@ function FeeBreakdownSheet({ onClose }: { onClose: () => void }) {
 // FLAG: the amount is a raw <input> in a bordered row, not an L3 field (the commodity pad has no amount field to copy).
 // FLAG: the amount field is a plain <input> on the device's own keyboard, not the app's shared Keyboard (src/shared/ui/Keyboard).
 // FLAG: duplicates the app's Indian order pad (src/flows/stocks) for US stocks.
-import { useState, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Actionbar } from '@l3/components/Actionbar'
 import { Button } from '@l3/components/Button'
 import { Icon } from '@l3/components/Icon'
@@ -35883,6 +35891,17 @@ const ORDER_TYPES: { value: OrderType; label: string }[] = [
   { value: 'sl', label: 'SL' },
 ]
 
+/**
+ * The pad on screen (its order type, and when it closed — null while it's still shown). The pads are one page (screen
+ * group 'order-pad'), so a tap on Market / Limit / SL swaps this pad for another in place: a pad that renders while
+ * another is shown, or a moment after one closed, slides its fields in from that side. Opened later, it's a fresh visit.
+ */
+let shownPad: { type: OrderType; closedAt: number | null } | null = null
+
+/**
+ * The order pad. Switching order type keeps the header, tabs and dock in place; only the fields under the tabs slide in —
+ * from the right when the new type is further along (Market → Limit → SL), from the left when it's back.
+ */
 export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; backdrop?: boolean; sheet?: ReactNode }) {
   const { go, back } = useUsNav()
   const usd = useUsd()
@@ -35967,13 +35986,33 @@ export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; 
     </div>
   )
 
+  // Slides the fields in once, when they first attach (a callback ref: the phone mounts its body after this pad renders).
+  const [cameFrom] = useState(() => (shownPad && (shownPad.closedAt === null || performance.now() - shownPad.closedAt < 500) ? shownPad.type : undefined))
+  useLayoutEffect(() => {
+    const pad = { type: config.type, closedAt: null as number | null }
+    shownPad = pad
+    return () => { pad.closedAt = performance.now() }
+  }, [config.type])
+  const slid = useRef(false)
+  const fields = (el: HTMLElement | null) => {
+    if (!el || slid.current) return
+    slid.current = true
+    if (!cameFrom || cameFrom === config.type || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const order = ORDER_TYPES.map((t) => t.value)
+    const from = order.indexOf(config.type) > order.indexOf(cameFrom) ? 1 : -1
+    el.animate(
+      [{ translate: `${from * 100}% 0`, opacity: 0 }, { translate: '0 0', opacity: 1 }],
+      { duration: 280, easing: 'cubic-bezier(0.2, 0, 0, 1)' },
+    )
+  }
+
   const fieldError = typeof config.fieldError === 'function' ? config.fieldError(derived) : config.fieldError
 
   return (
     <Phone label={forCurrentStock(config.label)} header={header} footer={footer} gesture="none" topLine>
       <Stack gap="16" className={styles.body} inert={backdrop || undefined}>
         <Stack direction="horizontal" align="center" justify="between">
-          {/* FLAG: order type switch is L3 Tabs (pill, toggle) but its choice also navigates to another screen. */}
+          {/* FLAG: order type switch is L3 Tabs (pill, toggle) but its choice also goes to another screen of the same page group. */}
           <Tabs
             appearance="pill"
             size="sm"
@@ -35989,67 +36028,70 @@ export function OrderPad({ config, backdrop, sheet }: { config: OrderPadConfig; 
           {/* US orders are Day orders only: the validity is a label (a Tag), not the commodity pad's Select — nothing to pick. */}
           <Tag variant="secondary" color="neutral" aria-label="Validity: Day">Day</Tag>
         </Stack>
-        <div className={styles.field} data-error={fieldError || undefined}>
-          {mode === 'amount' ? (
-            <>
-              {fieldLabel('Amount', config.toggle)}
-              <input className={styles.amount} inputMode="decimal" aria-label="Amount in dollars" value={`$${amountText}`} onChange={(e) => typeAmount(e.target.value)} />
-            </>
-          ) : (
-            <>
-              {fieldLabel('Shares', config.toggle)}
+        {/* The part that changes with the order type: it slides, the tabs above it stay put. */}
+        <Stack gap="16" ref={fields}>
+          <div className={styles.field} data-error={fieldError || undefined}>
+            {mode === 'amount' ? (
+              <>
+                {fieldLabel('Amount', config.toggle)}
+                <input className={styles.amount} inputMode="decimal" aria-label="Amount in dollars" value={`$${amountText}`} onChange={(e) => typeAmount(e.target.value)} />
+              </>
+            ) : (
+              <>
+                {fieldLabel('Shares', config.toggle)}
+                <Stepper
+                  size="sm"
+                  className={styles.stepper}
+                  label="Shares"
+                  value={current}
+                  onChange={setShown}
+                  min={mode === config.mode ? (config.min ?? 0) : 0}
+                  step={1}
+                  autoCorrect={mode === config.mode && (config.min ?? 0) >= 1}
+                  format={il}
+                />
+              </>
+            )}
+          </div>
+          {(config.prices ?? []).map((price, i) => (
+            <div className={styles.field} key={price.label}>
+              {fieldLabel(price.label)}
+              <span className={styles.fieldValue}><Usd value={prices[i]} layout="inline" /></span>
               <Stepper
                 size="sm"
                 className={styles.stepper}
-                label="Shares"
-                value={current}
-                onChange={setShown}
-                min={mode === config.mode ? (config.min ?? 0) : 0}
-                step={1}
-                autoCorrect={mode === config.mode && (config.min ?? 0) >= 1}
-                format={il}
+                label={`${price.label} % from last price`}
+                value={pcts[i]}
+                onChange={(pct) => setPcts((all) => all.map((old, j) => (j === i ? pct : old)))}
+                min={-20}
+                max={20}
+                step={0.5}
+                format={(pct) => `${pct.toFixed(1)}%`}
               />
-            </>
+            </div>
+          ))}
+          {derived.error && <p className={styles.error}>{forCurrentStock(derived.error)}</p>}
+          {(derived.left || derived.right) && (
+            <div className={styles.helper}>
+              <span>{derived.left}</span>
+              <span>{derived.right}</span>
+            </div>
           )}
-        </div>
-        {(config.prices ?? []).map((price, i) => (
-          <div className={styles.field} key={price.label}>
-            {fieldLabel(price.label)}
-            <span className={styles.fieldValue}><Usd value={prices[i]} layout="inline" /></span>
-            <Stepper
+          {config.chips && mode === config.mode && (
+            <Tabs
+              appearance="pill"
               size="sm"
-              className={styles.stepper}
-              label={`${price.label} % from last price`}
-              value={pcts[i]}
-              onChange={(pct) => setPcts((all) => all.map((old, j) => (j === i ? pct : old)))}
-              min={-20}
-              max={20}
-              step={0.5}
-              format={(pct) => `${pct.toFixed(1)}%`}
+              behavior="filter"
+              aria-label={mode === 'amount' ? 'Add amount' : 'Shares to sell'}
+              items={config.chips.map((chip, i) => ({ value: String(i), label: typeof chip.label === 'function' ? chip.label(usd) : chip.label }))}
+              value=""
+              onChange={(label) => {
+                const chip = config.chips?.[Number(label)]
+                if (chip) applyChip(chip.apply)
+              }}
             />
-          </div>
-        ))}
-        {derived.error && <p className={styles.error}>{forCurrentStock(derived.error)}</p>}
-        {(derived.left || derived.right) && (
-          <div className={styles.helper}>
-            <span>{derived.left}</span>
-            <span>{derived.right}</span>
-          </div>
-        )}
-        {config.chips && mode === config.mode && (
-          <Tabs
-            appearance="pill"
-            size="sm"
-            behavior="filter"
-            aria-label={mode === 'amount' ? 'Add amount' : 'Shares to sell'}
-            items={config.chips.map((chip, i) => ({ value: String(i), label: typeof chip.label === 'function' ? chip.label(usd) : chip.label }))}
-            value=""
-            onChange={(label) => {
-              const chip = config.chips?.[Number(label)]
-              if (chip) applyChip(chip.apply)
-            }}
-          />
-        )}
+          )}
+        </Stack>
       </Stack>
       {sheet}
     </Phone>
@@ -36294,6 +36336,7 @@ import { orderResults } from './orderResults'
 import { tradeIds as ids } from './ids'
 
 /** A screen showing the order pad in one of its states. */
+/** A screen showing one order pad. */
 const padScreen = (id: string) => ({ backdrop }: { backdrop?: boolean }) => <OrderPad config={orderPads[id]} backdrop={backdrop} />
 /** A screen showing one order result. */
 const resultScreen = (id: string) => () => <OrderResult config={orderResults[id]} />
