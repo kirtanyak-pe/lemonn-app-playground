@@ -115,7 +115,9 @@
     "src/flows/nudges/sheets/GuardrailSheets.module.css",
     "src/flows/nudges/sheets/GuardrailSheets.tsx",
     "src/flows/nudges/sheets/NudgeSheet.module.css",
-    "src/flows/nudges/sheets/NudgeSheet.tsx"
+    "src/flows/nudges/sheets/NudgeSheet.tsx",
+    "src/flows/nudges/sheets/RiskVisuals.module.css",
+    "src/flows/nudges/sheets/RiskVisuals.tsx"
   ],
   "shared": [
     "src/shared/copy.ts",

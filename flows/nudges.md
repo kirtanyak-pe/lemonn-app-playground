@@ -87,6 +87,8 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 | 1 · Centred + bars (default) | The table above. Header (setting "Layout 1 header"): **Chip** (default) — no circle; one big light-red pill (pill-tab shape: full radius, 40 high, error-light fill and border) with ✋ on the left of "Overtrading Detected", then the fact · **Icon + tag** — ✋ in a 64 circle, the tag under it. |
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3X") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
+| 4 · Risk meter | The picture first, for a stressed trader: a **risk meter** — a thick half ring in three zones (success · warning · error accents, no numbers or ticks, so it reads as a risk scale, not a speedometer), "Safe" / "Danger" under its ends and a green **Usual** notch in the safe zone. The pointer starts on Usual (green) and swings into the red (turning red), overshoots a little and settles; then the danger zone pulses twice. In the middle: the multiple (`heading-36`, "2X") over "vs your usual" — "High risk" when there's no multiple. Under it only one heading, the fact (`heading-20`), and the "Overtrading Detected" tag below it. No not-safe line and no consequence strip (cut to keep the sheet to three things). `sheets/RiskVisuals.tsx` |
+| 5 · Risk bar | The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Safe zone" / "Danger zone" under its ends, a green **Usual · 1X** pin and a red **You now · 2X** pin (light-red pill, error border) that slides from Usual into the danger zone; each pin's label shifts with its position so it stays inside the sheet. Under it, left-aligned: one heading (the fact) and the tag. No not-safe line, no consequence strip. |
 
 **Floating switcher (prototype only):** on the order pad and over the open nudge, a small pill floats: grip · Layout · Case ·
 State. Each is a dropdown pill that opens its own menu (full names, the picked one ticked); a long value is cut with an
@@ -103,6 +105,11 @@ compliance to confirm whether one is needed.
 Data states: A = own history and last time lost (own loss line) · B = own history, no loss (group line) · C = thin
 history (raw fact, no bars) · D = can't score → the generic sheet. Cases: `data.ts`; words: `copy.json` `case.<id>.*`
 (headline, raw, base / now bar labels, unit for the big number).
+
+**Risk scale (layouts 4 and 5):** Safe 0–45 %, Caution 45–65 %, Danger 65–100 % of the scale. Usual (1X) sits at 22 %;
+now at 72 % + 23 % × (multiple − 1) / 9, capped at the end (2X → 75 %, 10X → 95 %); no multiple → 80 %. The positions
+are a picture, not a measure: the real engine only says "in danger". Single state for now (A / B / C only change the
+words and the consequence).
 
 ### Data
 
@@ -156,6 +163,8 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-02 · Chip header: 24 above and below it; on open it pops in as ✋ alone, then opens to show "Overtrading Detected" (while the bars grow).
 - 2026-11-02 · a nudge with no bars and no consequence (giving back) keeps 24 under the headline, above the dock.
 - 2026-11-02 · Size-up after a loss is the default case and heads the case list. Floating switcher: every control is a dropdown pill with its own designed menu (no system picker); the case pill truncates so the bar never runs off the screen.
+- 2026-11-04 · Layouts 4 · Risk meter and 5 · Risk bar: where the trader is on a safe → danger scale, his usual vs now, animated once.
+- 2026-11-04 · Layouts 4 and 5 trimmed: the meter / bar at the top, one heading, the tag under it; the not-safe line, the consequence and the bar's card removed.
 
 
 ## Source — this flow
@@ -508,6 +517,16 @@ function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLEleme
   "nudge.othersOtherDays": "{count} in 10 traders who did this lost more than on other days",
   "nudge.notNowPositions": "Not now",
   "nudge.barsLabel": "{now}: {ratio}× {base}",
+  "nudge.usual": "Usual",
+  "nudge.now": "You now",
+  "nudge.vsUsual": "vs your usual",
+  "nudge.highRisk": "High risk",
+  "nudge.zoneSafe": "Safe",
+  "nudge.zoneDanger": "Danger",
+  "nudge.zoneSafeLong": "Safe zone",
+  "nudge.zoneDangerLong": "Danger zone",
+  "nudge.meterLabel": "Risk meter: you are in the danger zone",
+  "nudge.meterLabelRatio": "Risk meter: you are in the danger zone, {ratio}X your usual",
   "case.generic.name": "Generic",
   "case.generic.headline": "Down ₹2,500 today and still trading",
   "case.sizeUp.name": "1 · Size-up after a loss",
@@ -593,6 +612,8 @@ function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLEleme
   "option.layoutBars": "1 · Centred + bars",
   "option.layoutNumber": "2 · Big number",
   "option.layoutCompact": "3 · Compact alert",
+  "option.layoutGauge": "4 · Risk meter",
+  "option.layoutZone": "5 · Risk bar",
   "option.badge": "Layout 1 header",
   "option.badgeChip": "Chip (✋ in the tag)",
   "option.badgeTag": "Icon + tag",
@@ -765,7 +786,7 @@ const onOff = [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', 
 // Size-up after a loss is the default and heads the list.
 export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown' as const, values: [...nudgeCases].sort((a, b) => Number(b.id === 'sizeUp') - Number(a.id === 'sizeUp')).map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Key) })), default: 'sizeUp' }
 export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
-export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }], default: 'bars' }
+export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }, { value: 'gauge', label: t('option.layoutGauge') }, { value: 'zone', label: t('option.layoutZone') }], default: 'bars' }
 
 /** Layout 1 only: the ✋ circle with the tag under it, or one chip (✋ inside the tag). */
 export const badgeOption = { id: 'badge', group: 'Nudge', label: t('option.badge'), picker: 'dropdown' as const, values: [{ value: 'chip', label: t('option.badgeChip') }, { value: 'tag', label: t('option.badgeTag') }], default: 'chip' }
@@ -1106,12 +1127,19 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 .alertIcon::after { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--l3-content-accent-error-default); opacity: 0; animation: pulse calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-decelerate) 2 both; }
 .alertText { margin: 0; font: var(--l3-text-heading-18); color: var(--l3-content-primary); }
 
+/* 4 · Risk meter and 5 · Risk bar (the visuals are in RiskVisuals): the fact. */
+.riskText { text-align: center; }
+.riskHeading { margin: 0; font: var(--l3-text-heading-20); color: var(--l3-content-primary); }
+
 @media (prefers-reduced-motion: reduce) {
   .icon::after, .bar, .heroValue, .alertIcon::after, .chip, .chipLabel { animation: none; }
 }
 
 /* 24 above the content, as below it (L3's sheet has 16 on top). Same in GuardrailSheets. */
 .sheet [data-sheet-content] { padding-top: var(--l3-spacing-24); }
+/* Layouts 4 and 5: the meter / bar starts 16 below the sheet's top edge — L3's own 16 top space, no extra padding
+   (the picture leads, no header above it). */
+.riskSheet [data-sheet-content] { padding-top: 0; }
 
 /* Layout 1 · Chip header: ✋ + "Overtrading Detected" in one big light-red pill, shaped like an L3 pill tab (full radius,
    40 high). Not tappable, so not a Tab; L3 has no static pill (L3 gap).
@@ -1145,6 +1173,7 @@ import copy from '../copy.json'
 import { t } from '../copy'
 import { caseById, type DataState, type Guardrail, type NudgeCaseId } from '../data'
 import styles from './NudgeSheet.module.css'
+import { RiskBar, RiskMeter } from './RiskVisuals'
 
 /**
  * Three layouts of the same content, to compare (prototype setting "Layout"):
@@ -1152,8 +1181,11 @@ import styles from './NudgeSheet.module.css'
  * - number: left-aligned; the multiple as a giant red number ("3X") with its words under it, then the strip.
  * - compact: one red-tinted alert card (✋ 40 + tag + the fact) and the consequence under it — the shortest sheet,
  *   so most of the order pad stays visible.
+ * - gauge: a risk meter (half ring safe → danger) whose pointer swings from his usual into the red, then the fact and
+ *   the tag. No consequence line: the meter is the message.
+ * - zone: the same scale as a flat bar, "Usual" and "You now" pins on it, then the fact and the tag.
  */
-export type NudgeLayout = 'bars' | 'number' | 'compact'
+export type NudgeLayout = 'bars' | 'number' | 'compact' | 'gauge' | 'zone'
 /** Layout 1's header: `tag` = ✋ in a 64 circle with the tag under it · `chip` = no circle, one light-red pill with ✋ on
  *  the left of the label, inside it. */
 export type NudgeBadge = 'tag' | 'chip'
@@ -1238,6 +1270,24 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
       </div>
       {consequence}
     </Stack>
+  } else if (layout === 'gauge') {
+    // 4 · Risk meter: the picture says it first; then one heading (the fact) and the tag under it. Nothing else.
+    body = <Stack gap="16" align="center">
+      <RiskMeter ratio={ratio} />
+      <Stack gap="12" align="center" className={styles.riskText}>
+        <h2 id={id} className={styles.riskHeading}>{headline}</h2>
+        <Tag size="md" color="error">{t('nudge.tag')}</Tag>
+      </Stack>
+    </Stack>
+  } else if (layout === 'zone') {
+    // 5 · Risk bar: as layout 4 — the bar first, then one heading and the tag under it. Nothing else.
+    body = <Stack gap="24">
+      <RiskBar ratio={ratio} />
+      <Stack gap="12" align="start">
+        <h2 id={id} className={styles.riskHeading}>{headline}</h2>
+        <Tag size="md" color="error">{t('nudge.tag')}</Tag>
+      </Stack>
+    </Stack>
   } else {
     // 1 · Centred + bars: ✋ circle over the tag, or one chip with ✋ inside it (opens from ✋ alone to show the label).
     header = badge === 'chip'
@@ -1253,7 +1303,7 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
 
   // No bars and no consequence (e.g. giving back): the header ends the sheet, so it brings the 24 above the dock itself.
   const bare = !body
-  return <Sheet labelledBy={id} onClose={onNotNow} className={bare ? `${styles.sheet} ${styles.bare}` : styles.sheet} header={header} footer={footer}>{body}</Sheet>
+  return <Sheet labelledBy={id} onClose={onNotNow} className={[styles.sheet, bare && styles.bare, (layout === 'gauge' || layout === 'zone') && styles.riskSheet].filter(Boolean).join(' ')} header={header} footer={footer}>{body}</Sheet>
 }
 
 /** Two short pulses. In the Lemonn Android app the page calls its native bridge (works without a tap, and uses the
@@ -1288,6 +1338,227 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
       <span className={styles.barValue}>{ratio}X</span>
     </div>
   </Card>
+}
+```
+
+### `src/flows/nudges/sheets/RiskVisuals.module.css`
+
+```css
+/* Layouts 4 and 5: the risk scale (safe → caution → danger) on L3's success / warning / error accents.
+   --risk-at is the marker's place on the scale (0 → 1): it animates from --risk-from (usual) to --risk-to (now),
+   overshoots a little into danger and settles. Registered so it can animate; without the animation it rests at
+   --risk-to. */
+@property --risk-at { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+.meter, .pin, .dot { --risk-at: var(--risk-to); }
+.meter, .pin[data-tone='now'], .dot[data-tone='now'] {
+  animation: travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--l3-motion-duration-medium) both;
+}
+@keyframes travel {
+  0% { --risk-at: var(--risk-from); }
+  70% { --risk-at: calc(var(--risk-to) + 0.04); }
+  85% { --risk-at: calc(var(--risk-to) - 0.01); }
+  100% { --risk-at: var(--risk-to); }
+}
+
+/* The danger zone pulses twice once the marker has landed: "this is where you are". */
+.zone[data-tone='danger'], .segment[data-tone='danger'] {
+  animation: alarm calc(var(--l3-motion-duration-long) * 2) var(--l3-motion-easing-standard) calc(var(--l3-motion-duration-long) * 3 + var(--l3-motion-duration-medium)) 2 both;
+}
+@keyframes alarm { 50% { opacity: 0.45; } }
+
+/* ---------- Layout 4 · Risk meter ---------- */
+.meter { margin: 0; }
+.meterSvg { display: block; width: 100%; height: auto; overflow: visible; }
+.zone { fill: none; stroke-linecap: butt; }
+.zone[data-tone='safe'] { stroke: var(--l3-surface-accent-success-default); }
+.zone[data-tone='caution'] { stroke: var(--l3-surface-accent-warning-default); }
+.zone[data-tone='danger'] { stroke: var(--l3-surface-accent-error-default); }
+
+.usualTick { stroke: var(--l3-content-accent-success-default); stroke-width: 3; stroke-linecap: round; }
+.usualText { font: var(--l3-text-label-12); fill: var(--l3-content-accent-success-default); }
+
+/* The pointer turns about the ring's centre; it is green on usual and turns red on its way into danger. */
+.pointer {
+  transform-box: view-box;
+  transform-origin: 160px 150px;
+  transform: rotate(calc((var(--risk-at) - 0.5) * 180deg));
+  fill: var(--l3-content-accent-error-default);
+  animation: redden calc(var(--l3-motion-duration-long) * 2) var(--l3-motion-easing-standard) var(--l3-motion-duration-medium) both;
+}
+.pointer circle { stroke: var(--l3-surface-primary); stroke-width: 3; }
+@keyframes redden { from { fill: var(--l3-content-accent-success-default); } }
+
+.meterValue { font: var(--l3-text-heading-36); fill: var(--l3-content-accent-error-default); }
+.meterValueText { font: var(--l3-text-heading-24); fill: var(--l3-content-accent-error-default); }
+.meterSub { font: var(--l3-text-label-14); fill: var(--l3-content-secondary); }
+.endText { font: var(--l3-text-label-12); }
+.endText[data-tone='safe'] { fill: var(--l3-content-accent-success-default); }
+.endText[data-tone='danger'] { fill: var(--l3-content-accent-error-default); }
+
+/* ---------- Layout 5 · Risk bar ---------- */
+.bar { display: flex; flex-direction: column; gap: var(--l3-spacing-08); margin: 0; }
+
+/* Pins ride above the track. A pin is a point at --risk-at; its label shifts left by the same fraction of its own
+   width, so it stays inside the card at either end. */
+.lane { position: relative; height: var(--l3-size-32); }
+.pin { position: absolute; bottom: 0; left: calc(var(--risk-at) * 100%); }
+.pinLabel {
+  display: block;
+  transform: translateX(calc(var(--risk-at) * -100%));
+  padding: var(--l3-spacing-04) var(--l3-spacing-08);
+  border-radius: var(--l3-radius-full);
+  font: var(--l3-text-label-12);
+  white-space: nowrap;
+}
+.pin[data-tone='usual'] .pinLabel { background: var(--l3-surface-accent-success-light); color: var(--l3-content-accent-success-default); }
+.pin[data-tone='now'] { z-index: 1; }
+.pin[data-tone='now'] .pinLabel { background: var(--l3-surface-accent-error-light); box-shadow: inset 0 0 0 1px var(--l3-border-accent-error-default); color: var(--l3-content-accent-error-default); font: var(--l3-text-heading-14); }
+
+/* The track: three zones in one rounded bar; a ringed dot marks each position on it. */
+.track { position: relative; display: flex; gap: 2px; height: var(--l3-size-12); }
+.segment { display: block; flex-basis: 0; }
+.segment:first-of-type { border-radius: var(--l3-radius-full) 0 0 var(--l3-radius-full); }
+.segment[data-tone='danger'] { border-radius: 0 var(--l3-radius-full) var(--l3-radius-full) 0; }
+.segment[data-tone='safe'] { background: var(--l3-surface-accent-success-default); }
+.segment[data-tone='caution'] { background: var(--l3-surface-accent-warning-default); }
+.segment[data-tone='danger'] { background: var(--l3-surface-accent-error-default); }
+.dot {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--risk-at) * 100%);
+  width: var(--l3-size-20);
+  height: var(--l3-size-20);
+  box-sizing: border-box;
+  border: 3px solid var(--l3-surface-primary);
+  border-radius: var(--l3-radius-full);
+  transform: translate(-50%, -50%);
+}
+.dot[data-tone='usual'] { background: var(--l3-content-accent-success-default); }
+.dot[data-tone='now'] { background: var(--l3-content-accent-error-default); width: var(--l3-size-24); height: var(--l3-size-24); }
+
+.legend { display: flex; justify-content: space-between; font: var(--l3-text-label-12); }
+.legend [data-tone='safe'] { color: var(--l3-content-accent-success-default); }
+.legend [data-tone='danger'] { color: var(--l3-content-accent-error-default); }
+
+@media (prefers-reduced-motion: reduce) {
+  .meter, .pin, .dot, .pointer, .zone, .segment { animation: none; }
+}
+```
+
+### `src/flows/nudges/sheets/RiskVisuals.tsx`
+
+```tsx
+import type { CSSProperties } from 'react'
+import { t } from '../copy'
+import styles from './RiskVisuals.module.css'
+
+/**
+ * Layouts 4 and 5 show the same scale: risk from safe (left) to danger (right), in three zones.
+ * Positions are fractions of the scale (0 → 1). "Usual" (1X) always sits in the middle of the safe zone; "now" lands in
+ * the danger zone, further right the bigger the multiple (2X → 0.75, 10X and over → the far end).
+ * Both play once on open: the marker starts at usual and moves into danger, overshoots a little and settles; then the
+ * danger zone pulses twice. Reduced motion: everything rests at its end.
+ */
+const SAFE_END = 0.45
+const CAUTION_END = 0.65
+const USUAL_AT = 0.22
+/** Where "now" lands. No multiple (thin history, or a fact that isn't one): well inside danger. */
+export function nowAt(ratio?: number) {
+  if (ratio === undefined) return 0.8
+  return 0.72 + 0.23 * Math.min(1, (ratio - 1) / 9)
+}
+
+const zones = [
+  { from: 0, to: SAFE_END, tone: 'safe' },
+  { from: SAFE_END, to: CAUTION_END, tone: 'caution' },
+  { from: CAUTION_END, to: 1, tone: 'danger' },
+] as const
+
+const at = (from: number, to: number) => ({ '--risk-from': from, '--risk-to': to } as CSSProperties)
+
+/* ---------- Layout 4 · Risk meter ---------- */
+
+// The meter's drawing, in SVG units: a half ring centred at (CX, CY).
+const CX = 160
+const CY = 150
+const R = 116
+const RING = 20
+/** Gap between zones, in fractions of the scale. */
+const GAP = 0.008
+
+/** The point on a circle of radius r at fraction f of the half ring (0 = left end, 1 = right end). */
+function point(f: number, r: number) {
+  const a = Math.PI * (1 - f)
+  return [CX + r * Math.cos(a), CY - r * Math.sin(a)] as const
+}
+function arc(from: number, to: number, r = R) {
+  const [x1, y1] = point(from, r)
+  const [x2, y2] = point(to, r)
+  return `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`
+}
+
+/**
+ * A risk meter, not a speedometer: a thick half ring in three zones with no numbers or ticks, so it reads as "where am
+ * I" in one glance. The pointer starts on "Usual" (green) and swings into the red, turning red as it goes; the multiple
+ * sits in the middle ("3X vs your usual"), or "High risk" when there's no multiple. The ends are labelled Safe · Danger.
+ */
+export function RiskMeter({ ratio }: { ratio?: number }) {
+  const now = nowAt(ratio)
+  const usual = point(USUAL_AT, R + RING / 2 + 10)
+  const usualLabel = point(USUAL_AT, R + RING / 2 + 18)
+  const label = ratio !== undefined ? t('nudge.meterLabelRatio', { ratio }) : t('nudge.meterLabel')
+  return <figure className={styles.meter} role="img" aria-label={label} style={at(USUAL_AT, now)}>
+    <svg viewBox="0 22 320 174" className={styles.meterSvg} aria-hidden>
+      {zones.map((z) => <path key={z.tone} d={arc(z.from + (z.from ? GAP : 0), z.to - (z.to < 1 ? GAP : 0))}
+        className={styles.zone} data-tone={z.tone} strokeWidth={RING} />)}
+      {/* His usual: a small green notch outside the ring, labelled. */}
+      <line x1={point(USUAL_AT, R + RING / 2 + 2)[0]} y1={point(USUAL_AT, R + RING / 2 + 2)[1]} x2={usual[0]} y2={usual[1]} className={styles.usualTick} />
+      <text x={usualLabel[0]} y={usualLabel[1]} className={styles.usualText} textAnchor="end">{t('nudge.usual')}</text>
+      {/* The pointer: drawn pointing straight up, turned to --risk-at by CSS. */}
+      <g className={styles.pointer}>
+        <path d={`M ${CX - 8} ${CY - 60} L ${CX} ${CY - R + RING / 2 + 2} L ${CX + 8} ${CY - 60} Z`} />
+        <circle cx={CX} cy={CY - 60} r={8} />
+      </g>
+      <text x={CX} y={CY - 4} className={ratio !== undefined ? styles.meterValue : styles.meterValueText} textAnchor="middle">
+        {ratio !== undefined ? `${ratio}X` : t('nudge.highRisk')}
+      </text>
+      {ratio !== undefined && <text x={CX} y={CY + 18} className={styles.meterSub} textAnchor="middle">{t('nudge.vsUsual')}</text>}
+      <text x={CX - R} y={CY + 30} className={styles.endText} data-tone="safe" textAnchor="middle">{t('nudge.zoneSafe')}</text>
+      <text x={CX + R} y={CY + 30} className={styles.endText} data-tone="danger" textAnchor="middle">{t('nudge.zoneDanger')}</text>
+    </svg>
+  </figure>
+}
+
+/* ---------- Layout 5 · Risk bar ---------- */
+
+/**
+ * The same scale laid flat, straight on the sheet (no card): one track in three zones (Safe zone · · Danger zone under its ends). "Usual · 1X" is a quiet
+ * pin over the safe zone; "You now · 3X" is a red pin that slides from usual into the danger zone. A pin's label shifts
+ * with its position so it never runs off the card.
+ */
+export function RiskBar({ ratio }: { ratio?: number }) {
+  const now = nowAt(ratio)
+  const label = ratio !== undefined ? t('nudge.meterLabelRatio', { ratio }) : t('nudge.meterLabel')
+  return <div className={styles.bar} role="img" aria-label={label}>
+    <div className={styles.lane} aria-hidden>
+      <span className={styles.pin} data-tone="usual" style={{ '--risk-to': USUAL_AT } as CSSProperties}>
+        <span className={styles.pinLabel}>{t('nudge.usual')}{ratio !== undefined && ' · 1X'}</span>
+      </span>
+      <span className={styles.pin} data-tone="now" style={at(USUAL_AT, now)}>
+        <span className={styles.pinLabel}>{t('nudge.now')}{ratio !== undefined && ` · ${ratio}X`}</span>
+      </span>
+    </div>
+    <div className={styles.track} aria-hidden>
+      {zones.map((z) => <span key={z.tone} className={styles.segment} data-tone={z.tone} style={{ flexGrow: z.to - z.from }} />)}
+      <span className={styles.dot} data-tone="usual" style={{ '--risk-to': USUAL_AT } as CSSProperties} />
+      <span className={styles.dot} data-tone="now" style={at(USUAL_AT, now)} />
+    </div>
+    <div className={styles.legend} aria-hidden>
+      <span data-tone="safe">{t('nudge.zoneSafeLong')}</span>
+      <span data-tone="danger">{t('nudge.zoneDangerLong')}</span>
+    </div>
+  </div>
 }
 ```
 
