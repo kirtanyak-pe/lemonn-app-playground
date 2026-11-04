@@ -1,6 +1,6 @@
 # Flow: Overtrading nudges (playground) (`nudges`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `6de43c8` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 Journey-aware P&L limit and TP/SL prompts: silent help on the order pad, and one nudge sheet when the revenge flag and the journey engine agree.
 
@@ -1629,10 +1629,31 @@ export type Preview = {
   back?: () => boolean
   /** The screen was reached by going back (a back button, or a screen earlier in the app) — a page can come back as it was left. */
   cameBack?: boolean
+  /** An `over` screen (a sheet over the screen the user is on): the screen under it — closing the sheet goes there. */
+  under?: string
 }
 
 export const PreviewContext = createContext<Preview>({ interactive: false, go: () => {} })
 export const usePreview = () => useContext(PreviewContext)
+
+// ---- Which way the next move goes ------------------------------------------------------------------------------------
+// The preview guesses a move's direction (a screen visited before, or one earlier in the same flow, is "back"). A tap can
+// say it instead: Deposit opens Add money (listed earlier in the flow) as a page going forward; a back button's fallback
+// (nothing in the history) is back, and replaces the page instead of adding to the history.
+let intent: { id: string; direction: 'forward' | 'back' } | null = null
+
+/** Say the move to screen `id` that is about to happen is forward (a page opening) or back. */
+export const markMove = (id: string, direction: 'forward' | 'back') => {
+  intent = { id, direction }
+}
+
+/** The preview: the direction said for a move to `id`, if any. */
+export const moveIntent = (id: string) => (intent?.id === id ? intent.direction : undefined)
+
+/** The preview: the move happened. */
+export const clearMoveIntent = () => {
+  intent = null
+}
 
 /** Prototype only: after `ms`, go to `next` (loaders, "Verifying…"). */
 export function useAutoAdvance(next: string | undefined, ms: number) {

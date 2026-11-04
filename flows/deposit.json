@@ -4,7 +4,7 @@
   "description": "Add money over UPI after account setup: amount, UPI app, confirmation, receipt or failure.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "4afbde2",
+    "commit": "6de43c8",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -72,9 +72,36 @@
       "id": "deposit-12",
       "name": "Add bank account",
       "figma": "",
-      "note": "From the bank row or \"Pay from\" — the ₹ and the US add money both come here. Verify (₹1 name check) goes back to the add money it came from.",
+      "note": "From the bank row or \"Pay from\" — the ₹ and the US add money both come here. Verify account → the ₹1 name check.",
       "goesTo": [
-        "deposit-09"
+        "deposit-09",
+        "deposit-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-13",
+      "name": "Verifying bank account",
+      "figma": "",
+      "note": "Not in Figma: ₹1 goes to the account and the bank returns the name on it. Moves on by itself to Bank account added.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-14",
+      "name": "Bank account added",
+      "figma": "",
+      "note": "Not in Figma: the name matched PAN. The account joins the linked banks; Continue goes back to the add money (₹ or US) that opened Add bank account, with the new bank picked.",
+      "goesTo": [],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-15",
+      "name": "Bank account not added",
+      "figma": "",
+      "note": "Not in Figma: the name on the account isn’t the user’s (₹1 check). Try another account → Add bank account; Back to Add money → the add money that opened it.",
+      "goesTo": [
+        "deposit-12"
       ],
       "figmaUrl": ""
     },
@@ -123,6 +150,7 @@
     "src/flows/deposit/index.tsx",
     "src/flows/deposit/screens/AddBank.tsx",
     "src/flows/deposit/screens/AddMoney.tsx",
+    "src/flows/deposit/screens/BankVerify.tsx",
     "src/flows/deposit/screens/Deposit.module.css",
     "src/flows/deposit/screens/Payment.tsx"
   ],
@@ -140,12 +168,16 @@
     "src/shared/ui/External.tsx",
     "src/shared/ui/Intro.module.css",
     "src/shared/ui/Intro.tsx",
+    "src/shared/ui/Keyboard.module.css",
+    "src/shared/ui/Keyboard.tsx",
     "src/shared/ui/Screen.module.css",
     "src/shared/ui/Screen.tsx",
     "src/shared/ui/Sheet.module.css",
     "src/shared/ui/Sheet.tsx",
     "src/shared/ui/Spot.module.css",
     "src/shared/ui/Spot.tsx",
+    "src/shared/ui/TextKeyboard.module.css",
+    "src/shared/ui/TextKeyboard.tsx",
     "src/shared/userStatus.ts"
   ]
 }

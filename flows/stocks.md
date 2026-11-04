@@ -1,6 +1,6 @@
 # Flow: Stocks (`stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `6de43c8` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Stocks tab — the home after login: indices, holdings, products, movers, watchlists, ideas.
 
@@ -18,13 +18,12 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-06` | Home · highlights & idea baskets | — | `profile-01` | Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.) |
 | `stocks-07` | Home · idea baskets & disclosure | — | `profile-01` | The end of the page: the disclosure, four lines and Read More. |
 | `stocks-21` | Home · US tab · KYC not done | [9001:20]() | `kyc-01`, `us-stocks-74` | The US tab for a user who hasn\ |
-| `stocks-09` | Home · US Stocks tab | [5756:74756]() | — | The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\ |
+| `stocks-09` | Home · US Stocks tab | [5756:74756]() | — | The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ the activation pages, us-stocks-94), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\ |
 | `stocks-10` | Home · US Stocks tab · scrolled | — | — | Same tab, scrolled past the tabs: the compact IND / US tabs are pinned under the top bar. |
-| `stocks-11` | Home · US Stocks intro (FTUX) sheet | [5756:68986]() | `stocks-12`, `stocks-01` | First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the risk disclosure (stocks-12); ✕ → Home (stocks-01). |
-| `stocks-12` | Home · US tab · risk disclosure sheet | [5756:71475]() | `stocks-13`, `stocks-09` | The Risk disclosure (For US Stocks) sheet over the US tab. Agree and Continue submits the activation → under review (stocks-13); closing it → the tab (stocks-09). |
+| `stocks-11` | Home · US Stocks intro (FTUX) sheet | [5756:68986]() | `us-stocks-94`, `stocks-01` | First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the activation pages (us-stocks-94); ✕ → Home (stocks-01). |
 | `stocks-13` | Home · US tab · activation under review | [5756:75539]() | — | US tab, activation under review (honey card, up to 1 working day). In the prototype it moves on to "activated" (stocks-15) by itself after 2 s; the wallet opens the wallet with the review banner. |
 | `stocks-22` | Home · US tab · activation approved sheet | [9001:21]() | `us-stocks-20`, `stocks-15` | The review is approved: the activated US tab with the "US Stocks is active" sheet (success spot). Add Money to US wallet → the $0 USD wallet (us-stocks-20); Later or closing → the activated Home (stocks-15). The under-review Home (stocks-13) moves here by itself after 2 s. |
-| `stocks-14` | Home · US tab · activation failed | [5776:81034]() | — | US tab, activation failed (PAN could not be verified): red card, Retry Activation → the risk disclosure (stocks-12). |
+| `stocks-14` | Home · US tab · activation failed | [5776:81034]() | — | US tab, activation failed (PAN could not be verified): red card, Retry Activation → the activation pages (us-stocks-94). |
 | `stocks-15` | Home · US tab · activated · add money | [5776:81870]() | `us-stocks-20` | US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too. |
 | `stocks-16` | Home · US tab · money ready | [5796:87332]() | `stocks-17` | Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59). |
 | `stocks-17` | Home · US tab · activated · holding | [5826:92885]() | — | US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet. |
@@ -33,6 +32,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-18` | Home · activation submitted sheet | [5756:73797]() | `stocks-13` | The under-review US tab with the "US Stocks activation under review" sheet (we\ |
 | `stocks-29` | Top analyst picks · Stocks | — | `us-stocks-13` | The US tab\ |
 | `stocks-30` | Top analyst picks · History | — | `us-stocks-13` | The same page on History: the track record (picks closed, how many reached their target, the average return), then each closed pick — dates, its return (green / red) and a Target hit / Exited early tag. A row opens its US stock page. |
+| `stocks-31` | Brands You Know · View all | — | `us-stocks-13` | The US tab\ |
 
 ## Spec (README.md)
 
@@ -63,10 +63,9 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 | `stocks-07` | Home · idea baskets & disclosure | Invest in ideas (baskets) · the broker's regulatory line |
 | `stocks-09` | Home · US Stocks tab | The **US Stocks** tab (user has not activated US Stocks): US indices · Activate US Stocks card · shortcuts · Top Movers · Trillion Dollar Titans · Brands You Know · Explore by themes |
 | `stocks-10` | Home · US Stocks tab · scrolled | Same tab scrolled past the tabs: the compact IND / US tabs are pinned under the top bar |
-| `stocks-11` | Home · US Stocks intro (FTUX) sheet | IND tab + the **US Stocks intro (FTUX) sheet**, first launch after release (Figma 5756:68986). Activate US Stocks → `stocks-12`; ✕ → `stocks-01` |
-| `stocks-12` | Home · US tab · risk disclosure sheet | US tab + the **Risk disclosure** sheet (5756:71475). Agree and Continue → `stocks-13`; close → `stocks-09` |
+| `stocks-11` | Home · US Stocks intro (FTUX) sheet | IND tab + the **US Stocks intro (FTUX) sheet**, first launch after release (Figma 5756:68986). Activate US Stocks → `us-stocks-94`; ✕ → `stocks-01` |
 | `stocks-13` | Home · US tab · activation under review | Honey card "Activation under review" (5756:75539). Auto → `stocks-22` after 2 s; wallet → `us-stocks-55` |
-| `stocks-14` | Home · US tab · activation failed | Red card, Retry Activation → `stocks-12` (5776:81034); wallet → `us-stocks-56` |
+| `stocks-14` | Home · US tab · activation failed | Red card, Retry Activation → `us-stocks-94` (5776:81034); wallet → `us-stocks-56` |
 | `stocks-15` | Home · US tab · activated · add money | Green card with the unlocked benefits, Add Money to US wallet → `us-stocks-20` (5776:81870); wallet → `us-stocks-20` |
 | `stocks-16` | Home · US tab · money ready | "Your money is ready" toast (L3 Aerobar, 6 s) + the ready card, Explore US Stocks → `stocks-17` (5796:87332); wallet → `us-stocks-59` |
 | `stocks-17` | Home · US tab · activated · holding | No card; the summary shows **US holdings ($)** (5826:92885). A stock → `us-stocks-32` (NVDA, held) or `us-stocks-31`; wallet → `us-stocks-59` |
@@ -76,7 +75,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
 | `stocks-23` … `28` | Themes page (one screen per opening theme; 24–28 hidden) | **Not in Figma.** Every theme of Explore by themes on one page, like the ETFs page: Actionbar (back + "Themes") with the themes as pill tabs in its bottom slot · description + disclaimer · Returns card (1M · 1Y · 3Y, what $100 from 3 years ago is worth) · the theme's stocks. Opens on: 23 AI & chips (also View all) · 24 Big Tech · 25 Dividend payers · 26 EV & clean energy · 27 Healthcare leaders · 28 Dollar parking |
 | `stocks-29` · `30` | Top analyst picks · Stocks / History | **Not in Figma**: built from the live app's Trade Ideas page (phone screenshots, 3 Nov) without its F&O tab. The US tab's Top analyst picks View all (header and under the list) opens it. Actionbar: back + title, flat (underline) tabs **Stocks · History** in its bottom slot (the live app has pills). Stocks: a card per pick — logo, name over LTP, the average target over the rating tag (Strong Buy green / Buy grey); under a hairline, Expected profit +x% and "94% of 66 recommend" (live app: entry range + Not in range, Potential profit, TP · SL). History: closed picks grouped by closing day (Today, Yesterday, then "30 Oct 2026") — logo, name over entry → exit price, the return (green / red) over "Target hit in 24 days" / "Exited in 9 days". Signed % with no ▲ / ▼ (L3 PriceChange). A card or row → `us-stocks-13`; back → the US tab |
 
-`stocks-01 … 08` are the **IN Stocks** tab. Screens 09–18 are the **US Stocks** tab in each state of the user's US Stocks activation; they come from the US Stocks flow's Home (designed by a teammate, Figma file `8HEY699cTPiWiQeAVX3122`), which now uses this page — his frames map here through `FIGMA_IN_OTHER_FLOWS` in `src/flows/us-stocks/nav.tsx`. `stocks-09` Activate US Stocks → `stocks-12` (was `us-stocks-14`); a US stock on a not-activated state → `us-stocks-13` (stock page, Activate).
+`stocks-01 … 08` are the **IN Stocks** tab. Screens 09–18 are the **US Stocks** tab in each state of the user's US Stocks activation; they come from the US Stocks flow's Home (designed by a teammate, Figma file `8HEY699cTPiWiQeAVX3122`), which now uses this page — his frames map here through `FIGMA_IN_OTHER_FLOWS` in `src/flows/us-stocks/nav.tsx`. `stocks-09` Activate US Stocks → `us-stocks-94` (the activation pages); a US stock on a not-activated state → `us-stocks-13` (stock page, Activate).
 
 ### Page structure (top to bottom)
 
@@ -86,8 +85,12 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
    (`search-01`, the Search flow: Stocks tab, keyboard up); nothing is typed on Home. Back on Search returns here.
 2. **Summary area** (grey, `surface/secondary`):
    - **Index strip** (scrolls sideways): NIFTY 50 / SENSEX / NIFTY BANK — value, day change; each opens its chart.
-   - **Current holdings:** the value (the page's biggest number) and the overall return; the block opens Portfolio.
-   - **Products:** Mutual funds (240+ funds) · Equity F&O (0 slippage) · Commodities (0 brokerage, "New").
+   - **IN Stocks holdings:** the value (the page's biggest number) and the overall return; the card opens Portfolio →
+     Holdings on the Indian holdings (`us-stocks-05`).
+   - **Products** (V8, V12, V13 — Figma 10303:27156): MF (240+ Funds) · F&O (Scalper mode) · Commodity (0 Brokerage) ·
+     Smart invest (Scalper mode — Figma's copy, likely a placeholder; the tap scrolls to the Smart Invest section).
+     More than three tiles: 112 each, scrolling; three or fewer fill the row. Figma's NEW tag on Commodity is hidden
+     for now (the lime NEW style is ready for any tile with `isNew`).
 3. **IN Stocks / US Stocks tabs** (a 40 strip between the summary and the feed; it pulls 24 up into the summary's
    bottom padding, so it adds exactly 40 to the page). The selected tab is notched and joins the feed below (an SVG
    outline slides between the two tabs); the US label flips between "US Stocks" and "Live till 2:30 AM". Tap a tab or
@@ -112,7 +115,7 @@ One long, scrolling L1 page. The board shows it as frames scrolled to each part,
    `usState` (`Home` prop, default `'activate'`):
    - **Activation card** (`components/us/UsActivationCard.tsx`, one `CardSpec` per state in `components/us/data.ts`):
      `activate` — blue, "Activate US Stocks / Takes under a minute", rotating benefits strip (Fractional · Diversify · No
-     new KYC, every 3 s, with dots), Large primary button → risk disclosure sheet (`stocks-12`) · `review` — honey, hourglass,
+     new KYC, every 3 s, with dots), Large primary button → activation pages (`us-stocks-94`) · `review` — honey, hourglass,
      "Activation under review / up to 1 working day", strip, no button · `failed` — red, error icon, "Your PAN details could
      not be verified", Retry Activation · `activated` — green, "Add money to buy your first US stock", strip (5,000+ ·
      Fractional · Evening), Add Money to US wallet · `ready` — green with a tick badge, "Your money is ready / $1,035.37
@@ -186,7 +189,6 @@ section of the Indian home. The business wants the two markets kept apart, so V1
 - **US Stocks intro (FTUX)** — `UsFtuxSheet`: the animated flag (`assets/us/ftux/flag.webp`), blooms, five company logos,
   title, three benefits, Activate US Stocks (Large). Closing plays a 260 ms exit first. Hand-made as drawn in the US Stocks
   prototype (marked `FLAG:`), not an L3 BottomSheet.
-- **Risk disclosure** — L3 `BottomSheet` (via `Sheet`), small header "Risk disclosure / For US Stocks", five bullets, Agree and Continue.
 - **Activation submitted** — L3 `BottomSheet`, large header with a warning-tone illustration slot, "US Stocks activation
   under review", Okay.
 - **Activation approved** — `ActivationApprovedSheet`, L3 `BottomSheet`, large header with a success spot, "US Stocks is
@@ -269,6 +271,13 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### L3 gaps
 
+- **Lime NEW tag** (product tiles, Figma 10303:27156): a Lemonn-lime gradient (50 → 300) with a 500 border and black
+  caps, the same in both modes. L3 Tag has no brand colour or gradient, so `.newTag` dresses the L3 Tag (secondary,
+  Small) in the brand hues (FLAG). Figma's text is 8 Bold; L3's smallest Tag text is Label/10.
+- **Product tile width** — 112 when the tiles scroll (`--app-stocks-product-tile`, local token): L3 has no card-width
+  token. "Smart invest" in L3 Label/12 is a pixel wider than a 112 tile leaves it, so the scrolling tiles never cut a
+  name off.
+
 - **Neutral Aerobar:** the theme page's description bar is an inline Aerobar on surface-default with border-light, set through its own variables (L3 has no neutral surface-default look).
 
 - **Select hover underline** — L3 Select underlines its label on hover; the holdings switcher (Home V2–V4) wants
@@ -295,6 +304,16 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-04 — Card shadows no longer cut off in sideways scrollers: a sideways scroller clips top and bottom too, so the shared `Rail`, the US Home's Top Movers / Brands scrollers, Portfolio's market cards, the MF scroller and the stock page's related ETFs pad 12 above and below and take it back with a negative margin (same layout; horizontal and page scrolling unchanged). L3 gap: L3 Tabs (pill, raised) leaves 4 for a shadow that reaches 5.
+- 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
+- 2026-11-04 — Risk disclosure sheet (`stocks-12`) removed: Activate US Stocks (card, FTUX sheet) and Retry Activation open the US Stocks flow's activation pages (`us-stocks-94`: declarations, then bank).
+- 2026-11-04 — Discover ETFs (US Home): each card's second line is the ticker and what's inside ("SPY · Big US firms in every sector"), the same as the ETF list, instead of the fund's legal name. The lines live in `src/shared/data/etfInside.ts`, used by both flows.
+- 2026-11-04 — **Product tiles:** four tiles from the F&O dev handoff (Figma 10303:27156) on V8, V12 and V13 — MF ·
+  F&O · Commodity · Smart invest (`productsWithInvest`); 112 each, scrolling; three tiles (older versions) fill the row.
+  Smart invest scrolls to the Smart Invest section. The NEW tag is restyled to Figma's lime and hidden on Commodity for
+  now. The IN Stocks holdings card now opens Portfolio → Holdings on the Indian holdings (`us-stocks-05`).
+- 2026-11-04 — **Brands You Know · View all (stocks-31, new):** the US tab's Brands View all (it did nothing) opens a simple list page: back + the title with "17 stocks" under it, every brand (the eight on Home first, 17 in all, `allBrands` in data.ts) as list cards with price and today's move, the fine print last. A row opens the US stock page.
+- 2026-11-04 — **Soft shadow on Home's cards:** every clickable card on Home (IN and US tabs: L3 Cards and card-style ListCells, flat ones too) has its 1px edge plus L3's `--l3-shadow-elevation-soft`; replaces the 2026-10-22 "edge only" call (`.flatCards` in screens/Home.module.css).
 - 2026-11-03 — Home's holdings card says which market it is, in every version: "IN Stocks holdings" (was "Current holdings", and "IN holdings" in the switcher) and "US Stocks holdings" (was "US holdings"). "Overall holdings" stays.
 - 2026-11-03 — Watchlists (Indian and US tabs): the section's link is “View all” instead of “Add Watchlist”. It's meant to open an all-watchlists page, which isn't built yet, so it does nothing for now.
 - 2026-11-03 — The US tab gets the IN tab's Watchlist rail (shared `Watchlists`, now with a `lists` prop) between Top analyst picks and Brands You Know, with the user's US lists (`usWatchlists` in us/data.ts: US tech, Dividend payers, To research).
@@ -20060,8 +20079,29 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 /* "New" sits on the card's top edge, at the content's left (the products row leaves room above for it). */
 .onEdge {
   position: absolute;
-  top: calc(-1 * (var(--l3-spacing-12) + var(--l3-spacing-10)));
-  left: 0;
+  /* Figma 10303:27156: the tag sits across the card's top edge (centred on it), just inside the left corner. */
+  top: calc(-1 * var(--l3-spacing-10));
+  left: calc(-1 * var(--l3-spacing-04));
+  transform: translateY(-50%);
+}
+
+/* FLAG: product tiles. More than three: 112 each, scrolling; three or fewer: they share the row (Rail visible = count).
+   [data-rows] only lifts this over the Rail's own column width. "Smart invest" in L3 Label/12 is a pixel wider than a
+   112 tile leaves it, so here a name is never cut off (it takes the chevron's side bearing). */
+.productTilesScroll[data-rows] {
+  grid-auto-columns: var(--app-stocks-product-tile);
+}
+
+.productTilesScroll .productTitle {
+  overflow: visible;
+}
+
+/* FLAG: Figma's NEW tag — lime-50 → lime-300 gradient, lime-500 border, black text, the same in light and dark. L3 Tag
+   has no brand colour or gradient (L3 gap), so the Tag's own variables take the Lemonn brand hues. */
+.newTag {
+  --tag-soft-border: var(--l3-base-hue-brand-lemonn-500);
+  --tag-soft-content: var(--l3-base-neutral-black-base);
+  background-image: linear-gradient(to bottom, var(--l3-base-hue-brand-lemonn-50), var(--l3-base-hue-brand-lemonn-300));
 }
 
 /* No top padding above the products: the rail is pulled up over the 24 section gap, leaving only the 12 a "New" tag
@@ -21819,11 +21859,14 @@ export function HoldingsSwitcher({ view, onView, usEmpty, onOpen }: { view: Hold
 /** Mutual funds · Equity F&O · Commodities — each product's one-line promise. */
 export function ProductCards({ onProduct, items = products }: { onProduct?: (id: string) => void; /** The home version's tiles (components/homeVersions.ts). */ items?: Product[] }) {
   return (
-    <Rail label={t('products.label')} visible={2.55} className={items.some((p) => p.isNew) ? styles.onEdgeRoom : undefined}>
+    // More than three tiles (Figma 10303:27156): 112 each, scrolling. Three or fewer: they fill the row.
+    <Rail label={t('products.label')} visible={Math.min(items.length, 3)} className={[items.length > 3 && styles.productTilesScroll, items.some((p) => p.isNew) && styles.onEdgeRoom].filter(Boolean).join(' ') || undefined}>
       {items.map((p) => (
         <Card key={p.id} onClick={() => onProduct?.(p.id)}>
           <span className={styles.cardStack}>
-            {p.isNew && <span className={styles.onEdge}><Tag color="success" size="sm">{t('products.new')}</Tag></span>}
+            {/* FLAG: Figma's NEW tag (10303:27156) is a Lemonn-lime gradient with black caps; L3 Tag has no brand / gradient
+                colour, so the L3 Tag (secondary, Small) is dressed in brand tokens here (.newTag). L3 gap in README. */}
+            {p.isNew && <span className={styles.onEdge}><Tag variant="secondary" size="sm" className={styles.newTag}>{t('products.new')}</Tag></span>}
             <span className={styles.cardRow}>
               <span className={styles.productTitle}>{p.name}</span>
               <span className={styles.chevron}><Icon icon={msChevronRight} size={16} /></span>
@@ -22673,8 +22716,9 @@ export type HomeVersion = {
   flags: boolean
   /** A "New" tag on the US tab. */
   usNew: boolean
-  /** The product tiles: MF / F&O / Commodity · Mutual funds / Equity F&O / Commodities · F&O / Commodities / US Stocks. */
-  tiles: 'classic' | 'today' | 'withUs'
+  /** The product tiles: MF / F&O / Commodity · Mutual funds / Equity F&O / Commodities · F&O / Commodities / US Stocks ·
+   *  MF / F&O / Commodity / Smart invest (Figma 10303:27156). */
+  tiles: 'classic' | 'today' | 'withUs' | 'withInvest'
   /** The index ticker under the top bar. */
   ticker: boolean
   /** Archived: kept in code, but no longer offered in the "Homepage version" picker. */
@@ -22689,13 +22733,13 @@ export const homeVersions: HomeVersion[] = [
   { id: 'v5', name: 'Card-level segmented control', figma: '6128:30436', place: 'header', scope: 'feed', look: 'pill', labels: 'short', flags: false, usNew: false, tiles: 'classic', ticker: true, archived: true },
   { id: 'v6', name: 'Pill on top', figma: '6128:30747', place: 'top', scope: 'feed', look: 'pill', labels: 'stocks', flags: true, usNew: false, tiles: 'withUs', ticker: true, archived: true },
   { id: 'v7', name: 'Lit folder on top', figma: '6128:31013', place: 'top', scope: 'feed', look: 'folder', labels: 'stocks', flags: true, usNew: true, tiles: 'today', ticker: true, archived: true },
-  { id: 'v8', name: 'Lit folder · US tiles', figma: '6128:31431', place: 'top', scope: 'feed', look: 'folder', labels: 'stocks', flags: true, usNew: true, tiles: 'withUs', ticker: true },
+  { id: 'v8', name: 'Lit folder · US tiles', figma: '6128:31431', place: 'top', scope: 'feed', look: 'folder', labels: 'stocks', flags: true, usNew: true, tiles: 'withInvest', ticker: true },
   { id: 'v9', name: 'Graphite segmented', figma: '6128:31986', place: 'top', scope: 'feed', look: 'pill', labels: 'stocks', flags: true, usNew: true, tiles: 'today', ticker: false , archived: true },
   // Two homes (2026-11-02): top-level segregation — the market is picked first, and the whole page is that market's.
   { id: 'v10', name: 'Two homes · segmented on top', figma: '', place: 'top', scope: 'page', look: 'pill', labels: 'stocks', flags: true, usNew: true, tiles: 'today', ticker: true , archived: true },
   { id: 'v11', name: 'Two homes · tabs on top', figma: '', place: 'top', scope: 'page', look: 'underline', labels: 'stocks', flags: true, usNew: true, tiles: 'today', ticker: true , archived: true },
-  { id: 'v12', name: 'Two homes · switch in top bar', figma: '', place: 'header', scope: 'page', look: 'pill', labels: 'short', flags: true, usNew: false, tiles: 'today', ticker: true },
-  { id: 'v13', name: 'Two homes · market picker', figma: '', place: 'picker', scope: 'page', look: 'pill', labels: 'stocks', flags: true, usNew: false, tiles: 'today', ticker: true },
+  { id: 'v12', name: 'Two homes · switch in top bar', figma: '', place: 'header', scope: 'page', look: 'pill', labels: 'short', flags: true, usNew: false, tiles: 'withInvest', ticker: true },
+  { id: 'v13', name: 'Two homes · market picker', figma: '', place: 'picker', scope: 'page', look: 'pill', labels: 'stocks', flags: true, usNew: false, tiles: 'withInvest', ticker: true },
 ]
 
 // Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13.
@@ -23469,6 +23513,10 @@ export function UsActivationCard({ state, spec: specOverride, holdings, onCta }:
   overscroll-behavior-x: contain;
   padding-inline: var(--l3-spacing-16);
   scrollbar-width: none;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
 }
 
 .scroller::-webkit-scrollbar {
@@ -23822,6 +23870,7 @@ import { lmSwitchArrowVertical } from '@l3/icons/lemonnade'
 import { handToMarket } from '../../../../shared/data/marketHandoff'
 import { useLiveQuote } from '../../../../shared/data/live'
 import { usLogo, usQuote, viewUsStock } from '../../../../shared/data/usStocks'
+import { etfInside } from '../../../../shared/data/etfInside'
 import { Usd, useUsd } from '../../../../shared/money'
 import { useFlowOption } from '../../../../shared/prototype'
 import { usShortcuts } from '../../data'
@@ -23880,13 +23929,15 @@ type UsHomeProps = {
   onEtf?: (sym: string) => void
   /** Top analyst picks' View all (in the header) → the Top analyst picks page (Stocks / History). */
   onPicks?: () => void
+  /** Brands You Know's View all → the Brands page (a simple list of every brand). */
+  onBrands?: () => void
   /** The activation card on top (default). The two-homes versions show it in the summary instead (screens/Home). */
   card?: boolean
 }
 
 const sign = (up: boolean) => (up ? '+' : '-')
 
-export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, onEtf, onPicks, card = true }: UsHomeProps) {
+export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, onTheme, onEtfs, onEtf, onPicks, onBrands, card = true }: UsHomeProps) {
   const [filter, setFilter] = useState<MoverFilter>('gainers')
   const [cap, setCap] = useState<CapValue>('mega')
   // Top analyst picks: a list (default, so it doesn't read as a second Top Movers rail) or the cards (prototype option).
@@ -23972,7 +24023,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
       <Watchlists lists={usWatchlists} />
 
       <Stack as="section" gap="16" aria-label={t('us.brands.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.brands.title')} action={{ type: 'view-all', onClick: () => {} }} /></Inset>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.brands.title')} action={{ type: 'view-all', onClick: () => onBrands?.() }} /></Inset>
         <div className={styles.scroller} role="region" aria-label={t('us.brands.railLabel')}>
           <div className={styles.brandRows}>
             {brandRows.map((row, r) => (
@@ -24153,7 +24204,7 @@ function EtfRow({ etf, onOpen }: { etf: DiscoverEtf; onOpen: (sym: string) => vo
   return (
     <StockListCard
       symbol={etf.headline}
-      name={t('us.etfs.row', { sym: etf.sym, fund: etf.fund })}
+      name={t('us.etfs.row', { sym: etf.sym, about: etfInside(etf.sym) ?? etf.fund })}
       logoUrl={etf.issuer && etfLogos[`../../assets/us/etf/${etf.issuer}.svg`]}
       initials={etf.sym.slice(0, 2)}
       price={<Usd value={live.price} layout="inline" />}
@@ -24558,6 +24609,20 @@ export const brandRows: Brand[][] = [
   ],
 ]
 
+/** Every brand of Brands You Know — the two rows on Home first, then the rest its View all page lists. */
+export const allBrands: Brand[] = [
+  ...brandRows.flat(),
+  { sym: 'AAPL', name: 'Apple' },
+  { sym: 'AMZN', name: 'Amazon' },
+  { sym: 'DIS', name: 'Disney' },
+  { sym: 'TSLA', name: 'Tesla' },
+  { sym: 'WMT', name: 'Walmart' },
+  { sym: 'COST', name: 'Costco' },
+  { sym: 'ABNB', name: 'Airbnb' },
+  { sym: 'MA', name: 'Mastercard' },
+  { sym: 'HD', name: 'Home Depot' },
+]
+
 export const formatPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
 export const formatUsd = (n: number) => `$${n.toFixed(2)}`
 
@@ -24828,48 +24893,6 @@ export function ActivationSubmittedSheet({ onOkay }: { onOkay?: () => void }) {
         </ButtonGroup>
       }
     />
-  )
-}
-```
-
-### `src/flows/stocks/components/us/sheets/RiskDisclosureSheet.tsx`
-
-```tsx
-import { useId } from 'react'
-import { BottomSheetHeader } from '@l3/components/BottomSheet'
-import { Button } from '@l3/components/Button'
-import { ButtonGroup } from '@l3/components/ButtonGroup'
-import { Sheet } from '../../../../../shared/ui/Sheet'
-import { t } from '../../../copy'
-import styles from './UsSheets.module.css'
-
-/**
- * stocks-12 · Risk disclosure for US Stocks, over the US tab. Agree and Continue submits the activation; closing the
- * sheet goes back to the tab. (Designed in the US Stocks flow, Figma 5756:71475.)
- */
-export function RiskDisclosureSheet({ onAgree, onClose }: { onAgree?: () => void; onClose?: () => void }) {
-  const id = useId()
-  return (
-    <Sheet
-      labelledBy={id}
-      onClose={onClose}
-      header={<BottomSheetHeader size="sm" headingId={id} heading={t('us.risk.title')} description={t('us.risk.description')} />}
-      footer={
-        <ButtonGroup aria-label={t('us.risk.actions')}>
-          <Button onClick={onAgree}>{t('us.risk.agree')}</Button>
-        </ButtonGroup>
-      }
-    >
-      <ul className={styles.bullets}>
-        <li>{t('us.risk.1')}</li>
-        <li>{t('us.risk.2')}</li>
-        <li>{t('us.risk.3')}</li>
-        <li>{t('us.risk.4')}</li>
-        <li>
-          {t('us.risk.full')} <button type="button" className={styles.inlineLink}>{t('us.risk.here')}</button>
-        </li>
-      </ul>
-    </Sheet>
   )
 }
 ```
@@ -25265,7 +25288,7 @@ const benefits = [
   { icon: msSchedule, text: 'us.ftux.benefit.evening' },
 ] as const
 
-/** Activate → the risk disclosure; ✕, the scrim or Esc → Home (IND tab). Both play the closing animation first. */
+/** Activate → the activation pages (us-stocks-94); ✕, the scrim or Esc → Home (IND tab). Both play the closing animation first. */
 export function UsFtuxSheet({ onActivate, onClose }: { onActivate?: () => void; onClose?: () => void }) {
   const [closing, setClosing] = useState(false)
 
@@ -25339,48 +25362,6 @@ export function UsFtuxSheet({ onActivate, onClose }: { onActivate?: () => void; 
       </section>
     </div>
   )
-}
-```
-
-### `src/flows/stocks/components/us/sheets/UsSheets.module.css`
-
-```css
-/* The risk disclosure's bullets (ported from the US Stocks prototype's Activation.module.css). */
-/* FLAG: hand-made bullet list (a dot drawn with a pseudo-element) — L3 has no list component. */
-.bullets {
-  display: flex;
-  flex-direction: column;
-  gap: var(--l3-spacing-08);
-  margin: 0;
-  padding: 0 0 0 var(--l3-spacing-16);
-  color: var(--l3-content-primary);
-  font: var(--l3-text-label-12);
-}
-
-.bullets li {
-  position: relative;
-  list-style: none;
-}
-
-.bullets li::before {
-  content: '';
-  position: absolute;
-  top: var(--l3-spacing-08);
-  left: calc(-1 * var(--l3-spacing-12));
-  width: var(--l3-size-04);
-  height: var(--l3-size-04);
-  border-radius: var(--l3-radius-full);
-  background: currentColor;
-}
-
-.inlineLink {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--l3-content-accent-discover-default);
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
 }
 ```
 
@@ -25687,7 +25668,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "holdings.overallLabel": "Overall holdings",
   "holdings.inLabel": "IN Stocks holdings",
   "products.label": "Products",
-  "products.new": "New",
+  "products.new": "NEW",
   "shortcuts.title": "Do More With Lemonn",
   "shortcuts.newBadge": "new",
   "movers.title": "Top Movers",
@@ -25779,6 +25760,10 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.cap.switch": "{cap}, tap to switch",
   "us.brands.title": "Brands You Know",
   "us.brands.railLabel": "Brands",
+  "brandsPage.title": "Brands You Know",
+  "brandsPage.back": "Back",
+  "brandsPage.count": "{count} stocks",
+  "brandsPage.footnote": "The securities are quoted as an example, not as a recommendation.",
   "us.etfs.title": "Discover ETFs",
   "us.etfs.description": "A basket of stocks in one buy, like Nifty 50",
   "us.etfs.regionsLabel": "ETFs by region",
@@ -25787,7 +25772,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.etfs.region.japan": "Japan",
   "us.etfs.region.europe": "Europe",
   "us.etfs.region.korea": "Korea",
-  "us.etfs.row": "{sym} · {fund}",
+  "us.etfs.row": "{sym} · {about}",
   "us.etfs.by.country": "Country",
   "us.etfs.by.sector": "Sector",
   "us.etfs.by.switch": "Filter by {by}, tap to switch",
@@ -25866,16 +25851,6 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.ftux.benefit.evening": "Trade in the evening, India time",
   "us.ftux.cta": "Activate US Stocks",
   "us.ftux.actions": "US Stocks",
-  "us.risk.title": "Risk disclosure",
-  "us.risk.description": "For US Stocks",
-  "us.risk.1": "US stocks carry price, currency and liquidity risk, and prices can move without a daily cap.",
-  "us.risk.2": "Your account is with ViewTrade IFSC through India INX Global Access, in GIFT City, regulated by IFSCA.",
-  "us.risk.3": "Your money is held in your own ViewTrade IFSC account, not by Lemonn.",
-  "us.risk.4": "SEBI investor protection and grievance redressal do not apply to these investments.",
-  "us.risk.full": "Read the full disclosure",
-  "us.risk.here": "here",
-  "us.risk.agree": "Agree and Continue",
-  "us.risk.actions": "Risk disclosure",
   "us.submitted.title": "US Stocks activation under review",
   "us.submitted.description": "We'll let you know as soon as it's active.",
   "us.submitted.okay": "Okay",
@@ -25971,7 +25946,7 @@ import { companies, companiesByChange, type Company } from '../../shared/data/co
 /** Stocks home — what the API sends for each section, in page order. Sample values; market data from the live app. */
 
 /** Product shortcuts under the holdings: one line on what's special about each. */
-export type Product = { id: 'mutual-funds' | 'fno' | 'commodities' | 'us-stocks'; name: string; highlight: string; detail: string; isNew?: boolean }
+export type Product = { id: 'mutual-funds' | 'fno' | 'commodities' | 'us-stocks' | 'smart-invest'; name: string; highlight: string; detail: string; isNew?: boolean }
 export const products: Product[] = [
   { id: 'mutual-funds', name: 'Mutual funds', highlight: '240+', detail: 'funds' },
   { id: 'fno', name: 'Equity F&O', highlight: '0', detail: 'slippage' },
@@ -25988,6 +25963,14 @@ export const productsWithUs: Product[] = [
   { id: 'fno', name: 'Equity F&O', highlight: '0', detail: 'slippage' },
   { id: 'commodities', name: 'Commodities', highlight: '0', detail: 'brokerage' },
   { id: 'us-stocks', name: 'US Stocks', highlight: 'Opens', detail: '8:00 PM', isNew: true },
+]
+/** The four tiles of the F&O dev handoff (Figma 10303:27156; home versions V8, V12, V13). Smart invest's "Scalper mode" is
+ *  Figma's copy as it stands (likely a placeholder). */
+export const productsWithInvest: Product[] = [
+  { id: 'mutual-funds', name: 'MF', highlight: '240+', detail: 'Funds' },
+  { id: 'fno', name: 'F&O', highlight: 'Scalper', detail: 'mode' },
+  { id: 'commodities', name: 'Commodity', highlight: '0', detail: 'Brokerage' }, // Figma's NEW tag: hidden for now
+  { id: 'smart-invest', name: 'Smart invest', highlight: 'Scalper', detail: 'mode' },
 ]
 /** "Do more with Lemonn": feature shortcuts, each with an optional count of new things (IPO: 5 new IPOs). */
 /** `art` names the shortcut's custom two-tone icon (Jojo's, assets/shortcuts/<art>.svg — not an L3 system icon). */
@@ -26112,15 +26095,15 @@ import { t } from './copy'
 import { activeHomeVersions, DEFAULT_HOME_VERSION } from './components/homeVersions'
 import { themes, themeScreenId, type ThemeId, type UsState } from './components/us/data'
 import { ThemePage } from './screens/ThemePage'
+import { BrandsPage } from './screens/BrandsPage'
 import { AnalystPicksPage } from './screens/AnalystPicksPage'
 import { setUsJourney, useUsJourney } from '../../shared/userStatus'
 import { ActivationApprovedSheet } from './components/us/sheets/ActivationApprovedSheet'
 import { ActivationSubmittedSheet } from './components/us/sheets/ActivationSubmittedSheet'
-import { RiskDisclosureSheet } from './components/us/sheets/RiskDisclosureSheet'
 import { UsFtuxSheet } from './components/us/sheets/UsFtuxSheet'
 
-/** The US tab's taps, by screen id: Activate US Stocks → the risk disclosure sheet (stocks-12), a stock → its page (not activated, in the US Stocks flow), View all / a theme → Market on the US list. */
-const usNav = (go: Go) => ({ onActivateUs: () => go('stocks-12'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71'), onUsEtf: () => go('us-stocks-72'), onUsPicks: () => go('stocks-29'), onUsHoldings: () => go('us-stocks-77') })
+/** The US tab's taps, by screen id: Activate US Stocks → the activation pages (us-stocks-94: declarations, then the bank), a stock → its page (not activated, in the US Stocks flow), View all / a theme → Market on the US list. */
+const usNav = (go: Go) => ({ onActivateUs: () => go('us-stocks-94'), onUsStock: () => go('us-stocks-13'), onUsMarket: () => go('market-10'), onUsTheme: (id: ThemeId) => go(themeScreenId(id)), onUsEtfs: () => go('us-stocks-71'), onUsEtf: () => go('us-stocks-72'), onUsPicks: () => go('stocks-29'), onUsBrands: () => go('stocks-31'), onUsHoldings: () => go('us-stocks-77'), onInHoldings: () => go('us-stocks-05') })
 
 /** The top bar and navbar taps every Home screen shares. */
 /** Search from the Home field: the Stocks tab on IND, the US tab on US (search-29). */
@@ -26189,7 +26172,7 @@ export const stocks: Flow = {
       picker: 'dropdown',
       values: activeHomeVersions.map((v) => ({ value: v.id, label: `${v.id.toUpperCase()} · ${v.name}` })),
       default: DEFAULT_HOME_VERSION,
-      floatOn: ['stocks-01', 'stocks-02', 'stocks-03', 'stocks-04', 'stocks-05', 'stocks-06', 'stocks-07', 'stocks-09', 'stocks-10', 'stocks-11', 'stocks-12', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-18', 'stocks-21', 'stocks-22'],
+      floatOn: ['stocks-01', 'stocks-02', 'stocks-03', 'stocks-04', 'stocks-05', 'stocks-06', 'stocks-07', 'stocks-09', 'stocks-10', 'stocks-11', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-18', 'stocks-21', 'stocks-22'],
     },
     // FTUX guide for the IND / US switch: dims the screen, lights the switch with a tooltip. Shown every time a Home
     // opens (and again after a version change) while on; tap anywhere or ✕ to end it.
@@ -26212,13 +26195,12 @@ export const stocks: Flow = {
     { id: 'stocks-06', hidden: true, name: 'Home · highlights & idea baskets', figma: '', note: 'Same page, scrolled. (The live app no longer has Trade ideas here — removed 2026-10-22.)', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="highlights" /> },
     { id: 'stocks-07', hidden: true, name: 'Home · idea baskets & disclosure', figma: '', note: 'The end of the page: the disclosure, four lines and Read More.', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="more" /> },
     { id: 'stocks-21', hidden: true, name: 'Home · US tab · KYC not done', badge: 'new', badgeNote: 'Not in Jojo\'s Figma: a user whose Lemonn KYC isn\'t complete', figma: '9001:20', group: 'us-activate', note: 'The US tab for a user who hasn\'t finished their Lemonn (Indian) KYC: US Stocks can\'t be activated yet, so the card asks for KYC first. Complete KYC → the KYC flow (kyc-01). A US stock opens its page with Complete KYC in place of Activate (us-stocks-74). Everything else on the tab is as for a not-activated user (stocks-09).', tab: true, render: (go) => usHome(go, 'kyc', { onActivateUs: () => go('kyc-01'), onUsStock: () => go('us-stocks-74') }) },
-    { id: 'stocks-09', hidden: true, name: 'Home · US Stocks tab', figma: '5756:74756', group: 'us-activate', note: 'The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ risk disclosure sheet, stocks-12), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\'s own Stocks home.', tab: true, render: (go) => usHome(go, 'activate') },
+    { id: 'stocks-09', hidden: true, name: 'Home · US Stocks tab', figma: '5756:74756', group: 'us-activate', note: 'The US Stocks tab for a user who has not activated US Stocks: US indices, the Activate US Stocks card (→ the activation pages, us-stocks-94), shortcuts, Top Movers (a swipeable row of cards), Brands, Heatmap, themes. A US stock opens its page (not activated). Designed in the US Stocks flow (Figma Home · US tab · Activate US Stocks card); here it is the tab on the app\'s own Stocks home.', tab: true, render: (go) => usHome(go, 'activate') },
     { id: 'stocks-10', hidden: true, name: 'Home · US Stocks tab · scrolled', figma: '', note: 'Same tab, scrolled past the tabs: the compact IND / US tabs are pinned under the top bar.', tab: true, render: (go) => usHome(go, 'activate', { scrollTo: 'movers' }) },
-    { id: 'stocks-11', name: 'Home · US Stocks intro (FTUX) sheet', figma: '5756:68986', group: 'ftux', note: 'First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the risk disclosure (stocks-12); ✕ → Home (stocks-01).', tab: true, render: (go) => <Home {...chrome(go)} {...usNav(go)} sheet={<UsFtuxSheet onActivate={() => go('stocks-12')} onClose={() => go('stocks-01')} />} /> },
-    { id: 'stocks-12', name: 'Home · US tab · risk disclosure sheet', figma: '5756:71475', group: 'us-activate', note: 'The Risk disclosure (For US Stocks) sheet over the US tab. Agree and Continue submits the activation → under review (stocks-13); closing it → the tab (stocks-09).', tab: true, render: (go) => usHome(go, 'activate', { sheet: <RiskDisclosureSheet onAgree={() => go('stocks-13')} onClose={() => go('stocks-09')} /> }) },
-    { id: 'stocks-13', hidden: true, name: 'Home · US tab · activation under review', figma: '5756:75539', group: 'us-review', note: 'US tab, activation under review (honey card, up to 1 working day). In the prototype it moves on to "activated" (stocks-15) by itself after 2 s; the wallet opens the wallet with the review banner.', tab: true, render: (go) => usHome(go, 'review', { autoNext: 'stocks-22' }) },
+    { id: 'stocks-11', name: 'Home · US Stocks intro (FTUX) sheet', figma: '5756:68986', group: 'ftux', note: 'First launch after release: the IND tab with the US Stocks intro (FTUX) sheet — animated flag, five company logos, three benefits. Activate US Stocks → the activation pages (us-stocks-94); ✕ → Home (stocks-01).', tab: true, render: (go) => <Home {...chrome(go)} {...usNav(go)} sheet={<UsFtuxSheet onActivate={() => go('us-stocks-94')} onClose={() => go('stocks-01')} />} /> },
+      { id: 'stocks-13', hidden: true, name: 'Home · US tab · activation under review', figma: '5756:75539', group: 'us-review', note: 'US tab, activation under review (honey card, up to 1 working day). In the prototype it moves on to "activated" (stocks-15) by itself after 2 s; the wallet opens the wallet with the review banner.', tab: true, render: (go) => usHome(go, 'review', { autoNext: 'stocks-22' }) },
     { id: 'stocks-22', name: 'Home · US tab · activation approved sheet', badge: 'new', badgeNote: 'Not in Jojo\'s Figma: tells the user the review was approved', figma: '9001:21', group: 'us-review', note: 'The review is approved: the activated US tab with the "US Stocks is active" sheet (success spot). Add Money to US wallet → the $0 USD wallet (us-stocks-20); Later or closing → the activated Home (stocks-15). The under-review Home (stocks-13) moves here by itself after 2 s.', tab: true, render: (go) => usHome(go, 'activated', { onActivateUs: () => go('us-stocks-20'), sheet: <ActivationApprovedSheet onAddMoney={() => go('us-stocks-20')} onLater={() => go('stocks-15')} /> }) },
-    { id: 'stocks-14', hidden: true, name: 'Home · US tab · activation failed', figma: '5776:81034', note: 'US tab, activation failed (PAN could not be verified): red card, Retry Activation → the risk disclosure (stocks-12).', tab: true, render: (go) => usHome(go, 'failed') },
+    { id: 'stocks-14', hidden: true, name: 'Home · US tab · activation failed', figma: '5776:81034', note: 'US tab, activation failed (PAN could not be verified): red card, Retry Activation → the activation pages (us-stocks-94).', tab: true, render: (go) => usHome(go, 'failed') },
     { id: 'stocks-15', hidden: true, name: 'Home · US tab · activated · add money', figma: '5776:81870', note: 'US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too.', tab: true, render: (go) => usHome(go, 'activated', { onActivateUs: () => go('us-stocks-20') }) },
     { id: 'stocks-16', hidden: true, name: 'Home · US tab · money ready', figma: '5796:87332', note: 'Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59).', tab: true, render: (go) => usHome(go, 'ready', { onActivateUs: () => go('stocks-17') }) },
     { id: 'stocks-17', hidden: true, name: 'Home · US tab · activated · holding', figma: '5826:92885', note: 'US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet.', tab: true, render: (go) => usHome(go, 'holding', { onUsStock: (sym) => go(sym === 'NVDA' ? 'us-stocks-32' : 'us-stocks-31') }) },
@@ -26227,6 +26209,7 @@ export const stocks: Flow = {
     { id: 'stocks-18', name: 'Home · activation submitted sheet', figma: '5756:73797', group: 'us-review', note: 'The under-review US tab with the "US Stocks activation under review" sheet (we\'ll let you know as soon as it\'s active). Okay → the under-review Home (stocks-13). Reached from Confirm details in the US Stocks flow.', tab: true, render: (go) => usHome(go, 'review', { sheet: <ActivationSubmittedSheet onOkay={() => go('stocks-13')} /> }) },
     { id: 'stocks-29', name: 'Top analyst picks · Stocks', badge: 'new', badgeNote: 'Not in Figma: the page View all opens (user brief, 3 Nov)', figma: '', group: 'analyst-picks', note: 'The US tab\'s Top analyst picks, View all (in the header and under the list). Actionbar: back + title, flat tabs Stocks · History in its bottom slot (they stay put). Stocks: a card per pick — expected profit (always positive, green), "62 of 66 analysts recommend" with a progress bar, current price against the average target, the Strong Buy · Buy · Hold · Sell split and the date it was picked; tapping a card opens its US stock page (us-stocks-13). Back → the US tab.', tab: false, render: (go: Go) => <AnalystPicksPage onStock={() => go('us-stocks-13')} /> },
     { id: 'stocks-30', name: 'Top analyst picks · History', badge: 'new', badgeNote: 'Not in Figma: the History tab (user brief, 3 Nov)', figma: '', group: 'analyst-picks', note: 'The same page on History: the track record (picks closed, how many reached their target, the average return), then each closed pick — dates, its return (green / red) and a Target hit / Exited early tag. A row opens its US stock page.', tab: false, render: (go: Go) => <AnalystPicksPage tab="history" onStock={() => go('us-stocks-13')} /> },
+    { id: 'stocks-31', name: 'Brands You Know · View all', badge: 'new', badgeNote: 'Not in Figma: the page View all opens (user brief, 4 Nov)', figma: '', note: 'The US tab\'s Brands You Know, View all: back + the title, then every brand (the eight on Home first) as a simple list — logo, name, price ($) and today\'s move. A row opens its US stock page (us-stocks-13). Back → the US tab.', tab: false, render: (go: Go) => <BrandsPage onStock={() => go('us-stocks-13')} /> },
     ...themes.map((theme, i) => ({
       id: themeScreenId(theme.id),
       hidden: i > 0,
@@ -26478,6 +26461,69 @@ export function AnalystPicksPage({ tab: initialTab = 'stocks', onStock }: Analys
 }
 ```
 
+### `src/flows/stocks/screens/BrandsPage.module.css`
+
+```css
+/* Brands You Know page (stocks-31). */
+
+.footnote {
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+```
+
+### `src/flows/stocks/screens/BrandsPage.tsx`
+
+```tsx
+// stocks-31: Brands You Know — the page Home's "View all" (US tab) opens. A simple list: back + the title (how many
+// stocks under it), then every brand (the eight on Home first) as list cards — logo, name, price and today's move, like
+// a theme's "All stocks".
+// The fine print closes the page.
+import { Actionbar } from '@l3/components/Actionbar'
+import { Inset } from '@l3/components/Inset'
+import { Stack } from '@l3/components/Stack'
+import { usePreview } from '../../../shared/prototype'
+import { useLiveQuote } from '../../../shared/data/live'
+import { usLogo, viewUsStock } from '../../../shared/data/usStocks'
+import { Usd } from '../../../shared/money'
+import { Screen } from '../../../shared/ui/Screen'
+import { StockListCard } from '../../../shared/ui/StockListCard'
+import { t } from '../copy'
+import { allBrands, usStock, type Brand } from '../components/us/data'
+import styles from './BrandsPage.module.css'
+
+type BrandsPageProps = {
+  /** A brand was tapped (already remembered with `viewUsStock`) → its US stock page. */
+  onStock?: (sym: string) => void
+}
+
+function BrandRow({ brand, onOpen }: { brand: Brand; onOpen: (sym: string) => void }) {
+  const stock = usStock(brand.sym, brand.name)
+  const live = useLiveQuote(brand.sym, stock.price, stock.change)
+  return <StockListCard symbol={brand.sym} name={brand.name} logoUrl={usLogo(brand.sym)} price={<Usd value={live.price} layout="inline" />} changePct={live.changePct} onOpen={() => onOpen(brand.sym)} />
+}
+
+export function BrandsPage({ onStock }: BrandsPageProps) {
+  const { back, go } = usePreview()
+  const open = (sym: string) => { viewUsStock(sym); onStock?.(sym) }
+  return (
+    <Screen
+      top={<Actionbar title={t('brandsPage.title')} description={t('brandsPage.count', { count: allBrands.length })} headingLevel={2} onBack={() => { if (!back?.()) go('stocks-09') }} backLabel={t('brandsPage.back')} />}
+    >
+      <Inset paddingInline="16" paddingBlock="24">
+        <Stack gap="32">
+          <Stack gap="12">
+            {allBrands.map((brand) => <BrandRow key={brand.sym} brand={brand} onOpen={open} />)}
+          </Stack>
+          <p className={styles.footnote}>{t('brandsPage.footnote')}</p>
+        </Stack>
+      </Inset>
+    </Screen>
+  )
+}
+```
+
 ### `src/flows/stocks/screens/Home.module.css`
 
 ```css
@@ -26507,15 +26553,15 @@ export function AnalystPicksPage({ tab: initialTab = 'stocks', onStock }: Analys
 }
 
 /*
- * Designer's one-off call for this screen (2026-10-22), not a rule: cards have no shadow — only their 1px edge.
- * Clickable L3 Cards and card-style ListCells normally add elevation-low.
+ * Every clickable card on Home (L3 Cards and card-style ListCells, flat ones too) has its 1px edge and L3's soft
+ * shadow (2026-11-04; it replaced the 2026-10-22 "edge only" call).
  */
 .flatCards.flatCards [data-interactive][data-variant='default'] {
-  box-shadow: var(--card-border);
+  box-shadow: var(--card-border), var(--l3-shadow-elevation-soft);
 }
 
 .flatCards.flatCards [data-interactive][data-variant='card'] {
-  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-soft); /* 1px: Figma stroke weight has no variable */
 }
 
 
@@ -26726,7 +26772,7 @@ import { UsActivationCard } from '../components/us/UsActivationCard'
 import { UsHome } from '../components/us/UsHome'
 import { neighbour, useSwipeBetween } from '../components/useSwipeBetween'
 import { Shortcuts, TopMovers, Watchlists } from '../components/Discover'
-import { products, productsClassic, productsWithUs, type MoverList } from '../data'
+import { productsClassic, products, productsWithInvest, productsWithUs, type MoverList } from '../data'
 import { t } from '../copy'
 import styles from './Home.module.css'
 
@@ -26759,6 +26805,8 @@ type Props = {
   onActivateUs?: () => void
   /** The US holdings card was tapped → Portfolio, Holdings, with the US Stocks card upfront. */
   onUsHoldings?: () => void
+  /** The Indian holdings card: Portfolio, Holdings, on the Indian holdings. */
+  onInHoldings?: () => void
   /** US tab: a US stock was tapped (already remembered with `viewUsStock`) → its stock page. */
   onUsStock?: (sym: string) => void
   /** US tab: "View all" / a theme (Market was handed what to open on) → the Market page. */
@@ -26771,9 +26819,11 @@ type Props = {
   onUsEtf?: () => void
   /** US tab, Top analyst picks' View all → the Top analyst picks page. */
   onUsPicks?: () => void
+  /** US tab: Brands You Know's View all → the Brands page. */
+  onUsBrands?: () => void
   /** Prototype: after 2 s go on to this screen (the under-review Home moves on to "activated" by itself). */
   autoNext?: string
-  /** A sheet over the page: the US Stocks intro, the risk disclosure, "activation submitted". */
+  /** A sheet over the page: the US Stocks intro, "activation submitted". */
   sheet?: ReactNode
 }
 
@@ -26788,7 +26838,7 @@ type Props = {
 /** Archived "Header" variant: true puts the holdings inside the top card (the card the US tab uses for activation). */
 const HEADER_CARD = false as boolean
 
-export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsHoldings, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsEtf, onUsPicks, autoNext, sheet }: Props) {
+export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsHoldings, onInHoldings, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsEtf, onUsPicks, onUsBrands, autoNext, sheet }: Props) {
   useAutoAdvance(autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
   // The design version (the prototype's "Homepage version" option): where the IND / US switch sits and how it looks.
@@ -26985,6 +27035,12 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   const [holdingsView, setHoldingsView] = useState<HoldingsView>('overall')
   const onProduct = (id: string) => {
     if (id === 'us-stocks') switchTo('us')
+    // Smart invest: down to the page's Smart Invest section, right under the header.
+    if (id === 'smart-invest') {
+      const target = page.current?.querySelector('[data-home="invest"]')
+      const body = page.current?.parentElement
+      if (target && body) body.scrollTo({ top: body.scrollTop + target.getBoundingClientRect().top - body.getBoundingClientRect().top - headerBottom('up', pinnedNow.current), behavior: 'smooth' })
+    }
   }
   // While the Lemonn KYC is pending the product tiles under it are hidden (nothing can be traded yet).
   // The top of the summary. IND: "Start your KYC" while the Lemonn KYC is pending (nothing is verified, so Indian stocks
@@ -26994,12 +27050,12 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   const inCard = (node: ReactNode) => <Inset paddingInline="16" paddingBlock="00">{node}</Inset>
   // A version without the IND / US switch: only the IND summary.
   const inSummaryTop = () => {
-    return headerCard ? inCard(<UsActivationCard holdings={<HoldingsSummary />} />) : <HoldingsSummary />
+    return headerCard ? inCard(<UsActivationCard holdings={<HoldingsSummary onOpen={onInHoldings} />} />) : <HoldingsSummary onOpen={onInHoldings} />
   }
   // Lemonn KYC pending: one card, "Start your KYC", on both tabs (nothing, US Stocks included, works before it). Once US
   // Stocks is activated, each market's top card is a card, so holdings that would sit on the page go into the plain card there (as with Header "Holdings in card").
   const topCard = (market: Market) => {
-    if (market === 'in') return <UsActivationCard holdings={<HoldingsSummary />} />
+    if (market === 'in') return <UsActivationCard holdings={<HoldingsSummary onOpen={onInHoldings} />} />
     if (headerCard && activatedStates.includes(usState)) return <UsActivationCard state={usState} holdings={<HoldingsSummary us onOpen={onUsHoldings} usEmpty={usState !== 'holding'} />} onCta={onActivateUs} />
     // Money on the way: the holdings card as when holding, at $0.00, with a small "Money on the way" card under it.
     if (usState === 'onTheWay') return (
@@ -27077,7 +27133,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
                 box either, or the summary's gap would leave 24 of extra grey under the card. */}
             {usState !== 'kyc' && tab === 'in' && (
               <div data-market-part>
-                <ProductCards key={version.tiles} items={twoHomes ? products : tiles[version.tiles]} onProduct={onProduct} />
+                <ProductCards key={version.tiles} items={tiles[version.tiles]} onProduct={onProduct} />
               </div>
             )}
           </Stack>
@@ -27099,7 +27155,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
             </Stack>
           ) : (
             <Stack key="us" gap="32" data-market-part>
-              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} onEtf={onUsEtf} onPicks={onUsPicks} />
+              <UsHome card={feedTabs && usState !== 'kyc'} usState={usState} onActivate={onActivateUs} onStock={onUsStock} onMarket={onUsMarket} onTheme={onUsTheme} onEtfs={onUsEtfs} onEtf={onUsEtf} onPicks={onUsPicks} onBrands={onUsBrands} />
             </Stack>
           )}
         </div>
@@ -27108,7 +27164,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   )
 }
 
-const tiles = { classic: productsClassic, today: products, withUs: productsWithUs }
+const tiles = { classic: productsClassic, today: products, withUs: productsWithUs, withInvest: productsWithInvest }
 
 /**
  * The IND / US switch of a version that has it in the page: the notched folder tabs (V2, V7, V8), or L3 Tabs — a pill
@@ -28165,6 +28221,31 @@ export function companiesByChange(direction: 'gainers' | 'losers'): Company[] {
   const list = Object.values(companies).filter((c) => c.market)
   return list.sort((a, b) => (direction === 'gainers' ? b.market!.changePct - a.market!.changePct : a.market!.changePct - b.market!.changePct))
 }
+```
+
+### `src/shared/data/etfInside.ts`
+
+```ts
+// ETF cards' second line, shared by the ETF list (us-stocks) and Home's Discover ETFs (stocks): after the ticker, what
+// kind of companies are inside, with a name people know: "QQQ · Mostly big tech, like Apple" (3 Nov; was the
+// fund's legal name, which says little — it stays on the ETF page). Kept to about 28 characters so it fits one line at 360. Sample copy; the API would send it with the fund.
+export const ETF_INSIDE: Record<string, string> = {
+  SPY: 'Big US firms in every sector', QQQ: 'Mostly big tech, like Apple', VTI: 'Every US firm, big to small',
+  SMH: 'Chip makers, like NVIDIA', ITA: 'Plane, jet & weapon makers', XLE: 'Oil & gas, like ExxonMobil',
+  XLF: 'Banks, insurers & card firms', XLV: 'Drug makers & health insurers', BOTZ: 'Robot makers & AI chip firms',
+  UFO: 'Rocket, satellite & GPS firms', INDA: 'Big Indian banks, IT & energy', EPI: 'Indian firms with big profits',
+  MCHI: 'Chinese giants, like Tencent', KWEB: 'Chinese shopping & chat apps', EWJ: "Japan's giants, like Toyota",
+  VGK: "Europe's giants, like ASML", EWY: "Korea's giants, like Samsung", FXI: "China's top 50, like Alibaba",
+  CQQQ: 'Chinese tech, chips to apps', DXJ: 'Exporters, like Toyota & Honda', HEWJ: "Japan's giants, yen-protected",
+  SCJ: 'Smaller firms, like Sanrio', FEZ: "Eurozone's top 50, like SAP", EZU: 'Euro-area firms, like Siemens',
+  IEUR: '1,000+ European firms', FLKR: "Korea's giants, like SK Hynix",
+  TQQQ: 'Mostly big tech, like Apple', SQQQ: 'Mostly big tech, like Apple', SOXL: 'Chip makers, like NVIDIA',
+  SOXS: 'Chip makers, like NVIDIA', NVDL: 'One stock: NVIDIA', NVD: 'One stock: NVIDIA',
+  SPXL: 'Big US firms, like Apple', SPXS: 'Big US firms, like Apple',
+}
+
+/** What kind of companies the ETF `sym` holds, in a few words; undefined when there's no line for it. */
+export const etfInside = (sym: string): string | undefined => ETF_INSIDE[sym]
 ```
 
 ### `src/shared/data/format.ts`
@@ -50359,6 +50440,12 @@ export const linkedBanks: LinkedBank[] = [
   { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
   { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
 ]
+
+/**
+ * A linked account at a bank that can't send money abroad for US Stocks (not an LRS partner) — "User status → Bank
+ * accounts: Three" and "SBI only" add it, to show the US Stocks bank step with an account it can't use.
+ */
+export const otherBank: LinkedBank = { id: 'sbi', bank: 'State Bank of India', accountNumber: '38201945520', ifsc: 'SBIN0000300', type: 'Savings', branch: 'Fort, Mumbai', logoSymbol: 'SBIN', last4: '5520' }
 ```
 
 ### `src/shared/money.module.css`
@@ -50628,10 +50715,31 @@ export type Preview = {
   back?: () => boolean
   /** The screen was reached by going back (a back button, or a screen earlier in the app) — a page can come back as it was left. */
   cameBack?: boolean
+  /** An `over` screen (a sheet over the screen the user is on): the screen under it — closing the sheet goes there. */
+  under?: string
 }
 
 export const PreviewContext = createContext<Preview>({ interactive: false, go: () => {} })
 export const usePreview = () => useContext(PreviewContext)
+
+// ---- Which way the next move goes ------------------------------------------------------------------------------------
+// The preview guesses a move's direction (a screen visited before, or one earlier in the same flow, is "back"). A tap can
+// say it instead: Deposit opens Add money (listed earlier in the flow) as a page going forward; a back button's fallback
+// (nothing in the history) is back, and replaces the page instead of adding to the history.
+let intent: { id: string; direction: 'forward' | 'back' } | null = null
+
+/** Say the move to screen `id` that is about to happen is forward (a page opening) or back. */
+export const markMove = (id: string, direction: 'forward' | 'back') => {
+  intent = { id, direction }
+}
+
+/** The preview: the direction said for a move to `id`, if any. */
+export const moveIntent = (id: string) => (intent?.id === id ? intent.direction : undefined)
+
+/** The preview: the move happened. */
+export const clearMoveIntent = () => {
+  intent = null
+}
 
 /** Prototype only: after `ms`, go to `next` (loaders, "Verifying…"). */
 export function useAutoAdvance(next: string | undefined, ms: number) {
@@ -50858,6 +50966,10 @@ export const goToTab = (go: (id: string) => void, section: Section) => {
   scroll-padding-inline: var(--l3-spacing-16);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
 }
 
 .rail::-webkit-scrollbar {
@@ -51255,6 +51367,11 @@ export function Spot({ icon, tone = 'brand', size = 'lg' }: { icon: string; tone
 .value {
   font: var(--l3-text-label-14);
 }
+
+/* FLAG: L3 gap — a static ListCell card has no shadow; the app gives every stock card L3's soft one (as Portfolio's holdings). */
+.static[data-variant='card'] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-soft); /* 1px: Figma stroke weight has no variable */
+}
 ```
 
 ### `src/shared/ui/StockListCard.tsx`
@@ -51295,16 +51412,17 @@ type StockListCardProps = {
 
 /**
  * The one stock row of the app, as a card — the Market list's style, used wherever stocks or ETFs are listed:
- * logo · symbol over name · price over the day's change. Long lists show it flat (border only, no shadow).
+ * logo · symbol over name · price over the day's change. Every card wears L3's soft shadow (`elevation-soft`, the user's
+ * call on 4 Nov): tappable ones get it from ListCell (raised, the default); static ones (no `onOpen`) from `.static`.
  *
- * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
+ * Symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
 export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
   return (
     <ListCell
       variant="card"
       as={onOpen ? 'button' : undefined}
-      raised={false}
+      className={onOpen ? undefined : styles.static}
       iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
@@ -51334,7 +51452,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, pric
 // In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
 import type { FlowOption } from '../flows/types'
 import { setFlowOption, useFlowOption } from './prototype'
-import { linkedBanks, type LinkedBank } from './data/user'
+import { linkedBanks, otherBank, type LinkedBank } from './data/user'
 
 /** The settings' owner in the preview (as a flow id: where the picks are remembered). */
 export const USER_STATUS = 'app'
@@ -51343,7 +51461,7 @@ export type KycStatus = 'done' | 'pending'
 export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
 export type UsWallet = 'empty' | 'onTheWay' | 'funded'
 export type UsHoldings = 'none' | 'some'
-export type BankLinks = 'none' | 'one' | 'two'
+export type BankLinks = 'none' | 'one' | 'two' | 'three' | 'sbi'
 
 /**
  * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
@@ -51351,7 +51469,7 @@ export type BankLinks = 'none' | 'one' | 'two'
  * the wallet's US tab.
  */
 /** The add-money screens and the wallet: the bank row and its sheet change with the user's linked banks. */
-const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54']
+const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54', 'us-stocks-95']
 
 const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
 
@@ -51400,8 +51518,9 @@ export const userStatusOptions: FlowOption[] = [
     id: 'banks',
     group: 'User status',
     label: 'Bank accounts',
-    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }],
-    default: 'two',
+    // Three / SBI only: with an account at a bank US Stocks money can't go from (State Bank of India).
+    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }, { value: 'three', label: 'Three (+ SBI)' }, { value: 'sbi', label: 'SBI only' }],
+    default: 'three',
     floatOn: BANK_SCREENS,
   },
 ]
@@ -51434,8 +51553,22 @@ export function useLinkedBanks(): LinkedBank[] {
   const usWallet = useStatus('usWallet') as UsWallet
   const moneyMoved = us === 'active' && usWallet !== 'empty'
   const banks = picked === 'none' && moneyMoved ? 'one' : picked
-  return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
+  const linked = { none: [], one: linkedBanks.slice(0, 1), two: linkedBanks, three: [...linkedBanks, otherBank], sbi: [{ ...otherBank, primary: true }] }[banks]
+  return addedBank ? [...linked, addedBank] : linked
 }
+
+// A bank account added in the prototype ("Add bank account" → verified). Kept in memory, so a reload starts without it.
+let addedBank: LinkedBank | undefined
+let addBankOpener: string | undefined
+
+/** An add-money screen (₹ or US) opens "Add bank account": remember which, so the verified account comes back to it. */
+export const startAddBank = (fromScreen?: string) => { addBankOpener = fromScreen }
+/** The add-money screen that opened "Add bank account" (undefined when it was opened straight from the screen list). */
+export const addBankReturnScreen = () => addBankOpener
+/** The ₹1 check passed: the account joins the linked banks, and the add-money screens pick it. */
+export const linkBank = (bank: LinkedBank) => { addedBank = bank }
+/** The account added in this session, if any. */
+export const newlyLinkedBank = () => addedBank
 
 /**
  * Where the user is with US Stocks, as one step: KYC pending → 'kyc'; not activated → 'activate'; under review /

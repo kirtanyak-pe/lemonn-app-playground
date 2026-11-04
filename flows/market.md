@@ -1,6 +1,6 @@
 # Flow: Market (`market`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `6de43c8` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 The Market tab — Indian and US stock lists (all, gainers, losers, under 100 / 500) and Filters.
 
@@ -153,6 +153,7 @@ card is used by every stock list in the app.
 
 ### Changelog
 
+- 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
 - 2026-11-03 — Stock cards are the shared `StockListCard` (flat, Label 14, 12 apart, same look app-wide); `.flatCards` override and `StockRow.module.css` removed.
 - 2026-11-02 — Market picker: small pill (`sm`) with a bigger tap area — the whole block around it (16 each side, the tab row's full height) switches the market.
 - 2026-11-02 — Market picker is one pill (IN / US + ↕ icon) instead of a Select; one tap switches the market.
@@ -23845,6 +23846,12 @@ export const linkedBanks: LinkedBank[] = [
   { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
   { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
 ]
+
+/**
+ * A linked account at a bank that can't send money abroad for US Stocks (not an LRS partner) — "User status → Bank
+ * accounts: Three" and "SBI only" add it, to show the US Stocks bank step with an account it can't use.
+ */
+export const otherBank: LinkedBank = { id: 'sbi', bank: 'State Bank of India', accountNumber: '38201945520', ifsc: 'SBIN0000300', type: 'Savings', branch: 'Fort, Mumbai', logoSymbol: 'SBIN', last4: '5520' }
 ```
 
 ### `src/shared/money.module.css`
@@ -24114,10 +24121,31 @@ export type Preview = {
   back?: () => boolean
   /** The screen was reached by going back (a back button, or a screen earlier in the app) — a page can come back as it was left. */
   cameBack?: boolean
+  /** An `over` screen (a sheet over the screen the user is on): the screen under it — closing the sheet goes there. */
+  under?: string
 }
 
 export const PreviewContext = createContext<Preview>({ interactive: false, go: () => {} })
 export const usePreview = () => useContext(PreviewContext)
+
+// ---- Which way the next move goes ------------------------------------------------------------------------------------
+// The preview guesses a move's direction (a screen visited before, or one earlier in the same flow, is "back"). A tap can
+// say it instead: Deposit opens Add money (listed earlier in the flow) as a page going forward; a back button's fallback
+// (nothing in the history) is back, and replaces the page instead of adding to the history.
+let intent: { id: string; direction: 'forward' | 'back' } | null = null
+
+/** Say the move to screen `id` that is about to happen is forward (a page opening) or back. */
+export const markMove = (id: string, direction: 'forward' | 'back') => {
+  intent = { id, direction }
+}
+
+/** The preview: the direction said for a move to `id`, if any. */
+export const moveIntent = (id: string) => (intent?.id === id ? intent.direction : undefined)
+
+/** The preview: the move happened. */
+export const clearMoveIntent = () => {
+  intent = null
+}
 
 /** Prototype only: after `ms`, go to `next` (loaders, "Verifying…"). */
 export function useAutoAdvance(next: string | undefined, ms: number) {
@@ -24539,6 +24567,11 @@ export function SheetHost({ container, children }: { container: HTMLElement | nu
 .value {
   font: var(--l3-text-label-14);
 }
+
+/* FLAG: L3 gap — a static ListCell card has no shadow; the app gives every stock card L3's soft one (as Portfolio's holdings). */
+.static[data-variant='card'] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-soft); /* 1px: Figma stroke weight has no variable */
+}
 ```
 
 ### `src/shared/ui/StockListCard.tsx`
@@ -24579,16 +24612,17 @@ type StockListCardProps = {
 
 /**
  * The one stock row of the app, as a card — the Market list's style, used wherever stocks or ETFs are listed:
- * logo · symbol over name · price over the day's change. Long lists show it flat (border only, no shadow).
+ * logo · symbol over name · price over the day's change. Every card wears L3's soft shadow (`elevation-soft`, the user's
+ * call on 4 Nov): tappable ones get it from ListCell (raised, the default); static ones (no `onOpen`) from `.static`.
  *
- * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
+ * Symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
 export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
   return (
     <ListCell
       variant="card"
       as={onOpen ? 'button' : undefined}
-      raised={false}
+      className={onOpen ? undefined : styles.static}
       iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
@@ -24618,7 +24652,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, pric
 // In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
 import type { FlowOption } from '../flows/types'
 import { setFlowOption, useFlowOption } from './prototype'
-import { linkedBanks, type LinkedBank } from './data/user'
+import { linkedBanks, otherBank, type LinkedBank } from './data/user'
 
 /** The settings' owner in the preview (as a flow id: where the picks are remembered). */
 export const USER_STATUS = 'app'
@@ -24627,7 +24661,7 @@ export type KycStatus = 'done' | 'pending'
 export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
 export type UsWallet = 'empty' | 'onTheWay' | 'funded'
 export type UsHoldings = 'none' | 'some'
-export type BankLinks = 'none' | 'one' | 'two'
+export type BankLinks = 'none' | 'one' | 'two' | 'three' | 'sbi'
 
 /**
  * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
@@ -24635,7 +24669,7 @@ export type BankLinks = 'none' | 'one' | 'two'
  * the wallet's US tab.
  */
 /** The add-money screens and the wallet: the bank row and its sheet change with the user's linked banks. */
-const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54']
+const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54', 'us-stocks-95']
 
 const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
 
@@ -24684,8 +24718,9 @@ export const userStatusOptions: FlowOption[] = [
     id: 'banks',
     group: 'User status',
     label: 'Bank accounts',
-    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }],
-    default: 'two',
+    // Three / SBI only: with an account at a bank US Stocks money can't go from (State Bank of India).
+    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }, { value: 'three', label: 'Three (+ SBI)' }, { value: 'sbi', label: 'SBI only' }],
+    default: 'three',
     floatOn: BANK_SCREENS,
   },
 ]
@@ -24718,8 +24753,22 @@ export function useLinkedBanks(): LinkedBank[] {
   const usWallet = useStatus('usWallet') as UsWallet
   const moneyMoved = us === 'active' && usWallet !== 'empty'
   const banks = picked === 'none' && moneyMoved ? 'one' : picked
-  return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
+  const linked = { none: [], one: linkedBanks.slice(0, 1), two: linkedBanks, three: [...linkedBanks, otherBank], sbi: [{ ...otherBank, primary: true }] }[banks]
+  return addedBank ? [...linked, addedBank] : linked
 }
+
+// A bank account added in the prototype ("Add bank account" → verified). Kept in memory, so a reload starts without it.
+let addedBank: LinkedBank | undefined
+let addBankOpener: string | undefined
+
+/** An add-money screen (₹ or US) opens "Add bank account": remember which, so the verified account comes back to it. */
+export const startAddBank = (fromScreen?: string) => { addBankOpener = fromScreen }
+/** The add-money screen that opened "Add bank account" (undefined when it was opened straight from the screen list). */
+export const addBankReturnScreen = () => addBankOpener
+/** The ₹1 check passed: the account joins the linked banks, and the add-money screens pick it. */
+export const linkBank = (bank: LinkedBank) => { addedBank = bank }
+/** The account added in this session, if any. */
+export const newlyLinkedBank = () => addedBank
 
 /**
  * Where the user is with US Stocks, as one step: KYC pending → 'kyc'; not activated → 'activate'; under review /

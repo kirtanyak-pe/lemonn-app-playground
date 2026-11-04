@@ -4,7 +4,7 @@
   "description": "Search stocks, US stocks, F&O contracts, mutual funds and IPOs; Smart Options & Futures lists; add to watchlist.",
   "designSystem": {
     "name": "Lemonnade V3 (L3)",
-    "commit": "4afbde2",
+    "commit": "6de43c8",
     "docs": "https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt"
   },
   "prototype": {
@@ -371,9 +371,21 @@
     "src/flows/search/sheets/WatchlistSheets.tsx"
   ],
   "shared": [
+    "src/shared/assets/logos/asahiindia.png",
+    "src/shared/assets/logos/crisil.png",
+    "src/shared/assets/logos/hoec.png",
+    "src/shared/assets/logos/igil.png",
+    "src/shared/assets/logos/jindrill.png",
+    "src/shared/assets/logos/jublingrea.png",
+    "src/shared/assets/logos/oil.png",
+    "src/shared/assets/logos/sagility.png",
+    "src/shared/assets/logos/ttml.png",
     "src/shared/copy.ts",
+    "src/shared/data/companies.ts",
     "src/shared/data/format.ts",
     "src/shared/data/live.ts",
+    "src/shared/data/market-snapshot.json",
+    "src/shared/data/market.ts",
     "src/shared/data/us-market-snapshot.json",
     "src/shared/data/usStocks.ts",
     "src/shared/prototype.ts",

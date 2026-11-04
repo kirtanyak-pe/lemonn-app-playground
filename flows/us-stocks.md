@@ -1,6 +1,6 @@
 # Flow: US Stocks (`us-stocks`)
 
-> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `4afbde2` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
+> One self-contained file for converting this flow to another platform. Read https://kirtanyak-pe.github.io/lemonn-app-prototype/CONVERT.md first. Design system: Lemonnade V3 @ `6de43c8` (components, tokens and rules: https://kirtanyak-pe.github.io/lemonnade-v3-docs/llms.txt).
 
 Activate US Stocks, add money to the USD wallet, buy and sell, withdraw (teammate import, under review).
 
@@ -29,7 +29,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/us-stocks · ma
 | Section | Screens | What |
 |---|---|---|
 | Entry points | `us-stocks-02`, `05`–`07` | Ways into US Stocks: S&P 500, Portfolio, MF (the Home entry is `stocks-09`; Search is the Search flow's US tab, `search-29`) |
-| FTUX | `13`–`15`, `20`–`28`, `74` | Stock page (not activated; KYC not done), risk disclosure, confirm details, $0 wallet, add money (the Home screens of the flow are `stocks-11`…`18`) |
+| FTUX | `13`, `20`–`28`, `74`, `94`–`97` | Stock page (not activated; KYC not done), activation (declarations, bank), $0 wallet, add money (the Home screens of the flow are `stocks-11`…`18`) |
 | Activated user | `31`–`52` | Stock page (no holdings / holding), buy (amount / shares / limit / SL / AMO / errors), results, sell |
 | USD wallet | `53`–`70` | Wallet states, balance details, withdraw, withdrawal tracking |
 
@@ -107,6 +107,19 @@ meaning (below minimum / above LRS) with $ limits; the ₹ limits in the Figma h
 **L3 gaps:** no big amount input and no in-app number keypad (both drawn in `AmountEntry`, on L3 tokens, flagged there);
 quick-add chips are L3 Tabs (pill, action) used as buttons.
 
+### Portfolio (`us-stocks-05`, `06`, `77`, `screens/entry/PortfolioScreen.tsx`)
+
+- `PortfolioScreen` is the frame only: Actionbar (search, wallet) with the Positions · Holdings · Orders tabs in its
+  bottom slot, swiping between tabs, the navbar, and the Sort sheet (screen level, in `Phone`'s overlay).
+- Each tab is its own page in `screens/entry/portfolio/`: `PortfolioPage` gives the grey top and the white sheet under
+  it (rounded top; Orders' is square). `PositionsTab` (Market Indices rail, Your positions + Refresh, empty state →
+  F&O), `HoldingsTab` (summary cards rail, IN / US tabs, Your holdings + Sort, the list or the US empty state for the
+  user status), `HoldingCard` (one holding: logo, name, qty, 1D; Current · Invested · Returns). Laid out with L3
+  Stack / Section / Inset / Grid; strings in `copy.json` under `portfolio.*`.
+- Differences from Figma (L3 wins): Sort and Refresh are L3 Ghost Small buttons (Label/12, primary text — Figma: blue
+  Label/14). A US holding is a clickable L3 Card (raised, opens its stock page); Indian ones are static Cards, and every holding card has L3's soft shadow `--l3-shadow-elevation-soft` (from L3 on the clickable US cards; added locally on the static Indian ones — L3 gap: no shadow option on a static Card). The index
+  cards' width comes from the shared Rail (1.85 visible). Orders' sheet ends 16 below its content (was 24).
+
 ### Orders & Positions (`screens/orders/`, Portfolio's Orders and Positions tabs)
 
 Layout from the F&O dev-handoff file's "Positions & orders" (Figma `nLs24dTJdPz9A5pu3AWMbe`, `6754:65598`), drawn there
@@ -144,13 +157,69 @@ tags, timeline and dock follow from it.
   with a grey title strip (Position Details uses a section header over a KeyValueList card); a clickable Card announces
   itself as a toggle (`aria-pressed`). No sell Limit / SL pad yet, so Modify / Retry on a sell open the plain sell pad.
 
+### Activate US Stocks (`us-stocks-94`…`97`, `screens/activate/`)
+
+Two bottom sheets, like the app's Terms & Conditions sheet, that open over the screen the user tapped Activate on (Home's
+US tab, the FTUX sheet's Home, a stock page, the wallet …) — no new page. In the registry they are `over: 'us-stocks-13'`
+screens (FlowScreen.over): the preview keeps the screen the user was on under the sheet, each step only swaps the sheet,
+and closing (✕, scrim, drag, back) goes back to that screen (Preview.under). Opened straight from the screen list, they
+sit over the stock page. Every Activate US Stocks / Retry (Home card, FTUX sheet, stock page, Portfolio's US empty states) opens
+`us-stocks-94`. Not in Figma — built from the brief; they replace the risk disclosure sheet (removed).
+
+**L3 gap:** IDFC FIRST Bank has no logo in `@l3/assets/company-logos`; its mark (cropped from the Wikimedia Commons
+logo, 128 px) is kept in `screens/activate/assets/idfcfirstb.png` until L3 adds it.
+
+- **94 · Declarations** — header "Agree to invest abroad", then two checkbox rows, the declaration written beside each
+  box: LRS (resident, own money, $250,000 a year, allowed purposes) and US tax (Form W-8BEN: not a US person, 25% on
+  dividends, report in your ITR). The scheme / form name is an inline link to the full text; the rest of the row is a
+  label, so tapping anywhere on it ticks the box. "I agree and continue" (Large, full width) turns on once both are
+  ticked → 95.
+- **95 · Bank** — only ICICI, HDFC, Kotak, IDFC FIRST and Axis can send money abroad for us (`screens/activate/data.ts`).
+  Their logos show only where the user has to add a bank (none supported, or "Add bank"), not over a list that already
+  has an eligible bank.
+  - A supported bank linked (User status → Bank accounts): every linked bank as a card row — supported ones with a Radio
+    and an "Eligible" Tag (the first picked already), others greyed out with a disabled "Not supported" Tag (can't be
+    picked); Verify and activate (always on) → 97. No consent checkbox. "Add bank" (Tertiary Small, the sheet header's
+    trailing slot) swaps the sheet to "Add a supported bank": the five logos + Add bank account (→ `deposit-12`). No back
+    arrow there (L3: the first sheet over a screen has none), so closing it closes the sheet.
+  - None supported (or `us-stocks-96`): a card on top explains it ("<bank> can't send money abroad for US Stocks yet.
+    Supported banks are ICICI, HDFC, Kotak, IDFC FIRST and Axis Bank. Add an account with one of them." + the five logos), then the user's own banks greyed out and tagged "Not
+    supported", Add bank account (the
+    Deposit flow's `deposit-12`, which comes back to 95) — no Not now: closing the sheet (back, scrim) returns to the stock page.
+  - The user always has a bank (KYC adds one): with Bank accounts: None, the sheet shows the sample SBI account.
+  - "Three (+ SBI)" and "SBI only" in User status → Bank accounts add a State Bank of India account to show both cases.
+- **97 · Verifying** — the bank check as a loader sheet (we run it on the bank details we already have: no money sent,
+  nothing for the user to do) (can't be closed); moves on by itself to activation submitted
+  (`stocks-18`).
+
 ### Navigation
 
-Every tap he wired is kept. The main path: FTUX sheet → Activate → Risk disclosure → Under review → Approved → Add money
+Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarations → Bank (automatic check) → Under review → Approved → Add money
 → Pay on bank → Money ready → Stock → Buy → Executed → Wallet → Withdraw.
 
 ### Changelog
 
+- 2026-11-04 — Card shadows no longer cut off in sideways scrollers: a sideways scroller clips top and bottom too, so the shared `Rail`, the US Home's Top Movers / Brands scrollers, Portfolio's market cards, the MF scroller and the stock page's related ETFs pad 12 above and below and take it back with a negative margin (same layout; horizontal and page scrolling unchanged). L3 gap: L3 Tabs (pill, raised) leaves 4 for a shadow that reaches 5.
+- 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
+- 2026-11-04 — **Activation opens where the user is:** the sheets open over Home / the stock page / wherever Activate was tapped (FlowScreen `over`), instead of jumping to the stock page first. IDFC FIRST Bank shows its logo (kept in `screens/activate/assets/` — L3 gap).
+- 2026-11-04 — **One-tap bank check:** no "we'll send ₹1" line — the check runs on our side with the bank details we
+  already have; the verifying sheet says so. Add bank is Tertiary Small.
+- 2026-11-04 — **Bank sheet, eligible case cleaned up:** no logos over the list; Add bank moved to the sheet header,
+  opening the supported-banks view. Sheets over Home now sit above its sticky search bar, action bar and marquee.
+- 2026-11-04 — **Bank sheet, two cases:** supported banks shown up front as logos; linked banks tagged Eligible (pre-picked) or Not supported (greyed out); ₹1 consent checkbox removed. New User status bank values Three (+ SBI) / SBI only.
+- 2026-11-04 — **Activation as bottom sheets:** the declarations and bank pages are now two sheets over the stock page (T&C-sheet style): two checkbox rows with the text beside them (whole row ticks), CTA on once both are ticked; the bank step and ₹1 check swap in on the same sheet. Stage bar removed.
+- 2026-11-04 — **Declarations simplified:** one card per declaration with its "I agree" row and checkbox at the foot of the card (no section headers), three short points each (TCS line dropped), Continue always on with a tooltip + red edges when something is unticked.
+- 2026-11-04 — **Activation is two pages now** (`us-stocks-94`…`97`): declarations (LRS, US tax), then the bank — a supported bank (ICICI, HDFC, Kotak, IDFC FIRST, Axis) + the ₹1 check, or add one. The risk disclosure sheet (`us-stocks-14`, and the Stocks flow's `stocks-12`) is gone; Confirm details (`us-stocks-15`) is hidden. Every Activate / Retry goes to 94.
+- 2026-11-04 — L3 moved to 6de43c8: the soft shadow is now L3's `--l3-shadow-elevation-soft` (default on clickable cards); the local `--app-shadow-elevation-soft` is gone. Holding cards use surface primary.
+- 2026-11-04 — Big clickable cards all wear L3's soft shadow: order cards (the 3 Nov border-only override is gone) and the Portfolio market carousel cards (hand-made, so set locally). Chips, pills and list rows stay flat.
+- 2026-11-04 — The ETF cards' "what's inside" lines moved to `src/shared/data/etfInside.ts` so Home's Discover ETFs shows the same line.
+- 2026-11-04 — Portfolio: every holding card (Indian too) has L3's `elevation-soft` shadow (0 1 8, 4%) — L3 gap: a static Card has no shadow.
+- 2026-11-04 — **Portfolio code cleanup**: the screen is now a frame plus one component per tab (`screens/entry/portfolio/`), each owning its grey top and white sheet; L3 layout blocks instead of hand-written flex and negative margins; the holding as an L3 Card, Sort / Refresh as L3 buttons, the Sort sheet at screen level; strings in copy.json; `PortfolioScreen.module.css` and the unused `live` prop are gone. Same look (1–3px shifts).
+- 2026-11-04 — **Deposit comes back from the bank**: the bank's page (us-stocks-27) hands back to Lemonn after 1 s; the USD wallet opens (us-stocks-93, new) with a sheet: "$50.00 is on its way", ₹ that left which bank, Paid → Sent to US → Ready to trade (expected by Thu 8 PM), and we'll notify when it lands. Got it leaves the wallet's pending banner, now with the amount paid. The safe note is a success-light box with a 24 lock, one line: safe, held in your name. Deposit / Withdraw / Full details push in from the right; Add money's back with no history slides back to the wallet instead of looping (shared/prototype `markMove`).
+- 2026-11-04 — **Wallet is one page with two views**: W0 · Indian tab no longer jumps to another screen for USD — every wallet screen carries both views (INR + its USD state from the user status) and only the body switches; the USD tab's NEW tag always shows (it's just a tag).
+- 2026-11-04 — Add money: the amount's caret is L3's discover blue (as on TextField); the money sheets (Pay from, charges, withdraw breakdown) lose their hand-drawn grabber — the mockup's system navbar is enough.
+- 2026-11-04 — **Add bank account now finishes**: Verify → Verifying (₹1 check) → Bank account added → back to this Add money with the new bank (SBI ••5526) picked; the name-mismatch failure too (deposit flow, deposit-13 … 15).
+- 2026-11-04 — **Add money opens on $50** (was $1,000): the amount screen and the screens shown over it (charges breakdown, bank mismatch, pick a bank).
 - 2026-11-04 — **Wallet tabs stay on the page:** the wallet's INR and USD screens (us-stocks-53 / 54) are one page (screen group `wallet`), so tapping USD Wallet no longer pushes a new screen. Only the wallet content swaps, as it already did going back to INR.
 - 2026-11-04 — **Order type switch stays on the page:** the order pads are one page (screen group `order-pad`), so Market / Limit / SL no longer pushes a new screen. The header, tabs and dock stay put and only the fields under the tabs slide in: from the right going Market → Limit → SL, from the left going back.
 - 2026-11-03 — **Analyst Ratings ring has gaps between its arcs:** Buy, Hold and Sell are drawn from their shares (78.13 / 18.75 / 3.12%), starting at the top, with a small gap between each one like the Allocation donut. Before, three fixed overlapping paths.
@@ -22087,7 +22156,76 @@ export function UsMainNav({ value }: { value: Section }) {
   "addMoney.sheetTitle": "Pay from",
   "addMoney.addAnother": "Add another bank account",
   "addMoney.addBankCta": "Add bank account",
-  "addMoney.ctaInr": "({inr})"
+  "addMoney.ctaInr": "({inr})",
+  "portfolio.title": "Portfolio",
+  "portfolio.search": "Search",
+  "portfolio.wallet": "Wallet",
+  "portfolio.sections": "Portfolio sections",
+  "portfolio.tab.positions": "Positions",
+  "portfolio.tab.holdings": "Holdings",
+  "portfolio.tab.orders": "Orders",
+  "portfolio.indices": "Market Indices",
+  "portfolio.expiresToday": "Expires today",
+  "portfolio.positions": "Your positions",
+  "portfolio.refresh": "Refresh",
+  "portfolio.positionsEmpty.title": "Build Wealth Daily",
+  "portfolio.positionsEmpty.text": "Seems like you don’t have any positions right now",
+  "portfolio.positionsEmpty.button": "Explore F&O",
+  "portfolio.holdings": "Your holdings",
+  "portfolio.sort": "Sort",
+  "portfolio.markets": "Holdings market",
+  "portfolio.market.in": "Indian Stocks",
+  "portfolio.market.us": "US Stocks",
+  "portfolio.holding.qty": "Qty {qty}",
+  "portfolio.holding.day": "1D Returns",
+  "portfolio.holding.current": "Current",
+  "portfolio.holding.invested": "Invested",
+  "portfolio.holding.returns": "Returns",
+  "portfolio.holding.open": "{name}, open its stock page",
+  "portfolio.usEmpty.kyc.title": "Complete your KYC",
+  "portfolio.usEmpty.kyc.text": "Finish your Lemonn KYC to activate US Stocks",
+  "portfolio.usEmpty.kyc.button": "Complete KYC",
+  "portfolio.usEmpty.activate.title": "Build Wealth in Dollars",
+  "portfolio.usEmpty.activate.text": "Activate US Stocks to start investing in US companies",
+  "portfolio.usEmpty.activate.button": "Activate US Stocks",
+  "portfolio.usEmpty.review.title": "Activation under review",
+  "portfolio.usEmpty.review.text": "We’re reviewing your US Stocks activation. You’ll see your holdings here once it’s done",
+  "portfolio.usEmpty.review.button": "Explore US Market",
+  "portfolio.usEmpty.failed.title": "Activation failed",
+  "portfolio.usEmpty.failed.text": "We couldn’t activate US Stocks for you. Please try again",
+  "portfolio.usEmpty.failed.button": "Retry",
+  "portfolio.usEmpty.none.title": "Build Wealth in Dollars",
+  "portfolio.usEmpty.none.text": "Seems like you don’t have any US holdings right now",
+  "portfolio.usEmpty.none.button": "Explore US Market",
+  "declarations.title": "Agree to invest abroad",
+  "declarations.description": "Needed by RBI and US tax rules before you buy US Stocks",
+  "declarations.lrs.before": "I declare under RBI's ",
+  "declarations.lrs.link": "Liberalised Remittance Scheme",
+  "declarations.lrs.after": " that I'm a resident Indian sending my own money, within $250,000 a year across all my banks and apps, and not for margin trading or other barred uses.",
+  "declarations.tax.before": "I sign ",
+  "declarations.tax.link": "Form W-8BEN",
+  "declarations.tax.after": ": I'm not a US citizen, green card holder or US tax resident. 25% US tax is withheld on dividends, and I'll report my US holdings in my ITR.",
+  "declarations.actionsLabel": "Declarations",
+  "declarations.cta": "I agree and continue",
+  "bankCheck.title": "Pick the bank you'll invest from",
+  "bankCheck.description": "US Stocks need an eligible bank account",
+  "bankCheck.supportedLabel": "Supported banks for US Stocks",
+  "bankCheck.addAnother": "Add bank",
+  "bankCheck.add.title": "Add a supported bank",
+  "bankCheck.add.description": "Only these banks can send money abroad for US Stocks",
+  "bankCheck.eligible": "Eligible",
+  "bankCheck.notEligible": "Not supported",
+  "bankCheck.yourBanksLabel": "Your bank accounts",
+  "bankCheck.actionsLabel": "Verify bank",
+  "bankCheck.cta": "Verify and activate",
+  "bankCheck.none.title": "Add a supported bank to invest",
+  "bankCheck.none.description": "US Stocks need a bank that can send money abroad",
+  "bankCheck.none.why": "{bank} can't send money abroad for US Stocks yet. Supported banks are {banks}. Add an account with one of them.",
+  "bankCheck.none.yourBanks": "Your bank accounts",
+  "bankCheck.none.cta": "Add bank account",
+  "bankVerifying.title": "Verifying your bank account",
+  "bankVerifying.description": "Checking {bank} — nothing for you to do",
+  "bankVerifying.fine": "Takes a few seconds — please keep the app open"
 }
 ```
 
@@ -22337,6 +22475,7 @@ export const usStocks: Flow = {
     // Every order pad (Buy / Sell, Market / Limit / SL, amount / shares) is one page in different states: switching the
     // order type swaps the body in place instead of pushing a new screen. Same for the wallet's INR / USD tabs.
     group: s.figma in orderPads ? 'order-pad' : s.group,
+    over: s.over,
     render: (go) => {
       const Screen = allScreens[s.figma]
       return (
@@ -22355,7 +22494,7 @@ export const usStocks: Flow = {
 // Navigation for the imported screens. The teammate's screens move by Figma node id (go('5837:95201')) and can go back;
 // this maps those calls onto the app prototype's `go` (screen ids 'us-stocks-NN', see registry.ts).
 import { createContext, useContext, type ReactNode } from 'react'
-import { usePreview } from '../../shared/prototype'
+import { markMove, usePreview } from '../../shared/prototype'
 import type { Go } from '../types'
 import { idForFigma } from './registry'
 
@@ -22387,6 +22526,8 @@ export const FIGMA_IN_OTHER_FLOWS: Record<string, string> = {
 export type UsNav = {
   /** Go to a screen by its Figma node id. */
   go: (figma: string) => void
+  /** Open a page on top of this one (pushes in from the right), even one listed earlier in the flow (Deposit → Add money). */
+  open: (figma: string) => void
   /** Back to the screen shown before this one (or `fallback`). */
   back: (fallback?: string) => void
   /** Figma node id of the screen being shown. */
@@ -22397,7 +22538,7 @@ export type UsNav = {
   via: 'jump' | 'tap'
 }
 
-const UsNavContext = createContext<UsNav>({ go: () => {}, back: () => {}, current: '', via: 'jump' })
+const UsNavContext = createContext<UsNav>({ go: () => {}, open: () => {}, back: () => {}, current: '', via: 'jump' })
 export const useUsNav = () => useContext(UsNavContext)
 
 // Screens shown in this flow, oldest first (Figma ids) — what `back` walks.
@@ -22411,15 +22552,18 @@ export function UsNavProvider({ figma, go, children }: { figma: string; go: Go; 
     else history.push(figma)
   }
   const prev = history.length > 1 ? history[history.length - 2] : undefined
-  const to = (f: string) => go(FIGMA_IN_OTHER_FLOWS[f] ?? idForFigma.get(f) ?? f)
+  const screenOf = (f: string) => FIGMA_IN_OTHER_FLOWS[f] ?? idForFigma.get(f) ?? f
+  const to = (f: string) => go(screenOf(f))
   const value: UsNav = {
     go: to,
+    open: (f) => { markMove(screenOf(f), 'forward'); to(f) },
     // Back = the screen shown before in the app (the preview's history spans flows, e.g. back to the Stocks home);
     // a screen opened straight from the list goes to `fallback`.
     back: (fallback) => {
       if (preview.back?.()) return
+      // Nothing to go back to: the fallback replaces this page, sliding in from the left (so its own back doesn't return here).
       const target = fallback ?? prev
-      if (target) to(target)
+      if (target) { markMove(screenOf(target), 'back'); to(target) }
     },
     current: figma,
     prev,
@@ -22443,7 +22587,9 @@ export type UsScreenEntry = {
   /** A state the user-status settings already show on another screen (the stock page, the wallet's US tab): not listed in the preview, still a screen taps go to. */
   hidden?: boolean
   /** Screens of one group are one page in different states: moving between them doesn't push (the wallet's INR / USD tabs). */
-  group?: string }
+  group?: string
+  /** A sheet over the screen the user is on (FlowScreen.over): the screen drawn under it when opened from the list. */
+  over?: string }
 
 export const registry: UsScreenEntry[] = [
   { figma: '5796:89422', id: 'us-stocks-02', section: 'entry', name: "E1a · S&P 500 index · market open", note: "S&P 500 index page while the US market is open." },
@@ -22455,8 +22601,11 @@ export const registry: UsScreenEntry[] = [
   { figma: '5796:88163', tab: 'mutualFund', id: 'us-stocks-07', section: 'entry', name: "E5 · Mutual Fund home · US banner", note: "Mutual Fund home with a US Stocks on Lemonn banner." },
   { figma: '5826:93627', id: 'us-stocks-13', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'ftux', name: "S03 · Stock page", note: "The US stock page in the user status picked in the prototype settings (User status): KYC pending → Complete KYC (as us-stocks-74); not activated, under review or failed → Activate US Stocks in place of Buy / Sell; activated → Buy / Sell (us-stocks-31), with Your Holdings when the user holds NVDA (us-stocks-32). Home, Search and Market open this page." },
   { figma: '9001:10', id: 'us-stocks-74', hidden: true, badge: 'new', badgeNote: "Not in Jojo's Figma: a user whose Lemonn KYC isn't done", section: 'ftux', name: "Stock page · KYC not done", note: "Stock page for a user whose Lemonn (Indian) KYC isn't complete: US Stocks can't be activated yet, so the button is Complete KYC (→ the KYC flow, kyc-01) in place of Activate. Back → the US tab with the KYC card (stocks-21)." },
-  { figma: '5756:71475', id: 'us-stocks-14', section: 'ftux', name: "Risk disclosure sheet", note: "Risk disclosure sheet. Agree and Continue submits the activation and lands on the under-review home (or wallet); Confirm Details and the result sheet are skipped." },
-  { figma: '5756:72486', id: 'us-stocks-15', section: 'ftux', name: "Confirm details", note: "Confirm KYC details and accept the declarations before activating." },
+  { figma: '9001:60', id: 'us-stocks-94', over: 'us-stocks-13', badge: 'new', badgeNote: "Not in Figma: replaces the risk disclosure sheet", section: 'ftux', name: "Activate · Declarations", note: "Activate US Stocks, step 1 of 2, as a bottom sheet over the screen the user tapped Activate on (Home, a stock page, the wallet …): two checkbox rows — the LRS declaration and the US tax (W-8BEN) declaration, each written beside its checkbox with the scheme / form as a link; tapping anywhere on a row ticks it. I agree and continue turns on once both are ticked → the bank sheet (us-stocks-95). Closing it goes back to the stock page. Every Activate US Stocks / Retry in the app comes here." },
+  { figma: '9001:61', id: 'us-stocks-95', over: 'us-stocks-13', badge: 'new', badgeNote: "Not in Figma: follows User status → Bank accounts", section: 'ftux', name: "Activate · Bank", note: "Step 2 of 2, swapped in on the same sheet. The user's linked banks: supported ones as radio cards tagged Eligible (the first picked already), others greyed out and tagged Not supported. Add bank (Tertiary Small, header) shows the five supported banks' logos + Add bank account. Verify and activate → the automatic bank check (us-stocks-97). With no supported bank linked it shows us-stocks-96. User status → Bank accounts: Three (+ SBI) / SBI only show both cases." },
+  { figma: '9001:62', id: 'us-stocks-96', over: 'us-stocks-13', badge: 'new', badgeNote: "Not in Figma: no supported bank linked", section: 'ftux', name: "Activate · Bank · no supported bank", note: "No supported bank linked (the user always has one — KYC adds it): a card on top says their bank can't send money abroad and shows the five supported banks' logos; then the user's own banks greyed out and tagged Not supported. Add bank account → Add bank account (deposit-12), which comes back to us-stocks-95 once verified; no Not now — closing the sheet (back, scrim) returns to the stock page." },
+  { figma: '9001:63', id: 'us-stocks-97', over: 'us-stocks-13', badge: 'new', badgeNote: "Not in Figma: the bank check", section: 'ftux', name: "Activate · Bank · verifying", note: "The bank check (run by us on the bank details we already have, no money sent, nothing for the user to do) as a loader sheet over the stock page, as in account setup; can't be closed. Moves on by itself to activation submitted (stocks-18)." },
+  { figma: '5756:72486', id: 'us-stocks-15', hidden: true, section: 'ftux', name: "Confirm details", note: "Confirm KYC details and accept the declarations before activating." },
   { figma: '5776:83524', id: 'us-stocks-20', badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'ftux', name: "W1 · Wallet · US tab · $0 balance", note: "USD Wallet with $0 balance. Add Money and Withdraw." },
   { figma: '5776:84630', id: 'us-stocks-21', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M01 · Add money · enter $", note: "Add money: type the $ to land in the US wallet on the app keypad; the ₹ you pay (incl. charges) is the line under it. Groww-style $ entry replaces Figma's ₹ field (3 Nov)." },
   { figma: '5776:85779', id: 'us-stocks-22', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M02 · Add money · charges breakdown", note: "Charges breakdown expanded before confirming the amount." },
@@ -22465,7 +22614,8 @@ export const registry: UsScreenEntry[] = [
   { figma: '5796:86009', id: 'us-stocks-25', badge: 'changed', badgeNote: "Timing is now in the bank row: “lands by Thu 8 PM”", section: 'ftux', name: "M05 · Add money · bank name mismatch", note: "Edge case: bank account name doesn't match KYC. Prompts a bank update." },
   { figma: '9001:20', id: 'us-stocks-75', badge: 'new', badgeNote: "Not in Figma: no bank account linked", section: 'ftux', name: "Add money · no bank account", note: "No bank linked (User status → Bank accounts: None): the bank row reads “Add a bank account” and the button is “Add bank account” → Add bank account (deposit-12), which comes back here." },
   { figma: '9001:21', id: 'us-stocks-76', badge: 'new', badgeNote: "Not in Figma: change the bank", section: 'ftux', name: "Add money · change bank", note: "The bank row (chevron) opens “Pay from”: linked banks as radio rows, picking one closes it; “Add another bank account” → Add bank account (deposit-12)." },
-  { figma: '5796:86336', id: 'us-stocks-27', section: 'ftux', name: "Bank app (placeholder)", note: "Placeholder for the bank's payment page." },
+  { figma: '5796:86336', id: 'us-stocks-27', section: 'ftux', name: "Bank app (placeholder)", note: "Placeholder for the bank's payment page. After 1 s (or a tap) it hands back to Lemonn: us-stocks-93." },
+  { figma: '9001:22', id: 'us-stocks-93', badge: 'new', badgeNote: "Back from the bank: “$50.00 is on its way” sheet", section: 'ftux', name: "Wallet · back from the bank · money sent", note: "Not in Figma. The bank's page (us-stocks-27) hands back after 1 s: the USD wallet opens with a sheet saying the payment went through, the money is on its way and lands in 1–2 working days (Paid → Sent to US → Ready to trade). Got it leaves the wallet with its pending banner (us-stocks-28)." },
   { figma: '5776:84195', id: 'us-stocks-28', badge: 'changed', badgeNote: "Pending card: “Arrives in your wallet by Thu 8 PM”", section: 'ftux', name: "Wallet · US tab · Add money transfer in progress", note: "Back from the bank. USD Wallet shows the transfer status." },
   { figma: '5826:94125', id: 'us-stocks-31', hidden: true, badge: 'changed', badgeNote: "Overview / News & Events tabs; Related ETFs and Key Holders sections", section: 'activated', name: "S03b · Stock page · activated · no holdings", note: "Stock page, activated with no holdings. Buy only." },
   { figma: '5837:94648', id: 'us-stocks-32', hidden: true, badge: 'changed', badgeNote: "Overview / News & Events tabs; Related ETFs and Key Holders sections", section: 'activated', name: "S03c · Stock page · holding", note: "Stock page when the user already holds the stock. Buy and Sell." },
@@ -22489,7 +22639,7 @@ export const registry: UsScreenEntry[] = [
   { figma: '5837:95391', id: 'us-stocks-50', section: 'activated', name: "H11 · Sell · Open buy order", note: "An open buy order exists, so some shares are on hold." },
   { figma: '5837:95371', id: 'us-stocks-51', section: 'activated', name: "H06 · Sell result · executed", note: "Sell order executed. Proceeds withdrawable after 1 working day." },
   { figma: '5837:95352', id: 'us-stocks-52', section: 'activated', name: "H07 · Sell result · rejected", note: "Sell order rejected." },
-  { figma: '5852:99084', id: 'us-stocks-53', group: 'wallet', section: 'wallet', name: "W0 · Wallet · Indian tab", note: "Wallet opens on the INR tab. USD Wallet tab is marked NEW." },
+  { figma: '5852:99084', id: 'us-stocks-53', group: 'wallet', section: 'wallet', name: "W0 · Wallet · Indian tab", note: "Wallet opens on the INR tab; tapping USD Wallet flips the body in place (same page) to the US state the user status picks. USD Wallet is tagged NEW." },
   { figma: '5852:99057', id: 'us-stocks-54', group: 'wallet', badge: 'changed', badgeNote: "Follows the user status in the prototype settings", section: 'wallet', name: "W0 · Wallet · US tab", note: "The USD wallet in the user status picked in the prototype settings (User status): not activated → Activate US Stocks card; under review, contact support, failed (us-stocks-55–57); activated → $0 (us-stocks-58), money on the way (us-stocks-28) or funded (us-stocks-59). The Indian tab's USD tab opens it." },
   { figma: '5852:99028', id: 'us-stocks-55', hidden: true, badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'wallet', name: "W0 · Wallet · US tab · Activation under review", note: "Activation under review, up to 1 working day." },
   { figma: '5852:98999', id: 'us-stocks-56', hidden: true, badge: 'changed', badgeNote: "Nudge copy: the dollar has historically gained against the rupee", section: 'wallet', name: "W0 · Wallet · US tab · Activation failed", note: "Activation failed: PAN couldn't be verified. Retry Activation." },
@@ -22526,6 +22676,493 @@ export const registry: UsScreenEntry[] = [
 ]
 
 export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
+```
+
+### `src/flows/us-stocks/screens/activate/Activate.module.css`
+
+```css
+/* US Stocks activation pages: layout is L3 Section / Stack; only text styles and what those blocks don't cover. */
+
+.fine {
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.fineCentre {
+  text-align: center;
+}
+
+/* A declaration in a sheet: its checkbox, and the text beside it (the scheme / form name is a link). */
+.declaration {
+  display: block;
+  cursor: pointer;
+}
+
+.declaration > * > :first-child {
+  flex: none;
+}
+
+.declarationText {
+  display: block;
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+/* FLAG: inline text link — L3 Button has no inline link variant. */
+.inlineLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--l3-content-accent-discover-default);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* A supported bank's short name under its logo (no-supported-bank sheet). */
+.bankName {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+/* A linked bank US Stocks can't use: the row greyed out (its Tag says why). FLAG: ListCell has no disabled state. */
+.unsupported {
+  opacity: var(--l3-opacity-60);
+}
+```
+
+### `src/flows/us-stocks/screens/activate/ActivateSheet.tsx`
+
+```tsx
+// The frame of every Activate US Stocks step: an L3 BottomSheet over the screen the user tapped "Activate US Stocks" on
+// (Home, a stock page, the wallet …). The steps are `over` screens in the registry: the preview keeps that screen under
+// the sheet, and moving between steps only swaps the sheet. Closing it (✕, scrim, drag, back) goes back to that screen.
+// Drawn on its own (the board, or as another screen's backdrop) it sits over the stock page.
+// FLAG: own sheet layer (activation/Activation.module.css .frame / .sheets) — the screens under it have no `sheet` slot.
+import { useState, type ReactNode } from 'react'
+import { BottomSheet } from '@l3/components/BottomSheet'
+import { usePreview } from '../../../../shared/prototype'
+import { ScreenBackdrop } from '../activation/components/ScreenBackdrop'
+import { STOCK_NOT_ACTIVATED } from '../activation/ids'
+import frame from '../activation/sheets/Activation.module.css'
+
+/** How long the sheet takes to slide away before the stock page comes back (≈ L3 motion/duration-medium). */
+const CLOSE_MS = 250
+
+type ActivateSheetProps = {
+  /** Drawn behind another screen: only the stock page. */
+  backdrop?: boolean
+  header: ReactNode
+  /** The heading's id (BottomSheetHeader `headingId`). */
+  labelledBy: string
+  footer?: ReactNode
+  /** `false`: can't be closed (the bank check running). */
+  dismissible?: boolean
+  children?: ReactNode
+}
+
+export function ActivateSheet({ backdrop, header, labelledBy, footer, dismissible = true, children }: ActivateSheetProps) {
+  const { go, under } = usePreview()
+  const [layer, setLayer] = useState<HTMLDivElement | null>(null)
+  const [open, setOpen] = useState(true)
+  if (backdrop) return <ScreenBackdrop id={STOCK_NOT_ACTIVATED} />
+  // In the prototype the screen under the sheet is the one the user was on (Preview.under); on its own, the stock page.
+  const close = () => {
+    if (!dismissible) return
+    setOpen(false)
+    window.setTimeout(() => go(under ?? 'us-stocks-13'), CLOSE_MS)
+  }
+  return (
+    <div className={frame.frame}>
+      {!under && <ScreenBackdrop id={STOCK_NOT_ACTIVATED} />}
+      <div className={frame.sheets} ref={setLayer} />
+      {layer && (
+        <BottomSheet open={open} onClose={close} container={layer} aria-labelledby={labelledBy} header={header} footer={footer}>
+          {children}
+        </BottomSheet>
+      )}
+    </div>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/activate/BankCheckScreen.tsx`
+
+```tsx
+// us-stocks-95 / 96 / 97 · Activate US Stocks, step 2: the bank money for US Stocks will go from, as a bottom sheet over
+// the stock page (swapped in for the declarations sheet). Only ICICI, HDFC, Kotak, IDFC FIRST and Axis can send it (LRS
+// partners), so there are two cases (User status → Bank accounts picks which):
+// - At least one of the user's banks is supported: every linked bank is listed — the supported ones as radio rows tagged
+//   "Eligible" (the first picked already), the others greyed out and tagged "Not supported" (can't be picked). Verify and
+//   activate → we check the bank on our side (us-stocks-97, nothing for the user to do) → activation submitted. "Add bank" sits in the sheet's header: it swaps
+//   the sheet to the five supported banks' logos and Add bank account (no back arrow: L3 gives the first sheet over a
+//   screen none, so closing it closes the sheet).
+// - None is (us-stocks-96): a card on top says why — their bank can't send money abroad, these five can (logos) — then
+//   the user's own banks greyed out and tagged "Not supported", and Add bank account (the Deposit flow's, which comes
+//   back here); closing the sheet (back, scrim) returns to the stock page. The user always has a bank (KYC adds one).
+// The five supported banks' logos show only where the user has to add one (no supported bank, or "Add bank"), so the
+// list stays simple when they already have one.
+// Not in Jojo's Figma: built on 4 Nov from the brief.
+import { useId, useState } from 'react'
+import { Avatar } from '@l3/components/Avatar'
+import { BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { Card } from '@l3/components/Card'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Radio } from '@l3/components/Checkbox'
+import { Icon } from '@l3/components/Icon'
+import { ListCell } from '@l3/components/ListCell'
+import { Loader } from '@l3/components/Loader'
+import { Stack } from '@l3/components/Stack'
+import { Tag } from '@l3/components/Tag'
+import { msAdd } from '@l3/icons/material'
+import { getCompany } from '../../../../shared/data/companies'
+import { otherBank, type LinkedBank } from '../../../../shared/data/user'
+import { useAutoAdvance } from '../../../../shared/prototype'
+import { bankLine } from '../../../../shared/ui/BankPicker'
+import { startAddBank, useLinkedBanks } from '../../../../shared/userStatus'
+import { useUsNav } from '../../nav'
+import { ActivateSheet } from './ActivateSheet'
+import { t } from './copy'
+import { bankLogoUrl, SUPPORTED_BANKS, supportedBanksLine, supportedOf } from './data'
+import { ACTIVATE_BANK_SCREEN, ACTIVATE_VERIFYING, ACTIVATION_SUBMITTED, ADD_BANK } from './ids'
+import styles from './Activate.module.css'
+
+// The bank picked here, kept for the verifying sheet that follows (a screen of its own in the prototype).
+let pickedBankId: string | undefined
+
+/**
+ * `none`: show the no-supported-bank case whatever the user status. `verifying`: the bank check runs and moves on to
+ * activation submitted by itself.
+ */
+export function BankCheckScreen({ none = false, verifying = false, backdrop }: { none?: boolean; verifying?: boolean; backdrop?: boolean }) {
+  const { go } = useUsNav()
+  const headingId = useId()
+  // KYC needs a bank account, so the user always has at least one: with none picked (or on us-stocks-96), they show the
+  // sample account at a bank US Stocks can't use.
+  const statusBanks = useLinkedBanks()
+  const linked = none || statusBanks.length === 0 ? [otherBank] : statusBanks
+  const supported = supportedOf(linked)
+  const unsupported = linked.filter((b) => !supported.includes(b))
+  const addBank = () => { startAddBank(ACTIVATE_BANK_SCREEN); go(ADD_BANK) }
+
+  const [picked, setPicked] = useState(() => supported.find((b) => b.id === pickedBankId)?.id ?? supported[0]?.id)
+  // "Add bank" tapped: the sheet shows which banks can be added.
+  const [adding, setAdding] = useState(false)
+
+  if (supported.length === 0) {
+    return (
+      <ActivateSheet
+        backdrop={backdrop}
+        labelledBy={headingId}
+        header={<BottomSheetHeader size="sm" heading={t('bankCheck.none.title')} headingId={headingId} description={t('bankCheck.none.description')} />}
+        footer={
+          <ButtonGroup aria-label={t('bankCheck.none.cta')}>
+            <Button size="lg" fullWidth iconLeft={<Icon icon={msAdd} />} onClick={addBank}>{t('bankCheck.none.cta')}</Button>
+          </ButtonGroup>
+        }
+      >
+        <Stack gap="24">
+          {/* Why: the user's bank can't be used, and which ones can. */}
+          <Card surface="secondary">
+            <Stack gap="16">
+              <p className={styles.declarationText}>{t('bankCheck.none.why', { bank: unsupported[0].bank, banks: supportedBanksLine() })}</p>
+              <SupportedBanks />
+            </Stack>
+          </Card>
+          <Stack gap="08">
+            <p className={styles.fine}>{t('bankCheck.none.yourBanks')}</p>
+            {unsupported.map((bank) => <UnsupportedBankRow key={bank.id} bank={bank} />)}
+          </Stack>
+        </Stack>
+      </ActivateSheet>
+    )
+  }
+
+  const bank = supported.find((b) => b.id === picked) ?? supported[0]
+
+  // us-stocks-97 · The bank check, run by us with the bank details we already have (no money sent). Can't be closed; moves on by itself.
+  if (verifying) return <VerifyingSheet backdrop={backdrop} bank={bankLine(bank)} />
+
+  if (adding) {
+    return (
+      <ActivateSheet
+        backdrop={backdrop}
+        labelledBy={headingId}
+        header={<BottomSheetHeader size="sm" heading={t('bankCheck.add.title')} headingId={headingId} description={t('bankCheck.add.description')} />}
+        footer={
+          <ButtonGroup aria-label={t('bankCheck.none.cta')}>
+            <Button size="lg" fullWidth iconLeft={<Icon icon={msAdd} />} onClick={addBank}>{t('bankCheck.none.cta')}</Button>
+          </ButtonGroup>
+        }
+      >
+        <SupportedBanks />
+      </ActivateSheet>
+    )
+  }
+
+  return (
+    <ActivateSheet
+      backdrop={backdrop}
+      labelledBy={headingId}
+      header={
+        <BottomSheetHeader
+          size="sm"
+          heading={t('bankCheck.title')}
+          headingId={headingId}
+          description={t('bankCheck.description')}
+          trailing={<Button variant="tertiary" size="sm" iconLeft={<Icon icon={msAdd} />} onClick={() => setAdding(true)}>{t('bankCheck.addAnother')}</Button>}
+        />
+      }
+      footer={
+        <ButtonGroup aria-label={t('bankCheck.actionsLabel')}>
+          <Button size="lg" fullWidth onClick={() => { pickedBankId = bank.id; go(ACTIVATE_VERIFYING) }}>{t('bankCheck.cta')}</Button>
+        </ButtonGroup>
+      }
+    >
+      <Stack gap="08" aria-label={t('bankCheck.yourBanksLabel')}>
+        {supported.map((b) => (
+          <ListCell
+            key={b.id}
+            as="label"
+            variant="card"
+            selected={b.id === bank.id}
+            iconLeft={<BankLogo bank={b} />}
+            label={bankLine(b)}
+            description={`${b.type} · ${b.branch}`}
+            trailing={
+              <Stack direction="horizontal" align="center" gap="12">
+                <Tag variant="secondary" color="success" size="sm">{t('bankCheck.eligible')}</Tag>
+                <Radio name="activate-bank" checked={b.id === bank.id} onChange={() => setPicked(b.id)} />
+              </Stack>
+            }
+          />
+        ))}
+        {unsupported.map((b) => <UnsupportedBankRow key={b.id} bank={b} />)}
+      </Stack>
+    </ActivateSheet>
+  )
+}
+
+/** The five banks US Stocks money can go from, as logos with their short names — where the user has to add one. */
+function SupportedBanks() {
+  return (
+    <Stack as="ul" direction="horizontal" justify="between" aria-label={t('bankCheck.supportedLabel')}>
+      {SUPPORTED_BANKS.map((bank) => (
+        <Stack as="li" key={bank.symbol} align="center" gap="08">
+          <Avatar src={bankLogoUrl(bank.symbol)} initials={bank.initials} shape="rounded" size={40} label={bank.name} />
+          <span className={styles.bankName}>{bank.short}</span>
+        </Stack>
+      ))}
+    </Stack>
+  )
+}
+
+const BankLogo = ({ bank }: { bank: LinkedBank }) => (
+  <Avatar src={getCompany(bank.logoSymbol)?.logoUrl} initials={bank.bank.slice(0, 2)} shape="rounded" size={32} label={bank.bank} />
+)
+
+/** A linked bank US Stocks money can't go from: its logo, greyed out, tagged "Not supported" — can't be picked. */
+function UnsupportedBankRow({ bank }: { bank: LinkedBank }) {
+  return (
+    <ListCell
+      variant="card"
+      className={styles.unsupported}
+      iconLeft={<BankLogo bank={bank} />}
+      label={bankLine(bank)}
+      description={`${bank.type} · ${bank.branch}`}
+      trailing={<Tag size="sm" disabled>{t('bankCheck.notEligible')}</Tag>}
+    />
+  )
+}
+
+function VerifyingSheet({ bank, backdrop }: { bank: string; backdrop?: boolean }) {
+  useAutoAdvance(backdrop ? undefined : ACTIVATION_SUBMITTED, 2200)
+  const id = useId()
+  return (
+    <ActivateSheet
+      backdrop={backdrop}
+      labelledBy={id}
+      dismissible={false}
+      header={<BottomSheetHeader size="lg" headingId={id} icon={<Loader size="lg" label={null} />} heading={t('bankVerifying.title')} description={t('bankVerifying.description', { bank })} />}
+    >
+      <p className={`${styles.fine} ${styles.fineCentre}`}>{t('bankVerifying.fine')}</p>
+    </ActivateSheet>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/activate/DeclarationsScreen.tsx`
+
+```tsx
+// us-stocks-94 · Activate US Stocks, step 1: the two declarations as a bottom sheet over the stock page, like the app's
+// "agree to our Terms & Conditions" sheet — one checkbox each with the declaration written beside it: LRS (RBI's scheme
+// for sending money abroad) and US tax (Form W-8BEN), the scheme / form as links to the full text. Not in Jojo's Figma:
+// built on 4 Nov from the brief. "I agree and continue" turns on once both are ticked → the bank sheet (us-stocks-95).
+import { useId, useState } from 'react'
+import { BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Checkbox } from '@l3/components/Checkbox'
+import { Stack } from '@l3/components/Stack'
+import { useUsNav } from '../../nav'
+import { ActivateSheet } from './ActivateSheet'
+import { t } from './copy'
+import { ACTIVATE_BANK } from './ids'
+import styles from './Activate.module.css'
+
+const DECLARATIONS = ['lrs', 'tax'] as const
+type DeclarationId = (typeof DECLARATIONS)[number]
+
+export function DeclarationsScreen({ backdrop }: { backdrop?: boolean }) {
+  const { go } = useUsNav()
+  const headingId = useId()
+  const [agreed, setAgreed] = useState<Record<DeclarationId, boolean>>({ lrs: false, tax: false })
+  const allAgreed = DECLARATIONS.every((id) => agreed[id])
+  return (
+    <ActivateSheet
+      backdrop={backdrop}
+      labelledBy={headingId}
+      header={<BottomSheetHeader size="sm" heading={t('declarations.title')} headingId={headingId} description={t('declarations.description')} />}
+      footer={
+        <ButtonGroup aria-label={t('declarations.actionsLabel')}>
+          <Button size="lg" fullWidth disabled={!allAgreed} onClick={() => go(ACTIVATE_BANK)}>{t('declarations.cta')}</Button>
+        </ButtonGroup>
+      }
+    >
+      <Stack gap="24">
+        {DECLARATIONS.map((id) => (
+          // The whole row ticks the box (a label); the link opens the full text without ticking it.
+          <label key={id} className={styles.declaration}>
+            <Stack direction="horizontal" align="start" gap="12">
+            <Checkbox checked={agreed[id]} onChange={(e) => setAgreed({ ...agreed, [id]: e.target.checked })} />
+            <span className={styles.declarationText}>
+              {t(`declarations.${id}.before`)}
+              {/* The full scheme / form text (not in the prototype). */}
+              <button type="button" className={styles.inlineLink} onClick={(e) => e.preventDefault()}>{t(`declarations.${id}.link`)}</button>
+              {t(`declarations.${id}.after`)}
+            </span>
+            </Stack>
+          </label>
+        ))}
+      </Stack>
+    </ActivateSheet>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/activate/assets/idfcfirstb.png`
+
+```tsx
+�PNG
+
+   IHDR   �   �   �>a�   gAMA  ���a    cHRM  z&  ��  �   ��  u0  �`  :�  p��Q<   DeXIfMM *    �i            �       �       ��       �    H�w  �iTXtXML:com.adobe.xmp     <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 6.0.0">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:exif="http://ns.adobe.com/exif/1.0/">
+         <exif:ColorSpace>1</exif:ColorSpace>
+         <exif:PixelXDimension>300</exif:PixelXDimension>
+         <exif:PixelYDimension>300</exif:PixelYDimension>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+� ��  �IDATx��kU�ϼ��Ę�D���(��ܺP���BD�t���e� R[T����XӘD�RM� �{M޼�ib�:1�ܛ;�9�Hޛ̝{��|��ܹ?&939��Yf=�� �8   W���� �q���  W���� �q���  W���� �q��?���e��;��O�{0�/� KO͑5���螓M�z=}`��<������T��f���=G��L��a���9x��z�M���d 2�)pcf��}�� b����v�Z�Q�Ųt�$I��MK�۞���j� }�� `�?{��K/�F!��ZX� ������>�^�e �
+�F�{�%z����d@�m/-��ǟP��A�\�O�vnѡ��9 nG�=WP �F��T��_ �{ ����lM��J�	�� H�B�	 B); � �Pf�	ܓ�ܗ�����w����. |i%4G��`�'����]ꮵ�0T���б�_��m��3���?���GI��z
+��T�S���?|D��.x��?TM��]�QE�,�H��~���x��
+��Y@��� ��Y@���CX ,��=���5, ��R
+ �Rr�og P���� ���~;��Ŵ�G ��\��Y�/ ���'�V�Y��e�* ���s�pa�z=�N����qd����3����
+]�b�* 2d�h�җ&{%�y����� �qr����U��	�Z��� ��js @ՊGV �, U� �V<���[2.����,w�i�����s�8?`�!��:=��st��S�B��Iĭt�={�.NS�Պͼ}�'0 �ۘ��?1�8��qr����O��?�@ �DA.�b� �[���^���	ԏ�� @U~���~T-  ��� �c�j P�_�p �U ����� ��Z  T��/ ��@��� �|k>��_U5v(<V�v0�i�. �ٲ��F��������U�ž|춓��gR`ht�v��i��O�M@�κ&U �̒W�uWW�շ��:��Þ_cg��K^5��P��і �M5��jt�� mh�1L�&0����sK	�o���c�c�Υ
+��a�������x�m^i��o����2 p�X �2��3�����̗GG��z������������ ��Y��� y~ S�b�O��<8m����\ I ��  Z�GR. �$Zf  -�#) D-3����p�������I�
+ �~=�} �B��0 ����7 `.���w��0��k�%����u�o� ���?�H7�����K������o���Q����VUN��9�sn�0�ʕ�w��v.U Dz���yj�&PM�8
+ q�A�
+ �&}�8�fE؛@��-�>�<�����r�kP ��v��)����F���-G�Y�ᱱ���W0 �ډ'��乏6@����o:��8+O�Ə<��7�ܥ@��@P �ҏx��_+�V@`�c?< �=B���p���;������a~ �M���+4|��\�*T@���
+7��+����_��|�~�R�
+��̐�Xdӯ���u�C�ޣ8Q ��z<e�@�ȇe�D$�/��-l.(  
+���  lŻ�- (Hbk � � �� �V����$�6  [�.x 
+���  lŻ�- (Hbk ����E�}R�    IEND�B`�
+```
+
+### `src/flows/us-stocks/screens/activate/copy.ts`
+
+```ts
+import { makeCopy } from '../../../../shared/copy'
+import copy from '../../copy.json'
+
+/** US Stocks strings for the activation pages: t('declarations.title'). */
+export const t = makeCopy('us-stocks', copy)
+```
+
+### `src/flows/us-stocks/screens/activate/data.ts`
+
+```ts
+import { getCompany } from '../../../../shared/data/companies'
+import type { LinkedBank } from '../../../../shared/data/user'
+// FLAG: not in L3's company logos (L3 gap) — the bank's mark, cropped from its Wikimedia Commons logo.
+import idfcFirstLogo from './assets/idfcfirstb.png'
+
+/**
+ * The banks money for US Stocks can go from (LRS remittance partners). `symbol` is the bank's NSE symbol — its logo
+ * comes from the company catalogue; IDFC FIRST isn't in it, so its logo is kept here (assets/).
+ */
+export const SUPPORTED_BANKS = [
+  { symbol: 'ICICIBANK', name: 'ICICI Bank', short: 'ICICI', initials: 'IB' },
+  { symbol: 'HDFCBANK', name: 'HDFC Bank', short: 'HDFC', initials: 'HB' },
+  { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank', short: 'Kotak', initials: 'KB' },
+  { symbol: 'IDFCFIRSTB', name: 'IDFC FIRST Bank', short: 'IDFC FIRST', initials: 'IF' },
+  { symbol: 'AXISBANK', name: 'Axis Bank', short: 'Axis', initials: 'AX' },
+] as const
+
+export const bankLogoUrl = (symbol: string) => (symbol === 'IDFCFIRSTB' ? idfcFirstLogo : getCompany(symbol)?.logoUrl)
+
+/** "ICICI, HDFC, Kotak, IDFC FIRST and Axis Bank" — the supported banks in one line. */
+export const supportedBanksLine = () => {
+  const names = SUPPORTED_BANKS.map((b) => b.short)
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} Bank`
+}
+
+/** The user's linked accounts US Stocks can use. */
+export const supportedOf = (banks: LinkedBank[]) => banks.filter((b) => SUPPORTED_BANKS.some((s) => s.symbol === b.logoSymbol))
+```
+
+### `src/flows/us-stocks/screens/activate/ids.ts`
+
+```ts
+// The US Stocks activation pages (not in Jojo's Figma: made on 4 Nov from the brief, in the KYC flow's patterns).
+// Ids in the 9001: range like the other screens Figma doesn't have.
+export const ACTIVATE_DECLARATIONS = '9001:60'
+/** Bank verification, following "User status → Bank accounts": a supported bank linked → pick + automatic check; none → add one. */
+export const ACTIVATE_BANK = '9001:61'
+/** Bank verification with no supported bank linked, whatever the user status (to show that state in the list). */
+export const ACTIVATE_BANK_NONE = '9001:62'
+/** The bank check running over the bank page; moves on by itself. */
+export const ACTIVATE_VERIFYING = '9001:63'
+
+/** Activation submitted: the Stocks home's under-review US tab with its "activation under review" sheet. */
+export const ACTIVATION_SUBMITTED = 'stocks-18'
+/** Add bank account (the Deposit flow); it comes back here once the account is verified. */
+export const ADD_BANK = 'deposit-12'
+/** The app's screen id of the bank page, which "Add bank account" returns to. */
+export const ACTIVATE_BANK_SCREEN = 'us-stocks-95'
+```
+
+### `src/flows/us-stocks/screens/activate/index.tsx`
+
+```tsx
+// Activate US Stocks: two bottom sheets over the stock page — the declarations (LRS, US tax), then the bank (pick a
+// supported one, checked automatically, or add one). They replace the risk disclosure sheet (removed 4 Nov). Every "Activate US
+// Stocks" / "Retry" goes here.
+import type { UsScreenMap } from '../types'
+import { BankCheckScreen } from './BankCheckScreen'
+import { DeclarationsScreen } from './DeclarationsScreen'
+import { ACTIVATE_BANK, ACTIVATE_BANK_NONE, ACTIVATE_DECLARATIONS, ACTIVATE_VERIFYING } from './ids'
+
+export const screens: UsScreenMap = {
+  [ACTIVATE_DECLARATIONS]: DeclarationsScreen,
+  [ACTIVATE_BANK]: ({ backdrop }) => <BankCheckScreen backdrop={backdrop} />,
+  [ACTIVATE_BANK_NONE]: ({ backdrop }) => <BankCheckScreen none backdrop={backdrop} />,
+  [ACTIVATE_VERIFYING]: ({ backdrop }) => <BankCheckScreen verifying backdrop={backdrop} />,
+}
 ```
 
 ### `src/flows/us-stocks/screens/activation/StockPage.module.css`
@@ -23663,6 +24300,10 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
   scrollbar-width: none;
   display: flex;
   overflow-x: auto;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
 }
 
 .etfs::-webkit-scrollbar {
@@ -24705,7 +25346,8 @@ export const STOCK_HOLDING = '5837:94648'
 /** Not in Jojo's Figma: the stock page for a user whose Lemonn KYC isn't done (Complete KYC in place of Activate). */
 export const STOCK_KYC_PENDING = '9001:10'
 
-export const RISK_DISCLOSURE = '5756:71475'
+/** Activate US Stocks: the declarations page (screens/activate; was the risk disclosure sheet 5756:71475). */
+export const RISK_DISCLOSURE = '9001:60'
 export const CONFIRM_DETAILS = '5756:72486'
 export const ACTIVATION_SUBMITTED = '5756:73797'
 
@@ -24729,16 +25371,15 @@ export const HOME_ACTIVATION_PENDING_ALT = '5852:99028'
 ### `src/flows/us-stocks/screens/activation/index.tsx`
 
 ```tsx
-// Activation: the stock page (not activated / no holdings / holding) and the US Stocks activation sheets —
-// risk disclosure and confirm details (the "activation submitted" sheet now lives in the Stocks flow, stocks-18).
+// Activation: the stock page (not activated / no holdings / holding) and confirm details. Activating itself is
+// screens/activate (4 Nov: the risk disclosure sheet is gone); the "activation submitted" sheet is the Stocks flow's stocks-18.
 // Imported from the teammate's prototype; his `screens` map by Figma node id.
 // FLAG: copy not in copy.json yet — all UI text in this part is hard-coded.
 import { useUsJourney } from '../../../../shared/userStatus'
 import { currentStock } from '../../data'
 import type { UsScreenMap } from '../types'
-import { CONFIRM_DETAILS, RISK_DISCLOSURE, STOCK_HOLDING, STOCK_KYC_PENDING, STOCK_NO_HOLDINGS, STOCK_NOT_ACTIVATED } from './ids'
+import { CONFIRM_DETAILS, STOCK_HOLDING, STOCK_KYC_PENDING, STOCK_NO_HOLDINGS, STOCK_NOT_ACTIVATED } from './ids'
 import { ConfirmDetailsScreen } from './sheets/ConfirmDetailsScreen'
-import { RiskDisclosureSheet } from './sheets/RiskDisclosureSheet'
 import { StockHolding, StockKycPending, StockNoHoldings, StockNotActivated, StockPage } from './StockPage'
 
 export { StockHolding, StockKycPending, StockNoHoldings, StockNotActivated, StockPage }
@@ -24767,7 +25408,6 @@ export const screens: UsScreenMap = {
   [STOCK_NO_HOLDINGS]: StockNoHoldings,
   [STOCK_HOLDING]: StockHolding,
   // Sheets (his `Xr` map).
-  [RISK_DISCLOSURE]: RiskDisclosureSheet,
   [CONFIRM_DETAILS]: ConfirmDetailsScreen,
 }
 ```
@@ -25722,77 +26362,6 @@ export function RiskBullets({ className, link = true }: { className?: string; li
 }
 ```
 
-### `src/flows/us-stocks/screens/activation/sheets/RiskDisclosureSheet.tsx`
-
-```tsx
-// 5756:71475 — "Risk disclosure / For US Stocks" sheet over the screen it was opened from (the not-activated stock page,
-// or the 5852 wallet screens); Agree and Continue goes to the activation-pending home (the Stocks flow's stocks-13) or
-// wallet. The Home's own copy of this sheet is the Stocks flow's stocks-12.
-// FLAG: copy not in copy.json yet (all UI text in this part is hard-coded).
-import { useState } from 'react'
-import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
-import { Button } from '@l3/components/Button'
-import { ButtonGroup } from '@l3/components/ButtonGroup'
-import { useUsNav } from '../../../nav'
-import { CONFIRM_DETAILS, HOME_ACTIVATION_PENDING, HOME_ACTIVATION_PENDING_ALT, STOCK_NOT_ACTIVATED } from '../ids'
-import { SheetFrame } from './SheetFrame'
-import { RiskBullets } from './RiskBullets'
-
-export function RiskDisclosureSheet({ backdrop }: { backdrop?: boolean }) {
-  const { go, back, prev } = useUsNav()
-  const under = prev && prev !== CONFIRM_DETAILS ? prev : STOCK_NOT_ACTIVATED
-  const next = under.startsWith('5852:') ? HOME_ACTIVATION_PENDING_ALT : HOME_ACTIVATION_PENDING
-  const [open, setOpen] = useState(true)
-  const close = () => {
-    setOpen(false)
-    setTimeout(() => back(under), 250)
-  }
-  return (
-    <SheetFrame under={under} backdrop={backdrop}>
-      {(container) => (
-        <BottomSheet
-          open={open}
-          onClose={close}
-          container={container}
-          aria-labelledby="risk-title"
-          header={<BottomSheetHeader size="sm" heading="Risk disclosure" headingId="risk-title" description="For US Stocks" />}
-          footer={
-            <ButtonGroup aria-label="Risk disclosure">
-              <Button variant="primary" size="lg" fullWidth onClick={() => go(next)}>Agree and Continue</Button>
-            </ButtonGroup>
-          }
-        >
-          <RiskBullets />
-        </BottomSheet>
-      )}
-    </SheetFrame>
-  )
-}
-```
-
-### `src/flows/us-stocks/screens/activation/sheets/SheetFrame.tsx`
-
-```tsx
-// Frame for a sheet screen: the screen under it (frozen, from the flow) + a layer the sheet portals into.
-// With `backdrop` set (this sheet is itself drawn behind another screen) only the screen under it is drawn.
-// FLAG: own frame (.frame) with its own sheet layer — sheets use L3 BottomSheet's own overlay in the rest of the app.
-import { useState, type ReactNode } from 'react'
-import { ScreenBackdrop } from '../components/ScreenBackdrop'
-import styles from './Activation.module.css'
-
-export function SheetFrame({ under, backdrop, children }: { under: string; backdrop?: boolean; children: (container: HTMLDivElement) => ReactNode }) {
-  const [layer, setLayer] = useState<HTMLDivElement | null>(null)
-  if (backdrop) return <ScreenBackdrop id={under} />
-  return (
-    <div className={styles.frame}>
-      <ScreenBackdrop id={under} />
-      <div className={styles.sheets} ref={setLayer} />
-      {layer && children(layer)}
-    </div>
-  )
-}
-```
-
 ### `src/flows/us-stocks/screens/entry/MutualFundHome.module.css`
 
 ```css
@@ -26488,6 +27057,10 @@ export function SheetFrame({ under, backdrop, children }: { under: string; backd
   scrollbar-width: none;
   display: flex;
   overflow-x: auto;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
 }
 
 .scroller::-webkit-scrollbar {
@@ -26820,538 +27393,43 @@ export function MutualFundHomeScreen() {
 }
 ```
 
-### `src/flows/us-stocks/screens/entry/PortfolioScreen.module.css`
-
-```css
-/* Teammate's CSS module 1f20t, reformatted (one declaration per line). */
-/* FLAG: raw display:flex/grid + gap/padding layout instead of L3 Stack/Section/Inset/Grid (whole file) */
-
-.page {
-  background: var(--l3-surface-secondary); /* as on Stocks home: grey above, the white sheet over it */
-  flex-direction: column;
-  min-height: 100%;
-  display: flex;
-}
-
-.top {
-  gap: var(--l3-spacing-16);
-  padding: var(--l3-spacing-24) var(--l3-spacing-16);
-  flex-direction: column;
-  display: flex;
-}
-
-.sectionTitle {
-  min-height: var(--l3-size-24);
-  font: var(--l3-text-heading-16);
-  color: var(--l3-content-primary);
-  margin: 0;
-}
-
-.label {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-.stat {
-  align-items: flex-start;
-  gap: var(--l3-spacing-04);
-  flex-direction: column;
-  display: flex;
-}
-
-.stat[data-align=center] {
-  align-items: center;
-}
-
-.stat[data-align=end] {
-  align-items: flex-end;
-}
-
-.summary {
-  gap: var(--l3-spacing-16);
-  padding-top: var(--l3-spacing-28);
-  background: var(--l3-surface-primary);
-  position: relative;
-}
-
-.allTag {
-  padding: var(--l3-spacing-02) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-12) 0 var(--l3-radius-12) 0;
-  background: var(--l3-surface-accent-success-light);
-  font: var(--l3-text-label-10);
-  color: var(--l3-content-accent-success-default);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.summaryRow {
-  justify-content: space-between;
-  display: flex;
-}
-
-.big {
-  font: var(--l3-text-heading-18);
-  color: var(--l3-content-primary);
-}
-
-.returns {
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  display: flex;
-}
-
-/* FLAG: hand-made sheet on the page — surface default with 32 round top corners over the grey, as on Stocks home. */
-.sheet {
-  gap: var(--l3-spacing-16);
-  padding: var(--l3-spacing-24) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-32) var(--l3-radius-32) 0 0;
-  background: var(--l3-surface-default);
-  flex-direction: column;
-  flex: 1;
-  display: flex;
-}
-
-.sheet[data-section=orders] {
-  padding-top: var(--l3-spacing-16);
-  border-radius: 0;
-}
-
-.sheetHead {
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-
-.sort {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-primary);
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-  padding: 0;
-  display: flex;
-}
-
-.list {
-  gap: var(--l3-spacing-12);
-  flex-direction: column;
-  display: flex;
-}
-
-.holding[data-interactive] {
-  gap: 0;
-}
-
-.holdingTop {
-  align-items: center;
-  gap: var(--l3-spacing-12);
-  padding: var(--l3-spacing-12);
-  border-bottom: 1px solid var(--l3-border-light);
-  display: flex;
-}
-
-.holdingName {
-  gap: var(--l3-spacing-02);
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-}
-
-.symbol {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.holdingBottom {
-  padding: var(--l3-spacing-12);
-  justify-content: space-between;
-  display: flex;
-}
-
-.value {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.value[data-tone=up],
-[data-tone=up] {
-  color: var(--l3-content-accent-indicator-up-default);
-}
-
-.value[data-tone=down] {
-  color: var(--l3-content-accent-indicator-down-default);
-}
-
-.indices {
-  gap: var(--l3-spacing-12);
-  flex-direction: column;
-  display: flex;
-}
-
-.indexRow {
-  gap: var(--l3-spacing-12);
-  margin-right: calc(-1 * var(--l3-spacing-16));
-  scrollbar-width: none;
-  display: flex;
-  overflow-x: auto;
-}
-
-/* FLAG: hand-made card with fixed 189px width — use L3 Card */
-.index {
-  gap: var(--l3-spacing-08);
-  flex: none;
-  width: 189px;  /* FLAG: raw px */
-}
-
-.indexValue {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-primary);
-  white-space: nowrap;
-}
-
-.indexHead {
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-
-.index .label {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-}
-
-.holdTotal {
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-}
-
-.holdList {
-  gap: var(--l3-spacing-08);
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-}
-
-.holdList .holdRow {
-  align-items: center;
-  gap: var(--l3-spacing-12);
-  flex-direction: row;
-}
-
-.holdText,
-.holdValue {
-  gap: var(--l3-spacing-02);
-  flex-direction: column;
-  display: flex;
-}
-
-.holdText {
-  flex: 1;
-  min-width: 0;
-}
-
-.holdValue {
-  align-items: flex-end;
-}
-
-.holdName {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.holdSub {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-/* FLAG: hand-made switch (unused in JSX) */
-.marketSwitch {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  height: var(--l3-size-32);
-  padding: 0 var(--l3-spacing-12);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-primary);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-primary);
-  cursor: pointer;
-  display: inline-flex;
-}
-
-.marketName {
-  animation: .22s cubic-bezier(.2,0,0,1) market-in;
-}
-
-@keyframes market-in {
-  0% {
-    opacity: 0;
-    translate: 0 4px;  /* FLAG: raw px */
-  }
-
-}
-
-.holdList {
-  gap: var(--l3-spacing-16);
-}
-
-/* FLAG: hand-made holding card — use L3 Card / ListCell */
-.hold {
-  width: 100%; /* also a button (a US holding opens its stock page, 3 Nov) */
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  -webkit-tap-highlight-color: transparent;
-  gap: var(--l3-spacing-12);
-  padding: var(--l3-spacing-12);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-primary);
-  flex-direction: column;
-  display: flex;
-}
-
-button.hold {
-  cursor: pointer;
-}
-
-.holdTop {
-  align-items: center;
-  gap: var(--l3-spacing-12);
-  display: flex;
-}
-
-.holdName {
-  gap: var(--l3-spacing-02);
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-}
-
-.holdSym {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-primary);
-}
-
-.holdQty {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-.holdRule {
-  display: block;
-  flex: none;
-  background: var(--l3-border-light);
-  border: 0;
-  width: 100%;
-  height: 1px;
-  margin: 0;
-}
-
-.holdBottom {
-  grid-template-columns: 1fr auto 1fr;
-  align-items: start;
-  display: grid;
-}
-
-.holdCell {
-  gap: var(--l3-spacing-04);
-  flex-direction: column;
-  display: flex;
-}
-
-.holdCell[data-mid] {
-  align-items: center;
-}
-
-.holdCell[data-end] {
-  text-align: right;
-  align-items: flex-end;
-}
-
-.holdLabel {
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-.holdFig {
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-}
-
-.holdFig[data-tone=up] {
-  color: var(--l3-content-accent-success-default);
-}
-
-.holdFig[data-tone=down] {
-  color: var(--l3-content-accent-error-default);
-}
-
-.marketTabs.marketTabs {
-  width: calc(100% + 2 * var(--l3-spacing-16));
-  margin: calc(var(--l3-spacing-08) - var(--l3-spacing-24)) calc(-1 * var(--l3-spacing-16)) var(--l3-spacing-08);
-}
-
-/* FLAG: hand-made text button — use L3 Button ghost */
-.sortLink {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-accent-discover-default);
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-  padding: 0;
-  display: inline-flex;
-}
-
-.sortLink:focus {
-  outline: none;
-}
-
-.sortLink:focus-visible {
-  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
-  outline-offset: var(--l3-spacing-04);
-  border-radius: var(--l3-radius-04);
-}
-
-/* The underline tabs' line (Positions · Holdings · Orders, Indian · US Stocks) is border intense, not L3's border light,
-   so it shows in dark mode too. L3 gap: underline Tabs have no line-colour option. */
-.screen [role='tablist'][data-appearance='underline'],
-.screen [role='tablist'][data-appearance='underline'] > [role='tab'] {
-  box-shadow: inset 0 -1px 0 var(--l3-border-intense);
-}
-
-/* A tappable holding (US: opens its stock page) presses and hovers like a clickable L3 Card. */
-button.hold { cursor: pointer; transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard); }
-button.hold:active { transform: scale(var(--l3-motion-scale-press-default)); }
-@media (hover: hover) {
-  button.hold:hover { background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover)); }
-}
-```
-
 ### `src/flows/us-stocks/screens/entry/PortfolioScreen.tsx`
 
 ```tsx
-// E4 · Portfolio tab (before 8 PM IST / after 8 PM IST): Positions · Holdings · Orders. Holdings has Indian / US tabs
-// and a Sort sheet; the page opens on Holdings (3 Nov, was Positions). The US side is empty with an "Explore US Market" button that leads to US Stocks home.
-// NOTE: both variants render the same — his `live` prop is not read anywhere, and the US-market banner that the Figma
-// frames show ("opens tonight" / "LIVE till 2:30 AM IST") is no longer drawn (OrdersTab keeps an unused `banner` slot).
+// E4 · Portfolio tab: Positions · Holdings · Orders, opening on Holdings (3 Nov, was Positions). Each tab is its own
+// page (portfolio/PositionsTab, portfolio/HoldingsTab, components/OrdersTab): a grey top and the white sheet under it.
+// This screen holds the frame — Actionbar with the section tabs, swiping between tabs, the navbar — and the sort sheet.
+// NOTE: the US-market banner the Figma frames show ("opens tonight" / "LIVE till 2:30 AM IST") is no longer drawn, so
+// the two Figma variants (before / after 8 PM IST) render the same.
 // FLAG: redraws the app's Portfolio tab (no portfolio flow in src/flows yet) for this prototype.
-// FLAG: hand-made Sort text button and holding cards (card edge, Avatar 40, Label 16 / Description 12 match StockListCard)
-// (see PortfolioScreen.module.css) — L3 Button / Card exist. Empty tabs use L3 EmptyState.
 import { useState } from 'react'
 import { Actionbar, ActionbarAction } from '@l3/components/Actionbar'
-import { Avatar } from '@l3/components/Avatar'
-import { Button } from '@l3/components/Button'
-import { EmptyState } from '@l3/components/EmptyState'
-import { Card } from '@l3/components/Card'
-import { Icon } from '@l3/components/Icon'
-import { Stack } from '@l3/components/Stack'
-import { Tabs } from '@l3/components/Tabs'
-import { Tag } from '@l3/components/Tag'
-import { asset } from '../../asset'
+import { Section } from '@l3/components/Section'
 import { Phone } from '../../components/Phone'
 import { UsMainNav } from '../../components/UsMainNav'
-import { openStock, stockFor } from '../../data'
 import { useUsNav } from '../../nav'
-import { HoldingsCards, type HoldingsMarket } from './components/HoldingsCards'
+import { useUsMarketSnapshot } from '../../../../shared/data/usStocks'
+import { useUsJourney } from '../../../../shared/userStatus'
+import type { HoldingsMarket } from './components/HoldingsCards'
 import { OrdersTab } from './components/OrdersTab'
 import { SlidingTabs } from './components/SlidingTabs'
 import { neighbour, useSwipePages } from './components/swipePages'
-import { MaskImg } from './components/MaskImg'
-import { entryPath, entryUrl } from './entryAssets'
-import { sortIcon } from './icons'
-import { Usd } from '../../../../shared/money'
-import { useUsMarketSnapshot } from '../../../../shared/data/usStocks'
-import { useUsJourney, type UsJourney } from '../../../../shared/userStatus'
-import { ACTIVATE_US, KYC_START, SEARCH, STOCKS_HOME, STOCKS_HOME_ENTRY, WALLET, WALLET_US, FNO_HOME } from './ids'
-import { holdingsSummary, marketIndices, portfolioTabs, sortedHoldings, usHoldingNow, type Holding, type PortfolioTab } from './portfolioData'
+import { t } from './copy'
+import { entryUrl } from './entryAssets'
+import { SEARCH, WALLET, WALLET_US } from './ids'
+import { HoldingsTab } from './portfolio/HoldingsTab'
+import { PortfolioPage } from './portfolio/PortfolioPage'
+import { PositionsTab } from './portfolio/PositionsTab'
+import { portfolioTabs, type PortfolioTab } from './portfolioData'
 import { SortSheet, type SortValue } from './sheets/SortSheet'
-import styles from './PortfolioScreen.module.css'
+import styles from './portfolio/Portfolio.module.css'
 
-/** An empty tab: L3 Empty state (default illustration), centred in the space left in the sheet, with one small button. */
-function EmptyWallet({ title, text, button, onClick }: { title: string; text: string; button: string; onClick?: () => void }) {
-  return (
-    <EmptyState
-      title={title}
-      description={text}
-      action={<Button variant="primary" size="sm" onClick={onClick}>{button}</Button>}
-    />
-  )
-}
-
-/** One holding card (Indian or US): today's return (1D %) on top, current · invested · total returns below.
- *  `onOpen` (US, 3 Nov): the card is a button that opens the stock's page, with its Your Holdings card. */
-function HoldingRow({ holding, onOpen }: { holding: Holding; onOpen?: () => void }) {
-  const Box = onOpen ? 'button' : 'div'
-  return (
-    <li>
-      <Box {...(onOpen ? { type: 'button' as const, onClick: onOpen, 'aria-label': `${holding.name}, open its stock page` } : {})} className={styles.hold}>
-        <span className={styles.holdTop}>
-          <Avatar src={holding.logo} initials={holding.name.slice(0, 2)} size={40} label={holding.name} />
-          <span className={styles.holdName}>
-            <span className={styles.holdSym}>{holding.name}</span>
-            <span className={styles.holdQty}>Qty {holding.qty}</span>
-          </span>
-          <span className={styles.holdCell} data-end="">
-            <span className={styles.holdLabel}>1D Returns</span>
-            <span className={styles.holdFig} data-tone={holding.day >= 0 ? 'up' : 'down'}>{`${holding.day >= 0 ? '+' : '−'}${Math.abs(holding.day).toFixed(2)}%`}</span>
-          </span>
-        </span>
-        <span className={styles.holdRule} aria-hidden="true" />
-        <span className={styles.holdBottom}>
-          <span className={styles.holdCell}>
-            <span className={styles.holdLabel}>Current</span>
-            <span className={styles.holdFig}><Usd text={holding.current} /></span>
-          </span>
-          <span className={styles.holdCell} data-mid="">
-            <span className={styles.holdLabel}>Invested</span>
-            <span className={styles.holdFig}><Usd text={holding.invested} /></span>
-          </span>
-          <span className={styles.holdCell} data-end="">
-            <span className={styles.holdLabel}>Returns</span>
-            <span className={styles.holdFig} data-tone={holding.up ? 'up' : 'down'}><Usd text={holding.returns} align="end" /></span>
-          </span>
-        </span>
-      </Box>
-    </li>
-  )
-}
-
-/** The US side of Holdings follows the user status (Settings → User status). */
-function usEmpty(journey: UsJourney): { title: string; text: string; button: string; to: string } {
-  switch (journey) {
-    case 'kyc':
-      return { title: 'Complete your KYC', text: 'Finish your Lemonn KYC to activate US Stocks', button: 'Complete KYC', to: KYC_START }
-    case 'activate':
-      return { title: 'Build Wealth in Dollars', text: 'Activate US Stocks to start investing in US companies', button: 'Activate US Stocks', to: ACTIVATE_US }
-    case 'review':
-    case 'support':
-      return { title: 'Activation under review', text: 'We’re reviewing your US Stocks activation. You’ll see your holdings here once it’s done', button: 'Explore US Market', to: STOCKS_HOME_ENTRY }
-    case 'failed':
-      return { title: 'Activation failed', text: 'We couldn’t activate US Stocks for you. Please try again', button: 'Retry', to: ACTIVATE_US }
-    default:
-      return { title: 'Build Wealth in Dollars', text: 'Seems like you don’t have any US holdings right now', button: 'Explore US Market', to: STOCKS_HOME_ENTRY }
-  }
-}
-
-/** `live` is accepted for the two Figma variants but, as in the original, not used. `tab` / `market`: where it opens
- * (Home's US holdings card opens Holdings with the US Stocks card upfront). */
-export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialMarket = 'in' }: { live?: boolean; tab?: PortfolioTab; market?: HoldingsMarket }) {
+/** `tab` / `market`: where it opens (Home's US holdings card opens Holdings with the US Stocks card upfront). */
+export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialMarket = 'in' }: { tab?: PortfolioTab; market?: HoldingsMarket }) {
   const { go } = useUsNav()
   const journey = useUsJourney()
   useUsMarketSnapshot() // re-render when US prices refresh
-  const us = usHoldingNow()
   const usActive = journey === 'activated' || journey === 'onTheWay' || journey === 'ready' || journey === 'holding'
-  const usEmptyState = usEmpty(journey)
   const [tab, setTab] = useState<PortfolioTab>(initialTab)
   const [market, setMarket] = useState<HoldingsMarket>(initialMarket)
   const [sort, setSort] = useState<SortValue>({ key: 'current', dir: 'desc' })
@@ -27372,135 +27450,67 @@ export function PortfolioScreen({ tab: initialTab = 'holdings', market: initialM
     <Phone
       className={styles.screen}
       bodyRef={swipe.bind}
-      label="Portfolio"
+      label={t('portfolio.title')}
       header={
         <Actionbar
-          title="Portfolio"
+          title={t('portfolio.title')}
           actions={
             <>
-              <ActionbarAction icon={entryUrl('search.svg')} label="Search" onClick={() => go(SEARCH)} />
-              <ActionbarAction icon={entryUrl('wallet.svg')} label="Wallet" onClick={() => go(usActive ? WALLET_US : WALLET)} />
+              <ActionbarAction icon={entryUrl('search.svg')} label={t('portfolio.search')} onClick={() => go(SEARCH)} />
+              <ActionbarAction icon={entryUrl('wallet.svg')} label={t('portfolio.wallet')} onClick={() => go(usActive ? WALLET_US : WALLET)} />
             </>
           }
           bottom={
-          <SlidingTabs
-            appearance="underline"
-            aria-label="Portfolio sections"
-            width="auto"
-            value={tab}
-            onChange={(value) => pickTab(value as PortfolioTab)}
-            items={[
-              { value: 'positions', label: 'Positions' },
-              { value: 'holdings', label: 'Holdings' },
-              { value: 'orders', label: 'Orders' },
-            ]}
-          />
+            <SlidingTabs
+              appearance="underline"
+              aria-label={t('portfolio.sections')}
+              width="auto"
+              value={tab}
+              onChange={(value) => pickTab(value as PortfolioTab)}
+              items={portfolioTabs.map((value) => ({ value, label: t(`portfolio.tab.${value}`) }))}
+            />
           }
         />
       }
       gesture="none"
       footer={<UsMainNav value="portfolio" />}
+      overlay={
+        <SortSheet
+          key={String(sortOpen)} // a fresh draft each time it opens
+          open={sortOpen}
+          value={sort}
+          onApply={(value) => {
+            setSort(value)
+            setSortOpen(false)
+          }}
+          onClose={() => setSortOpen(false)}
+        />
+      }
     >
-      <div className={styles.page}>
-        {tab !== 'orders' && (
-          <div className={styles.top}>
-            {tab === 'positions' && (
-              <section className={styles.indices}>
-                <h2 className={styles.sectionTitle}>Market Indices</h2>
-                <div className={styles.indexRow}>
-                  {marketIndices.map((index) => (
-                    <Card key={index.key} surface="primary" className={styles.index}>
-                      <span className={styles.indexHead}>
-                        <span className={styles.label}>{index.name}</span>
-                        <Tag variant="secondary" color="discover" size="sm">Expires today</Tag>
-                      </span>
-                      <span className={styles.indexValue}>
-                        {index.value}{' '}
-                        <span data-tone="up">{index.change}</span>{' '}
-                        <span data-tone="up">{index.pct}</span>
-                      </span>
-                    </Card>
-                  ))}
-                </div>
-              </section>
-            )}
-            {tab === 'holdings' && <HoldingsCards market={market} onMarket={setMarket} data={journey === 'holding' ? { ...holdingsSummary, us: us.summary } : holdingsSummary} />}
-          </div>
-        )}
-        <section key={tab} className={styles.sheet} data-section={tab} ref={swipe.contentRef}>
-          {tab === 'positions' && (
-            <>
-              {/* Positions are F&O only, and F&O is Indian: no Indian / US tabs here (3 Nov). */}
-              <div className={styles.sheetHead}>
-                <h2 className={styles.sectionTitle}>Your positions</h2>
-                <button type="button" className={styles.sort}>
-                  Refresh
-                  <MaskImg src={entryPath('portfolio/refresh.svg')} w={12} />
-                </button>
-              </div>
-              <EmptyWallet title="Build Wealth Daily" text="Seems like you don’t have any positions right now" button="Explore F&O" onClick={() => go(FNO_HOME)} />
-            </>
-          )}
-          {tab === 'holdings' && (
-            <>
-              <Tabs
-                appearance="underline"
-                width="fill"
-                aria-label="Holdings market"
-                items={[
-                  { value: 'in', label: 'Indian Stocks', iconLeft: <Icon icon={asset('assets/home/ind-icon-on.svg')} size={16} /> },
-                  { value: 'us', label: 'US Stocks', iconLeft: <Icon icon={asset('assets/home/us-icon-on.svg')} size={16} /> },
-                ]}
-                value={market}
-                onChange={(value) => setMarket(value as HoldingsMarket)}
-                className={styles.marketTabs}
-              />
-              <div className={styles.sheetHead}>
-                <h2 className={styles.sectionTitle}>Your holdings</h2>
-                <button type="button" className={styles.sortLink} onClick={() => setSortOpen(true)}>
-                  <Icon icon={sortIcon} size={18} />
-                  Sort
-                </button>
-              </div>
-              {market === 'us' && journey === 'holding' ? (
-                <ul className={styles.holdList}>
-                  <HoldingRow holding={us.holding} onOpen={() => openStock(go, stockFor(us.holding.name))} />
-                </ul>
-              ) : market === 'us' ? (
-                <EmptyWallet
-                  title={usEmptyState.title}
-                  text={usEmptyState.text}
-                  button={usEmptyState.button}
-                  onClick={() => go(usEmptyState.to)}
-                />
-              ) : (
-                <ul className={styles.holdList}>
-                  {sortedHoldings(sort).map((holding) => (
-                    <HoldingRow key={holding.key} holding={holding} />
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
-          {tab === 'orders' && <OrdersTab initialMarket={market === 'us' ? 'us' : undefined} />}
-          <SortSheet
-            key={String(sortOpen)}
-            open={sortOpen}
-            value={sort}
-            onApply={(value) => {
-              setSort(value)
-              setSortOpen(false)
-            }}
-            onClose={() => setSortOpen(false)}
-          />
-        </section>
-      </div>
+      {/* Keyed by tab: the new tab's page mounts fresh, and its sheet is what slides in (swipe.contentRef). */}
+      {tab === 'positions' && <PositionsTab key={tab} sheetRef={swipe.contentRef} />}
+      {tab === 'holdings' && <HoldingsTab key={tab} market={market} onMarket={setMarket} sort={sort} onSort={() => setSortOpen(true)} sheetRef={swipe.contentRef} />}
+      {tab === 'orders' && (
+        <PortfolioPage key={tab} flat sheetRef={swipe.contentRef}>
+          <OrdersPage market={market} />
+        </PortfolioPage>
+      )}
     </Phone>
   )
 }
 
-export const PortfolioBannerScreen = () => <PortfolioScreen live={false} />
-export const PortfolioBannerLiveScreen = () => <PortfolioScreen live />
+/** Orders sits 16 from the top of its square sheet and from its sides. */
+function OrdersPage({ market }: { market: HoldingsMarket }) {
+  return (
+    <Section paddingInline="16" paddingBlock="08" className={styles.grow}>
+      <OrdersTab initialMarket={market === 'us' ? 'us' : undefined} />
+    </Section>
+  )
+}
+
+// Figma's two variants (before / after 8 PM IST) render the same now (see the NOTE at the top).
+export const PortfolioBannerScreen = () => <PortfolioScreen />
+export const PortfolioBannerLiveScreen = () => <PortfolioScreen />
 export const PortfolioUsHoldingsScreen = () => <PortfolioScreen tab="holdings" market="us" />
 /** Portfolio on Orders, US side — where Order Details goes back to. */
 export const PortfolioUsOrdersScreen = () => <PortfolioScreen tab="orders" market="us" />
@@ -28085,6 +28095,10 @@ export function SpxIndexScreen() {
   overscroll-behavior-x: contain;
   display: flex;
   overflow-x: auto;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
 }
 
 .rail::-webkit-scrollbar {
@@ -28099,6 +28113,7 @@ export function SpxIndexScreen() {
   padding: var(--l3-spacing-12);
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-16);
+  box-shadow: var(--l3-shadow-elevation-soft); /* a clickable card: L3's soft shadow, as a clickable L3 Card */
   background: radial-gradient(80% 70% at 100% 100%, color-mix(in srgb, var(--glow) 16%, transparent) 0%, transparent 72%), var(--l3-surface-primary);
   --glow: var(--l3-surface-accent-brand-default);
   scroll-snap-align: start;
@@ -29247,6 +29262,16 @@ export function useSwipePages({ canGo, onSwitch, page }: { canGo: (direction: 1 
 }
 ```
 
+### `src/flows/us-stocks/screens/entry/copy.ts`
+
+```ts
+import { makeCopy } from '../../../../shared/copy'
+import copy from '../../copy.json'
+
+/** US Stocks strings for the entry screens (Portfolio so far): t('portfolio.holdings'). */
+export const t = makeCopy('us-stocks', copy)
+```
+
 ### `src/flows/us-stocks/screens/entry/entryAssets.ts`
 
 ```ts
@@ -29331,7 +29356,7 @@ export const FNO_HOME = 'fno-01'
 /** Wallet, US tab (follows the user status). */
 export const WALLET_US = '5852:99057'
 /** Activation / KYC screens in other flows (prototype ids). */
-export const ACTIVATE_US = 'stocks-12'
+export const ACTIVATE_US = 'us-stocks-94'
 export const KYC_START = 'kyc-01'
 /** Search, US tab (this part). */
 export const SEARCH = '5796:89230'
@@ -29362,6 +29387,384 @@ export const screens: UsScreenMap = {
   '9001:31': PortfolioUsOrdersScreen, // Portfolio · Orders · US (Order Details goes back here)
   '9001:32': PortfolioUsPositionsScreen, // Portfolio · Positions · US (Position Details goes back here)
   '5796:88163': MutualFundHomeScreen, // E5 · Mutual Fund home · US banner
+}
+```
+
+### `src/flows/us-stocks/screens/entry/portfolio/HoldingCard.tsx`
+
+```tsx
+import type { ReactNode } from 'react'
+import { Avatar } from '@l3/components/Avatar'
+import { Card } from '@l3/components/Card'
+import { Grid } from '@l3/components/Grid'
+import { Stack } from '@l3/components/Stack'
+import { Usd } from '../../../../../shared/money'
+import { t } from '../copy'
+import type { Holding } from '../portfolioData'
+import styles from './Portfolio.module.css'
+
+type Tone = 'up' | 'down'
+
+/** A label over a figure, lined up to the start, centre or end of its column. */
+function Figure({ label, align = 'start', tone, children }: { label: string; align?: 'start' | 'center' | 'end'; tone?: Tone; children: ReactNode }) {
+  return (
+    <Stack gap="04" align={align}>
+      <span className={styles.figureLabel}>{label}</span>
+      <span className={styles.figure} data-tone={tone}>{children}</span>
+    </Stack>
+  )
+}
+
+/**
+ * One holding (Indian or US): name, quantity and today's return (1D %) on top; current · invested · total returns
+ * below. With `onOpen` (US) it's a clickable L3 Card that opens the stock's page; otherwise a static one.
+ */
+export function HoldingCard({ holding, onOpen }: { holding: Holding; onOpen?: () => void }) {
+  const day = `${holding.day >= 0 ? '+' : '−'}${Math.abs(holding.day).toFixed(2)}%`
+  return (
+    <Card surface="primary" className={styles.holding} onClick={onOpen} aria-label={onOpen ? t('portfolio.holding.open', { name: holding.name }) : undefined}>
+      <Stack gap="12">
+        <Stack direction="horizontal" align="center" gap="12">
+          <Avatar src={holding.logo} initials={holding.name.slice(0, 2)} size={40} label={holding.name} />
+          <Stack className={styles.name}>
+            <span className={styles.symbol}>{holding.name}</span>
+            <span className={styles.qty}>{t('portfolio.holding.qty', { qty: holding.qty })}</span>
+          </Stack>
+          <Figure label={t('portfolio.holding.day')} align="end" tone={holding.day >= 0 ? 'up' : 'down'}>{day}</Figure>
+        </Stack>
+        <span className={styles.rule} aria-hidden="true" />
+        <Grid columns={3}>
+          <Figure label={t('portfolio.holding.current')}><Usd text={holding.current} /></Figure>
+          <Figure label={t('portfolio.holding.invested')} align="center"><Usd text={holding.invested} /></Figure>
+          <Figure label={t('portfolio.holding.returns')} align="end" tone={holding.up ? 'up' : 'down'}><Usd text={holding.returns} align="end" /></Figure>
+        </Grid>
+      </Stack>
+    </Card>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/entry/portfolio/HoldingsTab.tsx`
+
+```tsx
+import type { Ref } from 'react'
+import { Button } from '@l3/components/Button'
+import { EmptyState } from '@l3/components/EmptyState'
+import { Icon } from '@l3/components/Icon'
+import { Inset } from '@l3/components/Inset'
+import { Stack } from '@l3/components/Stack'
+import { Tabs } from '@l3/components/Tabs'
+import { asset } from '../../../asset'
+import { openStock, stockFor } from '../../../data'
+import { useUsNav } from '../../../nav'
+import { useUsJourney, type UsJourney } from '../../../../../shared/userStatus'
+import { HoldingsCards, type HoldingsMarket } from '../components/HoldingsCards'
+import { t } from '../copy'
+import { ACTIVATE_US, KYC_START, STOCKS_HOME_ENTRY } from '../ids'
+import { sortIcon } from '../icons'
+import { holdingsSummary, sortedHoldings, usHoldingNow } from '../portfolioData'
+import type { SortValue } from '../sheets/SortSheet'
+import { HoldingCard } from './HoldingCard'
+import { PortfolioPage, SheetContent, SheetHeader } from './PortfolioPage'
+import styles from './Portfolio.module.css'
+
+/** The US side of Holdings follows the user status (Settings → User status): which empty state, and where it leads. */
+function usEmpty(journey: UsJourney): { copy: 'kyc' | 'activate' | 'review' | 'failed' | 'none'; to: string } {
+  switch (journey) {
+    case 'kyc':
+      return { copy: 'kyc', to: KYC_START }
+    case 'activate':
+      return { copy: 'activate', to: ACTIVATE_US }
+    case 'review':
+    case 'support':
+      return { copy: 'review', to: STOCKS_HOME_ENTRY }
+    case 'failed':
+      return { copy: 'failed', to: ACTIVATE_US }
+    default:
+      return { copy: 'none', to: STOCKS_HOME_ENTRY }
+  }
+}
+
+/**
+ * Portfolio → Holdings: the Indian / US P&L cards on the grey top; in the sheet, Indian Stocks / US Stocks tabs and
+ * that market's holdings (Sort opens the sort sheet). The US side shows the one US holding once the user holds it,
+ * else an empty state that follows the user status.
+ */
+export function HoldingsTab({ market, onMarket, sort, onSort, sheetRef }: { market: HoldingsMarket; onMarket: (market: HoldingsMarket) => void; sort: SortValue; onSort: () => void; sheetRef?: Ref<HTMLElement> }) {
+  const { go } = useUsNav()
+  const journey = useUsJourney()
+  const us = usHoldingNow()
+  const holdsUs = journey === 'holding'
+  const empty = usEmpty(journey)
+
+  return (
+    <PortfolioPage
+      sheetRef={sheetRef}
+      top={
+        <Inset paddingInline="16" paddingBlock="24">
+          <HoldingsCards market={market} onMarket={onMarket} data={holdsUs ? { ...holdingsSummary, us: us.summary } : holdingsSummary} />
+        </Inset>
+      }
+    >
+      <Tabs
+        appearance="underline"
+        width="fill"
+        aria-label={t('portfolio.markets')}
+        items={[
+          { value: 'in', label: t('portfolio.market.in'), iconLeft: <Icon icon={asset('assets/home/ind-icon-on.svg')} size={16} /> },
+          { value: 'us', label: t('portfolio.market.us'), iconLeft: <Icon icon={asset('assets/home/us-icon-on.svg')} size={16} /> },
+        ]}
+        value={market}
+        onChange={(value) => onMarket(value as HoldingsMarket)}
+      />
+      <SheetContent>
+        <SheetHeader
+          title={t('portfolio.holdings')}
+          action={<Button variant="ghost" size="sm" iconLeft={<Icon icon={sortIcon} />} onClick={onSort}>{t('portfolio.sort')}</Button>}
+        />
+        {market === 'us' && !holdsUs ? (
+          <EmptyState
+            title={t(`portfolio.usEmpty.${empty.copy}.title`)}
+            description={t(`portfolio.usEmpty.${empty.copy}.text`)}
+            action={<Button variant="primary" size="sm" onClick={() => go(empty.to)}>{t(`portfolio.usEmpty.${empty.copy}.button`)}</Button>}
+          />
+        ) : (
+          <Stack as="ul" gap="16" className={styles.list}>
+            {market === 'us' ? (
+              <li>
+                <HoldingCard holding={us.holding} onOpen={() => openStock(go, stockFor(us.holding.name))} />
+              </li>
+            ) : (
+              sortedHoldings(sort).map((holding) => (
+                <li key={holding.key}>
+                  <HoldingCard holding={holding} />
+                </li>
+              ))
+            )}
+          </Stack>
+        )}
+      </SheetContent>
+    </PortfolioPage>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/entry/portfolio/Portfolio.module.css`
+
+```css
+/* Portfolio tab (PortfolioScreen + portfolio/*). Layout is L3 Stack / Section / Inset / Grid; this file only holds
+   surfaces, type and the few things those blocks don't do. */
+
+/* Grey page under a white sheet, as on Stocks home. Fills the body so the sheet reaches the navbar. */
+.page {
+  min-height: 100%;
+  background: var(--l3-surface-secondary);
+}
+
+/* FLAG: the white sheet over the grey — surface default, 32 round top corners (L3 Section rounds all four corners). */
+.sheet {
+  flex: 1;
+  border-radius: var(--l3-radius-32) var(--l3-radius-32) 0 0;
+  background: var(--l3-surface-default);
+}
+
+/* Orders has no grey top: the sheet is the whole page, square. */
+.sheet[data-flat] {
+  border-radius: 0;
+}
+
+/* A block that takes the space left (so an empty state centres in it). */
+.grow {
+  flex: 1;
+}
+
+.title {
+  margin: 0;
+  font: var(--l3-text-heading-16);
+  color: var(--l3-content-primary);
+}
+
+/* ---- Market Indices (Positions) ---- */
+
+.indexName {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.indexValue {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+.up {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+/* ---- Holding card ---- */
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.name {
+  min-width: 0;
+  flex: 1;
+}
+
+.symbol {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-primary);
+}
+
+.qty,
+.figureLabel {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.figure {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+.figure[data-tone='up'] {
+  color: var(--l3-content-accent-success-default);
+}
+
+.figure[data-tone='down'] {
+  color: var(--l3-content-accent-error-default);
+}
+
+/* The hairline between the card's top row and its figures. */
+.rule {
+  display: block;
+  height: 1px;
+  background: var(--l3-border-light);
+}
+
+/* FLAG (L3 gap): the underline tabs' line (Positions · Holdings · Orders, Indian · US Stocks) is border intense, not
+   L3's border light, so it shows in dark mode too — underline Tabs have no line-colour option. */
+.screen [role='tablist'][data-appearance='underline'],
+.screen [role='tablist'][data-appearance='underline'] > [role='tab'] {
+  box-shadow: inset 0 -1px 0 var(--l3-border-intense);
+}
+
+/* Every holding card is raised with L3's soft elevation, static (Indian) ones too — the user's 4 Nov ask. Clickable
+   (US) cards get it from L3 Card; a static Card has no shadow in L3, so it's added here. FLAG: L3 gap — no shadow
+   option on a static Card. */
+.list .holding:not([data-interactive]) {
+  box-shadow: var(--card-border), var(--l3-shadow-elevation-soft);
+}
+```
+
+### `src/flows/us-stocks/screens/entry/portfolio/PortfolioPage.tsx`
+
+```tsx
+import type { ReactNode, Ref } from 'react'
+import { Section } from '@l3/components/Section'
+import { Stack } from '@l3/components/Stack'
+import styles from './Portfolio.module.css'
+
+/**
+ * One Portfolio tab's page: an optional grey top (summary cards, market indices) and the white sheet under it, which
+ * runs down to the navbar. The sheet is 8 from its top edge and its bottom; what's inside brings its own 16 sides.
+ * `sheetRef` is the part that slides when the tab changes. `flat`: no grey top, a square sheet (Orders).
+ */
+export function PortfolioPage({ top, flat, sheetRef, children }: { top?: ReactNode; flat?: boolean; sheetRef?: Ref<HTMLElement>; children: ReactNode }) {
+  return (
+    <Stack className={styles.page}>
+      {top}
+      <Section as="section" ref={sheetRef} paddingBlock="08" gap="08" className={styles.sheet} data-flat={flat || undefined}>
+        {children}
+      </Section>
+    </Stack>
+  )
+}
+
+/** The sheet's content block: 16 at the sides, 16 from the tabs above (8 + 8) and 24 from the sheet's ends. */
+export function SheetContent({ children }: { children: ReactNode }) {
+  return (
+    <Section paddingInline="16" paddingBlock="16" gap="16" className={styles.grow}>
+      {children}
+    </Section>
+  )
+}
+
+/** A section title with an action on its right (Sort, Refresh). */
+export function SheetHeader({ title, action }: { title: string; action?: ReactNode }) {
+  return (
+    <Stack direction="horizontal" align="center" justify="between">
+      <h2 className={styles.title}>{title}</h2>
+      {action}
+    </Stack>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/entry/portfolio/PositionsTab.tsx`
+
+```tsx
+import type { Ref } from 'react'
+import { Button } from '@l3/components/Button'
+import { Card } from '@l3/components/Card'
+import { EmptyState } from '@l3/components/EmptyState'
+import { Icon } from '@l3/components/Icon'
+import { Inset } from '@l3/components/Inset'
+import { Stack } from '@l3/components/Stack'
+import { Tag } from '@l3/components/Tag'
+import { Rail } from '../../../../../shared/ui/Rail'
+import { useUsNav } from '../../../nav'
+import { t } from '../copy'
+import { entryUrl } from '../entryAssets'
+import { FNO_HOME } from '../ids'
+import { marketIndices } from '../portfolioData'
+import { PortfolioPage, SheetContent, SheetHeader } from './PortfolioPage'
+import styles from './Portfolio.module.css'
+
+/** Portfolio → Positions: market indices on the grey top; the positions (F&O only, so Indian only — no market tabs). */
+export function PositionsTab({ sheetRef }: { sheetRef?: Ref<HTMLElement> }) {
+  const { go } = useUsNav()
+  const top = (
+    <Inset paddingInline="00" paddingBlock="24">
+      <Stack gap="12">
+        <Inset paddingInline="16" paddingBlock="00">
+          <h2 className={styles.title}>{t('portfolio.indices')}</h2>
+        </Inset>
+        {/* Cards 189 wide at 392 (Figma): 1.85 across, the second one cut at the edge. */}
+        <Rail label={t('portfolio.indices')} visible={1.85}>
+          {marketIndices.map((index) => (
+            <Card key={index.key} surface="primary">
+              <Stack direction="horizontal" align="center" justify="between">
+                <span className={styles.indexName}>{index.name}</span>
+                <Tag variant="secondary" color="discover" size="sm">{t('portfolio.expiresToday')}</Tag>
+              </Stack>
+              <span className={styles.indexValue}>
+                {index.value} <span className={styles.up}>{index.change}</span> <span className={styles.up}>{index.pct}</span>
+              </span>
+            </Card>
+          ))}
+        </Rail>
+      </Stack>
+    </Inset>
+  )
+  return (
+    <PortfolioPage top={top} sheetRef={sheetRef}>
+      <SheetContent>
+        <SheetHeader
+          title={t('portfolio.positions')}
+          action={<Button variant="ghost" size="sm" iconRight={<Icon icon={entryUrl('portfolio/refresh.svg')} />}>{t('portfolio.refresh')}</Button>}
+        />
+        <EmptyState
+          title={t('portfolio.positionsEmpty.title')}
+          description={t('portfolio.positionsEmpty.text')}
+          action={<Button variant="primary" size="sm" onClick={() => go(FNO_HOME)}>{t('portfolio.positionsEmpty.button')}</Button>}
+        />
+      </SheetContent>
+    </PortfolioPage>
+  )
 }
 ```
 
@@ -32444,6 +32847,7 @@ export const getCurrentEtf = (): Etf => {
 // FLAG: copy not in copy.json yet — all UI text in this part is hard-coded.
 import { catalogue, stockFor, openStock } from '../../data'
 import type { NewsItem } from '../activation/data'
+import { etfInside } from '../../../../shared/data/etfInside'
 
 export type EtfHolding = { sym: string; weight: number }
 export type Etf = {
@@ -32621,25 +33025,8 @@ export const tagsFor = (etf: Etf) => TAGS[etf.sym] ?? []
 /** The plain-English side of an ETF; leveraged ones (off for now) fall back to the fund's name. */
 export const plainFor = (etf: Etf): EtfPlain => PLAIN[etf.sym] ?? { plain: etf.name, known: [], does: etf.tracks }
 
-// The ETF cards' second line (3 Nov): after the ticker, what kind of companies are inside, with a name people know —
-// "QQQ · Mostly big tech, like Apple" (was the fund's legal name, which says little; it stays on the ETF page).
-// Kept to about 28 characters so it fits one line at 360. Sample copy; the API would send it with the fund.
-const INSIDE: Record<string, string> = {
-  SPY: 'Big US firms in every sector', QQQ: 'Mostly big tech, like Apple', VTI: 'Every US firm, big to small',
-  SMH: 'Chip makers, like NVIDIA', ITA: 'Plane, jet & weapon makers', XLE: 'Oil & gas, like ExxonMobil',
-  XLF: 'Banks, insurers & card firms', XLV: 'Drug makers & health insurers', BOTZ: 'Robot makers & AI chip firms',
-  UFO: 'Rocket, satellite & GPS firms', INDA: 'Big Indian banks, IT & energy', EPI: 'Indian firms with big profits',
-  MCHI: 'Chinese giants, like Tencent', KWEB: 'Chinese shopping & chat apps', EWJ: "Japan's giants, like Toyota",
-  VGK: "Europe's giants, like ASML", EWY: "Korea's giants, like Samsung", FXI: "China's top 50, like Alibaba",
-  CQQQ: 'Chinese tech, chips to apps', DXJ: 'Exporters, like Toyota & Honda', HEWJ: "Japan's giants, yen-protected",
-  SCJ: 'Smaller firms, like Sanrio', FEZ: "Eurozone's top 50, like SAP", EZU: 'Euro-area firms, like Siemens',
-  IEUR: '1,000+ European firms', FLKR: "Korea's giants, like SK Hynix",
-  TQQQ: 'Mostly big tech, like Apple', SQQQ: 'Mostly big tech, like Apple', SOXL: 'Chip makers, like NVIDIA',
-  SOXS: 'Chip makers, like NVIDIA', NVDL: 'One stock: NVIDIA', NVD: 'One stock: NVIDIA',
-  SPXL: 'Big US firms, like Apple', SPXS: 'Big US firms, like Apple',
-}
 /** What kind of companies the fund holds, in a few words (the ETF cards' second line, after the ticker). */
-export const insideFor = (etf: Etf) => INSIDE[etf.sym] ?? plainFor(etf).does
+export const insideFor = (etf: Etf) => etfInside(etf.sym) ?? plainFor(etf).does
 
 // The ETF page's description (2–3 Nov): a short paragraph on what's inside — which kinds of companies, the biggest
 // names, and how many it holds. Written to follow the ticker ("SPY tracks …"). Sample copy; the API would send it with the fund.
@@ -32999,6 +33386,7 @@ export function SideTag({ etf, size = 'sm', filled, className }: { etf: Etf; siz
 ```ts
 // Every imported screen by Figma node id — the parts in the teammate's folders (screens/<part>/index.tsx).
 import type { UsScreenMap } from './types'
+import { screens as activate } from './activate'
 import { screens as activation } from './activation'
 import { screens as entry } from './entry'
 import { screens as etf } from './etf'
@@ -33007,7 +33395,7 @@ import { screens as orders } from './orders'
 import { screens as trade } from './trade'
 import { screens as wallet } from './wallet'
 
-export const allScreens: UsScreenMap = { ...activation, ...entry, ...etf, ...money, ...orders, ...trade, ...wallet }
+export const allScreens: UsScreenMap = { ...activate, ...activation, ...entry, ...etf, ...money, ...orders, ...trade, ...wallet }
 ```
 
 ### `src/flows/us-stocks/screens/money/AddMoneyScreen.tsx`
@@ -33029,15 +33417,16 @@ import { Stack } from '@l3/components/Stack'
 import { Tab } from '@l3/components/Tabs'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
-import { BankRow, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
-import { useLinkedBanks } from '../../../../shared/userStatus'
+import { BankRow, bankLine, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
+import { usePreview } from '../../../../shared/prototype'
+import { newlyLinkedBank, startAddBank, useLinkedBanks } from '../../../../shared/userStatus'
 import { AmountDock, AmountEntry, amountValue, typeAmount } from '../../../../shared/ui/AmountEntry'
 import { formatInr, formatUsd, useUsdInrRate } from '../../../../shared/money'
 import { DEPOSIT_QUICK_ADD_USD, LRS_LIMIT_USD, MIN_DEPOSIT_USD, depositBreakdown, depositRate, inrForUsd } from './amounts'
 import { BankPickSheet } from './BankPickSheet'
 import { ChargesBreakdownSheet } from './ChargesBreakdownSheet'
 import { t } from './copy'
-import { setHandoff, takeHandoff } from './handoff'
+import { setHandoff, setSentDeposit, takeHandoff } from './handoff'
 import { infoIcon } from './icons'
 import { FIGMA } from '../wallet/data'
 import { moneyIds } from './ids'
@@ -33071,11 +33460,16 @@ const toTyped = (usd: number) => (usd > 0 ? String(usd) : '')
 
 export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = false, sheet, backdrop, banksOpen = false, noBank = false }: AddMoneyScreenProps) {
   const { go, back } = useUsNav()
+  const { screenId } = usePreview()
+  // "Add bank account" comes back here once the account is verified.
+  const addBank = () => { startAddBank(screenId); go(ADD_BANK) }
   const [typed, setTyped] = useState(() => toTyped(takeHandoff(id, initial)))
   const [showBreakdown, setShowBreakdown] = useState(breakdown)
   const linked = useLinkedBanks()
-  const banks = noBank ? [] : linked
-  const [bankId, setBankId] = useState(banks[0]?.id)
+  // Just added on "Add bank account": it counts even on the no-bank state, and it's the one picked.
+  const added = newlyLinkedBank()
+  const banks = noBank ? (added ? [added] : []) : linked
+  const [bankId, setBankId] = useState(added?.id ?? banks[0]?.id)
   const [showBanks, setShowBanks] = useState(banksOpen)
   const bank = banks.find((b) => b.id === bankId) ?? banks[0]
   const bankCopy: BankPickerCopy = { method: t('addMoney.methodLabel'), addTitle: t('addMoney.addTitle'), addDescription: t('addMoney.addDescription'), sheetTitle: t('addMoney.sheetTitle'), addAnother: t('addMoney.addAnother') }
@@ -33096,6 +33490,7 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
   const addToWallet = () => {
     // Straight to the bank's page (no "pay on your bank's page" sheet first); coming back keeps the typed $.
     setHandoff(moneyIds.m01, usd)
+    if (bank) setSentDeposit({ usd, inr: inrText, bank: bankLine(bank) })
     go(moneyIds.bank)
   }
 
@@ -33120,7 +33515,7 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
         <AmountDock
           decimal
           onKey={type}
-          method={<BankRow bank={bank} copy={bankCopy} note={t('addMoney.landsBy')} onChange={() => setShowBanks(true)} onAdd={() => go(ADD_BANK)} />}
+          method={<BankRow bank={bank} copy={bankCopy} note={t('addMoney.landsBy')} onChange={() => setShowBanks(true)} onAdd={addBank} />}
           action={
             <ButtonGroup aria-label={t('addMoney.title')}>
               {bank ? (
@@ -33130,7 +33525,7 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
                   {usd > 0 && !invalid && <span className={styles.ctaInr}>{t('addMoney.ctaInr', { inr: inrText })}</span>}
                 </Button>
               ) : (
-                <Button variant="primary" size="lg" fullWidth onClick={() => go(ADD_BANK)}>{t('addMoney.addBankCta')}</Button>
+                <Button variant="primary" size="lg" fullWidth onClick={addBank}>{t('addMoney.addBankCta')}</Button>
               )}
             </ButtonGroup>
           }
@@ -33154,7 +33549,7 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
           </Stack>
         }
       />
-      {bank && <BankPickSheet open={showBanks} banks={banks} selected={bank.id} copy={bankCopy} onSelect={setBankId} onAdd={() => { setShowBanks(false); go(ADD_BANK) }} onClose={() => setShowBanks(false)} />}
+      {bank && <BankPickSheet open={showBanks} banks={banks} selected={bank.id} copy={bankCopy} onSelect={setBankId} onAdd={() => { setShowBanks(false); addBank() }} onClose={() => setShowBanks(false)} />}
       <ChargesBreakdownSheet open={showBreakdown} onClose={() => setShowBreakdown(false)} amount={inr} rate={rate} charges={charges} />
     </Phone>
   )
@@ -33164,16 +33559,29 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
 ### `src/flows/us-stocks/screens/money/BankAppScreen.tsx`
 
 ```tsx
-// The bank's own page, a placeholder: tap anywhere to come back to Lemonn.
+// The bank's own page, a placeholder. The user pays there; after a moment (1 s in the prototype) the bank hands back to
+// Lemonn, which opens the USD wallet with the "money sent" sheet (us-stocks-93). Tapping comes back at once.
 // FLAG: hand-made full-screen button (Money.module.css .bankApp) — not an L3 pattern; fills the screen at any width.
+import { useEffect, useRef } from 'react'
 import { useUsNav } from '../../nav'
 import { moneyIds } from './ids'
 import styles from './Money.module.css'
 
+/** How long the bank's page shows before it hands back to Lemonn (prototype). */
+const BANK_MS = 1000
+
 export function BankAppScreen({ backdrop }: { backdrop?: boolean }) {
   const { go } = useUsNav()
+  // The timer starts once; `go` changes on every render.
+  const goRef = useRef(go)
+  goRef.current = go
+  useEffect(() => {
+    if (backdrop) return
+    const timer = window.setTimeout(() => goRef.current(moneyIds.sent), BANK_MS)
+    return () => window.clearTimeout(timer)
+  }, [backdrop])
   return (
-    <button type="button" className={styles.bankApp} onClick={() => !backdrop && go(moneyIds.wallet)} aria-label="Bank app (placeholder). Tap to go back to Lemonn">
+    <button type="button" className={styles.bankApp} onClick={() => !backdrop && go(moneyIds.sent)} aria-label="Bank app (placeholder). Tap to go back to Lemonn">
       <span className={styles.bankAppTitle}>BANK APP</span>
     </button>
   )
@@ -33194,7 +33602,6 @@ import { msAdd } from '@l3/icons/material'
 import type { LinkedBank } from '../../../../shared/data/user'
 import { BankOptions, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
 import { useSheetLayer } from '../../components/Phone'
-import styles from './Money.module.css'
 
 export function BankPickSheet({ open, banks, selected, copy, onSelect, onAdd, onClose }: {
   open: boolean
@@ -33213,7 +33620,6 @@ export function BankPickSheet({ open, banks, selected, copy, onSelect, onAdd, on
       onClose={onClose}
       container={layer}
       aria-labelledby={id}
-      utility={<div className={styles.gesture} aria-hidden="true"><span /></div>}
       header={<BottomSheetHeader heading={copy.sheetTitle} headingId={id} />}
       footer={
         <ButtonGroup aria-label={copy.sheetTitle}>
@@ -33239,7 +33645,6 @@ import { useSheetLayer } from '../../components/Phone'
 import { Usd, formatInr } from '../../../../shared/money'
 import { PARTNER_FEE_USD, depositBreakdown } from './amounts'
 import { TwoLineLabel } from './components/TwoLineLabel'
-import styles from './Money.module.css'
 
 export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: { open: boolean; onClose: () => void; amount: number; rate: number; charges: number }) {
   const layer = useSheetLayer()
@@ -33250,7 +33655,6 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
       onClose={onClose}
       container={layer}
       aria-labelledby="charges-title"
-      utility={<div className={styles.gesture} aria-hidden="true"><span /></div>}
       header={<BottomSheetHeader heading="Charges breakdown" headingId="charges-title" description={`At ${formatInr(rate)}/$ (indicative) · ${formatInr(charges, { decimals: 0 })} total charges`} />}
       footer={
         <ButtonGroup aria-label="Charges breakdown">
@@ -33274,7 +33678,6 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
 
 ```css
 /* FLAG: layout is raw display:flex + gap/padding on every block, not L3 Stack / Section / Inset (applies to the whole file). */
-/* FLAG: sheet grabber (.gesture) is hand-drawn; L3 BottomSheet draws its own handle. */
 
 .content {
   gap: var(--l3-spacing-24);
@@ -33500,20 +33903,7 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
   font: var(--l3-text-description-12);
 }
 
-.gesture {
-  padding: var(--l3-spacing-10) var(--l3-spacing-16);
-  background: var(--l3-surface-primary);
-  justify-content: center;
-  display: flex;
-}
 
-.gesture span {
-  width: calc(var(--l3-spacing-96) + var(--l3-spacing-24));
-  height: var(--l3-size-04);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-inverted);
-  opacity: .5; /* FLAG: raw opacity */
-}
 
 .sep {
   margin: 0 var(--l3-spacing-06);
@@ -33650,7 +34040,6 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
 import { useSheetLayer } from '../../components/Phone'
 import { Usd, formatInr } from '../../../../shared/money'
-import styles from './Money.module.css'
 
 export function WithdrawBreakdownSheet({ open, onClose, amount, rate }: { open: boolean; onClose: () => void; amount: number; rate: number }) {
   const layer = useSheetLayer()
@@ -33660,7 +34049,6 @@ export function WithdrawBreakdownSheet({ open, onClose, amount, rate }: { open: 
       onClose={onClose}
       container={layer}
       aria-labelledby="withdraw-breakdown-title"
-      utility={<div className={styles.gesture} aria-hidden="true"><span /></div>}
       header={
         <BottomSheetHeader
           heading="Withdrawal breakdown"
@@ -34020,6 +34408,18 @@ export const takeHandoff = (id: string, fallback: number): number => {
   pending = null
   return value
 }
+
+/** The deposit just paid on the bank's page: what the wallet's "money sent" sheet says when the user comes back. */
+export type SentDeposit = { usd: number; inr: string; bank: string }
+let sent: SentDeposit | null = null
+
+/** Remember the deposit being paid (Add money → the bank's page). */
+export const setSentDeposit = (deposit: SentDeposit) => {
+  sent = deposit
+}
+
+/** The deposit last paid, or `fallback` (a screen opened straight from the list). Kept: the wallet shows it until it lands. */
+export const sentDeposit = (fallback: SentDeposit): SentDeposit => sent ?? fallback
 ```
 
 ### `src/flows/us-stocks/screens/money/icons.ts`
@@ -34064,6 +34464,8 @@ export const moneyIds = {
   banks: '9001:21',
   /** Bank app placeholder */
   bank: '5796:86336',
+  /** Wallet · back from the bank · "money sent" sheet (screen of the wallet part; not in Figma) */
+  sent: '9001:22',
   /** Wallet · US tab · Add money transfer in progress (screen of the wallet part) */
   wallet: '5776:84195',
   /** Where "Add money" starts (screen of another part) */
@@ -34095,18 +34497,18 @@ import { WithdrawPlacedScreen } from './WithdrawPlacedScreen'
 import { WithdrawScreen } from './WithdrawScreen'
 
 // M01 · enter $ ($1,000) — Groww-style $ entry; the ₹ cost is the line under the amount
-const AddMoneyEnter = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m01} initial={1000} backdrop={backdrop} />
+const AddMoneyEnter = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m01} initial={50} backdrop={backdrop} />
 // M02 · charges breakdown sheet open
-const AddMoneyCharges = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m02} initial={1000} breakdown backdrop={backdrop} />
+const AddMoneyCharges = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m02} initial={50} breakdown backdrop={backdrop} />
 // M03 · below the first-deposit minimum ($20)
 const AddMoneyBelowMinimum = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m03} initial={20} backdrop={backdrop} />
 // M07 · above the LRS limit ($3,00,000 typed → over $2,50,000)
 const AddMoneyAboveLrs = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m07} initial={300000} backdrop={backdrop} />
 // M05 · bank name does not match PAN
-const AddMoneyBankMismatch = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m05} initial={1000} mismatch backdrop={backdrop} />
+const AddMoneyBankMismatch = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.m05} initial={50} mismatch backdrop={backdrop} />
 // No bank linked: the bank row and the button ask to add one · the "Pay from" sheet open (both not in Figma)
 const AddMoneyNoBank = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.noBank} initial={0} noBank backdrop={backdrop} />
-const AddMoneyBanks = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.banks} initial={1000} banksOpen backdrop={backdrop} />
+const AddMoneyBanks = ({ backdrop }: { backdrop?: boolean }) => <AddMoneyScreen id={moneyIds.banks} initial={50} banksOpen backdrop={backdrop} />
 // H08 · withdraw $100 · H09 · withdraw $500 (more than the withdrawable balance: error state)
 const WithdrawEnter = ({ backdrop }: { backdrop?: boolean }) => <WithdrawScreen id={moneyIds.h08} initial={100} backdrop={backdrop} />
 const WithdrawTooMuch = ({ backdrop }: { backdrop?: boolean }) => <WithdrawScreen id={moneyIds.h09} initial={500} backdrop={backdrop} />
@@ -34235,10 +34637,6 @@ export function CancelOrderSheet({ open, order, onKeep, onCancel }: { open: bool
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
-
-/* No shadow (3 Nov): border only, still pressing like a clickable Card. L3 gap: a clickable Card has no shadow-free
-   bordered option, so the elevation is dropped here (keeps the Card's own border). */
-.card.card { box-shadow: var(--card-border); }
 ```
 
 ### `src/flows/us-stocks/screens/orders/OrderCard.tsx`
@@ -38058,8 +38456,9 @@ export function PendingBanner({ title, sub, action, onOpen }: PendingBannerProps
 
 ```tsx
 // The wallet screen frame all W* screens share: actionbar with an INR / USD tab switch, the balance card, the screen's own
-// content, and the Deposit / Withdraw dock. Switching tabs either goes to another Figma screen (`tabTo`) or flips the view
-// in place (the INR view below); swiping the page switches tabs too.
+// content, and the Deposit / Withdraw dock. One page with two views: every wallet screen carries its USD view (the props)
+// and the INR view (INR_VIEW below); a screen only picks the tab it opens on. Switching tabs never leaves the page — only
+// the body changes (a tap or a swipe). The USD tab always wears its NEW tag.
 // FLAG: hand-made pending banner.
 // FLAG: layout with raw display:flex + gap/padding (WalletScreen.module.css) instead of L3 Stack/Section/Inset/Grid.
 import { useState, type ReactNode } from 'react'
@@ -38076,7 +38475,7 @@ import { useLinkedBanks } from '../../../../shared/userStatus'
 import { msAccountBalance } from '@l3/icons/material'
 import { moneyIds } from '../money/ids'
 import { parseUsd, useInrEquivalent, useUsd } from '../../../../shared/money'
-import { BalanceCard, FLIP_KEY } from './BalanceCard'
+import { BalanceCard } from './BalanceCard'
 import { FIGMA } from './data'
 import { GrowNudge } from './GrowNudge'
 import { bigAmount, useBigAmounts } from './lib/bigAmounts'
@@ -38109,10 +38508,8 @@ export type WalletScreenProps = {
   label?: string
   /** Drawn behind another screen's sheet: static, taps do nothing. */
   backdrop?: boolean
-  /** The tab this Figma frame shows. */
-  tab: WalletTab
-  /** Where tapping the other tab goes (a Figma id); without it the tab flips in place. */
-  tabTo?: Partial<Record<WalletTab, string>>
+  /** The tab it opens on (default USD). The props describe the USD view; the INR view is INR_VIEW. */
+  tab?: WalletTab
   /** The balance as written: "$520.40" (a US wallet, shown in the currency the $ / ₹ switch picks) or "₹1,100.00". */
   total: string
   withdrawable: string
@@ -38135,7 +38532,7 @@ export type WalletScreenProps = {
   pending?: PendingBannerProps
 }
 
-/** The INR view's data — the INR frame's own screen, and what the screen shows when you flip to the INR tab in place. */
+/** The INR view's data: what every wallet screen shows on its INR tab. */
 export const INR_VIEW = {
   inr: true,
   total: '₹1,100.00',
@@ -38146,10 +38543,10 @@ export const INR_VIEW = {
 
 
 export function WalletScreen(props: WalletScreenProps) {
-  const { tab, tabTo = {}, backdrop } = props
+  const { tab = 'usd', backdrop } = props
   const [active, setActive] = useState<WalletTab>(tab)
   const { label, total, withdrawable, details, children, dock, backTo, sheet, noteFlow, inr, nudge, pending } =
-    active === tab ? props : { ...props, ...INR_VIEW, sheet: undefined, noteFlow: false, pending: undefined }
+    active === 'usd' ? props : { ...props, ...INR_VIEW, nudge: false, details: undefined, sheet: undefined, noteFlow: false, pending: undefined }
 
   const bigAmounts = useBigAmounts()
   const rawTotal = bigAmounts ? bigAmount(total, 'total') : total
@@ -38166,18 +38563,10 @@ export function WalletScreen(props: WalletScreenProps) {
   // The USD balance in rupees at the live rate, small under it — only with the "₹ below" setting (off by default);
   // none on a $0 wallet.
   const balanceInr = useInrEquivalent()(totalUsd ?? 0, { decimals: 2 })
-  const { go, back } = useUsNav()
+  const { go, open, back } = useUsNav()
 
   const switchTab = (next: WalletTab, animate = false) => {
     if (next === active || backdrop) return
-    if (tabTo[next]) {
-      try {
-        sessionStorage.setItem(FLIP_KEY, shownTotal)
-      } catch {
-        /* storage blocked */
-      }
-      return go(tabTo[next] as string)
-    }
     if (animate) swipe.entered(TABS.indexOf(next) > TABS.indexOf(active) ? 1 : -1)
     setActive(next)
   }
@@ -38203,12 +38592,13 @@ export function WalletScreen(props: WalletScreenProps) {
       }}
       total={rawTotal}
       withdrawable={rawWithdrawable}
-      onFullDetails={fullDetailsTo ? () => go(fullDetailsTo) : undefined}
+      onFullDetails={fullDetailsTo ? () => open(fullDetailsTo) : undefined}
     />
   )
 
+  // Deposit, Withdraw and Add bank open a page on top of the wallet (in from the right; back slides it out right).
   const goTo = (figma?: string) => () => {
-    if (figma && !backdrop) go(figma)
+    if (figma && !backdrop) open(figma)
   }
 
   const header = (
@@ -38234,12 +38624,11 @@ export function WalletScreen(props: WalletScreenProps) {
               {
                 value: 'usd',
                 label: 'USD Wallet',
-                badge:
-                  tab === 'inr' ? (
-                    <Tag variant="primary" color="discover" size="sm">
-                      NEW
-                    </Tag>
-                  ) : undefined,
+                badge: (
+                  <Tag variant="primary" color="discover" size="sm">
+                    NEW
+                  </Tag>
+                ),
               },
             ]}
           />
@@ -38329,31 +38718,28 @@ import { useState } from 'react'
 import { useUsNav } from '../../nav'
 import { Usd } from '../../../../shared/money'
 import { FIGMA, WITHDRAWAL_REQUESTS } from './data'
-import { INR_VIEW, WalletScreen, type WalletDock, type WalletScreenProps } from './WalletScreen'
+import { WalletScreen, type WalletDock, type WalletScreenProps, type WalletTab } from './WalletScreen'
 import { DepositProgressSheet } from './sheets/DepositProgressSheet'
+import { sentDeposit, type SentDeposit } from '../money/handoff'
 import { CancelWithdrawalSheet } from './sheets/CancelWithdrawalSheet'
 import { WithdrawalRequestsSheet } from './sheets/WithdrawalRequestsSheet'
 
-type ScreenProps = { backdrop?: boolean }
+/** `openOn`: the tab the wallet opens on (INR for W0 · Indian tab); the other tab flips in place. */
+type ScreenProps = { backdrop?: boolean; openOn?: WalletTab }
 
-const USD = { tab: 'usd' } as const
 /** Empty USD wallet: $0 and the "Grow Wealth in Dollars" nudge. */
-const EMPTY = { ...USD, total: '$0.00', withdrawable: '$0.00', nudge: true } as const
+const EMPTY = { total: '$0.00', withdrawable: '$0.00', nudge: true } as const
 /** USD wallet mid-withdrawal ("tight" is passed by the original but its component ignores it). */
-const WITH_BALANCE = { ...USD, total: '$520.40', withdrawable: '$317.03', details: true, tight: true } as const
+const WITH_BALANCE = { total: '$520.40', withdrawable: '$317.03', details: true, tight: true } as const
 const DEPOSIT_ONLY: WalletDock = { primary: 'Deposit', primaryTo: FIGMA.addMoney, withdrawDisabled: true }
 
-/** W0 · Wallet · Indian tab (USD tab goes to the activate screen). */
-export function WalletInrScreen({ backdrop }: ScreenProps) {
-  return <WalletScreen label="Wallet, INR" backdrop={backdrop} tab="inr" tabTo={{ usd: FIGMA.walletUsActivate }} {...INR_VIEW} />
-}
-
 /** W0 · Wallet · US tab · Activate US Stocks. */
-export function WalletUsActivateScreen({ backdrop }: ScreenProps) {
+export function WalletUsActivateScreen({ backdrop, openOn }: ScreenProps) {
   return (
     <WalletScreen
       label="Wallet, USD, activate US Stocks"
       backdrop={backdrop}
+      tab={openOn}
       {...EMPTY}
       dock={{ primary: 'Activate US Stocks', primaryTo: FIGMA.activate, withdraw: false }}
     />
@@ -38361,11 +38747,12 @@ export function WalletUsActivateScreen({ backdrop }: ScreenProps) {
 }
 
 /** Wallet · US tab · Lemonn KYC pending: Complete KYC (→ the KYC flow) in place of Activate. Not in Jojo's Figma. */
-export function WalletUsKycPendingScreen({ backdrop }: ScreenProps) {
+export function WalletUsKycPendingScreen({ backdrop, openOn }: ScreenProps) {
   return (
     <WalletScreen
       label="Wallet, USD, complete KYC"
       backdrop={backdrop}
+      tab={openOn}
       {...EMPTY}
       dock={{ primary: 'Complete KYC', primaryTo: 'kyc-01', withdraw: false }}
     />
@@ -38373,28 +38760,28 @@ export function WalletUsKycPendingScreen({ backdrop }: ScreenProps) {
 }
 
 /** W1 · Wallet · US tab · $0 balance. */
-export function WalletZeroBalanceScreen({ backdrop }: ScreenProps) {
-  return <WalletScreen label="Wallet, USD, zero balance" backdrop={backdrop} {...EMPTY} details dock={DEPOSIT_ONLY} />
+export function WalletZeroBalanceScreen({ backdrop, openOn }: ScreenProps) {
+  return <WalletScreen label="Wallet, USD, zero balance" backdrop={backdrop} tab={openOn} {...EMPTY} details dock={DEPOSIT_ONLY} />
 }
 
 // FLAG: the three activation-state wallet frames (under review / failed / contact support) all render the zero-balance wallet.
-export function WalletUnderReviewScreen({ backdrop }: ScreenProps) {
-  return <WalletZeroBalanceScreen backdrop={backdrop} />
+export function WalletUnderReviewScreen({ backdrop, openOn }: ScreenProps) {
+  return <WalletZeroBalanceScreen backdrop={backdrop} openOn={openOn} />
 }
-export function WalletActivationFailedScreen({ backdrop }: ScreenProps) {
-  return <WalletZeroBalanceScreen backdrop={backdrop} />
+export function WalletActivationFailedScreen({ backdrop, openOn }: ScreenProps) {
+  return <WalletZeroBalanceScreen backdrop={backdrop} openOn={openOn} />
 }
-export function WalletContactSupportScreen({ backdrop }: ScreenProps) {
-  return <WalletZeroBalanceScreen backdrop={backdrop} />
+export function WalletContactSupportScreen({ backdrop, openOn }: ScreenProps) {
+  return <WalletZeroBalanceScreen backdrop={backdrop} openOn={openOn} />
 }
 
 /** W2 · Wallet · US tab · Funded. */
-export function WalletFundedScreen({ backdrop }: ScreenProps) {
+export function WalletFundedScreen({ backdrop, openOn }: ScreenProps) {
   return (
     <WalletScreen
       label="Wallet, USD, funded"
       backdrop={backdrop}
-      {...USD}
+      tab={openOn}
       total="$520.40"
       withdrawable="$417.03"
       details={FIGMA.balanceDetails}
@@ -38403,33 +38790,47 @@ export function WalletFundedScreen({ backdrop }: ScreenProps) {
   )
 }
 
-/** Wallet · US tab · Add money transfer in progress. */
-export function WalletTransferInProgressScreen({ backdrop }: ScreenProps) {
+/** The deposit shown when the wallet is opened straight from the list (nothing was paid in this visit). */
+const SAMPLE_DEPOSIT: SentDeposit = { usd: 1035.37, inr: '₹91,320', bank: 'HDFC Bank ••7821' }
+
+/**
+ * Wallet · US tab · Add money transfer in progress. `sent`: just back from the bank's page (us-stocks-93) — the sheet
+ * opens at once to say the money is on its way and when it lands; "Got it" leaves the wallet with its pending banner.
+ */
+export function WalletTransferInProgressScreen({ backdrop, openOn, sent }: ScreenProps & { sent?: boolean }) {
+  const deposit = sentDeposit(SAMPLE_DEPOSIT)
   // Tapping the banner explains the wait: Paid → Sent to US → Ready, and why it takes 1–2 working days.
-  const [explaining, setExplaining] = useState(false)
+  const [explaining, setExplaining] = useState(!!sent && !backdrop)
   return (
     <WalletScreen
       label="Wallet, USD, transfer in progress"
       backdrop={backdrop}
+      tab={openOn}
       {...WITH_BALANCE}
       total="$0"
       withdrawable="$0.00"
       backTo="stocks-01"
       dock={DEPOSIT_ONLY}
-      pending={{ title: <><Usd value={1035.37} layout="inline" /> deposit in progress</>, sub: 'Arrives in your wallet by Thu 8 PM (or Fri)', onOpen: () => !backdrop && setExplaining(true) }}
-      sheet={explaining && <DepositProgressSheet amount={1035.37} eta="by Thu 8 PM" onClose={() => setExplaining(false)} />}
+      pending={{ title: <><Usd value={deposit.usd} layout="inline" /> deposit in progress</>, sub: 'Arrives in your wallet by Thu 8 PM (or Fri)', onOpen: () => !backdrop && setExplaining(true) }}
+      sheet={explaining && <DepositProgressSheet deposit={deposit} eta="by Thu 8 PM" sent={sent} onClose={() => setExplaining(false)} />}
     />
   )
 }
 
+/** Back from the bank's page: the in-progress wallet with the "money sent" sheet open (not in Figma). */
+export function WalletMoneySentScreen(props: ScreenProps) {
+  return <WalletTransferInProgressScreen {...props} sent />
+}
+
 /** W3 · Withdrawing · in progress (Cancel asks to confirm, then the banner goes). */
-export function WalletWithdrawalInProgressScreen({ backdrop }: ScreenProps) {
+export function WalletWithdrawalInProgressScreen({ backdrop, openOn }: ScreenProps) {
   const [asking, setAsking] = useState(false)
   const [cancelled, setCancelled] = useState(false)
   return (
     <WalletScreen
       label="Wallet, USD, withdrawal in progress"
       backdrop={backdrop}
+      tab={openOn}
       {...WITH_BALANCE}
       dock={DEPOSIT_ONLY}
       pending={
@@ -38458,11 +38859,12 @@ export function WalletWithdrawalInProgressScreen({ backdrop }: ScreenProps) {
 }
 
 /** W3 · Withdrawing · sent to bank. */
-export function WalletWithdrawalSentScreen({ backdrop }: ScreenProps) {
+export function WalletWithdrawalSentScreen({ backdrop, openOn }: ScreenProps) {
   return (
     <WalletScreen
       label="Wallet, USD, withdrawal sent to bank"
       backdrop={backdrop}
+      tab={openOn}
       {...WITH_BALANCE}
       dock={DEPOSIT_ONLY}
       pending={{ title: <><Usd value={100} layout="inline" /> withdrawal sent to bank</>, sub: 'Credited to HDFC Bank by Wed' }}
@@ -38471,17 +38873,18 @@ export function WalletWithdrawalSentScreen({ backdrop }: ScreenProps) {
 }
 
 /** W3 · Withdrawal credited. */
-export function WalletWithdrawalCreditedScreen({ backdrop }: ScreenProps) {
-  return <WalletScreen label="Wallet, USD, withdrawal credited" backdrop={backdrop} {...WITH_BALANCE} dock={DEPOSIT_ONLY} />
+export function WalletWithdrawalCreditedScreen({ backdrop, openOn }: ScreenProps) {
+  return <WalletScreen label="Wallet, USD, withdrawal credited" backdrop={backdrop} tab={openOn} {...WITH_BALANCE} dock={DEPOSIT_ONLY} />
 }
 
 /** W3b · 2 withdrawals pending (View opens the requests sheet). `sheet` is set by the W3c frame. */
-export function WalletTwoWithdrawalsScreen({ backdrop, sheet }: ScreenProps & { sheet?: WalletScreenProps['sheet'] }) {
+export function WalletTwoWithdrawalsScreen({ backdrop, openOn, sheet }: ScreenProps & { sheet?: WalletScreenProps['sheet'] }) {
   const { go } = useUsNav()
   return (
     <WalletScreen
       label="Wallet, USD, two withdrawals pending"
       backdrop={backdrop}
+      tab={openOn}
       {...WITH_BALANCE}
       dock={DEPOSIT_ONLY}
       sheet={sheet}
@@ -38495,16 +38898,17 @@ export function WalletTwoWithdrawalsScreen({ backdrop, sheet }: ScreenProps & { 
 }
 
 /** W3c · Withdrawal requests sheet over the two-withdrawals wallet. */
-export function WalletWithdrawalRequestsScreen({ backdrop }: ScreenProps) {
+export function WalletWithdrawalRequestsScreen({ backdrop, openOn }: ScreenProps) {
   return <WalletTwoWithdrawalsScreen backdrop={backdrop} sheet={backdrop ? undefined : <WithdrawalRequestsSheet />} />
 }
 
 /** W3d · Withdrawal taking longer. */
-export function WalletWithdrawalDelayedScreen({ backdrop }: ScreenProps) {
+export function WalletWithdrawalDelayedScreen({ backdrop, openOn }: ScreenProps) {
   return (
     <WalletScreen
       label="Wallet, USD, withdrawal taking longer"
       backdrop={backdrop}
+      tab={openOn}
       {...WITH_BALANCE}
       dock={DEPOSIT_ONLY}
       pending={{ title: <><Usd value={100} layout="inline" /> withdrawal pending</>, sub: 'Taking longer than usual, we’re on it' }}
@@ -38535,7 +38939,7 @@ export const FIGMA = {
   /** H08 · Withdraw · enter amount. */
   withdraw: '5852:100550',
   /** Activate US Stocks (activation flow). */
-  activate: '5756:71475',
+  activate: '9001:60', // Activate US Stocks: the declarations page (screens/activate)
   /** W0 · Wallet · US tab · Activate US Stocks. */
   walletUsActivate: '5852:99057',
   /** W3b · 2 withdrawals pending. */
@@ -38583,8 +38987,8 @@ import {
   WalletActivationFailedScreen,
   WalletContactSupportScreen,
   WalletFundedScreen,
-  WalletInrScreen,
   WalletTransferInProgressScreen,
+  WalletMoneySentScreen,
   WalletTwoWithdrawalsScreen,
   WalletUnderReviewScreen,
   WalletUsKycPendingScreen,
@@ -38601,7 +39005,7 @@ import {
  * The wallet's US tab in the user status picked in the prototype settings (src/shared/userStatus): not activated (or KYC
  * pending) → Activate US Stocks; under review / contact support / failed; activated → $0, money on the way, or funded.
  */
-function WalletUsForStatus(props: { backdrop?: boolean }) {
+function WalletUsForStatus(props: { backdrop?: boolean; openOn?: 'inr' | 'usd' }) {
   switch (useUsJourney()) {
     case 'kyc': return <WalletUsKycPendingScreen {...props} />
     case 'review': return <WalletUnderReviewScreen {...props} />
@@ -38617,7 +39021,8 @@ function WalletUsForStatus(props: { backdrop?: boolean }) {
 
 /** Screens of this part, by Figma node id. The US tab's "Activate" frame is the one US tab that follows the user status. */
 export const screens: UsScreenMap = {
-  '5852:99084': WalletInrScreen,
+  // W0 · Indian tab: the same wallet page, opened on INR; its USD tab is the one the user status picks.
+  '5852:99084': (props) => <WalletUsForStatus {...props} openOn="inr" />,
   '5852:99057': WalletUsForStatus,
   '5852:99028': WalletUnderReviewScreen,
   '5852:98999': WalletActivationFailedScreen,
@@ -38628,6 +39033,7 @@ export const screens: UsScreenMap = {
   '5852:98888': () => <BalanceDetails />,
   '5852:98862': () => <BalanceDetails expanded />,
   '5776:84195': WalletTransferInProgressScreen,
+  '9001:22': WalletMoneySentScreen,
   '5852:98799': WalletWithdrawalInProgressScreen,
   '5852:98736': WalletWithdrawalSentScreen,
   '5852:98677': WalletWithdrawalCreditedScreen,
@@ -38967,23 +39373,39 @@ export function CancelWithdrawalSheet({ amount, all, onNo, onYes }: { amount: nu
 ### `src/flows/us-stocks/screens/wallet/sheets/DepositProgressSheet.tsx`
 
 ```tsx
-// "Why does it take 1–2 days?" — opened from the wallet's "deposit in progress" banner. The same three steps as the Home's
-// "Money on the way" card (Paid → Sent to US → Ready), here as L3 Steps (vertical) so each can say what's happening and
-// why: money leaving India goes through the bank's forex desk under RBI's LRS and an international wire, and US banks
-// only credit on US working days.
+// Where a deposit is, as L3 Steps (vertical): Paid → Sent to US → Ready to trade, each saying what's happening and why —
+// money leaving India goes through the bank's forex desk under RBI's LRS and an international wire, and US banks only
+// credit on US working days. Two openings:
+// - "sent": the user is back from the bank's page (us-stocks-93) — the money has left their bank but isn't in the wallet
+//   yet, so the sheet says so first: "$50.00 is on its way", and when it lands.
+// - otherwise: "Why it takes 1–2 days", from the wallet's "deposit in progress" banner.
+// The steps already say the user will be told when it lands, so the safe note only says the money is safe.
 import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
+import { Inset } from '@l3/components/Inset'
 import { Stack } from '@l3/components/Stack'
 import { Steps } from '@l3/components/Steps'
 import { msShieldLockFill } from '@l3/icons/material'
 import { useSheetLayer } from '../../../components/Phone'
-import { Usd } from '../../../../../shared/money'
+import { formatUsd } from '../../../../../shared/money'
+import type { SentDeposit } from '../../money/handoff'
 import styles from './Sheets.module.css'
 
-export function DepositProgressSheet({ amount, eta, onClose }: { amount: number; eta: string; onClose: () => void }) {
+type DepositProgressSheetProps = {
+  /** The deposit: $ that will land, ₹ that left the bank, and which bank. */
+  deposit: SentDeposit
+  /** When it lands ("by Thu 8 PM"). */
+  eta: string
+  /** Just back from the bank's page: the sheet opens with "on its way". */
+  sent?: boolean
+  onClose: () => void
+}
+
+export function DepositProgressSheet({ deposit, eta, sent, onClose }: DepositProgressSheetProps) {
   const layer = useSheetLayer()
+  const usd = formatUsd(deposit.usd)
   return (
     <BottomSheet
       open
@@ -38991,11 +39413,19 @@ export function DepositProgressSheet({ amount, eta, onClose }: { amount: number;
       container={layer}
       aria-labelledby="deposit-progress-title"
       header={
-        <BottomSheetHeader
-          heading="Why it takes 1–2 days"
-          headingId="deposit-progress-title"
-          description="Sending money abroad goes through a few regulated hands. Here's where yours is."
-        />
+        sent ? (
+          <BottomSheetHeader
+            heading={`${usd} is on its way`}
+            headingId="deposit-progress-title"
+            description={`Your payment went through. Money sent abroad takes 1–2 working days to reach your USD wallet: expected ${eta}.`}
+          />
+        ) : (
+          <BottomSheetHeader
+            heading="Why it takes 1–2 days"
+            headingId="deposit-progress-title"
+            description="Sending money abroad goes through a few regulated hands. Here's where yours is."
+          />
+        )
       }
       footer={
         <ButtonGroup aria-label="Deposit progress">
@@ -39009,19 +39439,21 @@ export function DepositProgressSheet({ amount, eta, onClose }: { amount: number;
         <Steps
           label="Your deposit"
           steps={[
-            { label: 'Paid', state: 'done', description: <><Usd value={amount} layout="inline" /> left your bank account. Nothing more to do.</> },
+            { label: 'Paid', state: 'done', description: `${deposit.inr} left your ${deposit.bank}. Nothing more to do.` },
             {
               label: 'Sent to US · 1–2 working days',
               state: 'loading',
               description: 'Your bank converts it to dollars under RBI’s Liberalised Remittance Scheme and wires it to our US broker partner. International wires are checked at each bank on the way.',
             },
-            { label: 'Ready to trade', state: 'todo', description: `Expected ${eta}. US banks credit only on US working days, so a US holiday can add a day.` },
+            { label: 'Ready to trade', state: 'todo', description: `${usd} in your USD wallet, expected ${eta}. US banks credit only on US working days, so a US holiday can add a day. We'll notify you when it lands.` },
           ]}
         />
-        <p className={styles.safeNote}>
-          <Icon icon={msShieldLockFill} size={16} />
-          <span>Your money is safe with Lemonn. It's held in your name at our US broker partner, and you'll be notified the moment it lands.</span>
-        </p>
+        <Inset padding="12" className={styles.safeNote}>
+          <Stack direction="horizontal" align="center" gap="12">
+            <Icon icon={msShieldLockFill} size={24} />
+            <span>Your money is safe, held in your name at our US broker partner.</span>
+          </Stack>
+        </Inset>
       </Stack>
     </BottomSheet>
   )
@@ -39173,15 +39605,14 @@ export function DepositProgressSheet({ amount, eta, onClose }: { amount: number;
 
 /* Deposit progress sheet: "your money is safe" under the steps. */
 .safeNote {
-  display: flex;
-  gap: var(--l3-spacing-08);
-  align-items: flex-start;
-  margin: 0;
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-accent-success-light);
   font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
-.safeNote > :first-child {
+/* The lock icon (first in the row). */
+.safeNote > * > :first-child {
   flex: none;
   color: var(--l3-content-accent-success-default);
 }
@@ -39712,6 +40143,31 @@ export function companiesByChange(direction: 'gainers' | 'losers'): Company[] {
   const list = Object.values(companies).filter((c) => c.market)
   return list.sort((a, b) => (direction === 'gainers' ? b.market!.changePct - a.market!.changePct : a.market!.changePct - b.market!.changePct))
 }
+```
+
+### `src/shared/data/etfInside.ts`
+
+```ts
+// ETF cards' second line, shared by the ETF list (us-stocks) and Home's Discover ETFs (stocks): after the ticker, what
+// kind of companies are inside, with a name people know: "QQQ · Mostly big tech, like Apple" (3 Nov; was the
+// fund's legal name, which says little — it stays on the ETF page). Kept to about 28 characters so it fits one line at 360. Sample copy; the API would send it with the fund.
+export const ETF_INSIDE: Record<string, string> = {
+  SPY: 'Big US firms in every sector', QQQ: 'Mostly big tech, like Apple', VTI: 'Every US firm, big to small',
+  SMH: 'Chip makers, like NVIDIA', ITA: 'Plane, jet & weapon makers', XLE: 'Oil & gas, like ExxonMobil',
+  XLF: 'Banks, insurers & card firms', XLV: 'Drug makers & health insurers', BOTZ: 'Robot makers & AI chip firms',
+  UFO: 'Rocket, satellite & GPS firms', INDA: 'Big Indian banks, IT & energy', EPI: 'Indian firms with big profits',
+  MCHI: 'Chinese giants, like Tencent', KWEB: 'Chinese shopping & chat apps', EWJ: "Japan's giants, like Toyota",
+  VGK: "Europe's giants, like ASML", EWY: "Korea's giants, like Samsung", FXI: "China's top 50, like Alibaba",
+  CQQQ: 'Chinese tech, chips to apps', DXJ: 'Exporters, like Toyota & Honda', HEWJ: "Japan's giants, yen-protected",
+  SCJ: 'Smaller firms, like Sanrio', FEZ: "Eurozone's top 50, like SAP", EZU: 'Euro-area firms, like Siemens',
+  IEUR: '1,000+ European firms', FLKR: "Korea's giants, like SK Hynix",
+  TQQQ: 'Mostly big tech, like Apple', SQQQ: 'Mostly big tech, like Apple', SOXL: 'Chip makers, like NVIDIA',
+  SOXS: 'Chip makers, like NVIDIA', NVDL: 'One stock: NVIDIA', NVD: 'One stock: NVIDIA',
+  SPXL: 'Big US firms, like Apple', SPXS: 'Big US firms, like Apple',
+}
+
+/** What kind of companies the ETF `sym` holds, in a few words; undefined when there's no line for it. */
+export const etfInside = (sym: string): string | undefined => ETF_INSIDE[sym]
 ```
 
 ### `src/shared/data/etfIssuers.ts`
@@ -61801,6 +62257,12 @@ export const linkedBanks: LinkedBank[] = [
   { ...bankAccount, id: 'hdfc', logoSymbol: 'HDFCBANK', last4: '7821', primary: true },
   { id: 'icici', bank: 'ICICI Bank', accountNumber: '002101554410', ifsc: 'ICIC0000021', type: 'Savings', branch: 'Powai, Mumbai', logoSymbol: 'ICICIBANK', last4: '4410' },
 ]
+
+/**
+ * A linked account at a bank that can't send money abroad for US Stocks (not an LRS partner) — "User status → Bank
+ * accounts: Three" and "SBI only" add it, to show the US Stocks bank step with an account it can't use.
+ */
+export const otherBank: LinkedBank = { id: 'sbi', bank: 'State Bank of India', accountNumber: '38201945520', ifsc: 'SBIN0000300', type: 'Savings', branch: 'Fort, Mumbai', logoSymbol: 'SBIN', last4: '5520' }
 ```
 
 ### `src/shared/money.module.css`
@@ -62070,10 +62532,31 @@ export type Preview = {
   back?: () => boolean
   /** The screen was reached by going back (a back button, or a screen earlier in the app) — a page can come back as it was left. */
   cameBack?: boolean
+  /** An `over` screen (a sheet over the screen the user is on): the screen under it — closing the sheet goes there. */
+  under?: string
 }
 
 export const PreviewContext = createContext<Preview>({ interactive: false, go: () => {} })
 export const usePreview = () => useContext(PreviewContext)
+
+// ---- Which way the next move goes ------------------------------------------------------------------------------------
+// The preview guesses a move's direction (a screen visited before, or one earlier in the same flow, is "back"). A tap can
+// say it instead: Deposit opens Add money (listed earlier in the flow) as a page going forward; a back button's fallback
+// (nothing in the history) is back, and replaces the page instead of adding to the history.
+let intent: { id: string; direction: 'forward' | 'back' } | null = null
+
+/** Say the move to screen `id` that is about to happen is forward (a page opening) or back. */
+export const markMove = (id: string, direction: 'forward' | 'back') => {
+  intent = { id, direction }
+}
+
+/** The preview: the direction said for a move to `id`, if any. */
+export const moveIntent = (id: string) => (intent?.id === id ? intent.direction : undefined)
+
+/** The preview: the move happened. */
+export const clearMoveIntent = () => {
+  intent = null
+}
 
 /** Prototype only: after `ms`, go to `next` (loaders, "Verifying…"). */
 export function useAutoAdvance(next: string | undefined, ms: number) {
@@ -62185,7 +62668,7 @@ export function emailSupport(subject: string) {
 ```css
 /*
  * Add-money amount entry (AmountEntry.tsx). FLAG: L3 has no big amount input and no in-app keypad — drawn here on L3
- * tokens. The amount is Heading 36, centred, with a brand caret (the field is always being typed into: L3's Typing
+ * tokens. The amount is Heading 36, centred, with a discover (blue) caret, as on L3's TextField (the field is always being typed into: L3's Typing
  * state has no big-number version).
  */
 .entry {
@@ -62220,7 +62703,7 @@ export function emailSupport(subject: string) {
   width: 2px; /* the text caret */
   height: var(--l3-size-40);
   margin-left: var(--l3-spacing-04);
-  background: var(--l3-content-accent-brand-default);
+  background: var(--l3-content-accent-discover-default); /* L3's typing caret colour (TextField --tf-caret) */
   animation: blink 1s steps(1) infinite;
 }
 
@@ -62622,6 +63105,86 @@ export const goToTab = (go: (id: string) => void, section: Section) => {
 }
 ```
 
+### `src/shared/ui/Rail.module.css`
+
+```css
+/*
+ * Sideways rail. Item width = the row (inside its 16 insets) shared by `--rail-visible` items with 12 between them, so
+ * the same rail reads well from 360 to 412. --rail-visible is a count (set inline), not a size.
+ */
+.rail {
+  /* Positioned, so absolutely placed bits inside (e.g. PriceChange's screen-reader text) are clipped by the rail
+     instead of hanging off a far-away ancestor and making the whole page scroll sideways. */
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--rail-visible) - 1) * var(--l3-spacing-12)) / var(--rail-visible));
+  gap: var(--l3-spacing-12);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-inline: var(--l3-spacing-16);
+  scroll-padding-inline: var(--l3-spacing-16);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  /* Room for the cards' shadow: a sideways scroller clips vertically too, so it pads 12 above and below and takes it
+     back with a negative margin (same layout, shadow not cut). */
+  padding-block: var(--l3-spacing-12);
+  margin-block: calc(-1 * var(--l3-spacing-12));
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.rail > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.rail[data-snap='center'] > * {
+  scroll-snap-align: center;
+}
+
+/* Two rows that scroll together. */
+.rail[data-rows='2'] {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+}
+```
+
+### `src/shared/ui/Rail.tsx`
+
+```tsx
+import type { CSSProperties, ReactNode } from 'react'
+import styles from './Rail.module.css'
+
+type RailProps = {
+  children: ReactNode
+  /** What the row holds, for screen readers ("Top gainers"). */
+  label: string
+  /** How many items show across the screen — a fraction (2.3) lets the next one peek in, so it reads as scrollable. */
+  visible: number
+  /** Two rows that scroll together (a grid of cards). */
+  rows?: 1 | 2
+  /** Snap each item to the start (lists) or the centre (one featured card at a time, neighbours peeking). */
+  snap?: 'start' | 'center'
+  /** Extra room inside the row (e.g. above the cards, for a tag sitting on a card's top edge). */
+  className?: string
+}
+
+/**
+ * A row that scrolls sideways — cards, baskets, ideas. Its first item lines up with the 16 page margin, items are
+ * 12 apart and snap into place, and there's no scrollbar. Not L3 yet (a "carousel / rail" is missing there).
+ */
+export function Rail({ children, label, visible, rows = 1, snap = 'start', className }: RailProps) {
+  return (
+    <div className={[styles.rail, className].filter(Boolean).join(' ')} role="region" aria-label={label} data-rows={rows} data-snap={snap} style={{ '--rail-visible': visible } as CSSProperties}>
+      {children}
+    </div>
+  )
+}
+```
+
 ### `src/shared/ui/Sheet.module.css`
 
 ```css
@@ -62762,6 +63325,11 @@ export function SheetHost({ container, children }: { container: HTMLElement | nu
 .value {
   font: var(--l3-text-label-14);
 }
+
+/* FLAG: L3 gap — a static ListCell card has no shadow; the app gives every stock card L3's soft one (as Portfolio's holdings). */
+.static[data-variant='card'] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-soft); /* 1px: Figma stroke weight has no variable */
+}
 ```
 
 ### `src/shared/ui/StockListCard.tsx`
@@ -62802,16 +63370,17 @@ type StockListCardProps = {
 
 /**
  * The one stock row of the app, as a card — the Market list's style, used wherever stocks or ETFs are listed:
- * logo · symbol over name · price over the day's change. Long lists show it flat (border only, no shadow).
+ * logo · symbol over name · price over the day's change. Every card wears L3's soft shadow (`elevation-soft`, the user's
+ * call on 4 Nov): tappable ones get it from ListCell (raised, the default); static ones (no `onOpen`) from `.static`.
  *
- * Flat = L3 ListCell `raised={false}`, symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
+ * Symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
 export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
   return (
     <ListCell
       variant="card"
       as={onOpen ? 'button' : undefined}
-      raised={false}
+      className={onOpen ? undefined : styles.static}
       iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
@@ -62841,7 +63410,7 @@ export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, pric
 // In a real app these come from the user's account (KYC status, US Stocks activation, wallet, holdings).
 import type { FlowOption } from '../flows/types'
 import { setFlowOption, useFlowOption } from './prototype'
-import { linkedBanks, type LinkedBank } from './data/user'
+import { linkedBanks, otherBank, type LinkedBank } from './data/user'
 
 /** The settings' owner in the preview (as a flow id: where the picks are remembered). */
 export const USER_STATUS = 'app'
@@ -62850,7 +63419,7 @@ export type KycStatus = 'done' | 'pending'
 export type UsActivation = 'kyc' | 'off' | 'review' | 'support' | 'failed' | 'active'
 export type UsWallet = 'empty' | 'onTheWay' | 'funded'
 export type UsHoldings = 'none' | 'some'
-export type BankLinks = 'none' | 'one' | 'two'
+export type BankLinks = 'none' | 'one' | 'two' | 'three' | 'sbi'
 
 /**
  * Screens that change with the user status: the settings float beside the phone on these (desktop preview). The Home,
@@ -62858,7 +63427,7 @@ export type BankLinks = 'none' | 'one' | 'two'
  * the wallet's US tab.
  */
 /** The add-money screens and the wallet: the bank row and its sheet change with the user's linked banks. */
-const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54']
+const BANK_SCREENS = ['deposit-01', 'deposit-06', 'deposit-07', 'deposit-08', 'deposit-09', 'us-stocks-21', 'us-stocks-22', 'us-stocks-23', 'us-stocks-24', 'us-stocks-53', 'us-stocks-54', 'us-stocks-95']
 
 const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-19', 'stocks-20', 'stocks-21', 'us-stocks-13', 'us-stocks-54']
 
@@ -62907,8 +63476,9 @@ export const userStatusOptions: FlowOption[] = [
     id: 'banks',
     group: 'User status',
     label: 'Bank accounts',
-    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }],
-    default: 'two',
+    // Three / SBI only: with an account at a bank US Stocks money can't go from (State Bank of India).
+    values: [{ value: 'none', label: 'None' }, { value: 'one', label: 'One' }, { value: 'two', label: 'Two' }, { value: 'three', label: 'Three (+ SBI)' }, { value: 'sbi', label: 'SBI only' }],
+    default: 'three',
     floatOn: BANK_SCREENS,
   },
 ]
@@ -62941,8 +63511,22 @@ export function useLinkedBanks(): LinkedBank[] {
   const usWallet = useStatus('usWallet') as UsWallet
   const moneyMoved = us === 'active' && usWallet !== 'empty'
   const banks = picked === 'none' && moneyMoved ? 'one' : picked
-  return banks === 'none' ? [] : banks === 'one' ? linkedBanks.slice(0, 1) : linkedBanks
+  const linked = { none: [], one: linkedBanks.slice(0, 1), two: linkedBanks, three: [...linkedBanks, otherBank], sbi: [{ ...otherBank, primary: true }] }[banks]
+  return addedBank ? [...linked, addedBank] : linked
 }
+
+// A bank account added in the prototype ("Add bank account" → verified). Kept in memory, so a reload starts without it.
+let addedBank: LinkedBank | undefined
+let addBankOpener: string | undefined
+
+/** An add-money screen (₹ or US) opens "Add bank account": remember which, so the verified account comes back to it. */
+export const startAddBank = (fromScreen?: string) => { addBankOpener = fromScreen }
+/** The add-money screen that opened "Add bank account" (undefined when it was opened straight from the screen list). */
+export const addBankReturnScreen = () => addBankOpener
+/** The ₹1 check passed: the account joins the linked banks, and the add-money screens pick it. */
+export const linkBank = (bank: LinkedBank) => { addedBank = bank }
+/** The account added in this session, if any. */
+export const newlyLinkedBank = () => addedBank
 
 /**
  * Where the user is with US Stocks, as one step: KYC pending → 'kyc'; not activated → 'activate'; under review /
