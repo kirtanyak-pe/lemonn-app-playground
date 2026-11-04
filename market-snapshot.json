@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-04T11:35:20.061Z",
+ "fetchedAt": "2026-11-04T11:47:06.974Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -4147,7 +4147,7 @@
    "changePct": -1.42,
    "dayHigh": 348.95,
    "dayLow": 340,
-   "high52": 348.95,
+   "high52": 350.2,
    "low52": 212.6,
    "volume": 22545452,
    "longName": "Eternal Limited",
