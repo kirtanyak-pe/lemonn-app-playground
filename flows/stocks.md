@@ -25,7 +25,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 | `stocks-22` | Home · US tab · activation approved sheet | [9001:21]() | `us-stocks-20`, `stocks-15` | The review is approved: the activated US tab with the "US Stocks is active" sheet (success spot). Add Money to US wallet → the $0 USD wallet (us-stocks-20); Later or closing → the activated Home (stocks-15). The under-review Home (stocks-13) moves here by itself after 2 s. |
 | `stocks-14` | Home · US tab · activation failed | [5776:81034]() | — | US tab, activation failed (PAN could not be verified): red card, Retry Activation → the activation pages (us-stocks-94). |
 | `stocks-15` | Home · US tab · activated · add money | [5776:81870]() | `us-stocks-20` | US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too. |
-| `stocks-16` | Home · US tab · money ready | [5796:87332]() | `stocks-17` | Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59). |
+| `stocks-16` | Home · US tab · money ready | [5796:87332]() | `market-09` | Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast or the card\ |
 | `stocks-17` | Home · US tab · activated · holding | [5826:92885]() | — | US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet. |
 | `stocks-19` | Home · US tab · under review · Contact Support | [5776:80202]() | — | Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\ |
 | `stocks-20` | Home · US tab · money on the way | [5796:86490]() | `us-stocks-28` | After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\ |
@@ -304,6 +304,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-04 — Money ready: Explore US Stocks (card and toast) opens Market with US picked (market-09), not the activated Home.
+- 2026-11-04 — US Home: Top analyst picks has a one-line description under its heading (what the picks are).
 - 2026-11-04 — Card shadows no longer cut off in sideways scrollers: a sideways scroller clips top and bottom too, so the shared `Rail`, the US Home's Top Movers / Brands scrollers, Portfolio's market cards, the MF scroller and the stock page's related ETFs pad 12 above and below and take it back with a negative margin (same layout; horizontal and page scrolling unchanged). L3 gap: L3 Tabs (pill, raised) leaves 4 for a shadow that reaches 5.
 - 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
 - 2026-11-04 — Risk disclosure sheet (`stocks-12`) removed: Activate US Stocks (card, FTUX sheet) and Retry Activation open the US Stocks flow's activation pages (`us-stocks-94`: declarations, then bank).
@@ -24006,7 +24008,7 @@ export function UsHome({ usState = 'activate', onActivate, onStock, onMarket, on
       </div>
 
       <Stack as="section" gap="16" aria-label={t('us.picks.title')}>
-        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.picks.title')} action={{ type: 'view-all', onClick: () => onPicks?.() }} /></Inset>
+        <Inset paddingInline="16" paddingBlock="00"><SectionHeader title={t('us.picks.title')} description={t('us.picks.description')} action={{ type: 'view-all', onClick: () => onPicks?.() }} /></Inset>
         {picksView === 'list' ? (
           <Inset paddingInline="16" paddingBlock="00">
             <Stack gap="12">
@@ -25893,6 +25895,7 @@ export function useSwipeBetween({ canGo, onSwitch, page, area, slides, fades }: 
   "us.heatmap.ndx": "Nasdaq 100",
   "us.heatmap.dow": "Dow Jones",
   "us.picks.title": "Top analyst picks",
+  "us.picks.description": "Wall Street's top buys for the next 12 months",
   "us.picks.railLabel": "Top analyst picks",
   "us.picks.recommendation": "Recommendation",
   "us.picks.week": "7D",
@@ -26139,7 +26142,7 @@ const stateTaps = (go: Go, usState: UsState): Partial<ComponentProps<typeof Home
     case 'support': return { onActivateUs: () => emailSupport(t('us.support.subject')) }
     case 'activated': return { onActivateUs: () => go('us-stocks-20') }
     case 'onTheWay': return { onActivateUs: () => go('us-stocks-28') }
-    case 'ready': return { onActivateUs: () => go('stocks-17') }
+    case 'ready': return { onActivateUs: () => go('market-09') } // Explore US Stocks → Market with US picked
     case 'holding': return { onUsStock: (sym) => go(sym === 'NVDA' ? 'us-stocks-32' : 'us-stocks-31') }
     default: return {}
   }
@@ -26204,7 +26207,7 @@ export const stocks: Flow = {
     { id: 'stocks-22', name: 'Home · US tab · activation approved sheet', badge: 'new', badgeNote: 'Not in Jojo\'s Figma: tells the user the review was approved', figma: '9001:21', group: 'us-review', note: 'The review is approved: the activated US tab with the "US Stocks is active" sheet (success spot). Add Money to US wallet → the $0 USD wallet (us-stocks-20); Later or closing → the activated Home (stocks-15). The under-review Home (stocks-13) moves here by itself after 2 s.', tab: true, render: (go) => usHome(go, 'activated', { onActivateUs: () => go('us-stocks-20'), sheet: <ActivationApprovedSheet onAddMoney={() => go('us-stocks-20')} onLater={() => go('stocks-15')} /> }) },
     { id: 'stocks-14', hidden: true, name: 'Home · US tab · activation failed', figma: '5776:81034', note: 'US tab, activation failed (PAN could not be verified): red card, Retry Activation → the activation pages (us-stocks-94).', tab: true, render: (go) => usHome(go, 'failed') },
     { id: 'stocks-15', hidden: true, name: 'Home · US tab · activated · add money', figma: '5776:81870', note: 'US tab, activation successful: green card with the unlocked benefits, Add Money to US wallet → the $0 USD wallet (us-stocks-20). The wallet icon goes there too.', tab: true, render: (go) => usHome(go, 'activated', { onActivateUs: () => go('us-stocks-20') }) },
-    { id: 'stocks-16', hidden: true, name: 'Home · US tab · money ready', figma: '5796:87332', note: 'Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59).', tab: true, render: (go) => usHome(go, 'ready', { onActivateUs: () => go('stocks-17') }) },
+    { id: 'stocks-16', hidden: true, name: 'Home · US tab · money ready', figma: '5796:87332', note: 'Money reached the US wallet: a "Your money is ready" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast or the card\'s Explore US Stocks → Market with US picked (market-09). Wallet → the funded USD wallet (us-stocks-59).', tab: true, render: (go) => usHome(go, 'ready', { onActivateUs: () => go('market-09') }) },
     { id: 'stocks-17', hidden: true, name: 'Home · US tab · activated · holding', figma: '5826:92885', note: 'US tab for an activated user who holds US stocks: no card, the summary shows US holdings ($). A US stock opens its stock page — NVDA (held) with Buy / Sell, others Buy only. Wallet → the funded USD wallet.', tab: true, render: (go) => usHome(go, 'holding', { onUsStock: (sym) => go(sym === 'NVDA' ? 'us-stocks-32' : 'us-stocks-31') }) },
     { id: 'stocks-19', hidden: true, name: 'Home · US tab · under review · Contact Support', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Under review · Contact Support)', figma: '5776:80202', group: 'us-review', note: 'Activation still under review after a working day: the honey card gains a Contact Support button. Contact Support opens an email to Lemonn support (mail app), no in-app screen. The wallet opens the wallet\'s Contact Support state (us-stocks-57).', tab: true, render: (go) => usHome(go, 'support', stateTaps(go, 'support')) },
     { id: 'stocks-20', hidden: true, name: 'Home · US tab · money on the way', badge: 'new', badgeNote: 'Added from Jojo\'s Figma (A00 · Home · Money on the way)', figma: '5796:86490', note: 'After paying on the bank page: the honey "Money on the way" card (trade from Thu 8 PM) with what happens next (debited, converted, credited). Track Transfer and the wallet open the wallet\'s transfer in progress (us-stocks-28). In the prototype it moves on to "money ready" (stocks-16) by itself after 2 s, as in his prototype.', tab: true, render: (go) => usHome(go, 'onTheWay', { onActivateUs: () => go('us-stocks-28'), autoNext: 'stocks-16' }) },

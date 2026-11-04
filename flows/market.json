@@ -138,6 +138,12 @@
     "src/flows/market/sheets/FilterSheet.tsx"
   ],
   "shared": [
+    "src/shared/assets/flags/china.svg",
+    "src/shared/assets/flags/europe.svg",
+    "src/shared/assets/flags/india.svg",
+    "src/shared/assets/flags/japan.svg",
+    "src/shared/assets/flags/korea.svg",
+    "src/shared/assets/flags/us.svg",
     "src/shared/assets/logos/asahiindia.png",
     "src/shared/assets/logos/crisil.png",
     "src/shared/assets/logos/hoec.png",
@@ -160,6 +166,8 @@
     "src/shared/money.module.css",
     "src/shared/money.tsx",
     "src/shared/prototype.ts",
+    "src/shared/ui/Flag.module.css",
+    "src/shared/ui/Flag.tsx",
     "src/shared/ui/MainNav.tsx",
     "src/shared/ui/Screen.module.css",
     "src/shared/ui/Screen.tsx",

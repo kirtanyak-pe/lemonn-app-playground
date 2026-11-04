@@ -159,9 +159,9 @@
       "id": "stocks-16",
       "name": "Home · US tab · money ready",
       "figma": "5796:87332",
-      "note": "Money reached the US wallet: a \"Your money is ready\" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast → the activated page (stocks-17). Wallet → the funded USD wallet (us-stocks-59).",
+      "note": "Money reached the US wallet: a \"Your money is ready\" toast above the navbar (times out after 6 s; no card, as in his design); tapping the toast or the card\\",
       "goesTo": [
-        "stocks-17"
+        "market-09"
       ],
       "figmaUrl": ""
     },

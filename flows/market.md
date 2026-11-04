@@ -45,7 +45,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/market · machi
 | `market-06` | Filters · indices | Indices open, Nifty 500 picked (one choice); its side tab shows 1; stock counts per option |
 | `market-07` | Filters · sectors (several) | Sectors open, Banking + IT picked (any number); sectors with no stocks are off |
 | `market-08` | Market · filters applied | One removable chip per pick; the filter button has a dot |
-| `market-09` | Market · US stocks | The picker left of the tabs is on US: $ prices, US logos, Top gainers; a stock opens its US stock page |
+| `market-09` | Market · US stocks | The picker left of the tabs is on US: $ prices, US logos, the All list; a stock opens its US stock page |
 | `market-10` | Market · US · S&P 500 filter | US list with the S&P 500 index applied (the US Stocks flow's Market tab; Home's "View all" opens it on a tab + filters via `src/shared/data/marketHandoff`) |
 
 ### US stocks
@@ -153,6 +153,8 @@ card is used by every stock list in the app.
 
 ### Changelog
 
+- 2026-11-04 — Market · US stocks (market-09) opens on the All list.
+- 2026-11-04 — The IN / US picker shows the country's round flag (shared Flag) before the label.
 - 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
 - 2026-11-03 — Stock cards are the shared `StockListCard` (flat, Label 14, 12 apart, same look app-wide); `.flatCards` override and `StockRow.module.css` removed.
 - 2026-11-02 — Market picker: small pill (`sm`) with a bigger tap area — the whole block around it (16 each side, the tab row's full height) switches the market.
@@ -684,7 +686,7 @@ export const market: Flow = {
     { id: 'market-06', section: 'filters', name: 'Filters · indices', figma: '', note: 'Indices open — Nifty 500 picked (one choice); its side tab shows 1. Each option says how many stocks it gives.', tab: true, render: (go) => <Market sheet sheetSection="index" filters={{ index: 'nifty-500' }} onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
     { id: 'market-07', section: 'filters', name: 'Filters · sectors (several)', figma: '', note: 'Sectors open — Banking and IT picked (any number); sort and index picked too. Sectors with no stocks in Nifty 500 are off.', tab: true, render: (go) => <Market sheet sheetSection="sector" filters={{ sort: 'price-desc', index: 'nifty-500', sector: ['banking', 'it'] }} onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
     { id: 'market-08', section: 'filters', name: 'Market · filters applied', figma: '', note: 'One removable chip per pick; the filter button gets a dot.', tab: true, render: (go) => <Market filters={{ sort: 'price-desc', index: 'nifty-500', sector: ['banking', 'it'] }} onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
-    { id: 'market-09', section: 'lists', name: 'Market · US stocks', figma: '', note: 'The picker left of the tabs is on US: $ prices, US logos; tapping a stock opens its US stock page (us-stocks-13, which follows the user status).', tab: true, render: (go) => <Market market="us" tab="gainers" onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
+    { id: 'market-09', section: 'lists', name: 'Market · US stocks', figma: '', note: 'The picker left of the tabs is on US: $ prices, US logos; tapping a stock opens its US stock page (us-stocks-13, which follows the user status).', tab: true, render: (go) => <Market market="us" tab="all" onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
     { id: 'market-10', section: 'lists', name: 'Market · US · S&P 500 filter', figma: '', note: 'US list with the S&P 500 index applied (the US Stocks flow\'s E3 entry point). Filter options are the US ones.', tab: true, render: (go) => <Market market="us" filters={{ index: 'sp-500' }} onTab={(t) => goToTab(go, t)} onSearch={() => go('search-24')} onOpenUs={(sym) => { viewUsStock(sym); go('us-stocks-13') }} /> },
   ],
 }
@@ -776,6 +778,7 @@ import { takeMarketHandoff } from '../../../shared/data/marketHandoff'
 import { StockRow } from '../components/StockRow'
 import { applyFilters, currencyOf, listFor, pickedIn, picks, tabs, withPicks, type FilterGroupId, type Filters, type Market as MarketId, type MarketTab } from '../data'
 import { FilterSheet } from '../sheets/FilterSheet'
+import { Flag } from '../../../shared/ui/Flag'
 import { t } from '../copy'
 import styles from './Market.module.css'
 
@@ -844,7 +847,7 @@ export function Market({ market: initialMarket = 'in', tab: initialTab = 'all', 
                     appearance="pill"
                     size="sm"
                     aria-label={t('picker.label', { market: t(`picker.${market}`), other: t(`picker.${other}`) })}
-                    items={[{ value: market, label: t(`picker.${market}`), iconRight: <Icon icon={lmSwitchArrowVertical} size={16} /> }]}
+                    items={[{ value: market, label: t(`picker.${market}`), iconLeft: <Flag code={market === 'in' ? 'in' : 'us'} />, iconRight: <Icon icon={lmSwitchArrowVertical} size={16} /> }]}
                     value={market}
                     onChange={() => {}}
                   />
@@ -1036,6 +1039,134 @@ export function FilterSheet({ market = 'in', initial, section, resultCount, onAp
 ```
 
 ## Source — shared app parts it uses
+
+### `src/shared/assets/flags/china.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- China, round. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="24" fill="#DE2910"/>
+    <g fill="#FFDE00">
+      <polygon points="7.00,3.90 7.81,6.39 10.42,6.39 8.31,7.92 9.12,10.41 7.00,8.88 4.88,10.41 5.69,7.92 3.58,6.39 6.19,6.39"/>
+      <polygon points="12.88,2.17 12.85,2.97 13.60,3.24 12.83,3.46 12.80,4.26 12.36,3.59 11.59,3.82 12.08,3.19 11.63,2.52 12.38,2.80"/>
+      <polygon points="15.51,4.76 15.21,5.50 15.82,6.01 15.02,5.96 14.72,6.70 14.53,5.92 13.73,5.87 14.41,5.44 14.22,4.67 14.83,5.18"/>
+      <polygon points="14.99,7.72 15.10,8.51 15.89,8.65 15.17,9.00 15.28,9.79 14.73,9.21 14.01,9.56 14.38,8.86 13.83,8.28 14.62,8.42"/>
+      <polygon points="13.05,10.25 12.88,11.03 13.58,11.43 12.78,11.51 12.61,12.29 12.29,11.56 11.50,11.65 12.09,11.11 11.76,10.38 12.46,10.78"/>
+    </g>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
+
+### `src/shared/assets/flags/europe.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- European Union, round. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="24" fill="#003399"/>
+    <g fill="#FFCC00">
+      <polygon points="12.00,3.80 12.27,4.63 13.14,4.63 12.44,5.14 12.71,5.97 12.00,5.46 11.29,5.97 11.56,5.14 10.86,4.63 11.73,4.63"/>
+      <polygon points="15.50,4.74 15.77,5.57 16.64,5.57 15.94,6.08 16.21,6.91 15.50,6.40 14.79,6.91 15.06,6.08 14.36,5.57 15.23,5.57"/>
+      <polygon points="18.06,7.30 18.33,8.13 19.20,8.13 18.50,8.64 18.77,9.47 18.06,8.96 17.36,9.47 17.63,8.64 16.92,8.13 17.79,8.13"/>
+      <polygon points="19.00,10.80 19.27,11.63 20.14,11.63 19.44,12.14 19.71,12.97 19.00,12.46 18.29,12.97 18.56,12.14 17.86,11.63 18.73,11.63"/>
+      <polygon points="18.06,14.30 18.33,15.13 19.20,15.13 18.50,15.64 18.77,16.47 18.06,15.96 17.36,16.47 17.63,15.64 16.92,15.13 17.79,15.13"/>
+      <polygon points="15.50,16.86 15.77,17.69 16.64,17.69 15.94,18.20 16.21,19.03 15.50,18.52 14.79,19.03 15.06,18.20 14.36,17.69 15.23,17.69"/>
+      <polygon points="12.00,17.80 12.27,18.63 13.14,18.63 12.44,19.14 12.71,19.97 12.00,19.46 11.29,19.97 11.56,19.14 10.86,18.63 11.73,18.63"/>
+      <polygon points="8.50,16.86 8.77,17.69 9.64,17.69 8.94,18.20 9.21,19.03 8.50,18.52 7.79,19.03 8.06,18.20 7.36,17.69 8.23,17.69"/>
+      <polygon points="5.94,14.30 6.21,15.13 7.08,15.13 6.37,15.64 6.64,16.47 5.94,15.96 5.23,16.47 5.50,15.64 4.80,15.13 5.67,15.13"/>
+      <polygon points="5.00,10.80 5.27,11.63 6.14,11.63 5.44,12.14 5.71,12.97 5.00,12.46 4.29,12.97 4.56,12.14 3.86,11.63 4.73,11.63"/>
+      <polygon points="5.94,7.30 6.21,8.13 7.08,8.13 6.37,8.64 6.64,9.47 5.94,8.96 5.23,9.47 5.50,8.64 4.80,8.13 5.67,8.13"/>
+      <polygon points="8.50,4.74 8.77,5.57 9.64,5.57 8.94,6.08 9.21,6.91 8.50,6.40 7.79,6.91 8.06,6.08 7.36,5.57 8.23,5.57"/>
+    </g>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
+
+### `src/shared/assets/flags/india.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- India, round: saffron / white / green with the navy Ashoka Chakra. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="8" fill="#FF9933"/>
+    <rect y="8" width="24" height="8" fill="#FFFFFF"/>
+    <rect y="16" width="24" height="8" fill="#138808"/>
+    <circle cx="12" cy="12" r="3" fill="none" stroke="#000080" stroke-width="0.8"/>
+    <circle cx="12" cy="12" r="0.8" fill="#000080"/>
+    <g stroke="#000080" stroke-width="0.4">
+      <path d="M12 9v6M9 12h6M9.88 9.88l4.24 4.24M14.12 9.88l-4.24 4.24"/>
+    </g>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
+
+### `src/shared/assets/flags/japan.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- Japan, round. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="24" fill="#FFFFFF"/>
+    <circle cx="12" cy="12" r="5.6" fill="#BC002D"/>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
+
+### `src/shared/assets/flags/korea.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- South Korea, round. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="24" fill="#FFFFFF"/>
+    <circle cx="12" cy="12" r="5" fill="#0047A0"/>
+    <path d="M7 12a5 5 0 0 1 10 0a2.5 2.5 0 0 1-5 0a2.5 2.5 0 0 0-5 0z" fill="#CD2E3A"/>
+    <g stroke="#000000" stroke-width="0.9" stroke-linecap="butt">
+      <path d="M3.6 6.2l2.4-1.4M4.3 7.6l2.4-1.4M5 9l2.4-1.4" transform="translate(-0.4 0.2)"/>
+      <path d="M20.4 6.2l-2.4-1.4M19.7 7.6l-2.4-1.4M19 9l-2.4-1.4" transform="translate(0.4 0.2)"/>
+      <path d="M3.6 17.8l2.4 1.4M4.3 16.4l2.4 1.4M5 15l2.4 1.4" transform="translate(-0.4 -0.2)"/>
+      <path d="M20.4 17.8l-2.4 1.4M19.7 16.4l-2.4 1.4M19 15l-2.4 1.4" transform="translate(0.4 -0.2)"/>
+    </g>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
+
+### `src/shared/assets/flags/us.svg`
+
+```tsx
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- United States, round: red and white stripes with the blue canton. Flag artwork keeps its own colours. -->
+  <defs><clipPath id="c"><circle cx="12" cy="12" r="12"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="24" height="24" fill="#FFFFFF"/>
+    <g fill="#B22234">
+      <rect y="0" width="24" height="2.4"/>
+      <rect y="4.8" width="24" height="2.4"/>
+      <rect y="9.6" width="24" height="2.4"/>
+      <rect y="14.4" width="24" height="2.4"/>
+      <rect y="19.2" width="24" height="2.4"/>
+    </g>
+    <rect width="12" height="12" fill="#3C3B6E"/>
+    <g fill="#FFFFFF">
+      <circle cx="3.5" cy="3" r="0.8"/><circle cx="7" cy="3" r="0.8"/><circle cx="10.5" cy="3" r="0.8"/>
+      <circle cx="5.25" cy="6" r="0.8"/><circle cx="8.75" cy="6" r="0.8"/>
+      <circle cx="3.5" cy="9" r="0.8"/><circle cx="7" cy="9" r="0.8"/><circle cx="10.5" cy="9" r="0.8"/>
+    </g>
+  </g>
+  <circle cx="12" cy="12" r="11.75" fill="none" stroke="#000000" stroke-opacity="0.12" stroke-width="0.5"/>
+</svg>
+```
 
 ### `src/shared/assets/logos/asahiindia.png`
 
@@ -24236,6 +24367,40 @@ export function useFlowOptionsChanged(flow: { id: string; options?: { id: string
 export function useSystemKeyboard() {
   return typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
 }
+```
+
+### `src/shared/ui/Flag.module.css`
+
+```css
+.flag {
+  display: block;
+  flex: none;
+  width: var(--l3-icon-size-16);
+  height: var(--l3-icon-size-16);
+}
+```
+
+### `src/shared/ui/Flag.tsx`
+
+```tsx
+import flagChina from '../assets/flags/china.svg'
+import flagEurope from '../assets/flags/europe.svg'
+import flagIndia from '../assets/flags/india.svg'
+import flagJapan from '../assets/flags/japan.svg'
+import flagKorea from '../assets/flags/korea.svg'
+import flagUs from '../assets/flags/us.svg'
+import styles from './Flag.module.css'
+
+export type FlagCode = 'us' | 'in' | 'cn' | 'jp' | 'eu' | 'kr'
+
+const files: Record<FlagCode, string> = { us: flagUs, in: flagIndia, cn: flagChina, jp: flagJapan, eu: flagEurope, kr: flagKorea }
+
+/**
+ * A round flag, 16 like the icons in small buttons and tabs (use as an `iconLeft`).
+ * L3 gap: no flag icons in L3 — round flag SVGs of our own (shared/assets/flags), not emoji, so they look the same and
+ * sit centred on every device.
+ */
+export const Flag = ({ code }: { code: FlagCode }) => <img className={styles.flag} src={files[code]} alt="" aria-hidden="true" />
 ```
 
 ### `src/shared/ui/MainNav.tsx`

@@ -199,6 +199,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-04 — Donut (ETF Allocation, stock page Key Holders): no text in the centre; the legend carries the numbers.
 - 2026-11-04 — Sheets no longer draw their own gesture bar (the device mockup has the system navbar): removed from the
   withdrawable-balance and fee-breakdown sheets. The withdrawable breakdown is the L3 card KeyValueList with its total
   row (Withdrawable). Order result buttons go somewhere: Holdings → Portfolio · Holdings (9001:30), View Orders →
@@ -31180,21 +31181,6 @@ span:has(>.diagCol){width:auto;height:auto}
 .donut circle[data-colour='zing'] { stroke: var(--l3-surface-accent-zing-default); }
 .donut circle[data-colour='other'] { stroke: var(--l3-content-tertiary); }
 
-.donut strong {
-  font: var(--l3-text-heading-16);
-  color: var(--l3-content-primary);
-}
-
-.donut span {
-  max-width: 70%;
-  font: var(--l3-text-description-10);
-  color: var(--l3-content-secondary);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .donutLegend {
   gap: var(--l3-spacing-10);
   flex-direction: column;
@@ -31360,8 +31346,6 @@ export function ShareDonut({ parts: items, of, legendLabel, format = (n) => `${n
             />
           ))}
         </svg>
-        <strong>{format(biggest.weight)}</strong>
-        <span>{biggest.name}</span>
       </div>
       <ul className={styles.donutLegend} aria-label={legendLabel}>
         {parts.map((p) => (
