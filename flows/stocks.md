@@ -10,7 +10,7 @@ Prototype: https://kirtanyak-pe.github.io/lemonn-app-prototype/#/stocks · machi
 
 | Id | Screen | Figma | Taps go to | Note |
 |---|---|---|---|---|
-| `stocks-01` | Home | [5714:64982]() | — | The Stocks home in the user status picked in the prototype settings (User status: US Stocks activation — Lemonn KYC pending → … → Activated —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to. |
+| `stocks-01` | Home | [5714:64982]() | — | The Stocks home in the user status picked in the prototype settings (User status: US Stocks — Not active · KYC pending → … → Active —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to. |
 | `stocks-02` | Home · top movers & watchlists | — | `profile-01` | Same page, scrolled. |
 | `stocks-03` | Home · top losers | — | `profile-01` | The "Top losers" chip picked. |
 | `stocks-04` | Home · Smart Invest | — | `profile-01` | Same page, scrolled: managed strategies, then the announcement. |
@@ -26187,7 +26187,7 @@ export const stocks: Flow = {
     { id: 'switchGuide', group: 'Home', label: 'Market switch guide', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
   ],
   screens: [
-    { id: 'stocks-01', name: 'Home', badge: 'changed', badgeNote: 'Header hides on scroll; DASH pill removed; back returns to the IND / US tab you left', figma: '5714:64982', group: 'ftux', note: 'The Stocks home in the user status picked in the prototype settings (User status: US Stocks activation — Lemonn KYC pending → … → Activated —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to.', tab: true, render: (go) => <HomeInState go={go} /> },
+    { id: 'stocks-01', name: 'Home', badge: 'changed', badgeNote: 'Header hides on scroll; DASH pill removed; back returns to the IND / US tab you left', figma: '5714:64982', group: 'ftux', note: 'The Stocks home in the user status picked in the prototype settings (User status: US Stocks — Not active · KYC pending → … → Active —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to.', tab: true, render: (go) => <HomeInState go={go} /> },
     { id: 'stocks-02', hidden: true, name: 'Home · top movers & watchlists', badge: 'changed', badgeNote: 'Compact IND / US tabs under the index strip when scrolled; switching tabs keeps the scroll', figma: '', note: 'Same page, scrolled.', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="movers" /> },
     { id: 'stocks-03', hidden: true, name: 'Home · top losers', figma: '', note: 'The "Top losers" chip picked.', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="movers" movers="losers" /> },
     { id: 'stocks-04', hidden: true, name: 'Home · Smart Invest', figma: '', note: 'Same page, scrolled: managed strategies, then the announcement.', tab: true, render: (go) => <Home onTab={(t) => goToTab(go, t)} onSearch={(m) => go(searchFor(m))} onProfile={() => go('profile-01')} {...usNav(go)} scrollTo="invest" /> },
@@ -51476,19 +51476,19 @@ const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'sto
 /** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
 export const userStatusOptions: FlowOption[] = [
   {
-    // One list for the whole way in, in order: Lemonn KYC first (US Stocks can't be activated until it's done), then
-    // the activation steps.
+    // One list for the whole way in, in order, named by where US Stocks are: not active while the Lemonn KYC is pending
+    // (US Stocks can't be activated until it's done), not active, then the activation steps.
     id: 'us',
     group: 'User status',
-    label: 'US Stocks activation',
+    label: 'US Stocks',
     picker: 'dropdown',
     values: [
-      { value: 'kyc', label: 'Lemonn KYC pending' },
-      { value: 'off', label: 'KYC done · not activated' },
-      { value: 'review', label: 'Activation under review' },
+      { value: 'kyc', label: 'Not active · KYC pending' },
+      { value: 'off', label: 'Not active' },
+      { value: 'review', label: 'Under review' },
       { value: 'support', label: 'Under review · contact support' },
       { value: 'failed', label: 'Activation failed' },
-      { value: 'active', label: 'Activated' },
+      { value: 'active', label: 'Active' },
     ],
     // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
     default: 'active',

@@ -16,7 +16,7 @@
       "id": "stocks-01",
       "name": "Home",
       "figma": "5714:64982",
-      "note": "The Stocks home in the user status picked in the prototype settings (User status: US Stocks activation — Lemonn KYC pending → … → Activated —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to.",
+      "note": "The Stocks home in the user status picked in the prototype settings (User status: US Stocks — Not active · KYC pending → … → Active —, USD wallet, US holdings — the same settings the US stock page and the wallet follow). Picking a status shows its US tab. Each state is also a screen of its own (hidden in the list), which the activation and add-money taps go to.",
       "goesTo": [],
       "figmaUrl": ""
     },

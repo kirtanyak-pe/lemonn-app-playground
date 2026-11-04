@@ -24676,19 +24676,19 @@ const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'sto
 /** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
 export const userStatusOptions: FlowOption[] = [
   {
-    // One list for the whole way in, in order: Lemonn KYC first (US Stocks can't be activated until it's done), then
-    // the activation steps.
+    // One list for the whole way in, in order, named by where US Stocks are: not active while the Lemonn KYC is pending
+    // (US Stocks can't be activated until it's done), not active, then the activation steps.
     id: 'us',
     group: 'User status',
-    label: 'US Stocks activation',
+    label: 'US Stocks',
     picker: 'dropdown',
     values: [
-      { value: 'kyc', label: 'Lemonn KYC pending' },
-      { value: 'off', label: 'KYC done · not activated' },
-      { value: 'review', label: 'Activation under review' },
+      { value: 'kyc', label: 'Not active · KYC pending' },
+      { value: 'off', label: 'Not active' },
+      { value: 'review', label: 'Under review' },
       { value: 'support', label: 'Under review · contact support' },
       { value: 'failed', label: 'Activation failed' },
-      { value: 'active', label: 'Activated' },
+      { value: 'active', label: 'Active' },
     ],
     // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
     default: 'active',

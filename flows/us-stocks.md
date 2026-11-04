@@ -199,6 +199,10 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-04 — Back from Add bank account (opened from the bank sheet) slides that page out and lands on the page the
+  sheet was opened on (Home or the stock page) with the bank sheet open, not the sheet over Add bank.
+- 2026-11-04 — **User status renamed by where US Stocks are:** the setting is "US Stocks": Not active · KYC pending,
+  Not active, Under review, Under review · contact support, Activation failed, Active (values unchanged).
 - 2026-11-04 — Card shadows no longer cut off in sideways scrollers: a sideways scroller clips top and bottom too, so the shared `Rail`, the US Home's Top Movers / Brands scrollers, Portfolio's market cards, the MF scroller and the stock page's related ETFs pad 12 above and below and take it back with a negative margin (same layout; horizontal and page scrolling unchanged). L3 gap: L3 Tabs (pill, raised) leaves 4 for a shadow that reaches 5.
 - 2026-11-04 — Stock list cards (shared `StockListCard`) all wear L3's soft shadow now (`elevation-soft`), instead of flat border-only: tappable ones are raised L3 ListCells; static ones get it locally (L3 gap: a static ListCell card has no shadow).
 - 2026-11-04 — **Activation opens where the user is:** the sheets open over Home / the stock page / wherever Activate was tapped (FlowScreen `over`), instead of jumping to the stock page first. IDFC FIRST Bank shows its logo (kept in `screens/activate/assets/` — L3 gap).
@@ -63434,19 +63438,19 @@ const STATUS_SCREENS = ['stocks-01', 'stocks-09', 'stocks-10', 'stocks-13', 'sto
 /** The settings, parent first: each one below only matters (and shows) while the one above has the listed values. */
 export const userStatusOptions: FlowOption[] = [
   {
-    // One list for the whole way in, in order: Lemonn KYC first (US Stocks can't be activated until it's done), then
-    // the activation steps.
+    // One list for the whole way in, in order, named by where US Stocks are: not active while the Lemonn KYC is pending
+    // (US Stocks can't be activated until it's done), not active, then the activation steps.
     id: 'us',
     group: 'User status',
-    label: 'US Stocks activation',
+    label: 'US Stocks',
     picker: 'dropdown',
     values: [
-      { value: 'kyc', label: 'Lemonn KYC pending' },
-      { value: 'off', label: 'KYC done · not activated' },
-      { value: 'review', label: 'Activation under review' },
+      { value: 'kyc', label: 'Not active · KYC pending' },
+      { value: 'off', label: 'Not active' },
+      { value: 'review', label: 'Under review' },
       { value: 'support', label: 'Under review · contact support' },
       { value: 'failed', label: 'Activation failed' },
-      { value: 'active', label: 'Activated' },
+      { value: 'active', label: 'Active' },
     ],
     // The prototype opens on a user who's all set: activated, money in the wallet, holding US stocks.
     default: 'active',
