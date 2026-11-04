@@ -72,9 +72,31 @@
       "id": "deposit-12",
       "name": "Add bank account",
       "figma": "",
-      "note": "From the bank row or \"Pay from\" — the ₹ and the US add money both come here. Verify account → the ₹1 name check.",
+      "note": "From the bank row or \"Pay from\" — the ₹ and the US add money both come here. Verify account → the ₹1 name check. Opened from US Stocks (US add money, activation, the USD wallet) it is deposit-16; from the ₹ side any bank can be added, no check.",
       "goesTo": [
         "deposit-09",
+        "deposit-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-16",
+      "name": "Add bank account · for US Stocks",
+      "figma": "",
+      "note": "Not in Figma: opened from US Stocks (US add money\\",
+      "goesTo": [
+        "us-stocks-21",
+        "deposit-13"
+      ],
+      "figmaUrl": ""
+    },
+    {
+      "id": "deposit-17",
+      "name": "Add bank account · US · bank not supported",
+      "figma": "",
+      "note": "Not in Figma: from US Stocks, an IFSC of a bank that can\\",
+      "goesTo": [
+        "us-stocks-21",
         "deposit-13"
       ],
       "figmaUrl": ""
@@ -156,9 +178,11 @@
   ],
   "shared": [
     "src/shared/copy.ts",
+    "src/shared/data/assets/idfcfirstb.png",
     "src/shared/data/companies.ts",
     "src/shared/data/format.ts",
     "src/shared/data/market-snapshot.json",
+    "src/shared/data/usBanks.ts",
     "src/shared/data/user.ts",
     "src/shared/prototype.ts",
     "src/shared/ui/AmountEntry.module.css",
@@ -176,6 +200,8 @@
     "src/shared/ui/Sheet.tsx",
     "src/shared/ui/Spot.module.css",
     "src/shared/ui/Spot.tsx",
+    "src/shared/ui/SupportedBanks.module.css",
+    "src/shared/ui/SupportedBanks.tsx",
     "src/shared/ui/TextKeyboard.module.css",
     "src/shared/ui/TextKeyboard.tsx",
     "src/shared/userStatus.ts"

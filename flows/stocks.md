@@ -51560,9 +51560,15 @@ export function useLinkedBanks(): LinkedBank[] {
 // A bank account added in the prototype ("Add bank account" → verified). Kept in memory, so a reload starts without it.
 let addedBank: LinkedBank | undefined
 let addBankOpener: string | undefined
+let addBankForUsStocks = false
 
-/** An add-money screen (₹ or US) opens "Add bank account": remember which, so the verified account comes back to it. */
-export const startAddBank = (fromScreen?: string) => { addBankOpener = fromScreen }
+/**
+ * An add-money screen (₹ or US) or the US Stocks activation opens "Add bank account": remember which, so the verified
+ * account comes back to it. `usStocks`: the account is for US Stocks, so it must be at a bank that can send money abroad.
+ */
+export const startAddBank = (fromScreen?: string, { usStocks = false }: { usStocks?: boolean } = {}) => { addBankOpener = fromScreen; addBankForUsStocks = usStocks }
+/** "Add bank account" was opened from US Stocks: only the supported banks can be added. */
+export const addBankForUs = () => addBankForUsStocks
 /** The add-money screen that opened "Add bank account" (undefined when it was opened straight from the screen list). */
 export const addBankReturnScreen = () => addBankOpener
 /** The ₹1 check passed: the account joins the linked banks, and the add-money screens pick it. */

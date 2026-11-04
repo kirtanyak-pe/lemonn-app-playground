@@ -199,6 +199,9 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-04 — Add money's Pay from lists only the banks that can send money abroad; the user's others show greyed
+  out, tagged "Not supported". Add another bank account opens the Deposit flow's Add bank in its US mode (deposit-16):
+  the five supported banks, and an error for any other bank's IFSC (deposit-17).
 - 2026-11-04 — Back from Add bank account (opened from the bank sheet) slides that page out and lands on the page the
   sheet was opened on (Home or the stock page) with the bank sheet open, not the sheet over Add bank.
 - 2026-11-04 — **User status renamed by where US Stocks are:** the setting is "US Stocks": Not active · KYC pending,
@@ -22156,9 +22159,10 @@ export function UsMainNav({ value }: { value: Section }) {
   "addMoney.mismatchText": "The name on HDFC Bank ••1861 does not match your PAN. Banks reject transfers abroad when names differ.",
   "addMoney.landsBy": "lands by Thu 8 PM",
   "addMoney.addTitle": "Add a bank account",
-  "addMoney.addDescription": "Only from an account in your name",
+  "addMoney.addDescription": "ICICI, HDFC, Kotak, IDFC FIRST or Axis Bank, in your name",
   "addMoney.sheetTitle": "Pay from",
   "addMoney.addAnother": "Add another bank account",
+  "addMoney.notSupported": "Not supported",
   "addMoney.addBankCta": "Add bank account",
   "addMoney.ctaInr": "({inr})",
   "portfolio.title": "Portfolio",
@@ -22725,11 +22729,6 @@ export const idForFigma = new Map(registry.map((s) => [s.figma, s.id]))
 }
 
 /* A supported bank's short name under its logo (no-supported-bank sheet). */
-.bankName {
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-secondary);
-}
-
 /* A linked bank US Stocks can't use: the row greyed out (its Tag says why). FLAG: ListCell has no disabled state. */
 .unsupported {
   opacity: var(--l3-opacity-60);
@@ -22824,12 +22823,13 @@ import { msAdd } from '@l3/icons/material'
 import { getCompany } from '../../../../shared/data/companies'
 import { otherBank, type LinkedBank } from '../../../../shared/data/user'
 import { useAutoAdvance } from '../../../../shared/prototype'
+import { supportedBanksLine, supportedOf } from '../../../../shared/data/usBanks'
 import { bankLine } from '../../../../shared/ui/BankPicker'
+import { SupportedBanks } from '../../../../shared/ui/SupportedBanks'
 import { startAddBank, useLinkedBanks } from '../../../../shared/userStatus'
 import { useUsNav } from '../../nav'
 import { ActivateSheet } from './ActivateSheet'
 import { t } from './copy'
-import { bankLogoUrl, SUPPORTED_BANKS, supportedBanksLine, supportedOf } from './data'
 import { ACTIVATE_BANK_SCREEN, ACTIVATE_VERIFYING, ACTIVATION_SUBMITTED, ADD_BANK } from './ids'
 import styles from './Activate.module.css'
 
@@ -22849,7 +22849,7 @@ export function BankCheckScreen({ none = false, verifying = false, backdrop }: {
   const linked = none || statusBanks.length === 0 ? [otherBank] : statusBanks
   const supported = supportedOf(linked)
   const unsupported = linked.filter((b) => !supported.includes(b))
-  const addBank = () => { startAddBank(ACTIVATE_BANK_SCREEN); go(ADD_BANK) }
+  const addBank = () => { startAddBank(ACTIVATE_BANK_SCREEN, { usStocks: true }); go(ADD_BANK) }
 
   const [picked, setPicked] = useState(() => supported.find((b) => b.id === pickedBankId)?.id ?? supported[0]?.id)
   // "Add bank" tapped: the sheet shows which banks can be added.
@@ -22872,7 +22872,7 @@ export function BankCheckScreen({ none = false, verifying = false, backdrop }: {
           <Card surface="secondary">
             <Stack gap="16">
               <p className={styles.declarationText}>{t('bankCheck.none.why', { bank: unsupported[0].bank, banks: supportedBanksLine() })}</p>
-              <SupportedBanks />
+              <SupportedBanks label={t('bankCheck.supportedLabel')} />
             </Stack>
           </Card>
           <Stack gap="08">
@@ -22901,7 +22901,7 @@ export function BankCheckScreen({ none = false, verifying = false, backdrop }: {
           </ButtonGroup>
         }
       >
-        <SupportedBanks />
+        <SupportedBanks label={t('bankCheck.supportedLabel')} />
       </ActivateSheet>
     )
   }
@@ -22946,20 +22946,6 @@ export function BankCheckScreen({ none = false, verifying = false, backdrop }: {
         {unsupported.map((b) => <UnsupportedBankRow key={b.id} bank={b} />)}
       </Stack>
     </ActivateSheet>
-  )
-}
-
-/** The five banks US Stocks money can go from, as logos with their short names — where the user has to add one. */
-function SupportedBanks() {
-  return (
-    <Stack as="ul" direction="horizontal" justify="between" aria-label={t('bankCheck.supportedLabel')}>
-      {SUPPORTED_BANKS.map((bank) => (
-        <Stack as="li" key={bank.symbol} align="center" gap="08">
-          <Avatar src={bankLogoUrl(bank.symbol)} initials={bank.initials} shape="rounded" size={40} label={bank.name} />
-          <span className={styles.bankName}>{bank.short}</span>
-        </Stack>
-      ))}
-    </Stack>
   )
 }
 
@@ -23056,37 +23042,6 @@ export function DeclarationsScreen({ backdrop }: { backdrop?: boolean }) {
 }
 ```
 
-### `src/flows/us-stocks/screens/activate/assets/idfcfirstb.png`
-
-```tsx
-�PNG
-
-   IHDR   �   �   �>a�   gAMA  ���a    cHRM  z&  ��  �   ��  u0  �`  :�  p��Q<   DeXIfMM *    �i            �       �       ��       �    H�w  �iTXtXML:com.adobe.xmp     <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 6.0.0">
-   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-      <rdf:Description rdf:about=""
-            xmlns:exif="http://ns.adobe.com/exif/1.0/">
-         <exif:ColorSpace>1</exif:ColorSpace>
-         <exif:PixelXDimension>300</exif:PixelXDimension>
-         <exif:PixelYDimension>300</exif:PixelYDimension>
-      </rdf:Description>
-   </rdf:RDF>
-</x:xmpmeta>
-� ��  �IDATx��kU�ϼ��Ę�D���(��ܺP���BD�t���e� R[T����XӘD�RM� �{M޼�ib�:1�ܛ;�9�Hޛ̝{��|��ܹ?&939��Yf=�� �8   W���� �q���  W���� �q���  W���� �q��?���e��;��O�{0�/� KO͑5���螓M�z=}`��<������T��f���=G��L��a���9x��z�M���d 2�)pcf��}�� b����v�Z�Q�Ųt�$I��MK�۞���j� }�� `�?{��K/�F!��ZX� ������>�^�e �
-�F�{�%z����d@�m/-��ǟP��A�\�O�vnѡ��9 nG�=WP �F��T��_ �{ ����lM��J�	�� H�B�	 B); � �Pf�	ܓ�ܗ�����w����. |i%4G��`�'����]ꮵ�0T���б�_��m��3���?���GI��z
-��T�S���?|D��.x��?TM��]�QE�,�H��~���x��
-��Y@��� ��Y@���CX ,��=���5, ��R
- �Rr�og P���� ���~;��Ŵ�G ��\��Y�/ ���'�V�Y��e�* ���s�pa�z=�N����qd����3����
-]�b�* 2d�h�җ&{%�y����� �qr����U��	�Z��� ��js @ՊGV �, U� �V<���[2.����,w�i�����s�8?`�!��:=��st��S�B��Iĭt�={�.NS�Պͼ}�'0 �ۘ��?1�8��qr����O��?�@ �DA.�b� �[���^���	ԏ�� @U~���~T-  ��� �c�j P�_�p �U ����� ��Z  T��/ ��@��� �|k>��_U5v(<V�v0�i�. �ٲ��F��������U�ž|춓��gR`ht�v��i��O�M@�κ&U �̒W�uWW�շ��:��Þ_cg��K^5��P��і �M5��jt�� mh�1L�&0����sK	�o���c�c�Υ
-��a�������x�m^i��o����2 p�X �2��3�����̗GG��z������������ ��Y��� y~ S�b�O��<8m����\ I ��  Z�GR. �$Zf  -�#) D-3����p�������I�
- �~=�} �B��0 ����7 `.���w��0��k�%����u�o� ���?�H7�����K������o���Q����VUN��9�sn�0�ʕ�w��v.U Dz���yj�&PM�8
- q�A�
- �&}�8�fE؛@��-�>�<�����r�kP ��v��)����F���-G�Y�ᱱ���W0 �ډ'��乏6@����o:��8+O�Ə<��7�ܥ@��@P �ҏx��_+�V@`�c?< �=B���p���;������a~ �M���+4|��\�*T@���
-7��+����_��|�~�R�
-��̐�Xdӯ���u�C�ޣ8Q ��z<e�@�ȇe�D$�/��-l.(  
-���  lŻ�- (Hbk � � �� �V����$�6  [�.x 
-���  lŻ�- (Hbk ����E�}R�    IEND�B`�
-```
-
 ### `src/flows/us-stocks/screens/activate/copy.ts`
 
 ```ts
@@ -23095,38 +23050,6 @@ import copy from '../../copy.json'
 
 /** US Stocks strings for the activation pages: t('declarations.title'). */
 export const t = makeCopy('us-stocks', copy)
-```
-
-### `src/flows/us-stocks/screens/activate/data.ts`
-
-```ts
-import { getCompany } from '../../../../shared/data/companies'
-import type { LinkedBank } from '../../../../shared/data/user'
-// FLAG: not in L3's company logos (L3 gap) — the bank's mark, cropped from its Wikimedia Commons logo.
-import idfcFirstLogo from './assets/idfcfirstb.png'
-
-/**
- * The banks money for US Stocks can go from (LRS remittance partners). `symbol` is the bank's NSE symbol — its logo
- * comes from the company catalogue; IDFC FIRST isn't in it, so its logo is kept here (assets/).
- */
-export const SUPPORTED_BANKS = [
-  { symbol: 'ICICIBANK', name: 'ICICI Bank', short: 'ICICI', initials: 'IB' },
-  { symbol: 'HDFCBANK', name: 'HDFC Bank', short: 'HDFC', initials: 'HB' },
-  { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank', short: 'Kotak', initials: 'KB' },
-  { symbol: 'IDFCFIRSTB', name: 'IDFC FIRST Bank', short: 'IDFC FIRST', initials: 'IF' },
-  { symbol: 'AXISBANK', name: 'Axis Bank', short: 'Axis', initials: 'AX' },
-] as const
-
-export const bankLogoUrl = (symbol: string) => (symbol === 'IDFCFIRSTB' ? idfcFirstLogo : getCompany(symbol)?.logoUrl)
-
-/** "ICICI, HDFC, Kotak, IDFC FIRST and Axis Bank" — the supported banks in one line. */
-export const supportedBanksLine = () => {
-  const names = SUPPORTED_BANKS.map((b) => b.short)
-  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} Bank`
-}
-
-/** The user's linked accounts US Stocks can use. */
-export const supportedOf = (banks: LinkedBank[]) => banks.filter((b) => SUPPORTED_BANKS.some((s) => s.symbol === b.logoSymbol))
 ```
 
 ### `src/flows/us-stocks/screens/activate/ids.ts`
@@ -33424,6 +33347,7 @@ import { useUsNav } from '../../nav'
 import { BankRow, bankLine, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
 import { usePreview } from '../../../../shared/prototype'
 import { newlyLinkedBank, startAddBank, useLinkedBanks } from '../../../../shared/userStatus'
+import { isUsSupported } from '../../../../shared/data/usBanks'
 import { AmountDock, AmountEntry, amountValue, typeAmount } from '../../../../shared/ui/AmountEntry'
 import { formatInr, formatUsd, useUsdInrRate } from '../../../../shared/money'
 import { DEPOSIT_QUICK_ADD_USD, LRS_LIMIT_USD, MIN_DEPOSIT_USD, depositBreakdown, depositRate, inrForUsd } from './amounts'
@@ -33465,17 +33389,21 @@ const toTyped = (usd: number) => (usd > 0 ? String(usd) : '')
 export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = false, sheet, backdrop, banksOpen = false, noBank = false }: AddMoneyScreenProps) {
   const { go, back } = useUsNav()
   const { screenId } = usePreview()
-  // "Add bank account" comes back here once the account is verified.
-  const addBank = () => { startAddBank(screenId); go(ADD_BANK) }
+  // "Add bank account" comes back here once the account is verified; it only takes a bank US Stocks can use.
+  const addBank = () => { startAddBank(screenId, { usStocks: true }); go(ADD_BANK) }
   const [typed, setTyped] = useState(() => toTyped(takeHandoff(id, initial)))
   const [showBreakdown, setShowBreakdown] = useState(breakdown)
   const linked = useLinkedBanks()
   // Just added on "Add bank account": it counts even on the no-bank state, and it's the one picked.
   const added = newlyLinkedBank()
   const banks = noBank ? (added ? [added] : []) : linked
-  const [bankId, setBankId] = useState(added?.id ?? banks[0]?.id)
+  // Only ICICI, HDFC, Kotak, IDFC FIRST and Axis can send money abroad: the others are listed greyed out in "Pay from"
+  // and never picked. With none of those linked, the row and the button ask to add one (as with no bank).
+  const usable = banks.filter(isUsSupported)
+  const unsupported = banks.filter((b) => !isUsSupported(b))
+  const [bankId, setBankId] = useState(added?.id ?? usable[0]?.id)
   const [showBanks, setShowBanks] = useState(banksOpen)
-  const bank = banks.find((b) => b.id === bankId) ?? banks[0]
+  const bank = usable.find((b) => b.id === bankId) ?? usable[0]
   const bankCopy: BankPickerCopy = { method: t('addMoney.methodLabel'), addTitle: t('addMoney.addTitle'), addDescription: t('addMoney.addDescription'), sheetTitle: t('addMoney.sheetTitle'), addAnother: t('addMoney.addAnother') }
   // What you pay is in ₹ (your bank); the rate it converts at follows the live rate, plus the partner's markup.
   const rate = depositRate(useUsdInrRate())
@@ -33553,7 +33481,7 @@ export function AddMoneyScreen({ id, initial, breakdown = false, mismatch = fals
           </Stack>
         }
       />
-      {bank && <BankPickSheet open={showBanks} banks={banks} selected={bank.id} copy={bankCopy} onSelect={setBankId} onAdd={() => { setShowBanks(false); addBank() }} onClose={() => setShowBanks(false)} />}
+      {bank && <BankPickSheet open={showBanks} banks={usable} unsupported={unsupported} selected={bank.id} copy={bankCopy} onSelect={setBankId} onAdd={() => { setShowBanks(false); addBank() }} onClose={() => setShowBanks(false)} />}
       <ChargesBreakdownSheet open={showBreakdown} onClose={() => setShowBreakdown(false)} amount={inr} rate={rate} charges={charges} />
     </Phone>
   )
@@ -33595,21 +33523,32 @@ export function BankAppScreen({ backdrop }: { backdrop?: boolean }) {
 ### `src/flows/us-stocks/screens/money/BankPickSheet.tsx`
 
 ```tsx
-// "Pay from" sheet opened from the bank row on add money: the linked banks (shared BankOptions) in this flow's own
-// L3 BottomSheet (it lives in the Phone's sheet layer, like the charges breakdown).
+// "Pay from" sheet opened from the bank row on add money: the linked banks US Stocks can use (shared BankOptions), then
+// the ones it can't (another bank can't send money abroad for US Stocks) greyed out and tagged "Not supported" — in this
+// flow's own L3 BottomSheet (it lives in the Phone's sheet layer, like the charges breakdown). "Add another bank account"
+// opens Add bank account for US Stocks (the supported banks on top; another bank's IFSC is refused).
 import { useId } from 'react'
 import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
+import { ListCell } from '@l3/components/ListCell'
+import { Stack } from '@l3/components/Stack'
+import { Tag } from '@l3/components/Tag'
+import { Avatar } from '@l3/components/Avatar'
 import { msAdd } from '@l3/icons/material'
 import type { LinkedBank } from '../../../../shared/data/user'
-import { BankOptions, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
+import { getCompany } from '../../../../shared/data/companies'
+import { BankOptions, bankLine, type BankPickerCopy } from '../../../../shared/ui/BankPicker'
 import { useSheetLayer } from '../../components/Phone'
+import { t } from './copy'
+import styles from './Money.module.css'
 
-export function BankPickSheet({ open, banks, selected, copy, onSelect, onAdd, onClose }: {
+export function BankPickSheet({ open, banks, unsupported = [], selected, copy, onSelect, onAdd, onClose }: {
   open: boolean
   banks: LinkedBank[]
+  /** Linked banks US Stocks money can't go from: shown, greyed out, can't be picked. */
+  unsupported?: LinkedBank[]
   selected: string
   copy: BankPickerCopy
   onSelect: (id: string) => void
@@ -33631,7 +33570,20 @@ export function BankPickSheet({ open, banks, selected, copy, onSelect, onAdd, on
         </ButtonGroup>
       }
     >
-      <BankOptions variant="card" banks={banks} selected={selected} name={id} onPick={(bankId) => { onSelect(bankId); onClose() }} />
+      <Stack gap="08">
+        <BankOptions variant="card" banks={banks} selected={selected} name={id} onPick={(bankId) => { onSelect(bankId); onClose() }} />
+        {unsupported.map((bank) => (
+          <ListCell
+            key={bank.id}
+            variant="card"
+            className={styles.unsupportedBank}
+            iconLeft={<Avatar src={getCompany(bank.logoSymbol)?.logoUrl} initials={bank.bank.slice(0, 2)} shape="rounded" size={32} label={bank.bank} />}
+            label={bankLine(bank)}
+            description={`${bank.type} · ${bank.branch}`}
+            trailing={<Tag size="sm" disabled>{t('addMoney.notSupported')}</Tag>}
+          />
+        ))}
+      </Stack>
     </BottomSheet>
   )
 }
@@ -33918,6 +33870,11 @@ export function ChargesBreakdownSheet({ open, onClose, amount, rate, charges }: 
 .ctaInr {
   margin-left: var(--l3-spacing-04);
   font: var(--l3-text-label-12);
+}
+
+/* "Pay from": a linked bank US Stocks money can't go from — greyed out, can't be picked. */
+.unsupportedBank {
+  opacity: var(--l3-opacity-60);
 }
 ```
 
@@ -38475,7 +38432,7 @@ import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
 import { useUsNav } from '../../nav'
-import { useLinkedBanks } from '../../../../shared/userStatus'
+import { startAddBank, useLinkedBanks } from '../../../../shared/userStatus'
 import { msAccountBalance } from '@l3/icons/material'
 import { moneyIds } from '../money/ids'
 import { parseUsd, useInrEquivalent, useUsd } from '../../../../shared/money'
@@ -38656,7 +38613,8 @@ export function WalletScreen(props: WalletScreenProps) {
           type="discover"
           icon={<Icon icon={msAccountBalance} />}
           heading="Add a bank account to deposit or withdraw"
-          action={{ label: 'Add', onClick: goTo(ADD_BANK) }}
+          // From the USD tab the bank must be one that can send money abroad; from the INR tab any bank.
+          action={{ label: 'Add', onClick: () => { if (!backdrop) startAddBank(inr ? undefined : 'us-stocks-21', { usStocks: !inr }); goTo(ADD_BANK)() } }}
         />
       )}
       <ButtonGroup direction="horizontal" aria-label="Wallet actions" className={styles.dock}>
@@ -39957,6 +39915,37 @@ export function makeCopy<Copy extends Record<string, string>>(flow: string, copy
     return vars ? template.replace(/\{(\w+)\}/g, (m, name: string) => (name in vars ? String(vars[name]) : m)) : template
   }
 }
+```
+
+### `src/shared/data/assets/idfcfirstb.png`
+
+```tsx
+�PNG
+
+   IHDR   �   �   �>a�   gAMA  ���a    cHRM  z&  ��  �   ��  u0  �`  :�  p��Q<   DeXIfMM *    �i            �       �       ��       �    H�w  �iTXtXML:com.adobe.xmp     <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 6.0.0">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:exif="http://ns.adobe.com/exif/1.0/">
+         <exif:ColorSpace>1</exif:ColorSpace>
+         <exif:PixelXDimension>300</exif:PixelXDimension>
+         <exif:PixelYDimension>300</exif:PixelYDimension>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+� ��  �IDATx��kU�ϼ��Ę�D���(��ܺP���BD�t���e� R[T����XӘD�RM� �{M޼�ib�:1�ܛ;�9�Hޛ̝{��|��ܹ?&939��Yf=�� �8   W���� �q���  W���� �q���  W���� �q��?���e��;��O�{0�/� KO͑5���螓M�z=}`��<������T��f���=G��L��a���9x��z�M���d 2�)pcf��}�� b����v�Z�Q�Ųt�$I��MK�۞���j� }�� `�?{��K/�F!��ZX� ������>�^�e �
+�F�{�%z����d@�m/-��ǟP��A�\�O�vnѡ��9 nG�=WP �F��T��_ �{ ����lM��J�	�� H�B�	 B); � �Pf�	ܓ�ܗ�����w����. |i%4G��`�'����]ꮵ�0T���б�_��m��3���?���GI��z
+��T�S���?|D��.x��?TM��]�QE�,�H��~���x��
+��Y@��� ��Y@���CX ,��=���5, ��R
+ �Rr�og P���� ���~;��Ŵ�G ��\��Y�/ ���'�V�Y��e�* ���s�pa�z=�N����qd����3����
+]�b�* 2d�h�җ&{%�y����� �qr����U��	�Z��� ��js @ՊGV �, U� �V<���[2.����,w�i�����s�8?`�!��:=��st��S�B��Iĭt�={�.NS�Պͼ}�'0 �ۘ��?1�8��qr����O��?�@ �DA.�b� �[���^���	ԏ�� @U~���~T-  ��� �c�j P�_�p �U ����� ��Z  T��/ ��@��� �|k>��_U5v(<V�v0�i�. �ٲ��F��������U�ž|춓��gR`ht�v��i��O�M@�κ&U �̒W�uWW�շ��:��Þ_cg��K^5��P��і �M5��jt�� mh�1L�&0����sK	�o���c�c�Υ
+��a�������x�m^i��o����2 p�X �2��3�����̗GG��z������������ ��Y��� y~ S�b�O��<8m����\ I ��  Z�GR. �$Zf  -�#) D-3����p�������I�
+ �~=�} �B��0 ����7 `.���w��0��k�%����u�o� ���?�H7�����K������o���Q����VUN��9�sn�0�ʕ�w��v.U Dz���yj�&PM�8
+ q�A�
+ �&}�8�fE؛@��-�>�<�����r�kP ��v��)����F���-G�Y�ᱱ���W0 �ډ'��乏6@����o:��8+O�Ə<��7�ܥ@��@P �ҏx��_+�V@`�c?< �=B���p���;������a~ �M���+4|��\�*T@���
+7��+����_��|�~�R�
+��̐�Xdӯ���u�C�ޣ8Q ��z<e�@�ȇe�D$�/��-l.(  
+���  lŻ�- (Hbk � � �� �V����$�6  [�.x 
+���  lŻ�- (Hbk ����E�}R�    IEND�B`�
 ```
 
 ### `src/shared/data/companies.ts`
@@ -62055,6 +62044,45 @@ export function useLiveQuote(key: string, price: number, changePct: number): Liv
 }
 ```
 
+### `src/shared/data/usBanks.ts`
+
+```ts
+import { getCompany } from './companies'
+import type { LinkedBank } from './user'
+// FLAG: not in L3's company logos (L3 gap) — the bank's mark, cropped from its Wikimedia Commons logo.
+import idfcFirstLogo from './assets/idfcfirstb.png'
+
+/**
+ * The banks money for US Stocks can go from (LRS remittance partners): activation, US add money and "Add bank account"
+ * opened from US Stocks all use this list. `symbol` is the bank's NSE symbol — its logo comes from the company
+ * catalogue; IDFC FIRST isn't in it, so its logo is kept here (assets/). `ifsc` is the bank's IFSC prefix.
+ */
+export const SUPPORTED_BANKS = [
+  { symbol: 'ICICIBANK', ifsc: 'ICIC', name: 'ICICI Bank', short: 'ICICI', initials: 'IB' },
+  { symbol: 'HDFCBANK', ifsc: 'HDFC', name: 'HDFC Bank', short: 'HDFC', initials: 'HB' },
+  { symbol: 'KOTAKBANK', ifsc: 'KKBK', name: 'Kotak Mahindra Bank', short: 'Kotak', initials: 'KB' },
+  { symbol: 'IDFCFIRSTB', ifsc: 'IDFB', name: 'IDFC FIRST Bank', short: 'IDFC FIRST', initials: 'IF' },
+  { symbol: 'AXISBANK', ifsc: 'UTIB', name: 'Axis Bank', short: 'Axis', initials: 'AX' },
+] as const
+
+export const bankLogoUrl = (symbol: string) => (symbol === 'IDFCFIRSTB' ? idfcFirstLogo : getCompany(symbol)?.logoUrl)
+
+/** "ICICI, HDFC, Kotak, IDFC FIRST and Axis Bank" — the supported banks in one line. */
+export const supportedBanksLine = () => {
+  const names = SUPPORTED_BANKS.map((b) => b.short)
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} Bank`
+}
+
+/** Whether US Stocks money can go from this linked account. */
+export const isUsSupported = (bank: LinkedBank) => SUPPORTED_BANKS.some((s) => s.symbol === bank.logoSymbol)
+
+/** The user's linked accounts US Stocks can use. */
+export const supportedOf = (banks: LinkedBank[]) => banks.filter(isUsSupported)
+
+/** Whether an IFSC belongs to a bank US Stocks money can go from. */
+export const isUsSupportedIfsc = (ifsc: string) => SUPPORTED_BANKS.some((s) => ifsc.startsWith(s.ifsc))
+```
+
 ### `src/shared/data/usStocks.ts`
 
 ```ts
@@ -62896,7 +62924,7 @@ import { Icon } from '@l3/components/Icon'
 import { ListCell } from '@l3/components/ListCell'
 import { Stack } from '@l3/components/Stack'
 import { msAccountBalance, msAdd, msChevronRight } from '@l3/icons/material'
-import { getCompany } from '../data/companies'
+import { bankLogoUrl } from '../data/usBanks'
 import type { LinkedBank } from '../data/user'
 import { Sheet } from './Sheet'
 
@@ -62913,7 +62941,7 @@ export type BankPickerCopy = {
   addAnother: string
 }
 
-const bankLogo = (bank: LinkedBank) => getCompany(bank.logoSymbol)?.logoUrl
+const bankLogo = (bank: LinkedBank) => bankLogoUrl(bank.logoSymbol)
 export const bankLine = (bank: LinkedBank) => `${bank.bank} ••${bank.last4}`
 
 /**
@@ -63404,6 +63432,42 @@ export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, pric
 }
 ```
 
+### `src/shared/ui/SupportedBanks.module.css`
+
+```css
+/* A supported bank's short name under its logo. */
+.name {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+```
+
+### `src/shared/ui/SupportedBanks.tsx`
+
+```tsx
+import { Avatar } from '@l3/components/Avatar'
+import { Stack } from '@l3/components/Stack'
+import { bankLogoUrl, SUPPORTED_BANKS } from '../data/usBanks'
+import styles from './SupportedBanks.module.css'
+
+/**
+ * The five banks US Stocks money can go from, as logos with their short names in one row — wherever the user has to add
+ * one (activation with no supported bank, "Add bank" there, Add bank account opened from US Stocks).
+ */
+export function SupportedBanks({ label }: { /** The list's accessible name, "Supported banks for US Stocks". */ label: string }) {
+  return (
+    <Stack as="ul" direction="horizontal" justify="between" aria-label={label}>
+      {SUPPORTED_BANKS.map((bank) => (
+        <Stack as="li" key={bank.symbol} align="center" gap="08">
+          <Avatar src={bankLogoUrl(bank.symbol)} initials={bank.initials} shape="rounded" size={40} label={bank.name} />
+          <span className={styles.name}>{bank.short}</span>
+        </Stack>
+      ))}
+    </Stack>
+  )
+}
+```
+
 ### `src/shared/userStatus.ts`
 
 ```ts
@@ -63522,9 +63586,15 @@ export function useLinkedBanks(): LinkedBank[] {
 // A bank account added in the prototype ("Add bank account" → verified). Kept in memory, so a reload starts without it.
 let addedBank: LinkedBank | undefined
 let addBankOpener: string | undefined
+let addBankForUsStocks = false
 
-/** An add-money screen (₹ or US) opens "Add bank account": remember which, so the verified account comes back to it. */
-export const startAddBank = (fromScreen?: string) => { addBankOpener = fromScreen }
+/**
+ * An add-money screen (₹ or US) or the US Stocks activation opens "Add bank account": remember which, so the verified
+ * account comes back to it. `usStocks`: the account is for US Stocks, so it must be at a bank that can send money abroad.
+ */
+export const startAddBank = (fromScreen?: string, { usStocks = false }: { usStocks?: boolean } = {}) => { addBankOpener = fromScreen; addBankForUsStocks = usStocks }
+/** "Add bank account" was opened from US Stocks: only the supported banks can be added. */
+export const addBankForUs = () => addBankForUsStocks
 /** The add-money screen that opened "Add bank account" (undefined when it was opened straight from the screen list). */
 export const addBankReturnScreen = () => addBankOpener
 /** The ₹1 check passed: the account joins the linked banks, and the add-money screens pick it. */

@@ -133,9 +133,7 @@
     "src/flows/us-stocks/screens/activate/ActivateSheet.tsx",
     "src/flows/us-stocks/screens/activate/BankCheckScreen.tsx",
     "src/flows/us-stocks/screens/activate/DeclarationsScreen.tsx",
-    "src/flows/us-stocks/screens/activate/assets/idfcfirstb.png",
     "src/flows/us-stocks/screens/activate/copy.ts",
-    "src/flows/us-stocks/screens/activate/data.ts",
     "src/flows/us-stocks/screens/activate/ids.ts",
     "src/flows/us-stocks/screens/activate/index.tsx",
     "src/flows/us-stocks/screens/activation/StockPage.module.css",
@@ -287,12 +285,14 @@
     "src/shared/assets/flags/korea.svg",
     "src/shared/assets/flags/us.svg",
     "src/shared/copy.ts",
+    "src/shared/data/assets/idfcfirstb.png",
     "src/shared/data/companies.ts",
     "src/shared/data/etfInside.ts",
     "src/shared/data/etfIssuers.ts",
     "src/shared/data/live.ts",
     "src/shared/data/market-snapshot.json",
     "src/shared/data/us-market-snapshot.json",
+    "src/shared/data/usBanks.ts",
     "src/shared/data/usStocks.ts",
     "src/shared/data/user.ts",
     "src/shared/money.module.css",
@@ -311,6 +311,8 @@
     "src/shared/ui/Sheet.tsx",
     "src/shared/ui/StockListCard.module.css",
     "src/shared/ui/StockListCard.tsx",
+    "src/shared/ui/SupportedBanks.module.css",
+    "src/shared/ui/SupportedBanks.tsx",
     "src/shared/userStatus.ts"
   ]
 }
