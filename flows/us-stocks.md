@@ -199,6 +199,19 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-04 — Sheets no longer draw their own gesture bar (the device mockup has the system navbar): removed from the
+  withdrawable-balance and fee-breakdown sheets. The withdrawable breakdown is the L3 card KeyValueList with its total
+  row (Withdrawable). Order result buttons go somewhere: Holdings → Portfolio · Holdings (9001:30), View Orders →
+  Portfolio · Orders (9001:31), Order Details → the executed NVDA buy (9001:46), or for a sell the NVDA limit sell
+  (9001:44, partly filled — there's no executed-sell sample).
+- 2026-11-04 — Order result screens (processing, created, executed, failed): the content is centred in the space
+  above the dock, with no top / bottom padding. Processing uses the L3 Loader (Large) instead of the hand-spun arc. Their buttons
+  (View Orders, Holdings, Retry …) are Primary, not Brand.
+- 2026-11-04 — Deposit explainer (`shared/ui/DepositProgressSheet`, also opened from Home's "Money on the way") is
+  shorter, and its story is that the money has already left India: Paid → Sent to the US → US bank processing (current,
+  "US banks usually take 1–2 working days") → Ready to trade. Header: "$… on the way · Ready to trade by Thu 8 PM".
+  **L3 gap:** Steps has no warning (yellow) or pulsing in-progress marker, so the running step is `current`.
+  Pay from lists banks as card rows.
 - 2026-11-04 — Add money's Pay from lists only the banks that can send money abroad; the user's others show greyed
   out, tagged "Not supported". Add another bank account opens the Deposit flow's Add bank in its US mode (deposit-16):
   the five supported banks, and an error for any other bank's IFSC (deposit-17).
@@ -424,8 +437,6 @@ branch `jojo`, **as he built it**. Nothing below is fixed: every item is marked 
 |---|---|---|
 | FTUX sheet + scrim + close button | `src/flows/stocks/components/us/sheets/UsFtuxSheet.tsx` (moved from `screens/ftux`) | BottomSheet (large header + icon) |
 | Sort sheet radio rows | `screens/entry/sheets/SortSheet.tsx` | — (L3 has no radio: gap) |
-| Activation sheets' own layer + hand-drawn gesture bar | `screens/activation/sheets/SheetFrame.tsx` | BottomSheet |
-| Sheet grabbers drawn by hand in the `utility` slot | `screens/money/Money.module.css`, `wallet/sheets` | BottomSheet's own handle |
 | Chips / pills / filter buttons | money (Tab used as chip) | Tag / Tabs (pill) / Button |
 | Market tabs (SVG outline), underline tabs with sliding bar, tab "thumb" over Tabs | entry `SlidingTabs.tsx`, wallet `WalletScreen.tsx` | Tabs |
 | Text / icon / round buttons | stock page tools | Button (Ghost / Tertiary) |
@@ -33354,7 +33365,8 @@ import { DEPOSIT_QUICK_ADD_USD, LRS_LIMIT_USD, MIN_DEPOSIT_USD, depositBreakdown
 import { BankPickSheet } from './BankPickSheet'
 import { ChargesBreakdownSheet } from './ChargesBreakdownSheet'
 import { t } from './copy'
-import { setHandoff, setSentDeposit, takeHandoff } from './handoff'
+import { setSentDeposit } from '../../../../shared/data/usDeposit'
+import { setHandoff, takeHandoff } from './handoff'
 import { infoIcon } from './icons'
 import { FIGMA } from '../wallet/data'
 import { moneyIds } from './ids'
@@ -34369,18 +34381,6 @@ export const takeHandoff = (id: string, fallback: number): number => {
   pending = null
   return value
 }
-
-/** The deposit just paid on the bank's page: what the wallet's "money sent" sheet says when the user comes back. */
-export type SentDeposit = { usd: number; inr: string; bank: string }
-let sent: SentDeposit | null = null
-
-/** Remember the deposit being paid (Add money → the bank's page). */
-export const setSentDeposit = (deposit: SentDeposit) => {
-  sent = deposit
-}
-
-/** The deposit last paid, or `fallback` (a screen opened straight from the list). Kept: the wallet shows it until it lands. */
-export const sentDeposit = (fallback: SentDeposit): SentDeposit => sent ?? fallback
 ```
 
 ### `src/flows/us-stocks/screens/money/icons.ts`
@@ -36086,19 +36086,6 @@ export const screens: UsScreenMap = {
 .small[data-center] {
   text-align: center;
 }
-
-.gesture {
-  padding: var(--l3-spacing-10) var(--l3-spacing-16);
-  justify-content: center;
-  display: flex;
-}
-
-.gesture span {
-  width: calc(var(--l3-spacing-96) + var(--l3-spacing-24));
-  height: var(--l3-size-04);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-content-secondary);
-}
 ```
 
 ### `src/flows/us-stocks/screens/trade/FeeBreakdown.tsx`
@@ -36150,7 +36137,6 @@ function FeeBreakdownSheet({ onClose }: { onClose: () => void }) {
           }
         />
       }
-      utility={<span className={styles.gesture} aria-hidden="true"><span /></span>}
     >
       <div className={styles.body}>
         <KeyValueList aria-label="Estimated fee">
@@ -36478,9 +36464,13 @@ export function OrderProcessing({ backdrop }: { backdrop?: boolean }) {
 /* FLAG: layout is raw display:flex + gap/padding, not L3 Stack / Section / Inset; result art is an image, not the app's result pattern. */
 
 .content {
+  /* Centred in the space above the dock (processing, success, error): no top / bottom padding. */
+  min-height: 100%;
+  box-sizing: border-box;
+  justify-content: center;
   align-items: stretch;
   gap: var(--l3-spacing-24);
-  padding: calc(var(--l3-spacing-80) + var(--l3-spacing-08)) var(--l3-spacing-16) var(--l3-spacing-24);
+  padding: 0 var(--l3-spacing-16);
   flex-direction: column;
   display: flex;
 }
@@ -36492,23 +36482,6 @@ export function OrderProcessing({ backdrop }: { backdrop?: boolean }) {
 
 .art img {
   display: block;
-}
-
-.spinner {
-  color: var(--l3-content-accent-brand-default);
-  animation: spin var(--l3-motion-duration-spin) linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion:reduce) {
-  .spinner {
-    animation: none;
-  }
 }
 
 .title {
@@ -36543,16 +36516,16 @@ export function OrderProcessing({ backdrop }: { backdrop?: boolean }) {
 ```tsx
 // Order result screen: processing spinner, success tick or error cross, title, order rows, optional note and actions.
 // FLAG: layout is raw display:flex + gap/padding (OrderResult.module.css), not L3 Stack / Section / Inset.
-// FLAG: result art (success / error SVGs, hand-spun loading arc) is the teammate's, not an L3 / app result pattern.
+// FLAG: result art (success / error SVGs) is the teammate's, not an L3 / app result pattern.
 import { useEffect, useRef } from 'react'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
+import { Loader } from '@l3/components/Loader'
 import { Phone } from '../../components/Phone'
 import { InlineSvg } from '../../components/InlineSvg'
 import { useUsNav } from '../../nav'
 import { Usd } from '../../../../shared/money'
-import { MaskImage } from '../money/components/MaskImage'
 import { forCurrentStock } from './format'
 import type { OrderResultConfig } from './types'
 import styles from './OrderResult.module.css'
@@ -36587,7 +36560,8 @@ export function OrderResult({ config }: { config: OrderResultConfig }) {
       <div className={styles.content}>
         <span className={styles.art} aria-hidden="true">
           {config.art === 'loading' ? (
-            <MaskImage src="assets/trade/loading-arc.svg" w={72} className={styles.spinner} />
+            // L3 Loader Large; the heading under it (role="status") says what's happening.
+            <Loader size="lg" label={null} />
           ) : (
             <InlineSvg src={`assets/trade/${config.art}.svg`} w={72} />
           )}
@@ -36982,10 +36956,21 @@ const orderRows: [string, string][] = [
   ['Validity', 'Day'],
 ]
 
-/** A brand button that leaves the screen (back), or goes to `to`. */
-const brandAction = (label: string, to?: string) => ({ label, variant: 'brand' as const, exit: true, to })
-/** "Order Details" (secondary, does nothing) + a brand button. */
-const detailsAndBrand = (label: string, to: string) => [{ label: 'Order Details', variant: 'secondary' as const }, brandAction(label, to)]
+/** A primary button (not brand: nothing here moves money) that leaves the screen (back), or goes to `to`. */
+const primaryAction = (label: string, to?: string) => ({ label, variant: 'primary' as const, exit: true, to })
+/** "Order Details" (secondary, opens that order's details) + a primary button. */
+const detailsAndPrimary = (detailsTo: string, label: string, to: string) => [
+  { label: 'Order Details', variant: 'secondary' as const, to: detailsTo },
+  primaryAction(label, to),
+]
+
+// Where the result buttons go (US Stocks figma ids): Portfolio · Holdings · US, Portfolio · Orders · US, and the Order
+// Details sample closest to the order just placed — an executed NVDA market buy; for a sell, the NVDA limit sell (the
+// only NVDA sell sample that has sold shares; it shows as partly filled).
+const HOLDINGS = '9001:30'
+const ORDERS = '9001:31'
+const BUY_DETAILS = '9001:46'
+const SELL_DETAILS = '9001:44'
 
 export const orderResults: Record<string, OrderResultConfig> = {
   [ids.T12]: { label: 'Order processing', art: 'loading', title: 'We are working on it', description: 'This may take a few seconds', rows: orderRows, back: ids.T01 },
@@ -36996,7 +36981,7 @@ export const orderResults: Record<string, OrderResultConfig> = {
     description: 'Your order to buy NVDA is successfully created',
     rows: orderRows,
     note: 'The US market is closed. Your order will be sent when it opens at 8:00 PM IST.',
-    actions: [brandAction('View Orders')],
+    actions: [primaryAction('View Orders', ORDERS)],
     back: ids.stockStatus,
   },
   [ids.T14]: {
@@ -37005,7 +36990,7 @@ export const orderResults: Record<string, OrderResultConfig> = {
     title: 'Yay! Buy Order Executed',
     description: 'Execution successful of an order to buy 2 qty of NVDA',
     rows: [['Order Value', '$376.84'], ['Number of Shares', '2'], ['Avg. Price', '$188.42'], ['Validity', 'Day']],
-    actions: detailsAndBrand('Holdings', ids.stockStatus),
+    actions: detailsAndPrimary(BUY_DETAILS, 'Holdings', HOLDINGS),
     back: ids.stockStatus,
   },
   [ids.T15]: {
@@ -37014,7 +36999,7 @@ export const orderResults: Record<string, OrderResultConfig> = {
     title: 'Oops! Buy Order not Placed',
     description: 'We could not place your order to buy NVDA at the exchange: Trading in this stock is temporarily halted',
     rows: orderRows,
-    actions: [brandAction('Okay')],
+    actions: [primaryAction('Okay')],
     back: ids.stockStatus,
   },
   [ids.H06]: {
@@ -37024,7 +37009,7 @@ export const orderResults: Record<string, OrderResultConfig> = {
     description: 'Execution successful of an order to sell 2 qty of NVDA',
     rows: [['Order Value', '$385.20'], ['Number of Shares', '2'], ['Avg. Price', '$192.60'], ['Validity', 'Day']],
     note: SELL_NOTE,
-    actions: detailsAndBrand('Holdings', ids.stockStatus),
+    actions: detailsAndPrimary(SELL_DETAILS, 'Holdings', HOLDINGS),
     back: ids.stockStatus,
   },
   [ids.H07]: {
@@ -37033,7 +37018,7 @@ export const orderResults: Record<string, OrderResultConfig> = {
     title: 'Oops! Sell Order not Placed',
     description: 'We could not place your order to sell NVDA at the exchange: Trading in this stock is temporarily halted',
     rows: orderRows,
-    actions: [brandAction('Okay')],
+    actions: [primaryAction('Okay')],
     back: ids.stockStatus,
   },
 }
@@ -37106,7 +37091,7 @@ export type OrderResultConfig = {
   description: string
   rows: [string, string][]
   note?: string
-  actions?: { label: string; variant: 'brand' | 'secondary'; to?: string; exit?: boolean }[]
+  actions?: { label: string; variant: 'primary' | 'secondary'; to?: string; exit?: boolean }[]
   /** Screen "exit" actions go back to. */
   back: string
 }
@@ -38682,7 +38667,7 @@ import { Usd } from '../../../../shared/money'
 import { FIGMA, WITHDRAWAL_REQUESTS } from './data'
 import { WalletScreen, type WalletDock, type WalletScreenProps, type WalletTab } from './WalletScreen'
 import { DepositProgressSheet } from './sheets/DepositProgressSheet'
-import { sentDeposit, type SentDeposit } from '../money/handoff'
+import { DEPOSIT_ETA, depositOnTheWay } from '../../../../shared/data/usDeposit'
 import { CancelWithdrawalSheet } from './sheets/CancelWithdrawalSheet'
 import { WithdrawalRequestsSheet } from './sheets/WithdrawalRequestsSheet'
 
@@ -38752,15 +38737,12 @@ export function WalletFundedScreen({ backdrop, openOn }: ScreenProps) {
   )
 }
 
-/** The deposit shown when the wallet is opened straight from the list (nothing was paid in this visit). */
-const SAMPLE_DEPOSIT: SentDeposit = { usd: 1035.37, inr: '₹91,320', bank: 'HDFC Bank ••7821' }
-
 /**
  * Wallet · US tab · Add money transfer in progress. `sent`: just back from the bank's page (us-stocks-93) — the sheet
  * opens at once to say the money is on its way and when it lands; "Got it" leaves the wallet with its pending banner.
  */
 export function WalletTransferInProgressScreen({ backdrop, openOn, sent }: ScreenProps & { sent?: boolean }) {
-  const deposit = sentDeposit(SAMPLE_DEPOSIT)
+  const deposit = depositOnTheWay()
   // Tapping the banner explains the wait: Paid → Sent to US → Ready, and why it takes 1–2 working days.
   const [explaining, setExplaining] = useState(!!sent && !backdrop)
   return (
@@ -38774,7 +38756,7 @@ export function WalletTransferInProgressScreen({ backdrop, openOn, sent }: Scree
       backTo="stocks-01"
       dock={DEPOSIT_ONLY}
       pending={{ title: <><Usd value={deposit.usd} layout="inline" /> deposit in progress</>, sub: 'Arrives in your wallet by Thu 8 PM (or Fri)', onOpen: () => !backdrop && setExplaining(true) }}
-      sheet={explaining && <DepositProgressSheet deposit={deposit} eta="by Thu 8 PM" sent={sent} onClose={() => setExplaining(false)} />}
+      sheet={explaining && <DepositProgressSheet deposit={deposit} eta={DEPOSIT_ETA} onClose={() => setExplaining(false)} />}
     />
   )
 }
@@ -39335,90 +39317,14 @@ export function CancelWithdrawalSheet({ amount, all, onNo, onYes }: { amount: nu
 ### `src/flows/us-stocks/screens/wallet/sheets/DepositProgressSheet.tsx`
 
 ```tsx
-// Where a deposit is, as L3 Steps (vertical): Paid → Sent to US → Ready to trade, each saying what's happening and why —
-// money leaving India goes through the bank's forex desk under RBI's LRS and an international wire, and US banks only
-// credit on US working days. Two openings:
-// - "sent": the user is back from the bank's page (us-stocks-93) — the money has left their bank but isn't in the wallet
-//   yet, so the sheet says so first: "$50.00 is on its way", and when it lands.
-// - otherwise: "Why it takes 1–2 days", from the wallet's "deposit in progress" banner.
-// The steps already say the user will be told when it lands, so the safe note only says the money is safe.
-import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
-import { Button } from '@l3/components/Button'
-import { ButtonGroup } from '@l3/components/ButtonGroup'
-import { Icon } from '@l3/components/Icon'
-import { Inset } from '@l3/components/Inset'
-import { Stack } from '@l3/components/Stack'
-import { Steps } from '@l3/components/Steps'
-import { msShieldLockFill } from '@l3/icons/material'
+// The deposit explainer (shared/ui/DepositProgressSheet) on the wallet: drawn in US Stocks' own sheet layer.
+// Opened by the deposit-in-progress bar, and at once when the user is back from the bank's page (us-stocks-93).
 import { useSheetLayer } from '../../../components/Phone'
-import { formatUsd } from '../../../../../shared/money'
-import type { SentDeposit } from '../../money/handoff'
-import styles from './Sheets.module.css'
+import { DepositProgressSheet as SharedDepositProgressSheet } from '../../../../../shared/ui/DepositProgressSheet'
+import type { SentDeposit } from '../../../../../shared/data/usDeposit'
 
-type DepositProgressSheetProps = {
-  /** The deposit: $ that will land, ₹ that left the bank, and which bank. */
-  deposit: SentDeposit
-  /** When it lands ("by Thu 8 PM"). */
-  eta: string
-  /** Just back from the bank's page: the sheet opens with "on its way". */
-  sent?: boolean
-  onClose: () => void
-}
-
-export function DepositProgressSheet({ deposit, eta, sent, onClose }: DepositProgressSheetProps) {
-  const layer = useSheetLayer()
-  const usd = formatUsd(deposit.usd)
-  return (
-    <BottomSheet
-      open
-      onClose={onClose}
-      container={layer}
-      aria-labelledby="deposit-progress-title"
-      header={
-        sent ? (
-          <BottomSheetHeader
-            heading={`${usd} is on its way`}
-            headingId="deposit-progress-title"
-            description={`Your payment went through. Money sent abroad takes 1–2 working days to reach your USD wallet: expected ${eta}.`}
-          />
-        ) : (
-          <BottomSheetHeader
-            heading="Why it takes 1–2 days"
-            headingId="deposit-progress-title"
-            description="Sending money abroad goes through a few regulated hands. Here's where yours is."
-          />
-        )
-      }
-      footer={
-        <ButtonGroup aria-label="Deposit progress">
-          <Button variant="primary" size="lg" fullWidth onClick={onClose}>
-            Got it
-          </Button>
-        </ButtonGroup>
-      }
-    >
-      <Stack gap="24">
-        <Steps
-          label="Your deposit"
-          steps={[
-            { label: 'Paid', state: 'done', description: `${deposit.inr} left your ${deposit.bank}. Nothing more to do.` },
-            {
-              label: 'Sent to US · 1–2 working days',
-              state: 'loading',
-              description: 'Your bank converts it to dollars under RBI’s Liberalised Remittance Scheme and wires it to our US broker partner. International wires are checked at each bank on the way.',
-            },
-            { label: 'Ready to trade', state: 'todo', description: `${usd} in your USD wallet, expected ${eta}. US banks credit only on US working days, so a US holiday can add a day. We'll notify you when it lands.` },
-          ]}
-        />
-        <Inset padding="12" className={styles.safeNote}>
-          <Stack direction="horizontal" align="center" gap="12">
-            <Icon icon={msShieldLockFill} size={24} />
-            <span>Your money is safe, held in your name at our US broker partner.</span>
-          </Stack>
-        </Inset>
-      </Stack>
-    </BottomSheet>
-  )
+export function DepositProgressSheet({ deposit, eta, onClose }: { deposit: SentDeposit; eta: string; onClose: () => void }) {
+  return <SharedDepositProgressSheet deposit={deposit} eta={eta} onClose={onClose} container={useSheetLayer()} />
 }
 ```
 
@@ -39470,38 +39376,11 @@ export function DepositProgressSheet({ deposit, eta, sent, onClose }: DepositPro
   color:var(--l3-content-secondary);
 }
 
-.gesture {
-  /* FLAG: hand-made drag handle (the L3 sheet has no handle); raw 120px width */
-  padding:var(--l3-spacing-10) var(--l3-spacing-16);
-  background:var(--l3-surface-primary);
-  justify-content:center;
-  display:flex;
-}
 
-.gesture span {
-  width:120px;
-  height:var(--l3-size-04);
-  border-radius:var(--l3-radius-full);
-  background:var(--l3-surface-inverted);
-  opacity:.5;
-}
 
 .close[data-size=sm][data-variant=ghost] {
   /* FLAG: selector not used by any component (leftover) */
   --btn-icon-size: var(--l3-icon-size-24);
-}
-
-.breakdown {
-  gap:var(--l3-spacing-12);
-  padding-bottom:var(--l3-spacing-08);
-  flex-direction:column;
-  display:flex;
-}
-
-.rule {
-  border:0;
-  border-top:1px solid var(--l3-border-light);
-  margin:0;
 }
 
 .requests {
@@ -39563,28 +39442,12 @@ export function DepositProgressSheet({ deposit, eta, sent, onClose }: DepositPro
   font:var(--l3-text-heading-14);
   color:var(--l3-content-primary);
 }
-
-
-/* Deposit progress sheet: "your money is safe" under the steps. */
-.safeNote {
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-accent-success-light);
-  font: var(--l3-text-description-12);
-  color: var(--l3-content-secondary);
-}
-
-/* The lock icon (first in the row). */
-.safeNote > * > :first-child {
-  flex: none;
-  color: var(--l3-content-accent-success-default);
-}
 ```
 
 ### `src/flows/us-stocks/screens/wallet/sheets/WithdrawableSheet.tsx`
 
 ```tsx
 // "Withdrawable balance" sheet: how the total splits into what can go to the bank now and what is held back.
-// FLAG: hand-made drag handle in the `utility` slot (L3 BottomSheet has none).
 import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
@@ -39592,7 +39455,6 @@ import { KeyValueList, KeyValueRow } from '@l3/components/KeyValueList'
 import { useSheetLayer } from '../../../components/Phone'
 import { Usd, formatInr, parseUsd } from '../../../../../shared/money'
 import { BROKERAGE_CREDITS_INR, SETTLING_USD } from '../data'
-import styles from './Sheets.module.css'
 
 const amountOf = (text: string) => Number(text.replace(/[^\d.]/g, '')) || 0
 
@@ -39628,11 +39490,6 @@ export function WithdrawableSheet({
       onClose={onClose}
       container={layer}
       aria-labelledby="withdrawable-title"
-      utility={
-        <div className={styles.gesture} aria-hidden="true">
-          <span />
-        </div>
-      }
       header={<BottomSheetHeader heading="Withdrawable balance" headingId="withdrawable-title" description="What you can send to your bank right now" />}
       footer={
         <ButtonGroup aria-label="Withdrawable balance">
@@ -39647,26 +39504,25 @@ export function WithdrawableSheet({
         </ButtonGroup>
       }
     >
-      <div className={styles.breakdown}>
-        <KeyValueList aria-label="Balance breakdown">
-          <KeyValueRow label={inr ? 'INR balance' : 'USD balance'} value={money(amountOf(total))} />
-          {inr ? (
-            <>
-              <KeyValueRow label="Brokerage credits" caption="Used for brokerage only" value={money(settling, true)} />
-              {rest > 0 && <KeyValueRow label="Blocked for orders" caption="Free once they settle" value={money(rest, true)} />}
-            </>
-          ) : (
-            <>
-              <KeyValueRow label="Settling from sales" caption="Free in 1 working day" value={money(settling, true)} />
-              {rest > 0 && <KeyValueRow label="Withdrawals sent" caption="On the way to your bank" value={money(rest, true)} />}
-            </>
-          )}
-        </KeyValueList>
-        <hr className={styles.rule} />
-        <KeyValueList aria-label="Withdrawable">
-          <KeyValueRow total label="Withdrawable" value={parseUsd(withdrawable) ? <Usd text={withdrawable} align="end" /> : withdrawable} />
-        </KeyValueList>
-      </div>
+      {/* L3 money breakdown: the card KeyValueList, its `total` row (divider + Withdrawable) at the end. */}
+      <KeyValueList
+        variant="card"
+        aria-label="Balance breakdown"
+        total={{ label: 'Withdrawable', value: parseUsd(withdrawable) ? <Usd text={withdrawable} align="end" /> : withdrawable }}
+      >
+        <KeyValueRow label={inr ? 'INR balance' : 'USD balance'} value={money(amountOf(total))} />
+        {inr ? (
+          <>
+            <KeyValueRow label="Brokerage credits" caption="Used for brokerage only" value={money(settling, true)} />
+            {rest > 0 && <KeyValueRow label="Blocked for orders" caption="Free once they settle" value={money(rest, true)} />}
+          </>
+        ) : (
+          <>
+            <KeyValueRow label="Settling from sales" caption="Free in 1 working day" value={money(settling, true)} />
+            {rest > 0 && <KeyValueRow label="Withdrawals sent" caption="On the way to your bank" value={money(rest, true)} />}
+          </>
+        )}
+      </KeyValueList>
     </BottomSheet>
   )
 }
@@ -62083,6 +61939,32 @@ export const supportedOf = (banks: LinkedBank[]) => banks.filter(isUsSupported)
 export const isUsSupportedIfsc = (ifsc: string) => SUPPORTED_BANKS.some((s) => ifsc.startsWith(s.ifsc))
 ```
 
+### `src/shared/data/usDeposit.ts`
+
+```ts
+// The US Stocks deposit on its way (paid in ₹, not yet in the USD wallet). Shared because Home's "Money on the way"
+// card and the US wallet both explain it with the same sheet (shared/ui/DepositProgressSheet).
+
+/** A deposit paid on the bank's page: $ that will land, ₹ that left the bank, and which bank. */
+export type SentDeposit = { usd: number; inr: string; bank: string }
+
+/** When a deposit paid now is ready to trade (the prototype's fixed day). */
+export const DEPOSIT_ETA = 'by Thu 8 PM'
+
+/** Shown when no deposit was paid in this session (a screen opened straight from the list). */
+const SAMPLE_DEPOSIT: SentDeposit = { usd: 1035.37, inr: '₹91,320', bank: 'HDFC Bank ••7821' }
+
+let sent: SentDeposit | null = null
+
+/** Remember the deposit being paid (Add money → the bank's page). */
+export const setSentDeposit = (deposit: SentDeposit) => {
+  sent = deposit
+}
+
+/** The deposit last paid, or the sample. Kept: it's shown until it lands. */
+export const depositOnTheWay = (): SentDeposit => sent ?? SAMPLE_DEPOSIT
+```
+
 ### `src/shared/data/usStocks.ts`
 
 ```ts
@@ -63010,9 +62892,9 @@ export function BankSheet({ banks, selected, copy, onSelect, onAdd, onClose }: {
 
 /**
  * The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks).
- * `card`: each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain` (default): flat rows.
+ * `card` (default): each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain`: flat rows.
  */
-export function BankOptions({ banks, selected, name, onPick, variant = 'plain' }: {
+export function BankOptions({ banks, selected, name, onPick, variant = 'card' }: {
   banks: LinkedBank[]
   selected: string
   name: string
@@ -63035,6 +62917,99 @@ export function BankOptions({ banks, selected, name, onPick, variant = 'plain' }
       ))}
     </Stack>
   )
+}
+```
+
+### `src/shared/ui/DepositProgressSheet.module.css`
+
+```css
+.safeNote {
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-accent-success-light);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.safeNote > * > :first-child {
+  flex: none;
+  color: var(--l3-content-accent-success-default);
+}
+```
+
+### `src/shared/ui/DepositProgressSheet.tsx`
+
+```tsx
+// "Money on the way": where a US Stocks deposit is, as L3 Steps — Paid → Sent to the US → US bank processing (the
+// current step) → Ready to trade. The story the user should take away: the money has already left India; the wait is
+// the US side crediting it (US banks take 1–2 working days). Kept short: one line per step, the safe note under them.
+// Opened from Home's "Money on the way" card, the wallet's deposit-in-progress bar, and back from the bank's page.
+// L3 gap: Steps has no warning (yellow) or pulsing "in progress" marker — the running step uses `current` (success dot).
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Icon } from '@l3/components/Icon'
+import { Inset } from '@l3/components/Inset'
+import { Stack } from '@l3/components/Stack'
+import { Steps } from '@l3/components/Steps'
+import { msShieldLockFill } from '@l3/icons/material'
+import { formatUsd } from '../money'
+import { Sheet } from './Sheet'
+import styles from './DepositProgressSheet.module.css'
+
+export type DepositInProgress = {
+  /** $ that will land in the USD wallet. */
+  usd: number
+  /** ₹ that left the bank, as written ("₹4,312.50"). */
+  inr: string
+  /** The bank it left, as written ("HDFC Bank ••7821"). */
+  bank: string
+}
+
+type DepositProgressSheetProps = {
+  deposit: DepositInProgress
+  /** When it's ready to trade ("by Thu 8 PM"). */
+  eta: string
+  onClose: () => void
+  /** A screen that draws its own sheet layer (US Stocks' Phone) passes it; otherwise the screen's SheetHost shows it. */
+  container?: HTMLElement | null
+}
+
+const HEADING_ID = 'deposit-progress-title'
+
+export function DepositProgressSheet({ deposit, eta, onClose, container }: DepositProgressSheetProps) {
+  const header = <BottomSheetHeader heading={`${formatUsd(deposit.usd)} on the way`} headingId={HEADING_ID} description={`Ready to trade ${eta}`} />
+  const footer = (
+    <ButtonGroup aria-label="Deposit progress">
+      <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
+    </ButtonGroup>
+  )
+  const body = (
+    <Stack gap="24">
+      <Steps
+        label="Your deposit"
+        steps={[
+          { label: 'Paid', state: 'done', description: `${deposit.inr} from ${deposit.bank}` },
+          { label: 'Sent to the US', state: 'done', description: 'Your money has left India' },
+          { label: 'US bank processing', state: 'current', description: 'US banks usually take 1–2 working days' },
+          { label: 'Ready to trade', state: 'todo', description: `${eta} · we'll notify you` },
+        ]}
+      />
+      <Inset padding="12" className={styles.safeNote}>
+        <Stack direction="horizontal" align="center" gap="12">
+          <Icon icon={msShieldLockFill} size={24} />
+          <span>Your money is safe, held in your name at our US partner.</span>
+        </Stack>
+      </Inset>
+    </Stack>
+  )
+  if (container !== undefined) {
+    return (
+      <BottomSheet open onClose={onClose} container={container} aria-labelledby={HEADING_ID} header={header} footer={footer}>
+        {body}
+      </BottomSheet>
+    )
+  }
+  return <Sheet labelledBy={HEADING_ID} onClose={onClose} header={header} footer={footer}>{body}</Sheet>
 }
 ```
 

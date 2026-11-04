@@ -157,6 +157,8 @@ From `src/shared/data/user.ts` (fictional sample user) and `data.ts`:
   red ("State Bank of India can't send money abroad for US Stocks…") and Verify stays off. From the ₹ side (INR wallet,
   ₹ add money) any bank can be added, no check. The mode ends when Add bank closes. The bank typed is the one verified
   and added (`bankFromEntry`).
+- 2026-11-04 — Pay from: banks are card rows (bordered, 8 apart), as on the US Stocks bank sheet. Back on Add money returns
+  to the page it was opened from (the wallet) instead of opening the wallet again, which looped wallet ↔ add money.
 
 
 ## Source — this flow
@@ -588,7 +590,9 @@ export function AddMoney({ initial = '', first = true, balance = 0, banksOpen = 
   onAddBank?: () => void
 }) {
   const [text, setText] = useState(initial)
-  const { screenId } = usePreview()
+  const { screenId, back } = usePreview()
+  // Back returns to the page it was opened from (the wallet, KYC done); `onBack` only when there's none (opened from the list).
+  const leave = () => { if (!back?.()) onBack?.() }
   // "Add bank account" comes back here once the account is verified.
   const addBank = () => { startAddBank(screenId); onAddBank?.() }
   const linked = useLinkedBanks()
@@ -610,7 +614,7 @@ export function AddMoney({ initial = '', first = true, balance = 0, banksOpen = 
       : t('addMoney.range', { min: inr(MIN_DEPOSIT, 0), max: inr(UPI_LIMIT, 0) })
   return (
     <Screen
-      top={<Actionbar title={t('addMoney.title')} description={t('addMoney.available', { amount: inr(balance) })} onBack={onBack} />}
+      top={<Actionbar title={t('addMoney.title')} description={t('addMoney.available', { amount: inr(balance) })} onBack={leave} />}
       sheet={sheet && bank && (
         <BankSheet banks={banks} selected={bank.id} copy={bankCopy} onSelect={setBankId} onAdd={() => { setSheet(false); addBank() }} onClose={() => setSheet(false)} />
       )}
@@ -16737,9 +16741,9 @@ export function BankSheet({ banks, selected, copy, onSelect, onAdd, onClose }: {
 
 /**
  * The sheet's body alone — the linked banks as radio rows — for a screen that hosts its own L3 BottomSheet (US Stocks).
- * `card`: each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain` (default): flat rows.
+ * `card` (default): each bank a bordered card row, 8 apart (the chosen one gets border-dark); `plain`: flat rows.
  */
-export function BankOptions({ banks, selected, name, onPick, variant = 'plain' }: {
+export function BankOptions({ banks, selected, name, onPick, variant = 'card' }: {
   banks: LinkedBank[]
   selected: string
   name: string

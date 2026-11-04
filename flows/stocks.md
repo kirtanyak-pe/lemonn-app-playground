@@ -519,6 +519,8 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
   re-measured at 360 dp from the live capture: section titles 16, card / summary text 12, shortcut circles 40, card
   widths (products 2.55 visible, movers 2.39, watchlists 1.6, sectors 2.07, highlights 1.67, baskets 1.19).
 
+- 2026-11-04 — Money on the way (`stocks-20`): the card opens the deposit explainer over Home (`shared/ui/DepositProgressSheet`)
+  instead of the wallet; the timed move to "money ready" waits while it's open.
 
 
 ## Source — this flow
@@ -26766,6 +26768,8 @@ import { DEFAULT_HOME_VERSION, homeVersion, type HomeVersion } from '../componen
 import { MarketSwitchGuide } from '../components/MarketSwitchGuide'
 import { HomeSwitcher } from '../components/HomeSwitcher'
 import { TopBar } from '../components/TopBar'
+import { DEPOSIT_ETA, depositOnTheWay } from '../../../shared/data/usDeposit'
+import { DepositProgressSheet } from '../../../shared/ui/DepositProgressSheet'
 import { TransferStatusCard } from '../components/us/TransferProgress'
 import { activatedStates, inKycCard, usIndices, type ThemeId, type UsState } from '../components/us/data'
 import { UsActivationCard } from '../components/us/UsActivationCard'
@@ -26839,7 +26843,9 @@ type Props = {
 const HEADER_CARD = false as boolean
 
 export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch, onProfile, onWallet, usState = 'activate', onActivateUs, onUsHoldings, onInHoldings, onUsStock, onUsMarket, onUsTheme, onUsEtfs, onUsEtf, onUsPicks, onUsBrands, autoNext, sheet }: Props) {
-  useAutoAdvance(autoNext, 2000)
+  // Money on the way: its card opens the deposit explainer over Home (the timed move to "money ready" waits while it's open).
+  const [explaining, setExplaining] = useState(false)
+  useAutoAdvance(explaining ? undefined : autoNext, 2000)
   const page = useRef<HTMLDivElement>(null)
   // The design version (the prototype's "Homepage version" option): where the IND / US switch sits and how it looks.
   const version = homeVersion(useFlowOption('stocks', 'homeVersion', DEFAULT_HOME_VERSION))
@@ -27061,7 +27067,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
     if (usState === 'onTheWay') return (
       <Stack gap="12">
         <UsActivationCard holdings={<HoldingsSummary us onOpen={onUsHoldings} usEmpty />} />
-        <TransferStatusCard onOpen={onActivateUs} />
+        <TransferStatusCard onOpen={() => setExplaining(true)} />
       </Stack>
     )
     return usCard ? <UsActivationCard state={usState} onCta={onActivateUs} /> : <UsActivationCard holdings={<HoldingsSummary us onOpen={onUsHoldings} />} />
@@ -27084,7 +27090,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
 
   return (
     <Screen
-      sheet={sheet ?? (guiding && <MarketSwitchGuide key={version.id} onView={() => switchInPage('us')} onClose={() => setGuideDoneFor(version.id)} />)}
+      sheet={sheet ?? (explaining ? <DepositProgressSheet deposit={depositOnTheWay()} eta={DEPOSIT_ETA} onClose={() => setExplaining(false)} /> : guiding && <MarketSwitchGuide key={version.id} onView={() => switchInPage('us')} onClose={() => setGuideDoneFor(version.id)} />)}
       toast={showToast && <Aerobar type="success" floating icon={<Icon icon={msCheckCircle} />} heading={t('us.ready.title')} paragraph={t('us.ready.subtitle')} duration={6000} onClick={onActivateUs} onDismiss={() => setToastGone(true)} />}
       bottom={<MainNav value="stocks" onChange={onTab} />}
     >
@@ -50234,6 +50240,32 @@ export const watchlists: Watchlist[] = [
 }
 ```
 
+### `src/shared/data/usDeposit.ts`
+
+```ts
+// The US Stocks deposit on its way (paid in ₹, not yet in the USD wallet). Shared because Home's "Money on the way"
+// card and the US wallet both explain it with the same sheet (shared/ui/DepositProgressSheet).
+
+/** A deposit paid on the bank's page: $ that will land, ₹ that left the bank, and which bank. */
+export type SentDeposit = { usd: number; inr: string; bank: string }
+
+/** When a deposit paid now is ready to trade (the prototype's fixed day). */
+export const DEPOSIT_ETA = 'by Thu 8 PM'
+
+/** Shown when no deposit was paid in this session (a screen opened straight from the list). */
+const SAMPLE_DEPOSIT: SentDeposit = { usd: 1035.37, inr: '₹91,320', bank: 'HDFC Bank ••7821' }
+
+let sent: SentDeposit | null = null
+
+/** Remember the deposit being paid (Add money → the bank's page). */
+export const setSentDeposit = (deposit: SentDeposit) => {
+  sent = deposit
+}
+
+/** The deposit last paid, or the sample. Kept: it's shown until it lands. */
+export const depositOnTheWay = (): SentDeposit => sent ?? SAMPLE_DEPOSIT
+```
+
 ### `src/shared/data/usStocks.ts`
 
 ```ts
@@ -50843,6 +50875,99 @@ export const SUPPORT_EMAIL = 'support@lemonn.co'
 
 export function emailSupport(subject: string) {
   window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}`
+}
+```
+
+### `src/shared/ui/DepositProgressSheet.module.css`
+
+```css
+.safeNote {
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-accent-success-light);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.safeNote > * > :first-child {
+  flex: none;
+  color: var(--l3-content-accent-success-default);
+}
+```
+
+### `src/shared/ui/DepositProgressSheet.tsx`
+
+```tsx
+// "Money on the way": where a US Stocks deposit is, as L3 Steps — Paid → Sent to the US → US bank processing (the
+// current step) → Ready to trade. The story the user should take away: the money has already left India; the wait is
+// the US side crediting it (US banks take 1–2 working days). Kept short: one line per step, the safe note under them.
+// Opened from Home's "Money on the way" card, the wallet's deposit-in-progress bar, and back from the bank's page.
+// L3 gap: Steps has no warning (yellow) or pulsing "in progress" marker — the running step uses `current` (success dot).
+import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
+import { Button } from '@l3/components/Button'
+import { ButtonGroup } from '@l3/components/ButtonGroup'
+import { Icon } from '@l3/components/Icon'
+import { Inset } from '@l3/components/Inset'
+import { Stack } from '@l3/components/Stack'
+import { Steps } from '@l3/components/Steps'
+import { msShieldLockFill } from '@l3/icons/material'
+import { formatUsd } from '../money'
+import { Sheet } from './Sheet'
+import styles from './DepositProgressSheet.module.css'
+
+export type DepositInProgress = {
+  /** $ that will land in the USD wallet. */
+  usd: number
+  /** ₹ that left the bank, as written ("₹4,312.50"). */
+  inr: string
+  /** The bank it left, as written ("HDFC Bank ••7821"). */
+  bank: string
+}
+
+type DepositProgressSheetProps = {
+  deposit: DepositInProgress
+  /** When it's ready to trade ("by Thu 8 PM"). */
+  eta: string
+  onClose: () => void
+  /** A screen that draws its own sheet layer (US Stocks' Phone) passes it; otherwise the screen's SheetHost shows it. */
+  container?: HTMLElement | null
+}
+
+const HEADING_ID = 'deposit-progress-title'
+
+export function DepositProgressSheet({ deposit, eta, onClose, container }: DepositProgressSheetProps) {
+  const header = <BottomSheetHeader heading={`${formatUsd(deposit.usd)} on the way`} headingId={HEADING_ID} description={`Ready to trade ${eta}`} />
+  const footer = (
+    <ButtonGroup aria-label="Deposit progress">
+      <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
+    </ButtonGroup>
+  )
+  const body = (
+    <Stack gap="24">
+      <Steps
+        label="Your deposit"
+        steps={[
+          { label: 'Paid', state: 'done', description: `${deposit.inr} from ${deposit.bank}` },
+          { label: 'Sent to the US', state: 'done', description: 'Your money has left India' },
+          { label: 'US bank processing', state: 'current', description: 'US banks usually take 1–2 working days' },
+          { label: 'Ready to trade', state: 'todo', description: `${eta} · we'll notify you` },
+        ]}
+      />
+      <Inset padding="12" className={styles.safeNote}>
+        <Stack direction="horizontal" align="center" gap="12">
+          <Icon icon={msShieldLockFill} size={24} />
+          <span>Your money is safe, held in your name at our US partner.</span>
+        </Stack>
+      </Inset>
+    </Stack>
+  )
+  if (container !== undefined) {
+    return (
+      <BottomSheet open onClose={onClose} container={container} aria-labelledby={HEADING_ID} header={header} footer={footer}>
+        {body}
+      </BottomSheet>
+    )
+  }
+  return <Sheet labelledBy={HEADING_ID} onClose={onClose} header={header} footer={footer}>{body}</Sheet>
 }
 ```
 
