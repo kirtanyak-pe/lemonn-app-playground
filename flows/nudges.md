@@ -84,11 +84,11 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 
 | Layout | What changes |
 |---|---|
-| 1 · Centred + bars (default) | The table above. Header (setting "Layout 1 header"): **Chip** (default) — no circle; one big light-red pill (pill-tab shape: full radius, 40 high, error-light fill and border) with ✋ on the left of "Overtrading Detected", then the fact · **Icon + tag** — ✋ in a 64 circle, the tag under it. |
+| 1 · Centred + bars | The table above. Header (setting "Layout 1 header"): **Chip** (default) — no circle; one big light-red pill (pill-tab shape: full radius, 40 high, error-light fill and border) with ✋ on the left of "Overtrading Detected", then the fact · **Icon + tag** — ✋ in a 64 circle, the tag under it. |
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3X") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
 | 4 · Risk meter | The picture first, for a stressed trader: a **risk meter** — a thick half ring in three zones (success · warning · error accents, no numbers or ticks, so it reads as a risk scale, not a speedometer), "Safe" / "Danger" under its ends and a green **Usual** notch in the safe zone. The pointer starts on Usual (green) and swings into the red (turning red), overshoots a little and settles; then the danger zone pulses twice. In the middle: the multiple (`heading-36`, "2X") over "vs your usual" — "High risk" when there's no multiple. Under it only one heading, the fact (`heading-20`), and the "Overtrading Detected" tag below it. No not-safe line and no consequence strip (cut to keep the sheet to three things). `sheets/RiskVisuals.tsx` |
-| 5 · Risk bar | The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Safe zone" / "Danger zone" under its ends, a green **Usual · 1X** pin and a red **You now · 2X** pin (light-red pill, error border) that slides from Usual into the danger zone; each pin's label shifts with its position so it stays inside the sheet. Under it, left-aligned: one heading (the fact) and the tag. No not-safe line, no consequence strip. |
+| 5 · Risk bar (default) | **One version only**: always the size-up case ("This order is 2X the one you just lost"); Case and State don't apply, and the switcher hides them. The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Safe zone" / "Danger zone" under its ends, a green **Usual · 1X** pin and a red **You now · 2X** pin (light-red pill, error border) that slides from Usual into the danger zone; each pin's label shifts with its position so it stays inside the sheet. Under it, left-aligned: one heading (the fact) and the tag. No not-safe line, no consequence strip. |
 
 **Floating switcher (prototype only):** on the order pad and over the open nudge, a small pill floats: grip · Layout · Case ·
 State. Each is a dropdown pill that opens its own menu (full names, the picked one ticked); a long value is cut with an
@@ -165,6 +165,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-02 · Size-up after a loss is the default case and heads the case list. Floating switcher: every control is a dropdown pill with its own designed menu (no system picker); the case pill truncates so the bar never runs off the screen.
 - 2026-11-04 · Layouts 4 · Risk meter and 5 · Risk bar: where the trader is on a safe → danger scale, his usual vs now, animated once.
 - 2026-11-04 · Layouts 4 and 5 trimmed: the meter / bar at the top, one heading, the tag under it; the not-safe line, the consequence and the bar's card removed.
+- 2026-11-05 · Layout 5 is the default and has one version (size-up); the switcher hides Case and State on it.
 
 
 ## Source — this flow
@@ -364,8 +365,9 @@ function Pill({ host }: { host: HTMLElement }) {
     </button>
     <Pick option={layoutOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
     {layout === 'bars' && <Pick option={badgeOption} menu={menu} setMenu={setMenu} short={(v) => t(v === 'chip' ? 'switcher.badgeChip' : 'switcher.badgeTag')} />}
-    <Pick option={caseOption} menu={menu} setMenu={setMenu} short={(_, label) => label} wide />
-    <Pick option={stateOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.state', { state: v })} />
+    {/* Layout 5 has one version only: no case or state to pick. */}
+    {layout !== 'zone' && <Pick option={caseOption} menu={menu} setMenu={setMenu} short={(_, label) => label} wide />}
+    {layout !== 'zone' && <Pick option={stateOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.state', { state: v })} />}
     {menu && <Menu option={menu.option} chip={menu.chip} host={host} onClose={() => setMenu(null)} />}
   </div>
 }
@@ -786,7 +788,7 @@ const onOff = [{ value: 'off', label: t('option.everyBuyOff') }, { value: 'on', 
 // Size-up after a loss is the default and heads the list.
 export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'), picker: 'dropdown' as const, values: [...nudgeCases].sort((a, b) => Number(b.id === 'sizeUp') - Number(a.id === 'sizeUp')).map((c) => ({ value: c.id, label: t(`case.${c.id}.name` as Key) })), default: 'sizeUp' }
 export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
-export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }, { value: 'gauge', label: t('option.layoutGauge') }, { value: 'zone', label: t('option.layoutZone') }], default: 'bars' }
+export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }, { value: 'gauge', label: t('option.layoutGauge') }, { value: 'zone', label: t('option.layoutZone') }], default: 'zone' }
 
 /** Layout 1 only: the ✋ circle with the tag under it, or one chip (✋ inside the tag). */
 export const badgeOption = { id: 'badge', group: 'Nudge', label: t('option.badge'), picker: 'dropdown' as const, values: [{ value: 'chip', label: t('option.badgeChip') }, { value: 'tag', label: t('option.badgeTag') }], default: 'chip' }
@@ -870,11 +872,15 @@ import { inr } from '../../../shared/data/format'
 import { useFlowOption } from '../../../shared/prototype'
 import { Screen } from '../../../shared/ui/Screen'
 import { t } from '../copy'
+import { layoutOption } from '../options'
 import { defaultLimit, funds, intradayCloseTime, lossToday, orderContract, prefilledTpsl, sellMargin, validities, type DataState, type NudgeCaseId, type OrderProduct, type OrderSide, type OrderType } from '../data'
 import { LossLimitSheet, TpslSheet } from '../sheets/GuardrailSheets'
 import { NudgeSheet, type NudgeBadge, type NudgeLayout } from '../sheets/NudgeSheet'
 import { SheetSwitcher } from '../components/SheetSwitcher'
 import styles from './OrderPad.module.css'
+
+/** Layout 5's one version: size-up after a loss ("This order is 2X the one you just lost"). */
+const ZONE_NUDGE: { caseId: NudgeCaseId; state: DataState } = { caseId: 'sizeUp', state: 'A' }
 
 type Modal = { kind: 'nudge' } | { kind: 'pnl' } | { kind: 'tpsl' }
 
@@ -908,7 +914,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const optionState = useFlowOption('nudges', 'state', 'A') as DataState
   const actions = useFlowOption('nudges', 'actions', 'one') as 'one' | 'two'
   // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
-  const layout = useFlowOption('nudges', 'layout', 'bars') as NudgeLayout
+  const layout = useFlowOption('nudges', layoutOption.id, layoutOption.default) as NudgeLayout
   const badge = useFlowOption('nudges', 'badge', 'chip') as NudgeBadge
   const everyBuy = useFlowOption('nudges', 'everyBuy', 'on') === 'on'
   const vibrate = useFlowOption('nudges', 'vibrate', 'on') === 'on'
@@ -916,8 +922,10 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   // it follows the settings too, so the dropdown always changes the sheet that's open.
   const [opened] = useState(`${optionCase}.${optionState}`)
   const changed = `${optionCase}.${optionState}` !== opened
-  const fired = nudge === undefined ? undefined
+  const picked = nudge === undefined ? undefined
     : nudge === 'options' || changed ? { caseId: optionCase, state: optionState } : nudge
+  // Layout 5 has one version only: the size-up case, whatever case / state is picked (the others were copy tries).
+  const fired = picked && layout === 'zone' ? ZONE_NUDGE : picked
 
   const [product, setProduct] = useState<OrderProduct>(initialProduct)
   const [type, setType] = useState<OrderType>(initialType)

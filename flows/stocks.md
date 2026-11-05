@@ -304,6 +304,10 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-05 — **Quick version switch (phone app mode):** a small "V8" button floats on every screen; each tap moves to the next homepage version, looping (V8 → V12 → V13 → V14 → V8), for presenting. Draggable like the settings button, starts on the left. Generic: any setting with `quickSwitch: true` gets one (`src/flows/types.ts`, `preview/AppMode.tsx`). The Home settings pill's tucked tab also takes touches in a 48 × 72 zone now (it shows 20 × 48), so it's easier to drag out.
+- 2026-11-05 — New Homepage version **V14 · Two homes · white, flat tabs** (`homeVersions.ts`, `surface: 'white'`): the page is surface/default all the way — top bar, sticky band, summary and feed (no grey summary, no rounded sheet over it). Flat L3 underline tabs IN Stocks / US Stocks sit right under the top bar and stay on screen while the page scrolls; under them, the market picked has its own home (two homes, as V11).
+- 2026-11-05 — V14: the sticky block under the top bar is one container holding two, edge to edge: the tabs, then the ticker. The ticker's 12 above and below are inside its own container, and each index's tap area takes that full height.
+- 2026-11-05 — Two-homes versions (V12–V14) no longer carry the hidden compact IN / US tabs under the index band: their underline peeked out as a dark 1px line once the page scrolled.
 - 2026-11-04 — Money ready: Explore US Stocks (card and toast) opens Market with US picked (market-09), not the activated Home.
 - 2026-11-04 — US Home: Top analyst picks has a one-line description under its heading (what the picks are).
 - 2026-11-04 — Card shadows no longer cut off in sideways scrollers: a sideways scroller clips top and bottom too, so the shared `Rail`, the US Home's Top Movers / Brands scrollers, Portfolio's market cards, the MF scroller and the stock page's related ETFs pad 12 above and below and take it back with a negative margin (same layout; horizontal and page scrolling unchanged). L3 gap: L3 Tabs (pill, raised) leaves 4 for a shadow that reaches 5.
@@ -20445,6 +20449,17 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 }
 .tab[data-side='left'] { left: 0; border-radius: 0 var(--l3-radius-12) var(--l3-radius-12) 0; }
 .tab[data-side='right'] { right: 0; border-radius: var(--l3-radius-12) 0 0 var(--l3-radius-12); }
+/* The tab shows 20 × 48 but takes touches in a 48 × 72 zone (12 above and below, reaching into the screen), so it's
+   easy to grab and drag out (the user's call, 5 Nov). */
+.tab::before {
+  position: absolute;
+  top: calc(-1 * var(--l3-spacing-12));
+  bottom: calc(-1 * var(--l3-spacing-12));
+  width: var(--l3-size-48);
+  content: '';
+}
+.tab[data-side='left']::before { left: 0; }
+.tab[data-side='right']::before { right: 0; }
 
 .grip {
   flex: none;
@@ -22695,7 +22710,7 @@ export function UsIntroStory({ onView, onClose }: { onView: () => void; onClose:
 // V10–V13 ("two homes", no Figma yet) split the page at the top: the market is picked first and everything below is its own.
 // The prototype picks one with the flow option `homeVersion` (index.tsx), default V7 (V2 is the default in Jojo’s file).
 
-export type HomeVersionId = 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v8' | 'v9' | 'v10' | 'v11' | 'v12' | 'v13'
+export type HomeVersionId = 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v8' | 'v9' | 'v10' | 'v11' | 'v12' | 'v13' | 'v14'
 
 export type HomeVersion = {
   id: HomeVersionId
@@ -22725,6 +22740,8 @@ export type HomeVersion = {
   tiles: 'classic' | 'today' | 'withUs' | 'withInvest'
   /** The index ticker under the top bar. */
   ticker: boolean
+  /** The page's surface: the grey summary with the feed on a white rounded sheet (default), or white all the way (V14). */
+  surface?: 'white'
   /** Archived: kept in code, but no longer offered in the "Homepage version" picker. */
   archived?: boolean
 }
@@ -22744,9 +22761,12 @@ export const homeVersions: HomeVersion[] = [
   { id: 'v11', name: 'Two homes · tabs on top', figma: '', place: 'top', scope: 'page', look: 'underline', labels: 'stocks', flags: true, usNew: true, tiles: 'today', ticker: true , archived: true },
   { id: 'v12', name: 'Two homes · switch in top bar', figma: '', place: 'header', scope: 'page', look: 'pill', labels: 'short', flags: true, usNew: false, tiles: 'withInvest', ticker: true },
   { id: 'v13', name: 'Two homes · market picker', figma: '', place: 'picker', scope: 'page', look: 'pill', labels: 'stocks', flags: true, usNew: false, tiles: 'withInvest', ticker: true },
+  // V14 (5 Nov): the page all white (surface/default, no grey summary or rounded sheet), flat underline IN / US tabs right
+  // under the top bar (sticky), and under them that market's home.
+  { id: 'v14', name: 'Two homes · white, flat tabs', figma: '', place: 'top', scope: 'page', look: 'underline', labels: 'stocks', flags: true, usNew: true, tiles: 'withInvest', ticker: true, surface: 'white' },
 ]
 
-// Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13.
+// Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13. V14 added 5 Nov.
 
 /** The version shown until one is picked (and in place of an archived pick). */
 export const DEFAULT_HOME_VERSION: HomeVersionId = 'v8'
@@ -26177,6 +26197,8 @@ export const stocks: Flow = {
       picker: 'dropdown',
       values: activeHomeVersions.map((v) => ({ value: v.id, label: `${v.id.toUpperCase()} · ${v.name}` })),
       default: DEFAULT_HOME_VERSION,
+      // One tap on the floating "V8" button (phone) moves to the next version, on any screen (user, 5 Nov).
+      quickSwitch: true,
       floatOn: ['stocks-01', 'stocks-02', 'stocks-03', 'stocks-04', 'stocks-05', 'stocks-06', 'stocks-07', 'stocks-09', 'stocks-10', 'stocks-11', 'stocks-13', 'stocks-14', 'stocks-15', 'stocks-16', 'stocks-17', 'stocks-18', 'stocks-21', 'stocks-22'],
     },
     // FTUX guide for the IND / US switch: dims the screen, lights the switch with a tooltip. Shown every time a Home
@@ -26747,6 +26769,51 @@ export function BrandsPage({ onStock }: BrandsPageProps) {
 .cardSlide[data-side='before'] {
   right: 100%;
 }
+
+/*
+ * V14: the page white all the way (surface/default) — the top bar, the sticky band, the summary and the feed, which
+ * then needs no overlap or rounded top. Scrolled, the band keeps its 1px hairline.
+ */
+.header[data-white] .topBar > header,
+.flatCards[data-white] .band,
+.flatCards[data-white] .summary {
+  background: var(--l3-surface-default);
+}
+
+.flatCards[data-white] .summary {
+  padding-top: var(--l3-spacing-12); /* + the ticker box's own 12 below the strip: 24, as on the other versions */
+  padding-bottom: var(--l3-spacing-16); /* + the feed's own 16: 32 down to its first section, as between sections */
+}
+
+.flatCards[data-white] .feed {
+  margin-top: 0;
+  border-radius: 0;
+}
+
+/*
+ * V14: the sticky block holds two containers, edge to edge — the tabs, then the ticker — with no band reaching outside
+ * it (--band-pad 0: the band is the block). The ticker's 12 above and below are inside its own container, and every
+ * index's tap area (its card) takes that full height, the 12s included; the dividers stay the strip's height.
+ */
+.marquee[data-white] {
+  --band-pad: 0px;
+}
+
+.marquee[data-white] .stickySwitch {
+  margin-bottom: 0;
+}
+
+.tickerBox {
+  position: relative;
+}
+
+.tickerBox [role='region'] > * > [data-interactive] {
+  padding-block: var(--l3-spacing-12);
+}
+
+.tickerBox [role='region'] > * > [aria-hidden='true'] {
+  margin-block: var(--l3-spacing-12);
+}
 ```
 
 ### `src/flows/stocks/screens/Home.tsx`
@@ -26862,6 +26929,8 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   const hasSwitch = version.place !== 'none'
   // Two homes (V10–V13): the switch changes the whole page, not only the feed, and stays on screen.
   const twoHomes = version.scope === 'page'
+  // V14: white all the way — no grey summary, no rounded sheet (Home.module.css, [data-white]).
+  const white = version.surface === 'white' || undefined
   // V13: the market chip's "Choose market" sheet.
   // The navbar, or going back, brings the user back to the Stocks home on the IND / US tab they left it on.
   const { screenId, cameBack } = usePreview()
@@ -27089,6 +27158,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
       ))}
     </div>
   )
+  const indexStrip = tab === 'us' ? <IndexStrip key="us" items={usIndices} label={t('us.indices.label')} slideIn={stripSlides} /> : <IndexStrip key="in" slideIn={stripSlides} />
   const feedClass = version.place !== 'mid' ? styles.feed : version.look === 'folder' ? `${styles.feed} ${styles.feedTabbed}` : `${styles.feed} ${styles.feedTabbed} ${styles.feedUnderHead}`
 
   return (
@@ -27097,7 +27167,7 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
       toast={showToast && <Aerobar type="success" floating icon={<Icon icon={msCheckCircle} />} heading={t('us.ready.title')} paragraph={t('us.ready.subtitle')} duration={6000} onClick={onActivateUs} onDismiss={() => setToastGone(true)} />}
       bottom={<MainNav value="stocks" onChange={onTab} />}
     >
-      <div className={styles.header} data-animate={animate || undefined}>
+      <div className={styles.header} data-animate={animate || undefined} data-white={white}>
         <div className={styles.topBar} data-hidden={scrollState === 'down' || undefined} inert={scrollState === 'down' || undefined}>
           <TopBar scrolled={scrolled} initials={initials(user.name)} onProfile={onProfile} onSearch={() => onSearch?.(tab)} onWallet={onWallet}
             compactSearch={twoHomes}
@@ -27110,10 +27180,11 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
       {/* Holds the top bar's place at the top of the page (the bar itself hangs from the sticky header above). */}
       <div ref={spacer} className={styles.spacer} aria-hidden="true" />
       <HomeSwitcher />
-      <Stack ref={page} className={styles.flatCards}>
+      <Stack ref={page} className={styles.flatCards} data-white={white}>
         {version.place === 'top' && !twoHomes && <MarketSwitchFor version={version} value={tab} onChange={(next) => switchTo(next)} />}
         {/* The page's one index marquee: sticky under the top bar, and up to the very top while the top bar is away. */}
-        <div ref={marquee} className={styles.marquee} data-home="top" data-state={scrollState} data-tabs={pinned || undefined} data-animate={animate || undefined} data-ticker={version.ticker ? undefined : 'off'}>
+        {/* V14: this block is the one container for the tabs and the ticker, each in its own container inside it. */}
+        <div ref={marquee} className={styles.marquee} data-white={white} data-home="top" data-state={scrollState} data-tabs={pinned || undefined} data-animate={animate || undefined} data-ticker={version.ticker ? undefined : 'off'}>
           <div ref={band} className={styles.band} aria-hidden="true" />
           {/* Two homes: the switch rides in the sticky block, above the ticker, so it never scrolls away. */}
           {version.place === 'top' && twoHomes && (
@@ -27123,10 +27194,15 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
                 : <Inset paddingInline="16" paddingBlock="00"><MarketSwitch bare appearance="pill-group" look={version} value={tab} onChange={switchInPage} /></Inset>}
             </div>
           )}
-          {!version.ticker ? null : tab === 'us' ? <IndexStrip key="us" items={usIndices} label={t('us.indices.label')} slideIn={stripSlides} /> : <IndexStrip key="in" slideIn={stripSlides} />}
-          <div className={styles.pinnedTabs} data-open={pinned || undefined} inert={!pinned || undefined}>
-            <PinnedMarketTabs value={tab} onChange={(next) => switchTo(next)} />
-          </div>
+          {/* V14: the ticker has a container of its own (the tabs' is the one above), 12 above and below inside it, and each
+              index's tap area runs that full height (Home.module.css, .tickerBox). */}
+          {!version.ticker ? null : white ? <div className={styles.tickerBox}>{indexStrip}</div> : indexStrip}
+          {/* Two homes keep their switch in this block, so they have no compact tabs (hidden ones left a 1px underline peeking out under the band). */}
+          {!twoHomes && (
+            <div className={styles.pinnedTabs} data-open={pinned || undefined} inert={!pinned || undefined}>
+              <PinnedMarketTabs value={tab} onChange={(next) => switchTo(next)} />
+            </div>
+          )}
         </div>
         {feedTabs ? (
           <Stack key="summary-feed-tabs" gap="24" className={styles.summary}>
@@ -50904,6 +50980,7 @@ export function emailSupport(subject: string) {
 // current step) → Ready to trade. The story the user should take away: the money has already left India; the wait is
 // the US side crediting it (US banks take 1–2 working days). Kept short: one line per step, the safe note under them.
 // Opened from Home's "Money on the way" card, the wallet's deposit-in-progress bar, and back from the bank's page.
+// When it'll be ready is a Tag in the header (processing colour: still under way).
 // L3 gap: Steps has no warning (yellow) or pulsing "in progress" marker — the running step uses `current` (success dot).
 import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
@@ -50912,7 +50989,8 @@ import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { Stack } from '@l3/components/Stack'
 import { Steps } from '@l3/components/Steps'
-import { msShieldLockFill } from '@l3/icons/material'
+import { Tag } from '@l3/components/Tag'
+import { msSchedule, msShieldLockFill } from '@l3/icons/material'
 import { formatUsd } from '../money'
 import { Sheet } from './Sheet'
 import styles from './DepositProgressSheet.module.css'
@@ -50938,7 +51016,15 @@ type DepositProgressSheetProps = {
 const HEADING_ID = 'deposit-progress-title'
 
 export function DepositProgressSheet({ deposit, eta, onClose, container }: DepositProgressSheetProps) {
-  const header = <BottomSheetHeader heading={`${formatUsd(deposit.usd)} on the way`} headingId={HEADING_ID} description={`Ready to trade ${eta}`} />
+  // When it's expected stands out as a tag beside the heading ("By Thu 8 PM"), not buried in the description.
+  const header = (
+    <BottomSheetHeader
+      heading={`${formatUsd(deposit.usd)} on the way`}
+      headingId={HEADING_ID}
+      description="Expected to be ready to trade"
+      trailing={<Tag variant="secondary" color="processing" size="md" iconLeft={<Icon icon={msSchedule} />}>{eta.charAt(0).toUpperCase() + eta.slice(1)}</Tag>}
+    />
+  )
   const footer = (
     <ButtonGroup aria-label="Deposit progress">
       <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>

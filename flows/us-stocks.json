@@ -195,6 +195,7 @@
     "src/flows/us-stocks/screens/etf/EtfListScreen.tsx",
     "src/flows/us-stocks/screens/etf/EtfPage.module.css",
     "src/flows/us-stocks/screens/etf/EtfPage.tsx",
+    "src/flows/us-stocks/screens/etf/EtfPeers.tsx",
     "src/flows/us-stocks/screens/etf/EtfPreviousScreen.tsx",
     "src/flows/us-stocks/screens/etf/currentEtf.ts",
     "src/flows/us-stocks/screens/etf/data.ts",

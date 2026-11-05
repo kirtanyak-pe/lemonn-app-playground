@@ -199,6 +199,10 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-04 — ETF page: a Similar ETFs section after Fundamentals — the stock page's Peers table for funds (this ETF first, five like it by `similarEtfs`; Overview: Today / Expense / AUM, Returns: 1M / 3M / 1Y; rows by ticker; a tap opens that ETF).
+- 2026-11-04 — Stock and ETF pages: the "≈ ₹" line under the price is hidden (`SHOW_PRICE_INR = false` in StockPage.tsx / EtfPage.tsx), not deleted.
+- 2026-11-04 — US stock page: the NASDAQ exchange switch beside the TradingView button is gone (US stocks trade on one listing; nothing to switch).
+- 2026-11-04 — Money on the way sheet: when it'll be ready is an orange tag (clock, "By Thu 8 PM") beside the heading; the description reads "Expected to be ready to trade".
 - 2026-11-04 — Donut (ETF Allocation, stock page Key Holders): no text in the centre; the legend carries the numbers.
 - 2026-11-04 — Sheets no longer draw their own gesture bar (the device mockup has the system navbar): removed from the
   withdrawable-balance and fee-breakdown sheets. The withdrawable breakdown is the L3 card KeyValueList with its total
@@ -23963,19 +23967,6 @@ export const screens: UsScreenMap = {
   color: var(--l3-content-accent-discover-default);
 }
 
-/* FLAG: hand-made exchange picker (L3 Select / Tag) */
-.exchange {
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-accent-discover-default);
-  cursor: pointer;
-  background: 0 0;
-  border: 0;
-  padding: 0;
-  display: inline-flex;
-}
-
 /* FLAG: hand-made logo disc (L3 Avatar / BrandLogo) */
 .logoDisc {
   border-radius: var(--l3-radius-full);
@@ -24345,7 +24336,6 @@ import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { useUsNav } from '../../nav'
 import { ImgIcon } from './components/ImgIcon'
 import { NEWS, PERIODS, periodReturn, priceSeries, type NewsItem } from './data'
-import { swapIcon } from './icons'
 import {
   AboutCompany, AnalystRatings, DailyPerformance, Events, Financials, Fundamentals, HoldingsSection, KeyHolders, News, Peers, RelatedEtfs, stockDayStats,
 } from './sections'
@@ -24354,6 +24344,9 @@ import {
 } from './ids'
 import { EtfMove } from '../etf/parts'
 import styles from './StockPage.module.css'
+
+/** The "≈ ₹" line under the price: hidden for now (4 Nov), kept to turn back on. */
+const SHOW_PRICE_INR = false
 
 /** kyc-pending: the user's Lemonn KYC isn't done, so US Stocks can't be activated yet (not in Jojo's Figma). */
 export type StockState = 'kyc-pending' | 'not-activated' | 'review' | 'support' | 'failed' | 'no-holdings' | 'holding'
@@ -24461,8 +24454,8 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
                 </span>
               </span>
             </div>
-            {/* The price in rupees at the live rate, always, small under the $ (no $ / ₹ switch on this page). */}
-            <span className={styles.priceInr}>≈ {formatInr(stock.price * usdInr)}</span>
+            {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
+            {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(stock.price * usdInr)}</span>}
           </div>
           {isNvda ? (
             <img src={asset('assets/activation/nvda-logo.svg')} alt="" width={44} height={44} />
@@ -24484,10 +24477,6 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
           <div className={styles.chartActions}>
             <button type="button" className={styles.tradingView} aria-label="Open TradingView chart">
               <ImgIcon src="assets/activation/tradingview.svg" w={16} h={12} />
-            </button>
-            <button type="button" className={styles.exchange} aria-label={`Exchange: ${stock.exchange ?? 'NASDAQ'}`}>
-              {stock.exchange ?? 'NASDAQ'}
-              <Icon icon={swapIcon} size={16} />
             </button>
           </div>
         </div>
@@ -25270,7 +25259,6 @@ export const chevronUpIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org
 export const infoIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M508.5-291.5Q520-303 520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280q17 0 28.5-11.5Zm0-320Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z'/%3E%3C/svg%3E`
 
 /** Up/down triangles — the Select "swap" icon. */
-export const swapIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16.5886 10.0012H7.41856C6.52856 10.0012 6.08856 8.92119 6.70856 8.29119L11.2986 3.70119C11.6886 3.31119 12.3186 3.31119 12.7086 3.70119L17.2986 8.29119C17.9286 8.92119 17.4786 10.0012 16.5886 10.0012Z'/%3E%3Cpath d='M11.2986 20.2912C11.6886 20.6812 12.3186 20.6812 12.7086 20.2912L17.2986 15.7012C17.9286 15.0812 17.4886 14.0012 16.5986 14.0012H7.41856C6.52856 14.0012 6.07856 15.0812 6.70856 15.7112L11.2986 20.2912Z'/%3E%3C/svg%3E`
 
 export const historyIcon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M480-120q-126 0-223-76.5T131-392q-4-15 6-27.5t27-14.5q16-2 29 6t18 24q24 90 99 147t170 57q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h70q17 0 28.5 11.5T360-600q0 17-11.5 28.5T320-560H160q-17 0-28.5-11.5T120-600v-160q0-17 11.5-28.5T160-800q17 0 28.5 11.5T200-760v54q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm40-376 100 100q11 11 11 28t-11 28q-11 11-28 11t-28-11L452-452q-6-6-9-13.5t-3-15.5v-159q0-17 11.5-28.5T480-680q17 0 28.5 11.5T520-640v144Z'/%3E%3C/svg%3E`
 ```
@@ -32310,7 +32298,11 @@ import listStyles from './Etf.module.css'
 import { Allocation, TopHoldings } from './EtfHoldings'
 import { boltIcon, infoIcon } from './icons'
 import { EtfMove, HoldingLogo, SideTag } from './parts'
+import { EtfPeers } from './EtfPeers'
 import styles from './EtfPage.module.css'
+
+/** The "≈ ₹" line under the price: hidden for now (4 Nov), kept to turn back on. */
+const SHOW_PRICE_INR = false
 
 /** T03 · Buy · Empty US wallet. */
 const BUY_PAD_EMPTY_WALLET = '5837:96155'
@@ -32421,8 +32413,8 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
                 </span>
               </span>
             </div>
-            {/* The price in rupees at the live rate, always, small under the $ (playground: no $ / ₹ switch on this page). */}
-            <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>
+            {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
+            {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>}
           </div>
           <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
             {logo ? <img src={logo.src} alt="" /> : etf.sym[0]}
@@ -32522,6 +32514,11 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
                   ))}
                 </dl>
               </section>
+              {/* Similar ETFs (4 Nov): the stock page's Peers table for funds — this one first, then five like it. */}
+              <section className={styles.section}>
+                <SectionTitle title="Similar ETFs" />
+                <EtfPeers etf={etf} />
+              </section>
             </div>
           )}
         </div>
@@ -32579,6 +32576,125 @@ function LeverageStrip({ etf, onOpen }: { etf: ReturnType<typeof getCurrentEtf>;
       <Icon icon={infoIcon} size={16} className={listStyles.boostIcon} />
       {text}
     </button>
+  )
+}
+```
+
+### `src/flows/us-stocks/screens/etf/EtfPeers.tsx`
+
+```tsx
+// "Similar ETFs" on the ETF page (4 Nov): the stock page's Peers table for funds — this ETF first (to compare against),
+// then up to five like it (similarEtfs), each row by its ticker and issuer logo. The header cell cycles Overview /
+// Returns; in each column the best figure sits on the light yellow highlight (for the expense ratio, the lowest).
+// Tapping a row opens that ETF on this same page, scrolled back to the top.
+// FLAG: the stock page's hand-made table (activation/components/PeerTable.module.css) — L3 has no table.
+import { useRef, useState } from 'react'
+import { Select } from '@l3/components/Select'
+import { Usd } from '../../../../shared/money'
+import { periodReturn } from '../activation/data'
+import tableStyles from '../activation/components/PeerTable.module.css'
+import { useUsNav } from '../../nav'
+import { setCurrentEtf } from './currentEtf'
+import { ETF_PAGE, similarEtfs, type Etf } from './data'
+import { EtfDisc } from './parts'
+
+const percent = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`
+const toneOf = (n: number) => (n >= 0 ? 'up' : 'down')
+
+/** `usd`: a $ amount as text, shown in the currency picked. */
+type Cell = { text: string; tone?: 'up' | 'down'; usd?: boolean }
+/** `best`: the figure to compare — the highest gets the highlight, or the lowest with `lowest` (costs). */
+type Column = { label: string; v: (e: Etf) => Cell; best?: (e: Etf) => number; lowest?: boolean }
+
+const VIEWS = [
+  { value: 'overview', label: 'Overview' },
+  { value: 'returns', label: 'Returns' },
+] as const
+type View = (typeof VIEWS)[number]['value']
+
+const ret = (e: Etf, period: string) => periodReturn(e.sym, period, e.change)
+
+const COLUMNS: Record<View, Column[]> = {
+  overview: [
+    { label: 'Today', v: (e) => ({ text: percent(e.change), tone: toneOf(e.change) }), best: (e) => e.change },
+    { label: 'Expense', v: (e) => ({ text: `${e.expense.toFixed(2)}%` }), best: (e) => e.expense, lowest: true },
+    { label: 'AUM', v: (e) => ({ text: e.aum, usd: true }) },
+  ],
+  returns: (['1M', '3M', '1Y'] as const).map((period) => ({
+    label: period,
+    v: (e: Etf) => ({ text: percent(ret(e, period)), tone: toneOf(ret(e, period)) }),
+    best: (e: Etf) => ret(e, period),
+  })),
+}
+
+/** The nearest part of the page that scrolls (the ETF page's body). */
+function scrollParent(el: HTMLElement | null): HTMLElement | null {
+  for (let at = el?.parentElement; at; at = at.parentElement) {
+    if (/(auto|scroll)/.test(getComputedStyle(at).overflowY)) return at
+  }
+  return null
+}
+
+export function EtfPeers({ etf }: { etf: Etf }) {
+  const { go } = useUsNav()
+  const table = useRef<HTMLDivElement>(null)
+  const [view, setView] = useState<View>('overview')
+  const rows = [etf, ...similarEtfs(etf)]
+  const current = VIEWS.find((v) => v.value === view)!
+  const columns = COLUMNS[view]
+  const bestOf = columns.map((c) => (c.best ? (c.lowest ? Math.min : Math.max)(...rows.map(c.best)) : undefined))
+  const open = (sym: string) => {
+    // The ETF opens on this same page: start it at the top, like a new page.
+    const body = scrollParent(table.current)
+    setCurrentEtf(sym)
+    go(ETF_PAGE)
+    if (body) body.scrollTop = 0
+  }
+  return (
+    <div className={tableStyles.stack} ref={table}>
+      <div className={tableStyles.table} role="table" aria-label="Similar ETFs">
+        <div className={tableStyles.tr} data-head="" role="row">
+          <span role="columnheader">
+            <Select
+              size="sm"
+              subtle
+              className={tableStyles.viewSwitch}
+              onClick={() => setView(VIEWS[(VIEWS.findIndex((v) => v.value === view) + 1) % VIEWS.length].value)}
+              aria-label={`Showing ${current.label}, tap to switch`}
+            >
+              <span className={tableStyles.viewName} key={view}>{current.label}</span>
+            </Select>
+          </span>
+          {columns.map((c) => <span role="columnheader" key={c.label}>{c.label}</span>)}
+        </div>
+        {rows.map((e) => (
+          <button
+            key={e.sym}
+            type="button"
+            role="row"
+            className={tableStyles.tr}
+            data-self={e === etf || undefined}
+            aria-label={e === etf ? `${e.sym} (this ETF)` : `${e.sym}, ${e.name}`}
+            onClick={() => e !== etf && open(e.sym)}
+          >
+            <span className={tableStyles.company} role="cell">
+              <EtfDisc sym={e.sym} size={24} />
+              {/* The ticker: ETF names are long and read alike ("… ETF Trust"); the ticker is how funds are known. */}
+              <span className={tableStyles.cardName}>{e.sym}</span>
+            </span>
+            {columns.map((c, i) => {
+              const cell = c.v(e)
+              const best = c.best && c.best(e) === bestOf[i]
+              return (
+                <span key={c.label} role="cell" className={tableStyles.num} data-tone={cell.tone} data-best={best || undefined}>
+                  <span className={tableStyles.figure}>{cell.usd ? <Usd text={cell.text} layout="inline" /> : cell.text}</span>
+                </span>
+              )
+            })}
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }
 ```
@@ -33083,6 +33199,18 @@ export const matchesEtf = (etf: Etf, query: string) => {
 }
 
 export const etfFor = (sym: string): Etf => ETFS.find((e) => e.sym === sym) ?? ETFS[0]
+/**
+ * Up to five ETFs like this one, for its page's "Similar ETFs" table (4 Nov). A regular fund: the same sector first
+ * (Technology with Technology) in the same country, then either one, then the rest, in the sample list's order. A Boosted (leveraged) fund:
+ * the same direction (long / short) and leverage first, then the other Boosted funds.
+ */
+export const similarEtfs = (etf: Etf, count = 5): Etf[] => {
+  const others = ETFS.filter((e) => e.sym !== etf.sym && e.kind === etf.kind)
+  // How alike: 2 = same sector (or direction + leverage) and same country, 1 = one of the two, 0 = neither.
+  const match = (e: Etf) => (etf.kind === 'leveraged' ? e.side === etf.side && e.lev === etf.lev : e.sector === etf.sector)
+  const score = (e: Etf) => Number(match(e)) + Number(e.country === etf.country)
+  return [...others].sort((a, b) => score(b) - score(a)).slice(0, count)
+}
 /** Leveraged ETFs on one index / theme (the long and the short). */
 export const leveragedOn = (tracks: string) => ETFS.filter((e) => e.kind === 'leveraged' && e.tracks === tracks)
 /** Leveraged ETFs grouped by what they track, the long first. */
@@ -62927,6 +63055,7 @@ export function BankOptions({ banks, selected, name, onPick, variant = 'card' }:
 // current step) → Ready to trade. The story the user should take away: the money has already left India; the wait is
 // the US side crediting it (US banks take 1–2 working days). Kept short: one line per step, the safe note under them.
 // Opened from Home's "Money on the way" card, the wallet's deposit-in-progress bar, and back from the bank's page.
+// When it'll be ready is a Tag in the header (processing colour: still under way).
 // L3 gap: Steps has no warning (yellow) or pulsing "in progress" marker — the running step uses `current` (success dot).
 import { BottomSheet, BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
@@ -62935,7 +63064,8 @@ import { Icon } from '@l3/components/Icon'
 import { Inset } from '@l3/components/Inset'
 import { Stack } from '@l3/components/Stack'
 import { Steps } from '@l3/components/Steps'
-import { msShieldLockFill } from '@l3/icons/material'
+import { Tag } from '@l3/components/Tag'
+import { msSchedule, msShieldLockFill } from '@l3/icons/material'
 import { formatUsd } from '../money'
 import { Sheet } from './Sheet'
 import styles from './DepositProgressSheet.module.css'
@@ -62961,7 +63091,15 @@ type DepositProgressSheetProps = {
 const HEADING_ID = 'deposit-progress-title'
 
 export function DepositProgressSheet({ deposit, eta, onClose, container }: DepositProgressSheetProps) {
-  const header = <BottomSheetHeader heading={`${formatUsd(deposit.usd)} on the way`} headingId={HEADING_ID} description={`Ready to trade ${eta}`} />
+  // When it's expected stands out as a tag beside the heading ("By Thu 8 PM"), not buried in the description.
+  const header = (
+    <BottomSheetHeader
+      heading={`${formatUsd(deposit.usd)} on the way`}
+      headingId={HEADING_ID}
+      description="Expected to be ready to trade"
+      trailing={<Tag variant="secondary" color="processing" size="md" iconLeft={<Icon icon={msSchedule} />}>{eta.charAt(0).toUpperCase() + eta.slice(1)}</Tag>}
+    />
+  )
   const footer = (
     <ButtonGroup aria-label="Deposit progress">
       <Button variant="primary" size="lg" fullWidth onClick={onClose}>Got it</Button>
