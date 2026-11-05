@@ -88,7 +88,7 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3X") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
 | 4 · Risk meter | The picture first, for a stressed trader: a **risk meter** — a thick half ring in three zones (success · warning · error accents, no numbers or ticks, so it reads as a risk scale, not a speedometer), "Safe" / "Danger" under its ends and a green **Usual** notch in the safe zone. The pointer starts on Usual (green) and swings into the red (turning red), overshoots a little and settles; then the danger zone pulses twice. In the middle: the multiple (`heading-36`, "2X") over "vs your usual" — "High risk" when there's no multiple. Under it only one heading, the fact (`heading-20`), and the "Overtrading Detected" tag below it. No not-safe line and no consequence strip (cut to keep the sheet to three things). `sheets/RiskVisuals.tsx` |
-| 5 · Risk bar (default) | Always the size-up case; State doesn't apply (the switcher hides it), and the **Case pill picks Layout 5's version** instead — no setting of its own: **5a · High risk** (case `sizeUp`, the default) **5b · Everyone vs you**, **5c · Why first** and **5d · Story** (stored as cases `everyone`, `explain`, `story`, which aren't cases of the other layouts; they show size-up for them). 5a: The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Low risk zone" / "High risk zone" under its ends, and a red dot that slides from the usual spot (22 %) into the high-risk zone. A floating tooltip sits above the dot in its own space: dark bubble (radius 12), one line hugging its text, "High chance of losing money", Heading/16. Its arrow is 24 in from its right end, on the dot, so the bubble reaches left over the bar; it grows out of the dot once the dot settles, and the dot then glows on loop. Under the bar, left-aligned: one heading, "Overtrading, you just entered the high risk zone". No tag, no usual marker. Experiment: the tooltip is drawn in the flow, not the L3 Tooltip (L3 gap: a tooltip that follows a moving target, bigger text).. 5b: a green dot for "Everyone" at the usual spot and the red "You" dot, each with a centred tooltip; the Everyone tooltip emerges from the green dot first, then the red dot slides to the danger zone and the You tooltip emerges from it. Under the ends: "Safe zone / trading to plan" and "Danger zone / chasing losses" (zone Heading/14, note Label/14 secondary). Same heading. 5c answers "why did this open?" first: L3's lg BottomSheetHeader, centred — "You're overtrading" over "Your chances of losing money are high" (generic, fits any trigger) — then the 5b bar in the content slot with just "Safe zone" · "Danger zone" under the ends (no notes). 5d is 5c played once like a short feature video (≈ 7 s), and it can't be dismissed (no backdrop tap, drag or Esc: one of the buttons has to be tapped): "You're overtrading" stamps in (0.25 s, from 1.6× with a small snap) in the middle of the sheet, a little bigger; the risk line fades in under it in primary; both rise to the header's place in 0.4 s, settle to size and the line turns secondary; then the bar wipes in from the left, "Safe zone" then "Danger zone" dissolve in, the green dot grows from nothing, Everyone, the red dot grows out of it and slides, You; the buttons come in last — "Place an order with an SL limit" · "Place without limit". Reduced motion: all at rest. |
+| 5 · Risk bar (default) | Always the size-up case; State doesn't apply (the switcher hides it), and the **Case pill picks Layout 5's version** instead — no setting of its own: **5a · High risk** (case `sizeUp`, the default) **5b · Everyone vs you**, **5c · Why first** and **5d · Story** (stored as cases `everyone`, `explain`, `story`, which aren't cases of the other layouts; they show size-up for them). 5a: The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Low risk zone" / "High risk zone" under its ends, and a red dot that slides from the usual spot (22 %) into the high-risk zone. A floating tooltip sits above the dot in its own space: dark bubble (radius 12), one line hugging its text, "High chance of losing money", Heading/16. Its arrow is 24 in from its right end, on the dot, so the bubble reaches left over the bar; it grows out of the dot once the dot settles, and the dot then glows on loop. Under the bar, left-aligned: one heading, "Overtrading, you just entered the high risk zone". No tag, no usual marker. Experiment: the tooltip is drawn in the flow, not the L3 Tooltip (L3 gap: a tooltip that follows a moving target, bigger text).. 5b: a green dot for "Everyone" at the usual spot and the red "You" dot, each with a centred tooltip; the Everyone tooltip emerges from the green dot first, then the red dot slides to the danger zone and the You tooltip emerges from it. Under the ends: "Safe zone / trading to plan" and "Danger zone / chasing losses" (zone Heading/14, note Label/14 secondary). Same heading. 5c answers "why did this open?" first: L3's lg BottomSheetHeader, centred — "You're overtrading" over "Your chances of losing money are high" (generic, fits any trigger) — then the 5b bar in the content slot with just "Safe zone" · "Danger zone" under the ends (no notes). 5d is 5c played once like a short feature video (≈ 5 s), and it can't be dismissed (no backdrop tap, drag or Esc: one of the buttons has to be tapped): "You're overtrading" stamps in (0.25 s, from 1.6× with a small snap) in the middle of the sheet, a little bigger; the risk line fades in under it in primary; both rise to the header's place in 0.4 s (from 1.6 s), settle to size and the line turns secondary; halfway up, the bar grows out from its centre to both ends (0.25 s), "Safe zone" then "Danger zone" dissolve in, the green dot grows from nothing, Everyone, the red dot grows out of it and slides (0.8 s, quicker than 5b), You as it settles; the buttons come in last — "Place an order with an SL limit" · "Place without limit". Reduced motion: all at rest. |
 
 **Floating switcher (prototype only):** on the order pad and over the open nudge, a small pill floats: grip · Layout · Case ·
 State. Each is a dropdown pill that opens its own menu (full names, the picked one ticked); a long value is cut with an
@@ -174,6 +174,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-05 · Layout 5b · Everyone vs you, picked in the Case pill: Everyone and You tooltips in turn, Safe zone / trading to plan · Danger zone / chasing losses.
 - 2026-11-05 · Layout 5c · Why first: L3 lg header "You're overtrading" · "Your chances of losing money are high", then the Everyone vs You bar without the zone notes.
 - 2026-11-05 · Layout 5d · Story: 5c played as a short feature video (heading stamps in centred, the risk line, both rise, the bar builds step by step, buttons last); can't be dismissed; buttons "Place an order with an SL limit" · "Place without limit".
+- 2026-11-05 · Layout 5d: tighter: the risk line follows the stamp, the bar grows from its centre as the words are halfway up, and Everyone → You is quicker (≈ 5 s in all).
 
 
 ## Source — this flow
@@ -1202,10 +1203,12 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
    high" under it · 3 both rise quickly to the header's place and settle to size (the line from primary to secondary) · 4 the bar plays (the track, Safe zone, Danger zone,
    the green dot, Everyone, the red dot slides, You) · 5 the buttons come in. The beats are shared with RiskBar through --bar-start. */
 .storySheet {
-  --story-line: calc(var(--l3-motion-duration-long) * 3);
-  --story-rise: calc(var(--l3-motion-duration-long) * 6);
-  --bar-start: calc(var(--l3-motion-duration-long) * 8);
-  --story-dock: calc(var(--l3-motion-duration-long) * 17.5);
+  /* Tight: the line follows the stamp right away, and they rise ~1 s later. */
+  --story-line: calc(var(--l3-motion-duration-long) * 1.5);
+  --story-rise: calc(var(--l3-motion-duration-long) * 4);
+  /* The bar starts as the words are halfway up (the standard easing covers half the way in a fifth of the time). */
+  --bar-start: calc(var(--story-rise) + var(--l3-motion-duration-short) / 2);
+  --story-dock: calc(var(--bar-start) + var(--l3-motion-duration-long) * 8);
 }
 /* The rise is quick (0.4 s): the beats before it hold the words on screen. */
 .storySheet { --story-rise-time: var(--l3-motion-duration-long); }
@@ -1218,7 +1221,7 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 /* The risk line reads in primary while it's in the middle, and quiets to the header's secondary as it rises. */
 .storyHeader p {
   animation:
-    storyIn calc(var(--l3-motion-duration-long) * 1.5) var(--l3-motion-easing-decelerate) var(--story-line) both,
+    storyIn var(--l3-motion-duration-long) var(--l3-motion-easing-decelerate) var(--story-line) both,
     storyQuiet var(--story-rise-time) var(--l3-motion-easing-standard) var(--story-rise) both;
 }
 /* The dock (the footer after the sheet's bottom space): hidden and untappable until the story ends. */
@@ -1528,27 +1531,36 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
 /* Room above it too: the sheet's content clips, and the tooltip's overshoot (it grows up past full size) and shadow
    reach above its resting box. */
 /* --bar-start (set by a sheet that plays the bar later, e.g. 5d's story) holds every beat back. --bar-intro is the
-   story's quick lead-in before the usual beats (1 s, a beat every 0.25 s): the track wipes in from the left, "Safe
+   story's quick lead-in before the usual beats (1 s, a beat every 0.25 s): the track grows out from its centre to both ends, "Safe
    zone" then "Danger zone" dissolve in, the green dot grows out of nothing; then Everyone, and the red dot grows out of
    the green one just before it slides. */
 .bar { --travel-delay: calc(var(--l3-motion-duration-medium) + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
-.bar[data-version='story'] { --bar-intro: calc(var(--l3-motion-duration-medium) * 4); }
+/* The red dot's slide (--travel-time) and when its tooltip follows (--tip-after). The story runs Everyone → You
+   quicker: the dot sets off while Everyone is still opening, slides in 0.8 s, and You comes out as it settles. */
+.bar { --travel-time: calc(var(--l3-motion-duration-long) * 3); --tip-after: calc(var(--l3-motion-duration-long) * 2.6); }
+.bar[data-version='story'] {
+  --bar-intro: calc(var(--l3-motion-duration-medium) * 4);
+  --travel-time: calc(var(--l3-motion-duration-long) * 2);
+  --tip-after: calc(var(--l3-motion-duration-long) * 1.7);
+}
 /* backwards only: once in, nothing clips the dots or the red dot's glow. */
-.bar[data-version='story'] .track { animation: trackIn var(--l3-motion-duration-medium) var(--l3-motion-easing-standard) var(--bar-start, 0ms) backwards; }
+.bar[data-version='story'] .track { animation: trackIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) var(--bar-start, 0ms) backwards; }
 .bar[data-version='story'] .legend > * { animation: dissolve var(--l3-motion-duration-long) var(--l3-motion-easing-standard) calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium)) both; }
 .bar[data-version='story'] .legend > [data-tone='danger'] { animation-delay: calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium) * 2); }
 .bar[data-version='story'] .dot[data-tone='usual'] { animation: dotIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium) * 3) both; }
 .bar[data-version='story'] .dot[data-tone='now'] {
   animation:
-    travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--travel-delay) both,
-    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--l3-motion-duration-long) * 3 + var(--travel-delay)) infinite,
+    travel var(--travel-time) var(--l3-motion-easing-standard) var(--travel-delay) both,
+    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--travel-time) + var(--travel-delay)) infinite,
     dotIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) calc(var(--travel-delay) - var(--l3-motion-duration-medium)) both;
 }
-@keyframes trackIn { from { clip-path: inset(0 100% 0 0); } }
+@keyframes trackIn { from { clip-path: inset(0 50%); } }
 @keyframes dissolve { from { opacity: 0; } }
 @keyframes dotIn { from { scale: 0; } }
 /* Everyone vs You (5b, 5c): the Everyone tooltip comes first; the red dot sets off as it finishes opening. */
 .bar:not([data-version='risk']) { --travel-delay: calc(var(--l3-motion-duration-medium) + var(--l3-motion-duration-long) * 1.5 + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
+/* Story: the red dot sets off while Everyone is still opening (after the not-risk rule above, so it wins). */
+.bar[data-version='story'] { --travel-delay: calc(var(--l3-motion-duration-medium) + var(--l3-motion-duration-long) + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
 
 /* The tooltips share one grid cell, so the lane is as tall as one of them. */
 .lane { display: grid; align-items: end; justify-items: start; position: relative; padding-top: var(--l3-spacing-12); padding-bottom: calc(var(--l3-spacing-08) + var(--l3-spacing-04)); }
@@ -1558,7 +1570,7 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
   left: calc(var(--risk-to) * 100%);
   --tip-arrow: var(--l3-spacing-24); /* arrow centre, from the bubble's right edge */
   --tip-from: var(--l3-content-accent-error-default); /* the colour of the dot it emerges from */
-  --tip-delay: calc(var(--travel-delay) + var(--l3-motion-duration-long) * 2.6); /* as the red dot settles */
+  --tip-delay: calc(var(--travel-delay) + var(--tip-after)); /* as the red dot settles */
   --tip-shift: translateX(calc(-100% + var(--tip-arrow)));
   transform: var(--tip-shift);
   transform-origin: calc(100% - var(--tip-arrow)) calc(100% + var(--l3-size-12) / 2);
@@ -1622,8 +1634,8 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
    Its own rule so it plays after the slide (travel), not instead of it. */
 .dot[data-tone='now'] {
   animation:
-    travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--travel-delay) both,
-    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--l3-motion-duration-long) * 3 + var(--travel-delay)) infinite;
+    travel var(--travel-time) var(--l3-motion-easing-standard) var(--travel-delay) both,
+    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--travel-time) + var(--travel-delay)) infinite;
 }
 @keyframes glow {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--l3-content-accent-error-default) 55%, transparent); }
