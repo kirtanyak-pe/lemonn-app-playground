@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-04T17:48:43.578Z",
+ "fetchedAt": "2026-11-05T11:30:17.080Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -61,21 +61,17 @@
  ],
  "quotes": {
   "ADANIENT": {
-   "price": 2709.2,
-   "prevClose": 2593.3,
-   "change": 115.9,
-   "changePct": 4.47,
-   "dayHigh": 2712.2,
-   "dayLow": 2579.3,
+   "price": 2733.3,
+   "prevClose": 2709.2,
+   "change": 24.1,
+   "changePct": 0.89,
+   "dayHigh": 2785.8,
+   "dayLow": 2727,
    "high52": 3245,
    "low52": 1753,
-   "volume": 2210595,
+   "volume": 1279227,
    "longName": "Adani Enterprises Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 3050
-    },
     {
      "date": "2026-08-05",
      "close": 3050
@@ -327,27 +323,27 @@
     {
      "date": "2026-11-04",
      "close": 2709.2
+    },
+    {
+     "date": "2026-11-05",
+     "close": 2733.3
     }
    ],
    "sector": "Energy",
    "industry": "Thermal Coal"
   },
   "ADANIGREEN": {
-   "price": 1388,
-   "prevClose": 1339.3,
-   "change": 48.7,
-   "changePct": 3.64,
-   "dayHigh": 1391.2,
-   "dayLow": 1323.6,
+   "price": 1414.9,
+   "prevClose": 1388,
+   "change": 26.9,
+   "changePct": 1.94,
+   "dayHigh": 1429.6,
+   "dayLow": 1395,
    "high52": 1631.5,
    "low52": 765,
-   "volume": 2244927,
+   "volume": 2005793,
    "longName": "Adani Green Energy Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1384
-    },
     {
      "date": "2026-08-05",
      "close": 1380
@@ -599,27 +595,27 @@
     {
      "date": "2026-11-04",
      "close": 1388
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1414.9
     }
    ],
    "sector": "Utilities",
    "industry": "Utilities—Renewable"
   },
   "ADANIPORTS": {
-   "price": 1910,
-   "prevClose": 1866.9,
-   "change": 43.1,
-   "changePct": 2.31,
-   "dayHigh": 1921.3,
-   "dayLow": 1857.3,
-   "high52": 1921.3,
+   "price": 1884.6,
+   "prevClose": 1910,
+   "change": -25.4,
+   "changePct": -1.33,
+   "dayHigh": 1948.9,
+   "dayLow": 1884,
+   "high52": 1948.9,
    "low52": 1292,
-   "volume": 4449952,
+   "volume": 2463014,
    "longName": "Adani Ports and Special Economic Zone Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1706.7
-    },
     {
      "date": "2026-08-05",
      "close": 1700
@@ -871,27 +867,27 @@
     {
      "date": "2026-11-04",
      "close": 1910
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1884.6
     }
    ],
    "sector": "Industrials",
    "industry": "Marine Shipping"
   },
   "ADANIPOWER": {
-   "price": 201.71,
-   "prevClose": 195.5,
-   "change": 6.21,
-   "changePct": 3.18,
-   "dayHigh": 201.88,
-   "dayLow": 194.03,
+   "price": 204,
+   "prevClose": 201.71,
+   "change": 2.29,
+   "changePct": 1.14,
+   "dayHigh": 206.33,
+   "dayLow": 203,
    "high52": 254.2,
    "low52": 128.1,
-   "volume": 19791452,
+   "volume": 24986203,
    "longName": "Adani Power Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 209.95
-    },
     {
      "date": "2026-08-05",
      "close": 208.99
@@ -1143,27 +1139,27 @@
     {
      "date": "2026-11-04",
      "close": 201.71
+    },
+    {
+     "date": "2026-11-05",
+     "close": 204
     }
    ],
    "sector": "Utilities",
    "industry": "Utilities—Independent Power Producers"
   },
   "ASIANPAINT": {
-   "price": 2418.3,
-   "prevClose": 2437.8,
-   "change": -19.5,
-   "changePct": -0.8,
-   "dayHigh": 2442.6,
-   "dayLow": 2413.2,
+   "price": 2523.8,
+   "prevClose": 2418.3,
+   "change": 105.5,
+   "changePct": 4.36,
+   "dayHigh": 2576.6,
+   "dayLow": 2499,
    "high52": 2985.7,
    "low52": 2115,
-   "volume": 1354076,
+   "volume": 2383836,
    "longName": "Asian Paints Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 2775
-    },
     {
      "date": "2026-08-05",
      "close": 2760
@@ -1415,27 +1411,27 @@
     {
      "date": "2026-11-04",
      "close": 2418.3
+    },
+    {
+     "date": "2026-11-05",
+     "close": 2523.8
     }
    ],
    "sector": "Basic Materials",
    "industry": "Specialty Chemicals"
   },
   "AXISBANK": {
-   "price": 1232,
-   "prevClose": 1232.7,
-   "change": -0.7,
-   "changePct": -0.06,
-   "dayHigh": 1239.9,
-   "dayLow": 1220.3,
+   "price": 1280,
+   "prevClose": 1232,
+   "change": 48,
+   "changePct": 3.9,
+   "dayHigh": 1287.2,
+   "dayLow": 1242,
    "high52": 1418.3,
    "low52": 1150.3,
-   "volume": 4151503,
+   "volume": 7371952,
    "longName": "Axis Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1261.8
-    },
     {
      "date": "2026-08-05",
      "close": 1253.9
@@ -1687,27 +1683,27 @@
     {
      "date": "2026-11-04",
      "close": 1232
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1280
     }
    ],
    "sector": "Financial Services",
    "industry": "Banks—Regional"
   },
   "BAJAJ-AUTO": {
-   "price": 10608,
-   "prevClose": 10540,
-   "change": 68,
-   "changePct": 0.65,
-   "dayHigh": 10627,
-   "dayLow": 10504,
+   "price": 10758,
+   "prevClose": 10608,
+   "change": 150,
+   "changePct": 1.41,
+   "dayHigh": 10789,
+   "dayLow": 10576,
    "high52": 12470,
    "low52": 8605,
-   "volume": 309430,
+   "volume": 472377,
    "longName": "Bajaj Auto Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 11600
-    },
     {
      "date": "2026-08-05",
      "close": 11800
@@ -1959,27 +1955,27 @@
     {
      "date": "2026-11-04",
      "close": 10608
+    },
+    {
+     "date": "2026-11-05",
+     "close": 10758
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Auto Manufacturers"
   },
   "BAJAJFINSV": {
-   "price": 1756.5,
-   "prevClose": 1718.1,
-   "change": 38.4,
-   "changePct": 2.24,
-   "dayHigh": 1793.6,
-   "dayLow": 1704.3,
+   "price": 1835,
+   "prevClose": 1756.5,
+   "change": 78.5,
+   "changePct": 4.47,
+   "dayHigh": 1848.8,
+   "dayLow": 1776.5,
    "high52": 2126.8,
    "low52": 1597,
-   "volume": 1750959,
+   "volume": 1561001,
    "longName": "Bajaj Finserv Ltd.",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 2105
-    },
     {
      "date": "2026-08-05",
      "close": 2086
@@ -2231,27 +2227,27 @@
     {
      "date": "2026-11-04",
      "close": 1756.5
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1835
     }
    ],
    "sector": "Financial Services",
    "industry": "Financial Conglomerates"
   },
   "BAJFINANCE": {
-   "price": 994,
-   "prevClose": 970,
-   "change": 24,
-   "changePct": 2.47,
-   "dayHigh": 994,
-   "dayLow": 962.3,
+   "price": 1070,
+   "prevClose": 994,
+   "change": 76,
+   "changePct": 7.65,
+   "dayHigh": 1074.85,
+   "dayLow": 1020,
    "high52": 1176.4,
    "low52": 787.9,
-   "volume": 14407596,
+   "volume": 29815904,
    "longName": "Bajaj Finance Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1149
-    },
     {
      "date": "2026-08-05",
      "close": 1158.8
@@ -2503,27 +2499,27 @@
     {
      "date": "2026-11-04",
      "close": 994
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1070
     }
    ],
    "sector": "Financial Services",
    "industry": "Credit Services"
   },
   "BEL": {
-   "price": 398,
-   "prevClose": 380.1,
-   "change": 17.9,
-   "changePct": 4.71,
-   "dayHigh": 399.15,
-   "dayLow": 380.05,
+   "price": 395.1,
+   "prevClose": 398,
+   "change": -2.9,
+   "changePct": -0.73,
+   "dayHigh": 404.5,
+   "dayLow": 393.5,
    "high52": 473.45,
    "low52": 354.55,
-   "volume": 23528767,
+   "volume": 17096176,
    "longName": "Bharat Electronics Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 391.5
-    },
     {
      "date": "2026-08-05",
      "close": 390
@@ -2775,27 +2771,27 @@
     {
      "date": "2026-11-04",
      "close": 398
+    },
+    {
+     "date": "2026-11-05",
+     "close": 395.1
     }
    ],
    "sector": "Industrials",
    "industry": "Aerospace & Defense"
   },
   "BHARTIARTL": {
-   "price": 2067.6,
-   "prevClose": 2065,
-   "change": 2.6,
-   "changePct": 0.13,
-   "dayHigh": 2068.6,
-   "dayLow": 2043,
+   "price": 2056.9,
+   "prevClose": 2067.6,
+   "change": -10.7,
+   "changePct": -0.52,
+   "dayHigh": 2084,
+   "dayLow": 2048,
    "high52": 2174.5,
    "low52": 1726.3,
-   "volume": 11270697,
+   "volume": 9770815,
    "longName": "Bharti Airtel Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1970.1
-    },
     {
      "date": "2026-08-05",
      "close": 1978
@@ -3047,27 +3043,27 @@
     {
      "date": "2026-11-04",
      "close": 2067.6
+    },
+    {
+     "date": "2026-11-05",
+     "close": 2056.9
     }
    ],
    "sector": "Communication Services",
    "industry": "Telecom Services"
   },
   "COALINDIA": {
-   "price": 399.65,
-   "prevClose": 408,
-   "change": -8.35,
-   "changePct": -2.05,
-   "dayHigh": 401.35,
-   "dayLow": 396.05,
+   "price": 394.3,
+   "prevClose": 399.65,
+   "change": -5.35,
+   "changePct": -1.34,
+   "dayHigh": 402.3,
+   "dayLow": 393.05,
    "high52": 491.25,
    "low52": 369.6,
-   "volume": 5403144,
+   "volume": 13669105,
    "longName": "Coal India Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 417.6
-    },
     {
      "date": "2026-08-05",
      "close": 415.5
@@ -3319,27 +3315,27 @@
     {
      "date": "2026-11-04",
      "close": 399.65
+    },
+    {
+     "date": "2026-11-05",
+     "close": 394.3
     }
    ],
    "sector": "Energy",
    "industry": "Thermal Coal"
   },
   "DIVISLAB": {
-   "price": 10037.5,
-   "prevClose": 10064,
-   "change": -26.5,
-   "changePct": -0.26,
-   "dayHigh": 10067,
-   "dayLow": 9946,
-   "high52": 10067,
+   "price": 10140.5,
+   "prevClose": 10037.5,
+   "change": 103,
+   "changePct": 1.03,
+   "dayHigh": 10159,
+   "dayLow": 9888,
+   "high52": 10159,
    "low52": 5647.5,
-   "volume": 534906,
+   "volume": 837076,
    "longName": "Divi's Laboratories Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 8378
-    },
     {
      "date": "2026-08-05",
      "close": 8388
@@ -3591,27 +3587,27 @@
     {
      "date": "2026-11-04",
      "close": 10037.5
+    },
+    {
+     "date": "2026-11-05",
+     "close": 10140.5
     }
    ],
    "sector": "Healthcare",
    "industry": "Drug Manufacturers—Specialty & Generic"
   },
   "DMART": {
-   "price": 3414,
-   "prevClose": 3359,
-   "change": 55,
-   "changePct": 1.64,
-   "dayHigh": 3414,
-   "dayLow": 3322.1,
+   "price": 3420,
+   "prevClose": 3414,
+   "change": 6,
+   "changePct": 0.18,
+   "dayHigh": 3465.8,
+   "dayLow": 3386.5,
    "high52": 4644,
    "low52": 3102.3,
-   "volume": 1076820,
+   "volume": 553808,
    "longName": "Avenue Supermarts Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 4023
-    },
     {
      "date": "2026-08-05",
      "close": 3946
@@ -3863,27 +3859,27 @@
     {
      "date": "2026-11-04",
      "close": 3414
+    },
+    {
+     "date": "2026-11-05",
+     "close": 3420
     }
    ],
    "sector": "Consumer Defensive",
    "industry": "Discount Stores"
   },
   "EICHERMOT": {
-   "price": 7420,
-   "prevClose": 7440,
-   "change": -20,
-   "changePct": -0.27,
-   "dayHigh": 7449.5,
-   "dayLow": 7332,
+   "price": 7713,
+   "prevClose": 7420,
+   "change": 293,
+   "changePct": 3.95,
+   "dayHigh": 7713,
+   "dayLow": 7489,
    "high52": 8230,
    "low52": 6442,
-   "volume": 561394,
+   "volume": 973748,
    "longName": "Eicher Motors Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 7935
-    },
     {
      "date": "2026-08-05",
      "close": 7986.5
@@ -4135,27 +4131,27 @@
     {
      "date": "2026-11-04",
      "close": 7420
+    },
+    {
+     "date": "2026-11-05",
+     "close": 7713
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Auto Manufacturers"
   },
   "ETERNAL": {
-   "price": 344.5,
-   "prevClose": 349.45,
-   "change": -4.95,
-   "changePct": -1.42,
-   "dayHigh": 348.95,
-   "dayLow": 340,
-   "high52": 350.2,
+   "price": 358.3,
+   "prevClose": 344.5,
+   "change": 13.8,
+   "changePct": 4.01,
+   "dayHigh": 359.7,
+   "dayLow": 345.5,
+   "high52": 359.7,
    "low52": 212.6,
-   "volume": 22545452,
+   "volume": 37063626,
    "longName": "Eternal Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 312.4
-    },
     {
      "date": "2026-08-05",
      "close": 310.35
@@ -4407,27 +4403,27 @@
     {
      "date": "2026-11-04",
      "close": 344.5
+    },
+    {
+     "date": "2026-11-05",
+     "close": 358.3
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Internet Retail"
   },
   "GRASIM": {
-   "price": 3138,
-   "prevClose": 3090,
-   "change": 48,
-   "changePct": 1.55,
-   "dayHigh": 3141,
-   "dayLow": 3074.7,
+   "price": 3227.6,
+   "prevClose": 3138,
+   "change": 89.6,
+   "changePct": 2.86,
+   "dayHigh": 3232.8,
+   "dayLow": 3161.7,
    "high52": 3411.1,
    "low52": 2502.5,
-   "volume": 805017,
+   "volume": 1360476,
    "longName": "Grasim Industries Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 3138
-    },
     {
      "date": "2026-08-05",
      "close": 3224
@@ -4679,27 +4675,27 @@
     {
      "date": "2026-11-04",
      "close": 3138
+    },
+    {
+     "date": "2026-11-05",
+     "close": 3227.6
     }
    ],
    "sector": "Basic Materials",
    "industry": "Building Materials"
   },
   "HAL": {
-   "price": 5079.1,
-   "prevClose": 4958.6,
-   "change": 120.5,
-   "changePct": 2.43,
-   "dayHigh": 5091.6,
-   "dayLow": 4918.1,
+   "price": 5043,
+   "prevClose": 5079.1,
+   "change": -36.1,
+   "changePct": -0.71,
+   "dayHigh": 5119,
+   "dayLow": 5030,
    "high52": 5149.9,
    "low52": 3479.1,
-   "volume": 1242681,
+   "volume": 913423,
    "longName": "Hindustan Aeronautics Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 4635
-    },
     {
      "date": "2026-08-05",
      "close": 4645
@@ -4951,27 +4947,27 @@
     {
      "date": "2026-11-04",
      "close": 5079.1
+    },
+    {
+     "date": "2026-11-05",
+     "close": 5043
     }
    ],
    "sector": "Industrials",
    "industry": "Aerospace & Defense"
   },
   "HCLTECH": {
-   "price": 1405,
-   "prevClose": 1439.1,
-   "change": -34.1,
-   "changePct": -2.37,
-   "dayHigh": 1438.3,
-   "dayLow": 1399.5,
+   "price": 1430.5,
+   "prevClose": 1405,
+   "change": 25.5,
+   "changePct": 1.81,
+   "dayHigh": 1457.5,
+   "dayLow": 1426.5,
    "high52": 1780.1,
    "low52": 1030,
-   "volume": 2366197,
+   "volume": 3773052,
    "longName": "HCL Technologies Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1369.9
-    },
     {
      "date": "2026-08-05",
      "close": 1350
@@ -5223,27 +5219,27 @@
     {
      "date": "2026-11-04",
      "close": 1405
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1430.5
     }
    ],
    "sector": "Technology",
    "industry": "Information Technology Services"
   },
   "HDFCBANK": {
-   "price": 736.7,
-   "prevClose": 725.5,
-   "change": 11.2,
-   "changePct": 1.54,
-   "dayHigh": 741.3,
-   "dayLow": 719.25,
+   "price": 760,
+   "prevClose": 736.7,
+   "change": 23.3,
+   "changePct": 3.16,
+   "dayHigh": 762.7,
+   "dayLow": 749.1,
    "high52": 1017.5,
    "low52": 669.2,
-   "volume": 50671579,
+   "volume": 65386316,
    "longName": "HDFC Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 742
-    },
     {
      "date": "2026-08-05",
      "close": 735
@@ -5495,27 +5491,27 @@
     {
      "date": "2026-11-04",
      "close": 736.7
+    },
+    {
+     "date": "2026-11-05",
+     "close": 760
     }
    ],
    "sector": "Financial Services",
    "industry": "Banks—Regional"
   },
   "HINDALCO": {
-   "price": 935.8,
-   "prevClose": 915.75,
-   "change": 20.05,
-   "changePct": 2.19,
-   "dayHigh": 935.8,
-   "dayLow": 904.55,
+   "price": 937.85,
+   "prevClose": 935.8,
+   "change": 2.05,
+   "changePct": 0.22,
+   "dayHigh": 947.7,
+   "dayLow": 936.65,
    "high52": 1176,
    "low52": 770.15,
-   "volume": 5567108,
+   "volume": 5503317,
    "longName": "Hindalco Industries Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1020
-    },
     {
      "date": "2026-08-05",
      "close": 1040
@@ -5767,27 +5763,27 @@
     {
      "date": "2026-11-04",
      "close": 935.8
+    },
+    {
+     "date": "2026-11-05",
+     "close": 937.85
     }
    ],
    "sector": "Basic Materials",
    "industry": "Aluminum"
   },
   "HINDUNILVR": {
-   "price": 1977.1,
-   "prevClose": 1962.8,
-   "change": 14.3,
-   "changePct": 0.73,
-   "dayHigh": 1982,
-   "dayLow": 1941.1,
+   "price": 1982,
+   "prevClose": 1977.1,
+   "change": 4.9,
+   "changePct": 0.25,
+   "dayHigh": 2016,
+   "dayLow": 1977,
    "high52": 2488,
    "low52": 1758.2,
-   "volume": 1770335,
+   "volume": 1221458,
    "longName": "Hindustan Unilever Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 2096.5
-    },
     {
      "date": "2026-08-05",
      "close": 2085.3
@@ -6039,27 +6035,27 @@
     {
      "date": "2026-11-04",
      "close": 1977.1
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1982
     }
    ],
    "sector": "Consumer Defensive",
    "industry": "Household & Personal Products"
   },
   "HINDZINC": {
-   "price": 550.15,
-   "prevClose": 526.5,
-   "change": 23.65,
-   "changePct": 4.49,
-   "dayHigh": 550.15,
-   "dayLow": 514,
+   "price": 570.75,
+   "prevClose": 550.15,
+   "change": 20.6,
+   "changePct": 3.74,
+   "dayHigh": 575.9,
+   "dayLow": 558.5,
    "high52": 733,
    "low52": 453.5,
-   "volume": 4776370,
+   "volume": 5899143,
    "longName": "Hindustan Zinc Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 562.9
-    },
     {
      "date": "2026-08-05",
      "close": 596.95
@@ -6311,27 +6307,27 @@
     {
      "date": "2026-11-04",
      "close": 550.15
+    },
+    {
+     "date": "2026-11-05",
+     "close": 570.75
     }
    ],
    "sector": "Basic Materials",
    "industry": "Other Industrial Metals & Mining"
   },
   "ICICIBANK": {
-   "price": 1424.1,
-   "prevClose": 1424.5,
-   "change": -0.4,
-   "changePct": -0.03,
-   "dayHigh": 1438.2,
-   "dayLow": 1412.1,
-   "high52": 1480,
+   "price": 1500,
+   "prevClose": 1424.1,
+   "change": 75.9,
+   "changePct": 5.33,
+   "dayHigh": 1501.4,
+   "dayLow": 1445.9,
+   "high52": 1501.4,
    "low52": 1187.6,
-   "volume": 10598803,
+   "volume": 38319694,
    "longName": "ICICI Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1454.6
-    },
     {
      "date": "2026-08-05",
      "close": 1450.1
@@ -6583,27 +6579,27 @@
     {
      "date": "2026-11-04",
      "close": 1424.1
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1500
     }
    ],
    "sector": "Financial Services",
    "industry": "Banks—Regional"
   },
   "IDEA": {
-   "price": 12.55,
-   "prevClose": 12.26,
-   "change": 0.29,
-   "changePct": 2.37,
-   "dayHigh": 12.55,
-   "dayLow": 12.12,
+   "price": 12.89,
+   "prevClose": 12.55,
+   "change": 0.34,
+   "changePct": 2.71,
+   "dayHigh": 12.97,
+   "dayLow": 12.63,
    "high52": 15.79,
    "low52": 8.13,
-   "volume": 284848447,
+   "volume": 307032508,
    "longName": "Vodafone Idea Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 12.9
-    },
     {
      "date": "2026-08-05",
      "close": 12.8
@@ -6855,27 +6851,27 @@
     {
      "date": "2026-11-04",
      "close": 12.55
+    },
+    {
+     "date": "2026-11-05",
+     "close": 12.89
     }
    ],
    "sector": "Communication Services",
    "industry": "Telecom Services"
   },
   "INDIGO": {
-   "price": 5140.8,
-   "prevClose": 5025,
-   "change": 115.8,
-   "changePct": 2.3,
-   "dayHigh": 5154.9,
-   "dayLow": 5030,
+   "price": 5420,
+   "prevClose": 5140.8,
+   "change": 279.2,
+   "changePct": 5.43,
+   "dayHigh": 5489,
+   "dayLow": 5360.1,
    "high52": 5970,
    "low52": 3895.2,
-   "volume": 795043,
+   "volume": 2236956,
    "longName": "InterGlobe Aviation Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 5358
-    },
     {
      "date": "2026-08-05",
      "close": 5400
@@ -7127,27 +7123,27 @@
     {
      "date": "2026-11-04",
      "close": 5140.8
+    },
+    {
+     "date": "2026-11-05",
+     "close": 5420
     }
    ],
    "sector": "Industrials",
    "industry": "Airlines"
   },
   "INFY": {
-   "price": 1128.2,
-   "prevClose": 1148.1,
-   "change": -19.9,
-   "changePct": -1.73,
-   "dayHigh": 1145.9,
-   "dayLow": 1113.1,
+   "price": 1167.4,
+   "prevClose": 1128.2,
+   "change": 39.2,
+   "changePct": 3.47,
+   "dayHigh": 1172.5,
+   "dayLow": 1144.4,
    "high52": 1728,
    "low52": 980.4,
-   "volume": 9324799,
+   "volume": 10172434,
    "longName": "Infosys Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1167.5
-    },
     {
      "date": "2026-08-05",
      "close": 1174
@@ -7399,27 +7395,27 @@
     {
      "date": "2026-11-04",
      "close": 1128.2
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1167.4
     }
    ],
    "sector": "Technology",
    "industry": "Information Technology Services"
   },
   "IOC": {
-   "price": 142.03,
-   "prevClose": 138.67,
-   "change": 3.36,
-   "changePct": 2.42,
-   "dayHigh": 142.03,
-   "dayLow": 137.61,
+   "price": 144.5,
+   "prevClose": 142.03,
+   "change": 2.47,
+   "changePct": 1.74,
+   "dayHigh": 147.31,
+   "dayLow": 144.2,
    "high52": 188.96,
    "low52": 124.92,
-   "volume": 20342347,
+   "volume": 25813952,
    "longName": "Indian Oil Corporation Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 141.6
-    },
     {
      "date": "2026-08-05",
      "close": 144
@@ -7671,27 +7667,27 @@
     {
      "date": "2026-11-04",
      "close": 142.03
+    },
+    {
+     "date": "2026-11-05",
+     "close": 144.5
     }
    ],
    "sector": "Energy",
    "industry": "Oil & Gas Refining & Marketing"
   },
   "IRFC": {
-   "price": 77.84,
-   "prevClose": 75.9,
-   "change": 1.94,
-   "changePct": 2.56,
-   "dayHigh": 77.98,
-   "dayLow": 75.2,
+   "price": 80.13,
+   "prevClose": 77.84,
+   "change": 2.29,
+   "changePct": 2.94,
+   "dayHigh": 80.43,
+   "dayLow": 78.9,
    "high52": 137.17,
    "low52": 73.05,
-   "volume": 10520009,
+   "volume": 11529042,
    "longName": "Indian Railway Finance Corporation Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 89.6
-    },
     {
      "date": "2026-08-05",
      "close": 88.9
@@ -7943,27 +7939,27 @@
     {
      "date": "2026-11-04",
      "close": 77.84
+    },
+    {
+     "date": "2026-11-05",
+     "close": 80.13
     }
    ],
    "sector": "Financial Services",
    "industry": "Credit Services"
   },
   "ITC": {
-   "price": 280,
-   "prevClose": 273.9,
-   "change": 6.1,
-   "changePct": 2.23,
-   "dayHigh": 283.5,
-   "dayLow": 272.1,
+   "price": 278.85,
+   "prevClose": 280,
+   "change": -1.15,
+   "changePct": -0.41,
+   "dayHigh": 283.9,
+   "dayLow": 277.25,
    "high52": 413.3,
    "low52": 252.8,
-   "volume": 42446833,
+   "volume": 23242713,
    "longName": "ITC Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 289
-    },
     {
      "date": "2026-08-05",
      "close": 286.95
@@ -8215,27 +8211,27 @@
     {
      "date": "2026-11-04",
      "close": 280
+    },
+    {
+     "date": "2026-11-05",
+     "close": 278.85
     }
    ],
    "sector": "Consumer Defensive",
    "industry": "Tobacco"
   },
   "JSWSTEEL": {
-   "price": 1343,
-   "prevClose": 1320,
-   "change": 23,
-   "changePct": 1.74,
-   "dayHigh": 1343,
-   "dayLow": 1314,
-   "high52": 1351,
+   "price": 1355.6,
+   "prevClose": 1343,
+   "change": 12.6,
+   "changePct": 0.94,
+   "dayHigh": 1370,
+   "dayLow": 1345.6,
+   "high52": 1370,
    "low52": 1073.2,
-   "volume": 1471067,
+   "volume": 4171364,
    "longName": "JSW Steel Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1300
-    },
     {
      "date": "2026-08-05",
      "close": 1330
@@ -8487,27 +8483,27 @@
     {
      "date": "2026-11-04",
      "close": 1343
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1355.6
     }
    ],
    "sector": "Basic Materials",
    "industry": "Steel"
   },
   "KOTAKBANK": {
-   "price": 459.4,
-   "prevClose": 464.65,
-   "change": -5.25,
-   "changePct": -1.13,
-   "dayHigh": 465.45,
-   "dayLow": 456.35,
-   "high52": 465.95,
+   "price": 467,
+   "prevClose": 459.4,
+   "change": 7.6,
+   "changePct": 1.65,
+   "dayHigh": 472.5,
+   "dayLow": 457.15,
+   "high52": 472.5,
    "low52": 345.5,
-   "volume": 22069310,
+   "volume": 23675598,
    "longName": "Kotak Mahindra Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 398
-    },
     {
      "date": "2026-08-05",
      "close": 400
@@ -8759,6 +8755,10 @@
     {
      "date": "2026-11-04",
      "close": 459.4
+    },
+    {
+     "date": "2026-11-05",
+     "close": 467
     }
    ],
    "sector": "Financial Services",
@@ -8766,20 +8766,16 @@
   },
   "LICI": {
    "price": 408,
-   "prevClose": 395.5,
-   "change": 12.5,
-   "changePct": 3.16,
-   "dayHigh": 409.8,
-   "dayLow": 395.5,
+   "prevClose": 408,
+   "change": 0,
+   "changePct": 0,
+   "dayHigh": 417.35,
+   "dayLow": 404.95,
    "high52": 468.48,
    "low52": 360.75,
-   "volume": 6447983,
+   "volume": 11967246,
    "longName": "Life Insurance Corporation of India",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 391.3
-    },
     {
      "date": "2026-08-05",
      "close": 393
@@ -9031,27 +9027,27 @@
     {
      "date": "2026-11-04",
      "close": 408
+    },
+    {
+     "date": "2026-11-05",
+     "close": 408
     }
    ],
    "sector": "Financial Services",
    "industry": "Insurance—Life"
   },
   "LT": {
-   "price": 3944.4,
-   "prevClose": 3948.2,
-   "change": -3.8,
-   "changePct": -0.1,
-   "dayHigh": 3987.7,
-   "dayLow": 3923.8,
+   "price": 4050,
+   "prevClose": 3944.4,
+   "change": 105.6,
+   "changePct": 2.68,
+   "dayHigh": 4071.6,
+   "dayLow": 4005.1,
    "high52": 4440,
    "low52": 3288.1,
-   "volume": 2493326,
+   "volume": 3837731,
    "longName": "Larsen & Toubro Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 3990
-    },
     {
      "date": "2026-08-05",
      "close": 4057
@@ -9303,27 +9299,27 @@
     {
      "date": "2026-11-04",
      "close": 3944.4
+    },
+    {
+     "date": "2026-11-05",
+     "close": 4050
     }
    ],
    "sector": "Industrials",
    "industry": "Engineering & Construction"
   },
   "M&M": {
-   "price": 2961.9,
-   "prevClose": 2908,
-   "change": 53.9,
-   "changePct": 1.85,
-   "dayHigh": 2961.9,
-   "dayLow": 2899.7,
+   "price": 3127.5,
+   "prevClose": 2961.9,
+   "change": 165.6,
+   "changePct": 5.59,
+   "dayHigh": 3145,
+   "dayLow": 2984.2,
    "high52": 3839.9,
    "low52": 2744.3,
-   "volume": 3618319,
+   "volume": 8910941,
    "longName": "Mahindra & Mahindra Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 3433
-    },
     {
      "date": "2026-08-05",
      "close": 3455.4
@@ -9575,27 +9571,27 @@
     {
      "date": "2026-11-04",
      "close": 2961.9
+    },
+    {
+     "date": "2026-11-05",
+     "close": 3127.5
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Auto Manufacturers"
   },
   "MARUTI": {
-   "price": 11995,
-   "prevClose": 11869,
-   "change": 126,
-   "changePct": 1.06,
-   "dayHigh": 11995,
-   "dayLow": 11786,
+   "price": 12652,
+   "prevClose": 11995,
+   "change": 657,
+   "changePct": 5.48,
+   "dayHigh": 12681,
+   "dayLow": 12250,
    "high52": 17370,
    "low52": 10985,
-   "volume": 581588,
+   "volume": 1203487,
    "longName": "Maruti Suzuki India Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 14168
-    },
     {
      "date": "2026-08-05",
      "close": 14190
@@ -9847,27 +9843,27 @@
     {
      "date": "2026-11-04",
      "close": 11995
+    },
+    {
+     "date": "2026-11-05",
+     "close": 12652
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Auto Manufacturers"
   },
   "NESTLEIND": {
-   "price": 1248,
-   "prevClose": 1248.4,
-   "change": -0.4,
-   "changePct": -0.03,
-   "dayHigh": 1272.8,
-   "dayLow": 1228.4,
+   "price": 1258.3,
+   "prevClose": 1248,
+   "change": 10.3,
+   "changePct": 0.83,
+   "dayHigh": 1267.9,
+   "dayLow": 1248.2,
    "high52": 1553,
    "low52": 1147.4,
-   "volume": 2411647,
+   "volume": 1849378,
    "longName": "Nestlé India Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1520
-    },
     {
      "date": "2026-08-05",
      "close": 1520
@@ -10119,27 +10115,27 @@
     {
      "date": "2026-11-04",
      "close": 1248
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1258.3
     }
    ],
    "sector": "Consumer Defensive",
    "industry": "Packaged Foods"
   },
   "NHPC": {
-   "price": 78.49,
-   "prevClose": 79.4,
-   "change": -0.91,
-   "changePct": -1.15,
-   "dayHigh": 79.99,
-   "dayLow": 77.68,
+   "price": 80.6,
+   "prevClose": 78.49,
+   "change": 2.11,
+   "changePct": 2.69,
+   "dayHigh": 83.53,
+   "dayLow": 78.82,
    "high52": 86.83,
    "low52": 68.79,
-   "volume": 15706240,
+   "volume": 55669372,
    "longName": "NHPC Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 80.5
-    },
     {
      "date": "2026-08-05",
      "close": 78.6
@@ -10391,27 +10387,27 @@
     {
      "date": "2026-11-04",
      "close": 78.49
+    },
+    {
+     "date": "2026-11-05",
+     "close": 80.6
     }
    ],
    "sector": "Utilities",
    "industry": "Utilities—Renewable"
   },
   "NTPC": {
-   "price": 321.95,
-   "prevClose": 321.55,
-   "change": 0.4,
-   "changePct": 0.12,
-   "dayHigh": 321.95,
-   "dayLow": 316.75,
+   "price": 316.7,
+   "prevClose": 321.95,
+   "change": -5.25,
+   "changePct": -1.63,
+   "dayHigh": 325.15,
+   "dayLow": 316.05,
    "high52": 414.4,
    "low52": 292.05,
-   "volume": 8285028,
+   "volume": 9115258,
    "longName": "NTPC Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 343.65
-    },
     {
      "date": "2026-08-05",
      "close": 349.9
@@ -10663,27 +10659,27 @@
     {
      "date": "2026-11-04",
      "close": 321.95
+    },
+    {
+     "date": "2026-11-05",
+     "close": 316.7
     }
    ],
    "sector": "Utilities",
    "industry": "Utilities—Regulated Electric"
   },
   "ONGC": {
-   "price": 235,
-   "prevClose": 232.17,
-   "change": 2.83,
-   "changePct": 1.22,
-   "dayHigh": 235,
-   "dayLow": 230,
+   "price": 230,
+   "prevClose": 235,
+   "change": -5,
+   "changePct": -2.13,
+   "dayHigh": 233.39,
+   "dayLow": 228.65,
    "high52": 307.5,
    "low52": 218.53,
-   "volume": 7673755,
+   "volume": 17228033,
    "longName": "Oil and Natural Gas Corporation Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 242
-    },
     {
      "date": "2026-08-05",
      "close": 240.2
@@ -10935,27 +10931,27 @@
     {
      "date": "2026-11-04",
      "close": 235
+    },
+    {
+     "date": "2026-11-05",
+     "close": 230
     }
    ],
    "sector": "Energy",
    "industry": "Oil & Gas Integrated"
   },
   "POWERGRID": {
-   "price": 262.05,
-   "prevClose": 259.55,
-   "change": 2.5,
-   "changePct": 0.96,
-   "dayHigh": 262.15,
-   "dayLow": 255.35,
+   "price": 261.15,
+   "prevClose": 262.05,
+   "change": -0.9,
+   "changePct": -0.34,
+   "dayHigh": 266.25,
+   "dayLow": 259.5,
    "high52": 324.95,
    "low52": 242.3,
-   "volume": 14203840,
+   "volume": 15543866,
    "longName": "Power Grid Corporation of India Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 283.4
-    },
     {
      "date": "2026-08-05",
      "close": 281.75
@@ -11207,27 +11203,27 @@
     {
      "date": "2026-11-04",
      "close": 262.05
+    },
+    {
+     "date": "2026-11-05",
+     "close": 261.15
     }
    ],
    "sector": "Utilities",
    "industry": "Utilities—Regulated Electric"
   },
   "RELIANCE": {
-   "price": 1311,
-   "prevClose": 1307.9,
-   "change": 3.1,
-   "changePct": 0.24,
-   "dayHigh": 1318.9,
-   "dayLow": 1296,
+   "price": 1313.4,
+   "prevClose": 1311,
+   "change": 2.4,
+   "changePct": 0.18,
+   "dayHigh": 1325,
+   "dayLow": 1303.7,
    "high52": 1611.8,
    "low52": 1152.2,
-   "volume": 19444018,
+   "volume": 19476075,
    "longName": "Reliance Industries Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1290.9
-    },
     {
      "date": "2026-08-05",
      "close": 1280
@@ -11479,27 +11475,27 @@
     {
      "date": "2026-11-04",
      "close": 1311
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1313.4
     }
    ],
    "sector": "Energy",
    "industry": "Oil & Gas Refining & Marketing"
   },
   "SBIN": {
-   "price": 979,
-   "prevClose": 970.25,
-   "change": 8.75,
-   "changePct": 0.9,
-   "dayHigh": 988,
-   "dayLow": 968.35,
+   "price": 1006.4,
+   "prevClose": 979,
+   "change": 27.4,
+   "changePct": 2.8,
+   "dayHigh": 1009.6,
+   "dayLow": 987.2,
    "high52": 1234.7,
    "low52": 933.9,
-   "volume": 14878664,
+   "volume": 25271137,
    "longName": "State Bank of India",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1042.7
-    },
     {
      "date": "2026-08-05",
      "close": 1055
@@ -11751,27 +11747,27 @@
     {
      "date": "2026-11-04",
      "close": 979
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1006.4
     }
    ],
    "sector": "Financial Services",
    "industry": "Banks—Regional"
   },
   "SHRIRAMFIN": {
-   "price": 908.75,
-   "prevClose": 884.8,
-   "change": 23.95,
-   "changePct": 2.71,
-   "dayHigh": 911.4,
-   "dayLow": 876.15,
+   "price": 964,
+   "prevClose": 908.75,
+   "change": 55.25,
+   "changePct": 6.08,
+   "dayHigh": 974.7,
+   "dayLow": 940,
    "high52": 1153.7,
    "low52": 780.8,
-   "volume": 6023360,
+   "volume": 11221630,
    "longName": "Shriram Finance Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1087.3
-    },
     {
      "date": "2026-08-05",
      "close": 1122.4
@@ -12023,27 +12019,27 @@
     {
      "date": "2026-11-04",
      "close": 908.75
+    },
+    {
+     "date": "2026-11-05",
+     "close": 964
     }
    ],
    "sector": "Financial Services",
    "industry": "Credit Services"
   },
   "SOLARINDS": {
-   "price": 19393,
-   "prevClose": 19654,
-   "change": -261,
-   "changePct": -1.33,
-   "dayHigh": 19989,
-   "dayLow": 19347,
+   "price": 18520,
+   "prevClose": 19393,
+   "change": -873,
+   "changePct": -4.5,
+   "dayHigh": 19770,
+   "dayLow": 18415,
    "high52": 22700,
    "low52": 11646,
-   "volume": 231738,
+   "volume": 297785,
    "longName": "Solar Industries India Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 18700
-    },
     {
      "date": "2026-08-05",
      "close": 18400
@@ -12295,27 +12291,27 @@
     {
      "date": "2026-11-04",
      "close": 19393
+    },
+    {
+     "date": "2026-11-05",
+     "close": 18520
     }
    ],
    "sector": "Basic Materials",
    "industry": "Specialty Chemicals"
   },
   "SOUTHBANK": {
-   "price": 55.85,
-   "prevClose": 53.96,
-   "change": 1.89,
-   "changePct": 3.5,
-   "dayHigh": 56,
-   "dayLow": 53.4,
+   "price": 56.32,
+   "prevClose": 55.85,
+   "change": 0.47,
+   "changePct": 0.84,
+   "dayHigh": 57.08,
+   "dayLow": 55.85,
    "high52": 57.28,
    "low52": 33.38,
-   "volume": 13690459,
+   "volume": 13435039,
    "longName": "The South Indian Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 46.86
-    },
     {
      "date": "2026-08-05",
      "close": 46.92
@@ -12567,27 +12563,27 @@
     {
      "date": "2026-11-04",
      "close": 55.85
+    },
+    {
+     "date": "2026-11-05",
+     "close": 56.32
     }
    ],
    "sector": "Financial Services",
    "industry": "Banks—Regional"
   },
   "SUNPHARMA": {
-   "price": 1773.4,
-   "prevClose": 1769.9,
-   "change": 3.5,
-   "changePct": 0.2,
-   "dayHigh": 1810.4,
-   "dayLow": 1769,
+   "price": 1829,
+   "prevClose": 1773.4,
+   "change": 55.6,
+   "changePct": 3.14,
+   "dayHigh": 1839.7,
+   "dayLow": 1762.4,
    "high52": 2046.9,
    "low52": 1583.7,
-   "volume": 4925003,
+   "volume": 3923747,
    "longName": "Sun Pharmaceutical Industries Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 1964
-    },
     {
      "date": "2026-08-05",
      "close": 1940
@@ -12839,27 +12835,27 @@
     {
      "date": "2026-11-04",
      "close": 1773.4
+    },
+    {
+     "date": "2026-11-05",
+     "close": 1829
     }
    ],
    "sector": "Healthcare",
    "industry": "Drug Manufacturers—Specialty & Generic"
   },
   "SUZLON": {
-   "price": 37.45,
-   "prevClose": 35.75,
-   "change": 1.7,
-   "changePct": 4.76,
-   "dayHigh": 37.5,
-   "dayLow": 35.16,
+   "price": 38.59,
+   "prevClose": 37.45,
+   "change": 1.14,
+   "changePct": 3.04,
+   "dayHigh": 38.69,
+   "dayLow": 38.05,
    "high52": 61.5,
    "low52": 33.15,
-   "volume": 104580143,
+   "volume": 67411256,
    "longName": "Suzlon Energy Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 48.01
-    },
     {
      "date": "2026-08-05",
      "close": 48.15
@@ -13111,27 +13107,27 @@
     {
      "date": "2026-11-04",
      "close": 37.45
+    },
+    {
+     "date": "2026-11-05",
+     "close": 38.59
     }
    ],
    "sector": "Industrials",
    "industry": "Specialty Industrial Machinery"
   },
   "TATASTEEL": {
-   "price": 179.93,
-   "prevClose": 176.5,
-   "change": 3.43,
-   "changePct": 1.94,
-   "dayHigh": 179.93,
-   "dayLow": 174.24,
+   "price": 182,
+   "prevClose": 179.93,
+   "change": 2.07,
+   "changePct": 1.15,
+   "dayHigh": 183.33,
+   "dayLow": 179.47,
    "high52": 224.4,
    "low52": 160.06,
-   "volume": 20718018,
+   "volume": 28977610,
    "longName": "Tata Steel Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 190.95
-    },
     {
      "date": "2026-08-05",
      "close": 192.99
@@ -13383,27 +13379,27 @@
     {
      "date": "2026-11-04",
      "close": 179.93
+    },
+    {
+     "date": "2026-11-05",
+     "close": 182
     }
    ],
    "sector": "Basic Materials",
    "industry": "Steel"
   },
   "TCS": {
-   "price": 2436,
-   "prevClose": 2499.1,
-   "change": -63.1,
-   "changePct": -2.52,
-   "dayHigh": 2493.8,
-   "dayLow": 2420,
+   "price": 2495.7,
+   "prevClose": 2436,
+   "change": 59.7,
+   "changePct": 2.45,
+   "dayHigh": 2521.8,
+   "dayLow": 2475,
    "high52": 3350,
    "low52": 1976.8,
-   "volume": 3140927,
+   "volume": 6767880,
    "longName": "Tata Consultancy Services Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 2460
-    },
     {
      "date": "2026-08-05",
      "close": 2413
@@ -13655,27 +13651,27 @@
     {
      "date": "2026-11-04",
      "close": 2436
+    },
+    {
+     "date": "2026-11-05",
+     "close": 2495.7
     }
    ],
    "sector": "Technology",
    "industry": "Information Technology Services"
   },
   "TITAN": {
-   "price": 4754.4,
-   "prevClose": 4562,
-   "change": 192.4,
-   "changePct": 4.22,
-   "dayHigh": 4754.4,
-   "dayLow": 4471.5,
+   "price": 4834.6,
+   "prevClose": 4754.4,
+   "change": 80.2,
+   "changePct": 1.69,
+   "dayHigh": 4857.1,
+   "dayLow": 4746,
    "high52": 5186.7,
    "low52": 3736,
-   "volume": 1323543,
+   "volume": 1241128,
    "longName": "Titan Company Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 4935
-    },
     {
      "date": "2026-08-05",
      "close": 4912.4
@@ -13927,27 +13923,27 @@
     {
      "date": "2026-11-04",
      "close": 4754.4
+    },
+    {
+     "date": "2026-11-05",
+     "close": 4834.6
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Luxury Goods"
   },
   "TORNTPHARM": {
-   "price": 4738.5,
-   "prevClose": 4650,
-   "change": 88.5,
-   "changePct": 1.9,
-   "dayHigh": 4738.5,
-   "dayLow": 4620,
+   "price": 4710,
+   "prevClose": 4738.5,
+   "change": -28.5,
+   "changePct": -0.6,
+   "dayHigh": 4753.4,
+   "dayLow": 4679.1,
    "high52": 5250,
    "low52": 3532.6,
-   "volume": 550614,
+   "volume": 508335,
    "longName": "Torrent Pharmaceuticals Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 5030
-    },
     {
      "date": "2026-08-05",
      "close": 5000
@@ -14199,27 +14195,27 @@
     {
      "date": "2026-11-04",
      "close": 4738.5
+    },
+    {
+     "date": "2026-11-05",
+     "close": 4710
     }
    ],
    "sector": "Healthcare",
    "industry": "Drug Manufacturers—Specialty & Generic"
   },
   "TVSMOTOR": {
-   "price": 4331.2,
-   "prevClose": 4303.2,
-   "change": 28,
-   "changePct": 0.65,
-   "dayHigh": 4349.9,
-   "dayLow": 4298.4,
-   "high52": 4484.5,
+   "price": 4450,
+   "prevClose": 4331.2,
+   "change": 118.8,
+   "changePct": 2.74,
+   "dayHigh": 4490,
+   "dayLow": 4356.2,
+   "high52": 4490,
    "low52": 3228,
-   "volume": 526426,
+   "volume": 968815,
    "longName": "TVS Motor Company Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 4360
-    },
     {
      "date": "2026-08-05",
      "close": 4455.2
@@ -14471,27 +14467,27 @@
     {
      "date": "2026-11-04",
      "close": 4331.2
+    },
+    {
+     "date": "2026-11-05",
+     "close": 4450
     }
    ],
    "sector": "Consumer Cyclical",
    "industry": "Auto Manufacturers"
   },
   "ULTRACEMCO": {
-   "price": 11816,
-   "prevClose": 11700,
-   "change": 116,
-   "changePct": 0.99,
-   "dayHigh": 11830,
-   "dayLow": 11600,
+   "price": 12250,
+   "prevClose": 11816,
+   "change": 434,
+   "changePct": 3.67,
+   "dayHigh": 12285,
+   "dayLow": 11969,
    "high52": 13110,
    "low52": 10325,
-   "volume": 273118,
+   "volume": 519384,
    "longName": "UltraTech Cement Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 12050
-    },
     {
      "date": "2026-08-05",
      "close": 12190
@@ -14743,27 +14739,27 @@
     {
      "date": "2026-11-04",
      "close": 11816
+    },
+    {
+     "date": "2026-11-05",
+     "close": 12250
     }
    ],
    "sector": "Basic Materials",
    "industry": "Building Materials"
   },
   "WIPRO": {
-   "price": 194.55,
-   "prevClose": 198,
-   "change": -3.45,
-   "changePct": -1.74,
-   "dayHigh": 197.27,
-   "dayLow": 192.4,
+   "price": 198.4,
+   "prevClose": 194.55,
+   "change": 3.85,
+   "changePct": 1.98,
+   "dayHigh": 199.21,
+   "dayLow": 195.75,
    "high52": 273.1,
    "low52": 156.79,
-   "volume": 9433955,
+   "volume": 11792076,
    "longName": "Wipro Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 186.3
-    },
     {
      "date": "2026-08-05",
      "close": 186.99
@@ -15015,27 +15011,27 @@
     {
      "date": "2026-11-04",
      "close": 194.55
+    },
+    {
+     "date": "2026-11-05",
+     "close": 198.4
     }
    ],
    "sector": "Technology",
    "industry": "Information Technology Services"
   },
   "YESBANK": {
-   "price": 15.73,
-   "prevClose": 15.38,
-   "change": 0.35,
-   "changePct": 2.28,
-   "dayHigh": 15.75,
-   "dayLow": 15.22,
+   "price": 16.24,
+   "prevClose": 15.73,
+   "change": 0.51,
+   "changePct": 3.24,
+   "dayHigh": 16.45,
+   "dayLow": 15.78,
    "high52": 25.78,
    "low52": 15.1,
-   "volume": 122288341,
+   "volume": 194561809,
    "longName": "Yes Bank Limited",
    "closes": [
-    {
-     "date": "2026-08-04",
-     "close": 23
-    },
     {
      "date": "2026-08-05",
      "close": 22.97
@@ -15287,6 +15283,10 @@
     {
      "date": "2026-11-04",
      "close": 15.73
+    },
+    {
+     "date": "2026-11-05",
+     "close": 16.24
     }
    ],
    "sector": "Financial Services",
@@ -15296,34 +15296,34 @@
  "indices": {
   "nifty-50": {
    "symbol": "^NSEI",
-   "price": 23960.6,
-   "prevClose": 23810.85,
-   "change": 149.75,
-   "changePct": 0.63,
-   "dayHigh": 23960.6,
-   "dayLow": 23696.15,
+   "price": 24536.6,
+   "prevClose": 23960.6,
+   "change": 576,
+   "changePct": 2.4,
+   "dayHigh": 24579.9,
+   "dayLow": 24296.3,
    "high52": 26373.2,
    "low52": 22179.9
   },
   "sensex": {
    "symbol": "^BSESN",
-   "price": 77301.4,
-   "prevClose": 76917.85,
-   "change": 383.55,
-   "changePct": 0.5,
-   "dayHigh": 77396.04,
-   "dayLow": 76604.85,
+   "price": 79310.01,
+   "prevClose": 77301.4,
+   "change": 2008.61,
+   "changePct": 2.6,
+   "dayHigh": 79470.03,
+   "dayLow": 78520.56,
    "high52": 86159.02,
    "low52": 71292.88
   },
   "nifty-bank": {
    "symbol": "^NSEBANK",
-   "price": 55913.6,
-   "prevClose": 55540.05,
-   "change": 373.55,
-   "changePct": 0.67,
-   "dayHigh": 55946.85,
-   "dayLow": 55294.5,
+   "price": 57773.65,
+   "prevClose": 55913.6,
+   "change": 1860.05,
+   "changePct": 3.33,
+   "dayHigh": 57847.65,
+   "dayLow": 56718.2,
    "high52": 61764.85,
    "low52": 49954.85
   }
