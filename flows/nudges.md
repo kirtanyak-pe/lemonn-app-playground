@@ -88,7 +88,7 @@ much") → one consequence line (what it costs) → the guardrail, or Not now. O
 | 2 · Big number | No centred header: ✋ + tag on one line, then the multiple as a giant red number (`heading-36`, "3X") with its words under it (`case.<id>.unit`, "more orders than usual today"), then the consequence. Cases without a multiple, and state C, show the headline instead. |
 | 3 · Compact alert | One red-tinted card (40 ✋ circle centred, tag, the headline in `heading-18`) and the consequence under it. The shortest sheet: most of the order pad stays visible. |
 | 4 · Risk meter | The picture first, for a stressed trader: a **risk meter** — a thick half ring in three zones (success · warning · error accents, no numbers or ticks, so it reads as a risk scale, not a speedometer), "Safe" / "Danger" under its ends and a green **Usual** notch in the safe zone. The pointer starts on Usual (green) and swings into the red (turning red), overshoots a little and settles; then the danger zone pulses twice. In the middle: the multiple (`heading-36`, "2X") over "vs your usual" — "High risk" when there's no multiple. Under it only one heading, the fact (`heading-20`), and the "Overtrading Detected" tag below it. No not-safe line and no consequence strip (cut to keep the sheet to three things). `sheets/RiskVisuals.tsx` |
-| 5 · Risk bar (default) | **One version only**: always the size-up case ("This order is 2X the one you just lost"); Case and State don't apply, and the switcher hides them. The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Safe zone" / "Danger zone" under its ends, a green **Usual · 1X** pin and a red **You now · 2X** pin (light-red pill, error border) that slides from Usual into the danger zone; each pin's label shifts with its position so it stays inside the sheet. Under it, left-aligned: one heading (the fact) and the tag. No not-safe line, no consequence strip. |
+| 5 · Risk bar (default) | Always the size-up case; State doesn't apply (the switcher hides it), and the **Case pill picks Layout 5's version** instead — no setting of its own: **5a · High risk** (case `sizeUp`, the default) **5b · Everyone vs you**, **5c · Why first** and **5d · Story** (stored as cases `everyone`, `explain`, `story`, which aren't cases of the other layouts; they show size-up for them). 5a: The same scale laid flat, straight on the sheet (no card): a 12-high bar in the three zones, "Low risk zone" / "High risk zone" under its ends, and a red dot that slides from the usual spot (22 %) into the high-risk zone. A floating tooltip sits above the dot in its own space: dark bubble (radius 12), one line hugging its text, "High chance of losing money", Heading/16. Its arrow is 24 in from its right end, on the dot, so the bubble reaches left over the bar; it grows out of the dot once the dot settles, and the dot then glows on loop. Under the bar, left-aligned: one heading, "Overtrading, you just entered the high risk zone". No tag, no usual marker. Experiment: the tooltip is drawn in the flow, not the L3 Tooltip (L3 gap: a tooltip that follows a moving target, bigger text).. 5b: a green dot for "Everyone" at the usual spot and the red "You" dot, each with a centred tooltip; the Everyone tooltip emerges from the green dot first, then the red dot slides to the danger zone and the You tooltip emerges from it. Under the ends: "Safe zone / trading to plan" and "Danger zone / chasing losses" (zone Heading/14, note Label/14 secondary). Same heading. 5c answers "why did this open?" first: L3's lg BottomSheetHeader, centred — "You're overtrading" over "Your chances of losing money are high" (generic, fits any trigger) — then the 5b bar in the content slot with just "Safe zone" · "Danger zone" under the ends (no notes). 5d is 5c played once like a short feature video (≈ 7 s), and it can't be dismissed (no backdrop tap, drag or Esc: one of the buttons has to be tapped): "You're overtrading" stamps in (0.25 s, from 1.6× with a small snap) in the middle of the sheet, a little bigger; the risk line fades in under it in primary; both rise to the header's place in 0.4 s, settle to size and the line turns secondary; then the bar wipes in from the left, "Safe zone" then "Danger zone" dissolve in, the green dot grows from nothing, Everyone, the red dot grows out of it and slides, You; the buttons come in last — "Place an order with an SL limit" · "Place without limit". Reduced motion: all at rest. |
 
 **Floating switcher (prototype only):** on the order pad and over the open nudge, a small pill floats: grip · Layout · Case ·
 State. Each is a dropdown pill that opens its own menu (full names, the picked one ticked); a long value is cut with an
@@ -142,6 +142,7 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 ### L3 gaps
 
 - No illustration for "slow down" / caution moments (the draft wants the Lemonn character).
+- BottomSheet has no non-dismissible mode: without `onClose` a backdrop tap does nothing, but the sheet still follows a drag (5d pins it with a flow CSS rule on the dialog). A `dismissible={false}` prop would cover it.
 - No static (non-tappable) pill: Layout 1’s Chip header is drawn in the flow (NudgeSheet .chip) in the pill-tab shape with error-light tokens. A Tag with `radius-full` and a larger size would cover it.
 
 ### Changelog
@@ -166,6 +167,13 @@ provide, per nudge: case id, data state, the headline numbers, ratio, own last l
 - 2026-11-04 · Layouts 4 · Risk meter and 5 · Risk bar: where the trader is on a safe → danger scale, his usual vs now, animated once.
 - 2026-11-04 · Layouts 4 and 5 trimmed: the meter / bar at the top, one heading, the tag under it; the not-safe line, the consequence and the bar's card removed.
 - 2026-11-05 · Layout 5 is the default and has one version (size-up); the switcher hides Case and State on it.
+- 2026-11-05 · Layout 5: zones renamed Low / High risk zone; the Usual and You now pills, the green usual dot and the tag removed; one floating tooltip ("High chance of losing money", two lines) centred on the red dot, sliding with it; heading "Overtrading, you just entered the high risk zone".
+- 2026-11-05 · Layout 5: the tooltip grows out of the red dot once it settles (no longer rides along), with 12 of room above so its overshoot isn't clipped; the red dot then glows on loop like a live indicator (a soft red ring swells and fades). Reduced motion: all still.
+- 2026-11-05 · Layout 5: the tooltip is one line, with its arrow near its right end (on the dot), so it covers the empty part of the bar on the left; it still grows out of the arrow.
+- 2026-11-05 · Layout 5: the tooltip emerges from the red dot: a small red blob leaves the dot, rises to the arrow spot and opens into the dark bubble (0.7 s), text last.
+- 2026-11-05 · Layout 5b · Everyone vs you, picked in the Case pill: Everyone and You tooltips in turn, Safe zone / trading to plan · Danger zone / chasing losses.
+- 2026-11-05 · Layout 5c · Why first: L3 lg header "You're overtrading" · "Your chances of losing money are high", then the Everyone vs You bar without the zone notes.
+- 2026-11-05 · Layout 5d · Story: 5c played as a short feature video (heading stamps in centred, the risk line, both rise, the bar builds step by step, buttons last); can't be dismissed; buttons "Place an order with an SL limit" · "Place without limit".
 
 
 ## Source — this flow
@@ -286,10 +294,10 @@ import { Icon } from '@l3/components/Icon'
 import { msCheck, msDragIndicator, msKeyboardArrowDown } from '@l3/icons/material'
 import { setFlowOption, useFlowOption, usePreview } from '../../../shared/prototype'
 import { t } from '../copy'
-import { badgeOption, caseOption, layoutOption, stateOption } from '../options'
+import { badgeOption, caseOption, layoutOption, stateOption, zoneCaseOption } from '../options'
 import styles from './SheetSwitcher.module.css'
 
-type Option = typeof caseOption | typeof stateOption | typeof layoutOption | typeof badgeOption
+type Option = typeof caseOption | typeof zoneCaseOption | typeof stateOption | typeof layoutOption | typeof badgeOption
 type Spot = { x: number; y: number }
 
 const SPOT_KEY = 'nudges-switcher-spot'
@@ -365,8 +373,8 @@ function Pill({ host }: { host: HTMLElement }) {
     </button>
     <Pick option={layoutOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.layout', { n: layoutOption.values.findIndex((o) => o.value === v) + 1 })} />
     {layout === 'bars' && <Pick option={badgeOption} menu={menu} setMenu={setMenu} short={(v) => t(v === 'chip' ? 'switcher.badgeChip' : 'switcher.badgeTag')} />}
-    {/* Layout 5 has one version only: no case or state to pick. */}
-    {layout !== 'zone' && <Pick option={caseOption} menu={menu} setMenu={setMenu} short={(_, label) => label} wide />}
+    {/* Layout 5: the Case pill picks between its two versions; no state to pick. */}
+    <Pick option={layout === 'zone' ? zoneCaseOption : caseOption} menu={menu} setMenu={setMenu} short={(_, label) => label} wide />
     {layout !== 'zone' && <Pick option={stateOption} menu={menu} setMenu={setMenu} short={(v) => t('switcher.state', { state: v })} />}
     {menu && <Menu option={menu.option} chip={menu.chip} host={host} onClose={() => setMenu(null)} />}
   </div>
@@ -481,6 +489,8 @@ function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLEleme
   "silent.limitBar": "Loss used today",
   "silent.limitNear": "Close to today's loss limit",
   "nudge.setPnl": "Set a loss limit for today",
+  "nudge.storyPrimary": "Place an order with an SL limit",
+  "nudge.storyNotNow": "Place without limit",
   "nudge.setTpsl": "Add TP/SL to this order",
   "nudge.notNow": "Not now, place order",
   "pnl.title": "Today's loss limit",
@@ -520,13 +530,22 @@ function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLEleme
   "nudge.notNowPositions": "Not now",
   "nudge.barsLabel": "{now}: {ratio}× {base}",
   "nudge.usual": "Usual",
-  "nudge.now": "You now",
-  "nudge.vsUsual": "vs your usual",
+    "nudge.vsUsual": "vs your usual",
   "nudge.highRisk": "High risk",
   "nudge.zoneSafe": "Safe",
   "nudge.zoneDanger": "Danger",
-  "nudge.zoneSafeLong": "Safe zone",
-  "nudge.zoneDangerLong": "Danger zone",
+  "nudge.zoneLow": "Low risk zone",
+  "nudge.zoneHigh": "High risk zone",
+  "nudge.zoneHeadline": "Overtrading, you just entered the high risk zone",
+  "nudge.overtrading": "You're overtrading",
+  "nudge.overtradingRisk": "Your chances of losing money are high",
+  "nudge.everyone": "Everyone",
+  "nudge.you": "You",
+  "nudge.safeZone": "Safe zone",
+  "nudge.dangerZone": "Danger zone",
+  "nudge.safeZoneNote": "trading to plan",
+  "nudge.dangerZoneNote": "chasing losses",
+  "nudge.lossChance": "High chance of losing money",
   "nudge.meterLabel": "Risk meter: you are in the danger zone",
   "nudge.meterLabelRatio": "Risk meter: you are in the danger zone, {ratio}X your usual",
   "case.generic.name": "Generic",
@@ -615,6 +634,10 @@ function Menu({ option, chip, host, onClose }: { option: Option; chip: HTMLEleme
   "option.layoutNumber": "2 · Big number",
   "option.layoutCompact": "3 · Compact alert",
   "option.layoutGauge": "4 · Risk meter",
+  "option.zoneRisk": "5a · High risk",
+  "option.zoneEveryone": "5b · Everyone vs you",
+  "option.zoneExplain": "5c · Why first",
+  "option.zoneStory": "5d · Story",
   "option.layoutZone": "5 · Risk bar",
   "option.badge": "Layout 1 header",
   "option.badgeChip": "Chip (✋ in the tag)",
@@ -790,6 +813,16 @@ export const caseOption = { id: 'case', group: 'Nudge', label: t('option.case'),
 export const stateOption = { id: 'state', group: 'Nudge', label: t('option.state'), picker: 'dropdown' as const, values: [{ value: 'A', label: t('option.stateA') }, { value: 'B', label: t('option.stateB') }, { value: 'C', label: t('option.stateC') }], default: 'A' }
 export const layoutOption = { id: 'layout', group: 'Nudge', label: t('option.layout'), picker: 'dropdown' as const, values: [{ value: 'bars', label: t('option.layoutBars') }, { value: 'number', label: t('option.layoutNumber') }, { value: 'compact', label: t('option.layoutCompact') }, { value: 'gauge', label: t('option.layoutGauge') }, { value: 'zone', label: t('option.layoutZone') }], default: 'zone' }
 
+/**
+ * Layout 5 only: its versions, picked with the same Case setting (no setting of its own). 'sizeUp' (the default case)
+ * is the High risk bar; 'everyone', 'explain' and 'story' (not cases of the other layouts) are the Everyone vs You bar, that
+ * bar under a centred "You're overtrading" header (5c), and 5c played as a short story (5d). The Case pill shows these
+ * on Layout 5.
+ */
+export type ZoneVersion = 'risk' | 'everyone' | 'explain' | 'story'
+export const zoneCaseOption = { ...caseOption, values: [{ value: 'sizeUp', label: t('option.zoneRisk') }, { value: 'everyone', label: t('option.zoneEveryone') }, { value: 'explain', label: t('option.zoneExplain') }, { value: 'story', label: t('option.zoneStory') }] }
+export const zoneVersion = (caseValue: string): ZoneVersion => caseValue === 'everyone' || caseValue === 'explain' || caseValue === 'story' ? caseValue : 'risk'
+
 /** Layout 1 only: the ✋ circle with the tag under it, or one chip (✋ inside the tag). */
 export const badgeOption = { id: 'badge', group: 'Nudge', label: t('option.badge'), picker: 'dropdown' as const, values: [{ value: 'chip', label: t('option.badgeChip') }, { value: 'tag', label: t('option.badgeTag') }], default: 'chip' }
 
@@ -872,7 +905,7 @@ import { inr } from '../../../shared/data/format'
 import { useFlowOption } from '../../../shared/prototype'
 import { Screen } from '../../../shared/ui/Screen'
 import { t } from '../copy'
-import { layoutOption } from '../options'
+import { layoutOption, zoneVersion } from '../options'
 import { defaultLimit, funds, intradayCloseTime, lossToday, orderContract, prefilledTpsl, sellMargin, validities, type DataState, type NudgeCaseId, type OrderProduct, type OrderSide, type OrderType } from '../data'
 import { LossLimitSheet, TpslSheet } from '../sheets/GuardrailSheets'
 import { NudgeSheet, type NudgeBadge, type NudgeLayout } from '../sheets/NudgeSheet'
@@ -910,7 +943,9 @@ type Props = {
  */
 export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', type: initialType = 'market', nudge, initialSheet, limit: initialLimit = null, loss = lossToday, onBack }: Props) {
   const c = orderContract
-  const optionCase = useFlowOption('nudges', 'case', 'sizeUp') as NudgeCaseId
+  const caseValue = useFlowOption('nudges', 'case', 'sizeUp')
+  // 'everyone' and 'explain' are Layout 5 versions, not cases: the other layouts show the default case for them.
+  const optionCase = (zoneVersion(caseValue) !== 'risk' ? 'sizeUp' : caseValue) as NudgeCaseId
   const optionState = useFlowOption('nudges', 'state', 'A') as DataState
   const actions = useFlowOption('nudges', 'actions', 'one') as 'one' | 'two'
   // Prototype setting: fire the nudge on every Buy / Sell instead of once (the real cap is 1 per session).
@@ -924,7 +959,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const changed = `${optionCase}.${optionState}` !== opened
   const picked = nudge === undefined ? undefined
     : nudge === 'options' || changed ? { caseId: optionCase, state: optionState } : nudge
-  // Layout 5 has one version only: the size-up case, whatever case / state is picked (the others were copy tries).
+  // Layout 5 is always the size-up case (the other cases were copy tries); the Case pill picks its version instead.
   const fired = picked && layout === 'zone' ? ZONE_NUDGE : picked
 
   const [product, setProduct] = useState<OrderProduct>(initialProduct)
@@ -952,7 +987,7 @@ export function OrderPad({ side = 'buy', product: initialProduct = 'delivery', t
   const submit = () => { if (fired && (!nudged || everyBuy)) { setNudged(true); setModal({ kind: 'nudge' }) } else place() }
 
   const sheet = modal?.kind === 'nudge' && fired
-    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} badge={badge} vibrate={vibrate} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
+    ? <NudgeSheet caseId={fired.caseId} state={fired.state} layout={layout} zoneVersion={zoneVersion(caseValue)} badge={badge} vibrate={vibrate} actions={actions} onGuardrail={(g) => setModal({ kind: g })} onNotNow={place} />
     : modal?.kind === 'pnl'
       ? <LossLimitSheet initial={limit ?? defaultLimit} onClose={() => setModal(null)} onSave={(amount) => { setLimit(amount); setModal(null); setToast(t('pnl.saved', { amount: inr(amount, 0) })) }} />
       : modal?.kind === 'tpsl'
@@ -1161,12 +1196,54 @@ export function TpslSheet({ onSave, onClose }: { onSave: (tpsl: { targetPct: num
 /* A sheet with only a header (no bars, no consequence): L3's lg header has 0 below it, so add the 24 the content
    would have given. */
 .bare header[data-size='lg'] { padding-bottom: var(--l3-spacing-24); }
+
+/* 5d · Story: the sheet plays once like a short feature video (≈ 6 s), then waits for a button.
+   1 "You're overtrading" stamps in (0.25 s) in the middle of the sheet, a little bigger · 2 "Your chances of losing money are
+   high" under it · 3 both rise quickly to the header's place and settle to size (the line from primary to secondary) · 4 the bar plays (the track, Safe zone, Danger zone,
+   the green dot, Everyone, the red dot slides, You) · 5 the buttons come in. The beats are shared with RiskBar through --bar-start. */
+.storySheet {
+  --story-line: calc(var(--l3-motion-duration-long) * 3);
+  --story-rise: calc(var(--l3-motion-duration-long) * 6);
+  --bar-start: calc(var(--l3-motion-duration-long) * 8);
+  --story-dock: calc(var(--l3-motion-duration-long) * 17.5);
+}
+/* The rise is quick (0.4 s): the beats before it hold the words on screen. */
+.storySheet { --story-rise-time: var(--l3-motion-duration-long); }
+.storyHeader { animation: storyRise var(--story-rise-time) var(--l3-motion-easing-standard) var(--story-rise) both; }
+.storyHeader h2 {
+  animation:
+    storySlam var(--l3-motion-duration-medium) var(--l3-motion-easing-accelerate) var(--l3-motion-duration-medium) both,
+    storySettle var(--story-rise-time) var(--l3-motion-easing-standard) var(--story-rise) both;
+}
+/* The risk line reads in primary while it's in the middle, and quiets to the header's secondary as it rises. */
+.storyHeader p {
+  animation:
+    storyIn calc(var(--l3-motion-duration-long) * 1.5) var(--l3-motion-easing-decelerate) var(--story-line) both,
+    storyQuiet var(--story-rise-time) var(--l3-motion-easing-standard) var(--story-rise) both;
+}
+/* The dock (the footer after the sheet's bottom space): hidden and untappable until the story ends. */
+.storySheet > [data-sheet-space='bottom'] + * { animation: storyIn calc(var(--l3-motion-duration-long) * 1.5) var(--l3-motion-easing-decelerate) var(--story-dock) both; }
+/* No drag to dismiss either: L3's BottomSheet still follows the finger when it has nowhere to close to (L3 gap). */
+:global([role='dialog']):has(> * > .storySheet), :global([role='dialog']):has(> .storySheet) { transform: none !important; }
+@keyframes storyRise { from { transform: translateY(var(--story-drop, 0px)); } }
+@keyframes storyIn { from { opacity: 0; visibility: hidden; transform: translateY(var(--l3-spacing-16)); } }
+/* "You're overtrading" lands like a stamp, not a fade: it drops in big and fast, hits a touch under size, and snaps. */
+@keyframes storySlam {
+  0% { opacity: 0; transform: scale(1.6); }
+  70% { opacity: 1; transform: scale(0.96); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes storySettle { from { scale: 1.2; } }
+@keyframes storyQuiet { from { color: var(--l3-content-primary); } }
+@media (prefers-reduced-motion: reduce) {
+  .storyHeader, .storyHeader h2, .storyHeader p, .storySheet > [data-sheet-space='bottom'] + * { animation: none; }
+}
 ```
 
 ### `src/flows/nudges/sheets/NudgeSheet.tsx`
 
 ```tsx
-import { useEffect, useId, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useId, useLayoutEffect, type CSSProperties, type ReactNode } from 'react'
 import { BottomSheetHeader } from '@l3/components/BottomSheet'
 import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
@@ -1182,6 +1259,7 @@ import { t } from '../copy'
 import { caseById, type DataState, type Guardrail, type NudgeCaseId } from '../data'
 import styles from './NudgeSheet.module.css'
 import { RiskBar, RiskMeter } from './RiskVisuals'
+import type { ZoneVersion } from '../options'
 
 /**
  * Three layouts of the same content, to compare (prototype setting "Layout"):
@@ -1202,6 +1280,8 @@ export type NudgeSheetProps = {
   caseId: NudgeCaseId
   state: DataState
   layout?: NudgeLayout
+  /** Layout 5 only: the High risk bar, the Everyone vs You bar, or that bar under a centred why (5c). */
+  zoneVersion?: ZoneVersion
   badge?: NudgeBadge
   /** Buzz the phone once when the sheet opens (two short pulses: "stop, look"). */
   vibrate?: boolean
@@ -1220,7 +1300,7 @@ type Key = Parameters<typeof t>[0]
  * → one consequence line (what it costs) → the guardrail, or Not now. One number, one consequence.
  * Motion plays once on open and is off with reduced motion.
  */
-export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vibrate = true, actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
+export function NudgeSheet({ caseId, state, layout = 'bars', zoneVersion = 'risk', badge = 'chip', vibrate = true, actions = 'one', onGuardrail, onNotNow }: NudgeSheetProps) {
   const id = useId()
   // On open only (switching case or layout keeps the sheet open, so it doesn't buzz again).
   useEffect(() => { if (vibrate) buzz() }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -1247,10 +1327,12 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
   const notNow = t(nudge.where === 'positions' ? 'nudge.notNowPositions' : 'nudge.notNow')
   const tag = <Tag size="md" color="error">{t('nudge.tag')}</Tag>
 
+  // 5d · Story: the main action places this order with an SL limit; the other places it without one.
+  const story = layout === 'zone' && zoneVersion === 'story'
   const footer = <ButtonGroup aria-label={headline} direction="vertical">
-    <Button size="lg" onClick={() => onGuardrail(nudge.primary)}>{label(nudge.primary)}</Button>
+    <Button size="lg" onClick={() => onGuardrail(nudge.primary)}>{story ? t('nudge.storyPrimary') : label(nudge.primary)}</Button>
     {actions === 'two' && <Button size="lg" variant="secondary" onClick={() => onGuardrail(other)}>{label(other)}</Button>}
-    <Button size="lg" variant={actions === 'two' ? 'ghost' : 'secondary'} onClick={onNotNow}>{notNow}</Button>
+    <Button size="lg" variant={actions === 'two' ? 'ghost' : 'secondary'} onClick={onNotNow}>{story ? t('nudge.storyNotNow') : notNow}</Button>
   </ButtonGroup>
 
   let header: ReactNode
@@ -1287,14 +1369,21 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
         <Tag size="md" color="error">{t('nudge.tag')}</Tag>
       </Stack>
     </Stack>
+  } else if (layout === 'zone' && zoneVersion === 'story') {
+    // 5d: the 5c sheet played like a short feature video (see StoryBar): "You're overtrading" in the middle of the
+    // sheet, then the risk line, then both rise to the header, the bar plays, and the buttons come last.
+    header = <BottomSheetHeader size="lg" headingId={id} heading={t('nudge.overtrading')} description={t('nudge.overtradingRisk')} className={styles.storyHeader} />
+    body = <StoryBar headingId={id} ratio={ratio} />
+  } else if (layout === 'zone' && zoneVersion === 'explain') {
+    // 5c: why it fired, first: L3's big header ("You're overtrading" · "Your chances of losing money are high", generic so
+    // it fits any trigger), then the bar in the content slot shows it.
+    header = <BottomSheetHeader size="lg" headingId={id} heading={t('nudge.overtrading')} description={t('nudge.overtradingRisk')} />
+    body = <RiskBar ratio={ratio} version="explain" />
   } else if (layout === 'zone') {
-    // 5 · Risk bar: as layout 4 — the bar first, then one heading and the tag under it. Nothing else.
+    // 5a / 5b · Risk bar: the bar, then one heading. Nothing else.
     body = <Stack gap="24">
-      <RiskBar ratio={ratio} />
-      <Stack gap="12" align="start">
-        <h2 id={id} className={styles.riskHeading}>{headline}</h2>
-        <Tag size="md" color="error">{t('nudge.tag')}</Tag>
-      </Stack>
+      <RiskBar ratio={ratio} version={zoneVersion} />
+      <h2 id={id} className={styles.riskHeading}>{t('nudge.zoneHeadline')}</h2>
     </Stack>
   } else {
     // 1 · Centred + bars: ✋ circle over the tag, or one chip with ✋ inside it (opens from ✋ alone to show the label).
@@ -1311,7 +1400,32 @@ export function NudgeSheet({ caseId, state, layout = 'bars', badge = 'chip', vib
 
   // No bars and no consequence (e.g. giving back): the header ends the sheet, so it brings the 24 above the dock itself.
   const bare = !body
-  return <Sheet labelledBy={id} onClose={onNotNow} className={[styles.sheet, bare && styles.bare, (layout === 'gauge' || layout === 'zone') && styles.riskSheet].filter(Boolean).join(' ')} header={header} footer={footer}>{body}</Sheet>
+  // 5d can't be dismissed: no backdrop tap, drag or Esc — one of the buttons has to be tapped.
+  return <Sheet labelledBy={id} onClose={story ? undefined : onNotNow} className={[styles.sheet, bare && styles.bare, (layout === 'gauge' || layout === 'zone') && !header && styles.riskSheet, story && styles.storySheet].filter(Boolean).join(' ')} header={header} footer={footer}>{body}</Sheet>
+}
+
+/**
+ * 5d's bar. It also sets where the header starts: --story-drop moves the header down to the middle of the sheet (the
+ * bar and buttons are still hidden), so "You're overtrading" opens centred and then rises to its place. Layout offsets
+ * (not screen rects), so neither the sheet's slide, the header's own move nor the preview's scale gets in; kept up to
+ * date while the sheet settles its size.
+ */
+function StoryBar({ headingId, ratio }: { headingId: string; ratio?: number }) {
+  useLayoutEffect(() => {
+    const header = document.getElementById(headingId)?.closest('header')
+    const surface = header?.parentElement
+    if (!header || !surface) return
+    const place = () => {
+      const top = header.offsetTop - (header.offsetParent === surface ? 0 : surface.offsetTop)
+      const drop = surface.offsetHeight / 2 - (top + header.offsetHeight / 2)
+      header.style.setProperty('--story-drop', `${Math.max(0, drop)}px`)
+    }
+    place()
+    const watch = new ResizeObserver(place)
+    watch.observe(surface)
+    return () => watch.disconnect()
+  }, [headingId])
+  return <RiskBar ratio={ratio} version="story" />
 }
 
 /** Two short pulses. In the Lemonn Android app the page calls its native bridge (works without a tap, and uses the
@@ -1358,8 +1472,8 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
    --risk-to. */
 @property --risk-at { syntax: '<number>'; inherits: true; initial-value: 0; }
 
-.meter, .pin, .dot { --risk-at: var(--risk-to); }
-.meter, .pin[data-tone='now'], .dot[data-tone='now'] {
+.meter, .dot { --risk-at: var(--risk-to); }
+.meter, .dot[data-tone='now'] {
   animation: travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--l3-motion-duration-medium) both;
 }
 @keyframes travel {
@@ -1371,7 +1485,7 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
 
 /* The danger zone pulses twice once the marker has landed: "this is where you are". */
 .zone[data-tone='danger'], .segment[data-tone='danger'] {
-  animation: alarm calc(var(--l3-motion-duration-long) * 2) var(--l3-motion-easing-standard) calc(var(--l3-motion-duration-long) * 3 + var(--l3-motion-duration-medium)) 2 both;
+  animation: alarm calc(var(--l3-motion-duration-long) * 2) var(--l3-motion-easing-standard) calc(var(--l3-motion-duration-long) * 3 + var(--l3-motion-duration-medium) + var(--bar-start, 0ms) + var(--bar-intro, 0ms)) 2 both;
 }
 @keyframes alarm { 50% { opacity: 0.45; } }
 
@@ -1407,21 +1521,81 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
 /* ---------- Layout 5 · Risk bar ---------- */
 .bar { display: flex; flex-direction: column; gap: var(--l3-spacing-08); margin: 0; }
 
-/* Pins ride above the track. A pin is a point at --risk-at; its label shifts left by the same fraction of its own
-   width, so it stays inside the card at either end. */
-.lane { position: relative; height: var(--l3-size-32); }
-.pin { position: absolute; bottom: 0; left: calc(var(--risk-at) * 100%); }
-.pinLabel {
-  display: block;
-  transform: translateX(calc(var(--risk-at) * -100%));
-  padding: var(--l3-spacing-04) var(--l3-spacing-08);
-  border-radius: var(--l3-radius-full);
-  font: var(--l3-text-label-12);
-  white-space: nowrap;
+/* A floating tooltip sits above where its dot lands, in its own lane: one line, Heading/16, hugging its text. High risk:
+   its arrow is near its right end (24 in), on the dot, so the bubble reaches left over the empty part of the bar.
+   Everyone / You: centred on the dot.
+   Experiment, not the L3 Tooltip. It waits for the dot to land, then emerges from it (see emerge). */
+/* Room above it too: the sheet's content clips, and the tooltip's overshoot (it grows up past full size) and shadow
+   reach above its resting box. */
+/* --bar-start (set by a sheet that plays the bar later, e.g. 5d's story) holds every beat back. --bar-intro is the
+   story's quick lead-in before the usual beats (1 s, a beat every 0.25 s): the track wipes in from the left, "Safe
+   zone" then "Danger zone" dissolve in, the green dot grows out of nothing; then Everyone, and the red dot grows out of
+   the green one just before it slides. */
+.bar { --travel-delay: calc(var(--l3-motion-duration-medium) + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
+.bar[data-version='story'] { --bar-intro: calc(var(--l3-motion-duration-medium) * 4); }
+/* backwards only: once in, nothing clips the dots or the red dot's glow. */
+.bar[data-version='story'] .track { animation: trackIn var(--l3-motion-duration-medium) var(--l3-motion-easing-standard) var(--bar-start, 0ms) backwards; }
+.bar[data-version='story'] .legend > * { animation: dissolve var(--l3-motion-duration-long) var(--l3-motion-easing-standard) calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium)) both; }
+.bar[data-version='story'] .legend > [data-tone='danger'] { animation-delay: calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium) * 2); }
+.bar[data-version='story'] .dot[data-tone='usual'] { animation: dotIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) calc(var(--bar-start, 0ms) + var(--l3-motion-duration-medium) * 3) both; }
+.bar[data-version='story'] .dot[data-tone='now'] {
+  animation:
+    travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--travel-delay) both,
+    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--l3-motion-duration-long) * 3 + var(--travel-delay)) infinite,
+    dotIn var(--l3-motion-duration-medium) var(--l3-motion-easing-decelerate) calc(var(--travel-delay) - var(--l3-motion-duration-medium)) both;
 }
-.pin[data-tone='usual'] .pinLabel { background: var(--l3-surface-accent-success-light); color: var(--l3-content-accent-success-default); }
-.pin[data-tone='now'] { z-index: 1; }
-.pin[data-tone='now'] .pinLabel { background: var(--l3-surface-accent-error-light); box-shadow: inset 0 0 0 1px var(--l3-border-accent-error-default); color: var(--l3-content-accent-error-default); font: var(--l3-text-heading-14); }
+@keyframes trackIn { from { clip-path: inset(0 100% 0 0); } }
+@keyframes dissolve { from { opacity: 0; } }
+@keyframes dotIn { from { scale: 0; } }
+/* Everyone vs You (5b, 5c): the Everyone tooltip comes first; the red dot sets off as it finishes opening. */
+.bar:not([data-version='risk']) { --travel-delay: calc(var(--l3-motion-duration-medium) + var(--l3-motion-duration-long) * 1.5 + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
+
+/* The tooltips share one grid cell, so the lane is as tall as one of them. */
+.lane { display: grid; align-items: end; justify-items: start; position: relative; padding-top: var(--l3-spacing-12); padding-bottom: calc(var(--l3-spacing-08) + var(--l3-spacing-04)); }
+.tip {
+  grid-area: 1 / 1;
+  position: relative;
+  left: calc(var(--risk-to) * 100%);
+  --tip-arrow: var(--l3-spacing-24); /* arrow centre, from the bubble's right edge */
+  --tip-from: var(--l3-content-accent-error-default); /* the colour of the dot it emerges from */
+  --tip-delay: calc(var(--travel-delay) + var(--l3-motion-duration-long) * 2.6); /* as the red dot settles */
+  --tip-shift: translateX(calc(-100% + var(--tip-arrow)));
+  transform: var(--tip-shift);
+  transform-origin: calc(100% - var(--tip-arrow)) calc(100% + var(--l3-size-12) / 2);
+  animation: emerge calc(var(--l3-motion-duration-long) * 1.75) var(--l3-motion-easing-standard) var(--tip-delay) both;
+  white-space: nowrap;
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-inverted);
+  box-shadow: var(--l3-shadow-elevation-medium);
+  color: var(--l3-content-inverted);
+  font: var(--l3-text-heading-16);
+}
+.tip[data-align='center'] { --tip-arrow: 50%; }
+/* Everyone's tooltip comes out of the green dot, first. */
+.tip[data-tone='usual'] { --tip-from: var(--l3-content-accent-success-default); --tip-delay: calc(var(--l3-motion-duration-medium) + var(--bar-start, 0ms) + var(--bar-intro, 0ms)); }
+.tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: calc(100% - var(--tip-arrow));
+  width: var(--l3-size-12);
+  height: calc(var(--l3-size-12) / 2);
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform: translateX(-50%);
+}
+
+/* Emerge from the dot: a small blob in the dot's colour leaves the dot (26 below the arrow's tip: lane bottom 12 + bar gap 8 + half
+   the track 6), rises to the arrow spot, then opens into the dark bubble, overshooting a little; the text fades in
+   last. Scaled about the arrow's tip (after the bubble's shift onto the dot), so it all comes from one point. */
+@keyframes emerge {
+  0% { opacity: 0; transform: var(--tip-shift) translateY(calc(var(--l3-spacing-24) + var(--l3-spacing-02))) scale(0.08); background: var(--tip-from); color: transparent; }
+  12% { opacity: 1; }
+  35% { transform: var(--tip-shift) scale(0.14); background: var(--tip-from); color: transparent; }
+  75% { transform: var(--tip-shift) scale(1.04, 1); background: var(--l3-surface-inverted); color: transparent; }
+  100% { opacity: 1; transform: var(--tip-shift); background: var(--l3-surface-inverted); color: var(--l3-content-inverted); }
+}
 
 /* The track: three zones in one rounded bar; a ringed dot marks each position on it. */
 .track { position: relative; display: flex; gap: 2px; height: var(--l3-size-12); }
@@ -1444,13 +1618,30 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
 }
 .dot[data-tone='usual'] { background: var(--l3-content-accent-success-default); }
 .dot[data-tone='now'] { background: var(--l3-content-accent-error-default); width: var(--l3-size-24); height: var(--l3-size-24); }
+/* Once it lands, the red dot keeps glowing like a live indicator: a soft red ring swells out of it and fades, on loop.
+   Its own rule so it plays after the slide (travel), not instead of it. */
+.dot[data-tone='now'] {
+  animation:
+    travel calc(var(--l3-motion-duration-long) * 3) var(--l3-motion-easing-standard) var(--travel-delay) both,
+    glow calc(var(--l3-motion-duration-long) * 4) var(--l3-motion-easing-decelerate) calc(var(--l3-motion-duration-long) * 3 + var(--travel-delay)) infinite;
+}
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--l3-content-accent-error-default) 55%, transparent); }
+  100% { box-shadow: 0 0 0 var(--l3-spacing-12) color-mix(in srgb, var(--l3-content-accent-error-default) 0%, transparent); }
+}
 
 .legend { display: flex; justify-content: space-between; font: var(--l3-text-label-12); }
 .legend [data-tone='safe'] { color: var(--l3-content-accent-success-default); }
 .legend [data-tone='danger'] { color: var(--l3-content-accent-error-default); }
+/* Everyone vs You: each end's zone over what it means. */
+.bar:not([data-version='risk']) .legend > span { display: flex; flex-direction: column; gap: var(--l3-spacing-02); }
+.bar:not([data-version='risk']) .legend > [data-tone='danger'] { align-items: flex-end; }
+.zoneName { font: var(--l3-text-heading-14); }
+.zoneNote { font: var(--l3-text-label-14); color: var(--l3-content-secondary); }
 
 @media (prefers-reduced-motion: reduce) {
-  .meter, .pin, .dot, .pointer, .zone, .segment { animation: none; }
+  .meter, .track, .dot, .dot[data-tone='now'], .tip, .pointer, .zone, .segment { animation: none; }
+  .bar[data-version='story'] :is(.legend > *, .track, .dot) { animation: none; }
 }
 ```
 
@@ -1459,6 +1650,7 @@ function Bars({ ratio, base, now }: { ratio: number; base: string; now: string }
 ```tsx
 import type { CSSProperties } from 'react'
 import { t } from '../copy'
+import type { ZoneVersion } from '../options'
 import styles from './RiskVisuals.module.css'
 
 /**
@@ -1541,30 +1733,46 @@ export function RiskMeter({ ratio }: { ratio?: number }) {
 /* ---------- Layout 5 · Risk bar ---------- */
 
 /**
- * The same scale laid flat, straight on the sheet (no card): one track in three zones (Safe zone · · Danger zone under its ends). "Usual · 1X" is a quiet
- * pin over the safe zone; "You now · 3X" is a red pin that slides from usual into the danger zone. A pin's label shifts
- * with its position so it never runs off the card.
+ * The same scale laid flat, straight on the sheet (no card): one track in three zones, labelled under its ends. A red
+ * dot slides from the usual spot into the high-risk zone and keeps glowing; floating tooltips sit above the dots in
+ * their own space and emerge from them. Two versions (the Case pill on Layout 5):
+ * - risk: "High chance of losing money" on the red dot, its arrow near its right end so it reaches left over the bar;
+ *   "Low risk zone" · "High risk zone" under the ends.
+ * - everyone: a green dot for "Everyone" (its tooltip first), then the red dot slides to "You" (its tooltip next);
+ *   "Safe zone / trading to plan" · "Danger zone / chasing losses" under the ends.
+ * - explain (5c) / story (5d): the everyone bar with just "Safe zone" · "Danger zone" under the ends; story fades in
+ *   and plays at the sheet's --bar-start.
+ * Experiment: the tooltips are drawn here, not the L3 Tooltip (which can't follow a moving target or take bigger text).
  */
-export function RiskBar({ ratio }: { ratio?: number }) {
+export function RiskBar({ ratio, version = 'risk' }: { ratio?: number; version?: ZoneVersion }) {
   const now = nowAt(ratio)
+  const everyone = version !== 'risk'
+  const notes = version === 'everyone'
   const label = ratio !== undefined ? t('nudge.meterLabelRatio', { ratio }) : t('nudge.meterLabel')
-  return <div className={styles.bar} role="img" aria-label={label}>
+  return <div className={styles.bar} data-version={version} role="img" aria-label={label}>
     <div className={styles.lane} aria-hidden>
-      <span className={styles.pin} data-tone="usual" style={{ '--risk-to': USUAL_AT } as CSSProperties}>
-        <span className={styles.pinLabel}>{t('nudge.usual')}{ratio !== undefined && ' · 1X'}</span>
-      </span>
-      <span className={styles.pin} data-tone="now" style={at(USUAL_AT, now)}>
-        <span className={styles.pinLabel}>{t('nudge.now')}{ratio !== undefined && ` · ${ratio}X`}</span>
-      </span>
+      {everyone
+        ? <>
+          <span className={styles.tip} data-tone="usual" data-align="center" style={{ '--risk-to': USUAL_AT } as CSSProperties}>{t('nudge.everyone')}</span>
+          <span className={styles.tip} data-tone="now" data-align="center" style={{ '--risk-to': now } as CSSProperties}>{t('nudge.you')}</span>
+        </>
+        : <span className={styles.tip} data-tone="now" style={{ '--risk-to': now } as CSSProperties}>{t('nudge.lossChance')}</span>}
     </div>
     <div className={styles.track} aria-hidden>
       {zones.map((z) => <span key={z.tone} className={styles.segment} data-tone={z.tone} style={{ flexGrow: z.to - z.from }} />)}
-      <span className={styles.dot} data-tone="usual" style={{ '--risk-to': USUAL_AT } as CSSProperties} />
+      {everyone && <span className={styles.dot} data-tone="usual" style={{ '--risk-to': USUAL_AT } as CSSProperties} />}
       <span className={styles.dot} data-tone="now" style={at(USUAL_AT, now)} />
     </div>
     <div className={styles.legend} aria-hidden>
-      <span data-tone="safe">{t('nudge.zoneSafeLong')}</span>
-      <span data-tone="danger">{t('nudge.zoneDangerLong')}</span>
+      {everyone
+        ? <>
+          <span data-tone="safe"><span className={styles.zoneName}>{t('nudge.safeZone')}</span>{notes && <span className={styles.zoneNote}>{t('nudge.safeZoneNote')}</span>}</span>
+          <span data-tone="danger"><span className={styles.zoneName}>{t('nudge.dangerZone')}</span>{notes && <span className={styles.zoneNote}>{t('nudge.dangerZoneNote')}</span>}</span>
+        </>
+        : <>
+          <span data-tone="safe">{t('nudge.zoneLow')}</span>
+          <span data-tone="danger">{t('nudge.zoneHigh')}</span>
+        </>}
     </div>
   </div>
 }
