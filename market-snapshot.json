@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-06T11:30:17.459Z",
+ "fetchedAt": "2026-11-06T11:43:01.698Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -611,7 +611,7 @@
    "changePct": 2.76,
    "dayHigh": 1941.6,
    "dayLow": 1877.7,
-   "high52": 1941.6,
+   "high52": 1948.9,
    "low52": 1292,
    "volume": 3875450,
    "longName": "Adani Ports and Special Economic Zone Limited",
@@ -5508,7 +5508,7 @@
    "dayHigh": 958.4,
    "dayLow": 891.45,
    "high52": 1176,
-   "low52": 770.15,
+   "low52": 771.85,
    "volume": 13369369,
    "longName": "Hindalco Industries Limited",
    "closes": [
@@ -13940,7 +13940,7 @@
    "dayHigh": 4789.5,
    "dayLow": 4699.1,
    "high52": 5250,
-   "low52": 3532.6,
+   "low52": 3543.3,
    "volume": 359417,
    "longName": "Torrent Pharmaceuticals Limited",
    "closes": [
