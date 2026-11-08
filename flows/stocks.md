@@ -361,12 +361,29 @@ lower on the page is scrolled into view first). `components/MarketSwitchGuide.ts
 
 ### Changelog
 
+- 2026-11-08 — Holdings hero (V16–V18): the whole value block (overline, amount, return) is one tap target → that
+  market's holdings on Portfolio (US: us-stocks-77; IND: us-stocks-05). ETF region flags now off by default, so a fresh
+  link opens in the same home the user set up (US Stocks active, USD funded, US holdings). The US Stocks intro (FTUX)
+  sheet on stocks-01 shows only once: closed, it stays closed after reloads (localStorage `us-intro-seen`); stocks-11
+  still shows it.
 - 2026-11-08 — Hero product row (V17, V18; `ProductRowF1`) rebuilt on L3: each card is a clickable L3 Card (border,
   soft shadow, press), the NEW tag an L3 Tag (zing) with the shimmer on top; the detail text is secondary, not tertiary.
   The cards' shadow was cut off top and bottom by the sideways scroller: the row now pads 12 above and below and takes
   it back with a negative margin (as the shared Rail), on IND and US. L3's 12 padding (the user's call, over Figma's 8); cards
-  are at least Figma's 110 wide and grow to keep a name on one line. The US tab's row is ETFs · Boosted ETFs · Equity F&O
-  only (no Commodity, Mutual Funds or Smart Invest), three equal cards across the full width (`ProductRowF1 fill`). The cards have no shadow (border only).
+  are at least Figma's 110 wide and grow to keep a name on one line. The US tab's row is Boosted ETFs · Themes · Fractional
+  only (no Commodity, Mutual Funds, Smart Invest or Equity F&O), three equal cards across the full width (`ProductRowF1 fill`). The cards have no shadow (border only).
+- 2026-11-08 — The holdings hero rebuilt as one box: one equal 16 padding all round and two containers 24 apart (the
+  hero's gap) — the value, then the actions (buttons or product cards) with no padding or margin of their own; the 8
+  between product cards is the row's gap. A row that scrolls (IND's four) runs to the hero's edges so the next card
+  shows coming in; the US row's three stay inside the padding. (Was 32 / 24 / 24 padding with a bleeding rail.)
+- 2026-11-08 — V17 / V18's US shortcuts (ETFs · Analyst picks · Watchlist · Referral, blue) follow the **Shortcuts**
+  option like the IND tab: V1 circles, V2 one card (the home's own `Shortcuts`, Discover.tsx).
+- 2026-11-08 — V18's top tab reads **IN Stocks** (was IND Stocks, as V16 / V17).
+- 2026-11-08 — US hero row: **Boosted ETFs** (3x Long/Short → the Boosted tab) · **Themes** (AI, EV & more → the AI
+  theme; there's no list of themes yet) · **Fractional** ($1 to start → NVDA's page) — what the shortcuts under the hero
+  don't already open (ETFs, Analyst picks). (Briefly ETFs · Boosted ETFs · Analyst picks.) The round US
+  shortcuts under the hero (V17 / V18) can be hidden with the new **US shortcuts** option (Home settings, on by
+  default).
 - 2026-11-08 — New homepage version **V18 · F1 top · V14 body**, now the default (was V8): V17's top — the holdings
   hero with the product cards, the round US shortcuts (ETFs · Analyst picks · Watchlist · Referral) — over V14's US
   feed (Top Movers, Top analyst picks, Brands, Discover ETFs, heatmap, themes; `UsHome shortcuts`). No activation card
@@ -20103,18 +20120,20 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 ### `src/flows/stocks/components/HoldingsHero.module.css`
 
 ```css
-/* The V16 holdings hero (Figma 6441:5): surface/primary (the header above it is too), bottom corners 16,
-   32 / 24 / 24 padding. FLAG: the glow is hand-made — Figma's "US glow (us-stock accent)": a 520 × 160 ellipse in the
+/* The V16 holdings hero (Figma 6441:5): surface/primary (the header above it is too), bottom corners 16.
+   Built as one box (8 Nov, the user's call): one equal 16 padding all round, and two containers inside it, 24 apart
+   (the hero's gap) — the value (overline, amount, return) and the actions (buttons or product cards), which have no
+   padding or margin of their own. FLAG: the glow is hand-made — Figma's "US glow (us-stock accent)": a 520 × 160 ellipse in the
    market's light accent surface (US blue-900 / IND green-900 in dark, the 50s in light) with a 40 layer blur, its top
    136 down the hero (the actions' middle). */
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: var(--l3-spacing-24);
   overflow: hidden;
-  padding: var(--l3-spacing-32) var(--l3-spacing-24) var(--l3-spacing-24);
+  padding: var(--l3-spacing-16);
   border-radius: 0 0 var(--l3-radius-16) var(--l3-radius-16);
   background: var(--l3-surface-primary);
   --glow: var(--l3-surface-accent-us-stock-light);
@@ -20138,6 +20157,20 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 
 .value {
   position: relative;
+}
+/* The whole value block opens the holdings (8 Nov): L3's press scale, no box. */
+.value[data-pressable] {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+.value[data-pressable]:active {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+.value[data-pressable]:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-08);
 }
 
 .overline {
@@ -20166,7 +20199,6 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
   background: none;
   color: var(--l3-content-primary);
   font: var(--l3-text-heading-24);
-  cursor: pointer;
 }
 
 /* The return tag fully rounded (Figma: 99) — the user's call, 8 Nov; L3 Tags are 4. */
@@ -20184,14 +20216,6 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 
 .actions {
   position: relative;
-  width: 100%;
-}
-
-/* A rail (IND's product tiles) runs to the screen's edges, past the hero's 24 sides. */
-.actions[data-bleed] {
-  width: auto;
-  align-self: stretch;
-  margin-inline: calc(-1 * var(--l3-spacing-24));
 }
 /* HeroButtons (Figma 6444:479): two equal 40 buttons, 16 apart. */
 .buttons {
@@ -20258,7 +20282,7 @@ export function Watchlists({ lists = watchlists, onOpen, onViewAll }: { lists?: 
 // actions (US: Buy NVDA · Add USD; IND: the product tiles). The hero's surface carries on from the header above it, so
 // the top of the page is one block down to the hero's rounded foot.
 // IND has no Figma: the US hero restyled for it, with the green accent for the glow (the user's call, 8 Nov).
-import type { ReactNode } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import { Button } from '@l3/components/Button'
 import { Icon } from '@l3/components/Icon'
 import { Stack } from '@l3/components/Stack'
@@ -20274,36 +20298,47 @@ type HoldingsHeroProps = {
   value: string
   /** The total return, %. */
   returnPct: number
-  /** The value or ↗ → the holdings. */
+  /** The whole value block (overline, amount, return) → that market's holdings on Portfolio. */
   onHoldings?: () => void
-  /** Under the value: the tab's actions. */
+  /** Under the value: the tab's actions (the second container, inside the hero's 16 padding). */
   children?: ReactNode
-  /** The actions run edge to edge (a rail) instead of inside the hero's 24 sides. */
-  bleed?: boolean
 }
 
-export function HoldingsHero({ market, value, returnPct, onHoldings, children, bleed = false }: HoldingsHeroProps) {
+export function HoldingsHero({ market, value, returnPct, onHoldings, children }: HoldingsHeroProps) {
   const up = returnPct >= 0
   const pct = `${Math.abs(returnPct).toFixed(2)}%`
   const name = t(market === 'us' ? 'f1.hero.label' : 'f1.hero.labelIn')
+  // The whole value block is one tap target (8 Nov, the user's call): a div with role="button", since Stack can't
+  // render a <button> and a button can't hold the overline's and tag's blocks.
+  const open = onHoldings
+    ? {
+        role: 'button',
+        tabIndex: 0,
+        'aria-label': t('f1.hero.open', { value, pct: `${up ? '+' : '−'}${pct}` }),
+        onClick: onHoldings,
+        onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onHoldings() }
+        },
+      }
+    : {}
   return (
     <section className={styles.hero} data-market={market} aria-label={name}>
       <span className={styles.glow} aria-hidden="true" />
-      <Stack gap="12" align="center" className={styles.value}>
+      <Stack gap="12" align="center" className={styles.value} data-pressable={onHoldings ? true : undefined} {...open}>
         <span className={styles.overline}>
           {name}
           <span className={styles.dot} aria-hidden="true" />
           {t('f1.hero.holdings')}
         </span>
         <Stack gap="08" align="center">
-          <button type="button" className={styles.amount} onClick={onHoldings} aria-label={t('f1.hero.open', { value, pct: `${up ? '+' : '−'}${pct}` })}>
+          <span className={styles.amount}>
             {value}
             <Icon icon={msArrowOutward} size={16} />
-          </button>
+          </span>
           <Tag variant="secondary" color={up ? 'profit' : 'loss'} size="md" className={styles.pill} iconLeft={<Icon icon={up ? msArrowDropUp : msArrowDropDown} size={16} />}>{pct}</Tag>
         </Stack>
       </Stack>
-      {children && <div className={styles.actions} data-bleed={bleed || undefined}>{children}</div>}
+      {children && <div className={styles.actions}>{children}</div>}
     </section>
   )
 }
@@ -22611,23 +22646,28 @@ export function ProductCards({ onProduct, items = products, compact = false }: {
 ### `src/flows/stocks/components/ProductRowF1.module.css`
 
 ```css
-/* V17's hero product row (Figma 6548:45253). The row: 8 between cards, 16 at the screen's edges; it scrolls sideways.
-   A sideways scroller clips top and bottom too, so the row pads 12 above and below — room for the cards' L3 shadow and
-   the NEW tag over a card's top edge — and takes it back with a negative margin (same layout, nothing cut; as the
-   shared Rail). */
+/* V17's hero product row (Figma 6548:45253): the hero's second container. No padding or margin of its own — the hero's
+   16 padding places it — and the 8 between cards is the row's gap. A longer row (IND's four) scrolls sideways
+   from the hero's edge to edge (below). */
 .row {
   position: relative;
   display: flex;
   gap: var(--l3-spacing-08);
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  padding: var(--l3-spacing-12) var(--l3-spacing-16);
-  margin-block: calc(-1 * var(--l3-spacing-12));
-  scroll-padding-inline: var(--l3-spacing-16);
   scrollbar-width: none;
 }
 .row::-webkit-scrollbar {
   display: none;
+}
+
+/* A row that scrolls (IND's four) runs to the hero's edges — the screen's — so the next card shows coming in, not cut at
+   the hero's 16 padding (8 Nov, the user's catch); its first and last cards still line up with the hero's 16. A full-width
+   row (US) doesn't scroll and stays inside the padding. */
+.row:not([data-fill]) {
+  margin-inline: calc(-1 * var(--l3-spacing-16));
+  padding-inline: var(--l3-spacing-16);
+  scroll-padding-inline: var(--l3-spacing-16);
 }
 
 /* A card: the L3 clickable Card (surface/primary, border/light, elevation-soft, its 12 padding — the user's call over
@@ -23597,7 +23637,7 @@ export type HomeVersion = {
   /** How it looks: the notched folder tabs · an L3 pill group · L3 underline tabs. */
   look: 'folder' | 'pill' | 'underline'
   /** The tab labels: "IN Stocks / US Stocks" wherever they fit, "IND / US" only where space is short (never "INDIA / USA").
-   *  'ind': "IND Stocks / US Stocks", V14 only (Figma 6441:3; the user's call, 8 Nov). */
+   *  'ind': "IND Stocks / US Stocks", V16 / V17 (Figma 6441:3; the user's call, 8 Nov). V18 is back to "IN Stocks". */
   labels: 'stocks' | 'short' | 'ind'
   /** The US tab's own design: 'f1' = Figma 6441:3's hero and feed (components/us/UsHero, UsHomeF1). Default: UsHome. */
   usHome?: 'f1'
@@ -23652,7 +23692,7 @@ export const homeVersions: HomeVersion[] = [
   { id: 'v17', name: 'F1 · with product cards', figma: '6441:3', place: 'top', scope: 'page', look: 'underline', labels: 'ind', flags: true, usNew: false, tiles: 'today', ticker: true, usHome: 'f1', cards: true },
   // V18 (8 Nov, the user's ask, the default): V17's top (hero with the product cards, the round US shortcuts) and V14's
   // body (the US feed: Top Movers, analyst picks, Brands, ETFs, heatmap, themes; IND's feed is the same on both).
-  { id: 'v18', name: 'F1 top · V14 body', figma: '', place: 'top', scope: 'page', look: 'underline', labels: 'ind', flags: true, usNew: false, tiles: 'today', ticker: true, usHome: 'f1', cards: true, usBody: 'classic' },
+  { id: 'v18', name: 'F1 top · V14 body', figma: '', place: 'top', scope: 'page', look: 'underline', labels: 'stocks', flags: true, usNew: false, tiles: 'today', ticker: true, usHome: 'f1', cards: true, usBody: 'classic' },
 ]
 
 // Archived 2026-11-02 (V2, V3, V4, V5, V6, V9), back in the picker the same day. V9, V10 and V11 archived again later that day. V2–V7 archived too (playground), leaving V8, V12 and V13. V14 added 5 Nov. V15 (One home) added and archived 5 Nov.
@@ -24085,13 +24125,11 @@ type UsHeroProps = {
   empty?: boolean
   /** In place of the buttons: the state's card (money on the way: no Buy / Add USD, 8 Nov), or V17's product cards. */
   children?: ReactNode
-  /** The children run edge to edge (V17's product cards rail). */
-  bleed?: boolean
 }
 
-export function UsHero({ onHoldings, onBuy, onAddUsd, empty = false, children, bleed }: UsHeroProps) {
+export function UsHero({ onHoldings, onBuy, onAddUsd, empty = false, children }: UsHeroProps) {
   return (
-    <HoldingsHero market="us" value={formatUsd(empty ? 0 : usHoldings.value)} returnPct={empty ? 0 : usHoldings.returnPct} onHoldings={onHoldings} bleed={bleed}>
+    <HoldingsHero market="us" value={formatUsd(empty ? 0 : usHoldings.value)} returnPct={empty ? 0 : usHoldings.returnPct} onHoldings={onHoldings}>
       {children ?? (
         <HeroButtons
           buy={{ label: t('f1.hero.buy', { sym: HERO_STOCK }), mark: nvdaMark, onClick: () => onBuy?.(HERO_STOCK) }}
@@ -25625,34 +25663,11 @@ function PickCard({ pick, onOpen }: { pick: AnalystPick; onOpen: (sym: string) =
   padding-block: var(--l3-spacing-10);
 }
 
-/* V17's round shortcuts, as IND's (components/Home.module.css .shortcut / .shortcutCircle): 8 above, the icon in a 40
-   circle with a 1px edge, 8 to a Label 12. */
-.roundShortcut[data-variant='flat'][data-padding='none'] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--l3-spacing-08);
-  overflow: visible;
-  padding-top: var(--l3-spacing-08);
-  border-radius: var(--l3-radius-12);
-  text-align: center;
-}
-.roundCircle {
-  display: grid;
-  place-items: center;
-  width: var(--l3-size-40);
-  height: var(--l3-size-40);
-  border-radius: var(--l3-radius-full);
-  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px edge */
-}
-.roundLabel {
-  font: var(--l3-text-label-12);
-}
-
-/* V17's round shortcuts: V14's two-tone shortcut art (green + its light surface) in the US Stocks colour — L3's discover
-   blue, the US accent elsewhere on the US tab (8 Nov). Its fills read these tokens. */
+/* V17 / V18's US shortcuts (the home's Shortcuts, V1 or V2): V14's two-tone shortcut art (green + its light surface)
+   in the US Stocks colour — L3's discover blue, the US accent elsewhere on the US tab (8 Nov). Its fills read these
+   tokens; the wrapper adds no box. */
 .usArt {
-  display: grid;
+  display: contents;
   --l3-content-accent-success-default: var(--l3-content-accent-discover-default);
   --l3-surface-accent-success-light: var(--l3-surface-accent-discover-light);
 }
@@ -25686,6 +25701,7 @@ import { handToMarket } from '../../../../shared/data/marketHandoff'
 import { useLiveQuote } from '../../../../shared/data/live'
 import { usLogo, usQuote, viewUsStock } from '../../../../shared/data/usStocks'
 import { Usd } from '../../../../shared/money'
+import { useFlowOption } from '../../../../shared/prototype'
 import { StockListCard } from '../../../../shared/ui/StockListCard'
 import { t } from '../../copy'
 import zingArt from '../../assets/shortcuts/zing.svg'
@@ -25714,7 +25730,7 @@ import {
   type Mover,
   type ThemeId,
 } from './data'
-import { ShortcutArt } from '../ShortcutArt'
+import { Shortcuts as HomeShortcuts } from '../Discover'
 import { DiscoverEtfs, FlatList, MonthLine, UsHeatmap } from './UsHome'
 import { LogoStack, ThemeRail } from './ThemeCard'
 import styles from './UsHomeF1.module.css'
@@ -25770,6 +25786,8 @@ export function UsRoundShortcuts({ onEtfs, onPicks }: { onEtfs?: () => void; onP
  * Watchlist · Referral in circles; Watchlist and Referral do nothing yet either.
  */
 function Shortcuts({ onEtfs, onPicks, round = false }: { onEtfs?: () => void; onPicks?: () => void; round?: boolean }) {
+  // V17 / V18: shown unless the "US shortcuts" option is off (on by default, 8 Nov).
+  const roundOn = useFlowOption('stocks', 'usShortcuts', 'on') === 'on'
   const art = (src: string) => <img src={src} alt="" width={24} height={24} className={styles.shortcutArt} />
   const items: StripItem[] = [
     { id: 'zing', label: t('f1.shortcuts.zing'), icon: art(zingArt) },
@@ -25778,36 +25796,23 @@ function Shortcuts({ onEtfs, onPicks, round = false }: { onEtfs?: () => void; on
     { id: 'more', label: t('f1.shortcuts.more', { count: 3 }), icon: art(moreArt) },
   ]
   if (!round) return <ShortcutStrip items={items} />
-  // V17 (8 Nov, the user's call): ETFs · Analyst picks · Watchlist · Referral — Watchlist and Referral in place of Zing
-  // and +3 more. The icons are V14's US shortcuts' (ETF, Analysis, Watchlist, Referral: the two-tone set) in the US
-  // Stocks colour (8 Nov, the user's ask).
-  const usArt = (a: 'etf' | 'analysis' | 'watchlist' | 'referral') => <span className={styles.usArt}><ShortcutArt art={a} /></span>
+  if (!roundOn) return null
+  // V17 / V18 (8 Nov, the user's call): ETFs · Analyst picks · Watchlist · Referral — Watchlist and Referral in place of
+  // Zing and +3 more — as the home's own shortcuts (Discover Shortcuts), so the Shortcuts option (V1 circles · V2 one
+  // card) switches them as on the IND tab. The icons are V14's two-tone set in the US Stocks colour (.usArt).
+  // Watchlist and Referral do nothing yet.
   return (
-    <RoundShortcuts
-      items={[
-        { ...items[1], icon: usArt('etf') },
-        { ...items[2], icon: usArt('analysis') },
-        { id: 'watchlist', label: t('f1.shortcuts.watchlist'), icon: usArt('watchlist') },
-        { id: 'referral', label: t('f1.shortcuts.referral'), icon: usArt('referral') },
-      ]}
-    />
-  )
-}
-
-/** V17: the same four as IND's shortcuts look — each icon in a 40 outlined circle over a Label 12, no card around them
- *  (Home.module.css .shortcutCircle). */
-function RoundShortcuts({ items }: { items: StripItem[] }) {
-  return (
-    <Inset paddingInline="16" paddingBlock="00">
-      <Grid columns={4} gap="00">
-        {items.map((s) => (
-          <Card key={s.id} variant="flat" padding="none" className={styles.roundShortcut} onClick={s.onOpen ?? (() => {})}>
-            <span className={styles.roundCircle} aria-hidden="true">{s.icon}</span>
-            <span className={styles.roundLabel}>{s.label}</span>
-          </Card>
-        ))}
-      </Grid>
-    </Inset>
+    <div className={styles.usArt}>
+      <HomeShortcuts
+        items={[
+          { id: 'etfs', label: t('f1.shortcuts.etfs'), art: 'etf' },
+          { id: 'picks', label: t('f1.shortcuts.picks'), art: 'analysis' },
+          { id: 'watchlist', label: t('f1.shortcuts.watchlist'), art: 'watchlist' },
+          { id: 'referral', label: t('f1.shortcuts.referral'), art: 'referral' },
+        ]}
+        onOpen={(id) => { if (id === 'etfs') onEtfs?.(); else if (id === 'picks') onPicks?.() }}
+      />
+    </div>
   )
 }
 
@@ -27876,7 +27881,7 @@ import { companies, companiesByChange, type Company } from '../../shared/data/co
 /** Stocks home — what the API sends for each section, in page order. Sample values; market data from the live app. */
 
 /** Product shortcuts under the holdings: one line on what's special about each. */
-export type Product = { id: 'mutual-funds' | 'fno' | 'commodities' | 'us-stocks' | 'smart-invest' | 'etfs' | 'boosted-etfs'; name: string; highlight: string; detail: string; isNew?: boolean }
+export type Product = { id: 'mutual-funds' | 'fno' | 'commodities' | 'us-stocks' | 'smart-invest' | 'etfs' | 'boosted-etfs' | 'themes' | 'fractional'; name: string; highlight: string; detail: string; isNew?: boolean }
 export const products: Product[] = [
   { id: 'mutual-funds', name: 'Mutual funds', highlight: '240+', detail: 'funds' },
   { id: 'fno', name: 'Equity F&O', highlight: '0', detail: 'slippage' },
@@ -27910,12 +27915,13 @@ export const productsF1: Product[] = [
   { id: 'mutual-funds', name: 'Mutual Funds', highlight: '240+', detail: 'funds' },
   { id: 'smart-invest', name: 'Smart Invest', highlight: 'Auto', detail: 'Buy/Sell' },
 ]
-/** The US tab's row: its own two, then Equity F&O — no Commodity, Mutual Funds or Smart Invest (8 Nov, the user's ask;
- *  not in Figma, the wording is ours). Three cards, so they share the row's width instead of scrolling. */
+/** The US tab's row: Boosted ETFs, Themes, Fractional (8 Nov, the user's pick: not what the shortcuts under the hero
+ *  already open — ETFs, Analyst picks). Not in Figma; the wording is ours. Three cards, so they share the row's width
+ *  instead of scrolling. */
 export const productsF1Us: Product[] = [
-  { id: 'etfs', name: 'ETFs', highlight: '25+', detail: 'funds' },
   { id: 'boosted-etfs', name: 'Boosted ETFs', highlight: '3x', detail: 'Long/Short' },
-  productsF1[0],
+  { id: 'themes', name: 'Themes', highlight: 'AI, EV', detail: '& more' },
+  { id: 'fractional', name: 'Fractional', highlight: '$1', detail: 'to start' },
 ]
 /** "Do more with Lemonn": feature shortcuts, each with an optional count of new things (IPO: 5 new IPOs). */
 /** `art` names the shortcut's custom two-tone icon (Jojo's, assets/shortcuts/<art>.svg — not an L3 system icon). */
@@ -28130,7 +28136,10 @@ export const stocks: Flow = {
     { id: 'picksView', group: 'Home', label: 'Analyst picks', values: [{ value: 'list', label: 'List' }, { value: 'cards', label: 'Cards' }], default: 'list' },
     { id: 'shortcuts', group: 'Home', label: 'Shortcuts', values: [{ value: 'v1', label: 'V1' }, { value: 'v2', label: 'V2' }], default: 'v1' },
     // US tab, Discover ETFs: the region pills with their round flags (default) or text only — testing whether the flags are too much (3 Nov).
-    { id: 'etfFlags', group: 'Home', label: 'ETF region flags', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'on' },
+    // V17 / V18's round US shortcuts under the hero: shown by default (8 Nov, the user's call); off to see the hero's
+    // cards alone.
+    { id: 'usShortcuts', group: 'Home', label: 'US shortcuts', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'on' },
+    { id: 'etfFlags', group: 'Home', label: 'ETF region flags', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
     { id: 'switchGuide', group: 'Home', label: 'Market switch guide', picker: 'toggle', values: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], default: 'off' },
   ],
   screens: [
@@ -28808,6 +28817,7 @@ import { Stack } from '@l3/components/Stack'
 import { msCheckCircle, msCurrencyRupee } from '@l3/icons/material'
 import { useAutoAdvance, useFlowOption, usePreview } from '../../../shared/prototype'
 import { user } from '../../../shared/data/user'
+import { viewUsStock } from '../../../shared/data/usStocks'
 import { MainNav, rememberStocksHome, takeStocksTab, type Section as NavSection } from '../../../shared/ui/MainNav'
 import { Screen } from '../../../shared/ui/Screen'
 import { Disclosure, IdeaBaskets } from '../components/Ideas'
@@ -28893,16 +28903,21 @@ type Props = {
   autoNext?: string
   /** A sheet over the page: the US Stocks intro, "activation submitted". */
   sheet?: ReactNode
-  /** The app's first Home (stocks-01): the US Stocks intro sheet, with its waving flag, over it once per app load. */
+  /** The app's first Home (stocks-01): the US Stocks intro sheet, with its waving flag, over it once (until closed). */
   introOnOpen?: boolean
 }
 
-/** Whether the US Stocks intro has shown since the app (page) loaded — so it shows once per open, not on every visit. */
-let introShownThisLoad = false
+/** The US Stocks intro shows once, ever (8 Nov, the user's call): closed once, it stays closed on later visits and
+ *  reloads too (kept in this browser). It can still be seen any time as its own screen, stocks-11. */
+const INTRO_SEEN_KEY = 'us-intro-seen'
+let introShownThisLoad = (() => {
+  try { return localStorage.getItem(INTRO_SEEN_KEY) === '1' } catch { return false }
+})()
 
-/** The intro was seen elsewhere (stocks-11, after Lemonn KYC): the Home doesn't open it again this load. */
+/** The intro was seen (closed here, or on stocks-11, after Lemonn KYC): the Home doesn't open it again. */
 export const markUsIntroSeen = () => {
   introShownThisLoad = true
+  try { localStorage.setItem(INTRO_SEEN_KEY, '1') } catch { /* storage off: once per load */ }
 }
 
 /**
@@ -28920,12 +28935,12 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
   // Money on the way: its card opens the deposit explainer over Home (the timed move to "money ready" waits while it's open).
   const [explaining, setExplaining] = useState(false)
   useAutoAdvance(explaining ? undefined : autoNext, 2000)
-  // The US Stocks intro on opening the app (8 Nov, the user's ask): once per load, over the Home in whatever status.
+  // The US Stocks intro on opening the app (8 Nov, the user's ask): only once, over the Home in whatever status.
   // Only on the F1 versions (V16, V17: the jojo branch's work); the other versions keep their Home as it was.
   // Marked seen when it's closed (not when it mounts: the preview can mount a Home it doesn't show, which used it up).
   const [intro, setIntroOpen] = useState(() => introOnOpen && !introShownThisLoad)
   const setIntro = (open: boolean) => {
-    if (!open) introShownThisLoad = true
+    if (!open) markUsIntroSeen()
     setIntroOpen(open)
   }
   const page = useRef<HTMLDivElement>(null)
@@ -29193,22 +29208,29 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
     else if (id === 'fno') onTab?.('fno')
     else if (id === 'commodities') onCommodities?.()
     else if (id === 'etfs') onUsEtfs?.()
+    // Themes: the prototype has no list of themes, so the first one (AI). Fractional: the hero's stock (NVDA), where any
+    // amount from $1 buys a slice.
+    else if (id === 'themes') onUsTheme?.('ai')
+    else if (id === 'fractional') {
+      viewUsStock('NVDA')
+      onUsStock?.('NVDA')
+    }
     else if (id === 'boosted-etfs') {
       // The ETF list opens on its Boosted tab (its sessionStorage hand-off, EtfListScreen).
       try { sessionStorage.setItem('etf:tab', 'leveraged') } catch { /* storage off: the Regular tab */ }
       onUsEtfs?.()
     }
   }
-  // The US tab's row leads with ETFs and Boosted ETFs.
+  // The US tab's row: Boosted ETFs, Themes, Fractional.
   const cardsRail = (m: Market) => <ProductRowF1 items={m === 'us' ? productsF1Us : productsF1} fill={m === 'us'} onProduct={onRowProduct} />
   const topCards = (
     <div className={styles.cardTrack} data-market-card>
       {markets.map((m) => (
         <div key={m} className={styles.cardSlide} data-side={m === tab ? undefined : m === 'us' ? 'after' : 'before'} aria-hidden={m !== tab || undefined} inert={m !== tab || undefined}>
-          {m === 'us' && f1Hero ? (heroCards ? <UsHero bleed onHoldings={onUsHoldings}>{cardsRail(m)}</UsHero> : <UsHero onHoldings={onUsHoldings} onBuy={onUsStock} onAddUsd={onWallet} />)
+          {m === 'us' && f1Hero ? (heroCards ? <UsHero onHoldings={onUsHoldings}>{cardsRail(m)}</UsHero> : <UsHero onHoldings={onUsHoldings} onBuy={onUsStock} onAddUsd={onWallet} />)
             : m === 'in' && f1 ? (
               // IND hero (no Figma): the US hero's look with the green glow. The products are in the shortcut strip under it.
-              <HoldingsHero market="in" value={inr(holdings.current)} returnPct={holdings.returnPct} bleed={heroCards}>
+              <HoldingsHero market="in" value={inr(holdings.current)} returnPct={holdings.returnPct} onHoldings={onInHoldings}>
                 {/* As the US hero's pair. Buy RELIANCE does nothing yet: the prototype has no Indian stock page. V17: the
                     product cards instead. */}
                 {heroCards ? cardsRail(m) : <HeroButtons
@@ -29219,10 +29241,10 @@ export function Home({ scrollTo = 'top', market = 'in', movers, onTab, onSearch,
             )
             // Money ready on V16: the holdings hero as when holding (the NVDA holding), no card; the "Your money is
             // ready" aerobar says it (8 Nov).
-            : f1 && m === 'us' && usState === 'ready' ? (heroCards ? <UsHero bleed onHoldings={onUsHoldings}>{cardsRail(m)}</UsHero> : <UsHero onHoldings={onUsHoldings} onBuy={onUsStock} onAddUsd={onWallet} />)
+            : f1 && m === 'us' && usState === 'ready' ? (heroCards ? <UsHero onHoldings={onUsHoldings}>{cardsRail(m)}</UsHero> : <UsHero onHoldings={onUsHoldings} onBuy={onUsStock} onAddUsd={onWallet} />)
             // Money on the way on V16: the activated hero at $0.00 with the "Money on the way" card in place of its buttons (8 Nov).
             : f1 && m === 'us' && usState === 'onTheWay' ? (heroCards
-              ? <UsHero empty bleed onHoldings={onUsHoldings}><Stack gap="16">{inCard(<TransferStatusCard onOpen={onActivateUs} />)}{cardsRail(m)}</Stack></UsHero>
+              ? <UsHero empty onHoldings={onUsHoldings}><Stack gap="16"><TransferStatusCard onOpen={onActivateUs} />{cardsRail(m)}</Stack></UsHero>
               : <UsHero empty onHoldings={onUsHoldings}><TransferStatusCard onOpen={onActivateUs} /></UsHero>)
             : f1 ? <HeroShell market={m} tone={shellTone} subtle={preActivation || justActivated}>{heroCards ? <Stack gap="16">{inCard(topCard(m))}{cardsRail(m)}</Stack> : inCard(topCard(m))}</HeroShell>
             : inCard(topCard(m))}
