@@ -199,6 +199,10 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-08 — Stock page and ETF page (classic layout): the body rebuilt as one column with two containers, 24 apart —
+  the summary + chart + periods in the page's 16 gutter (L3 Inset), then the section tabs edge to edge and the open
+  tab's content in the gutter. No section pads or margins itself any more (the old assetHeader / tabsAndContent /
+  tabsBlock padding, the chart's margins and the tabs' negative-margin bleed are gone). Same spacing as before.
 - 2026-11-08 — The F1 stock and ETF pages (from the jojo branch) are a flow option here, **Stock / ETF page**: Classic
   (default, the earlier page, its rating ring as it was) or F1 (one page, candles, Figma's rating ring). The Boosted
   line stays Grey by default (jojo made Gold its default).
@@ -23185,13 +23189,6 @@ export const screens: UsScreenMap = {
   position: absolute;
 }
 
-.assetHeader {
-  gap: var(--l3-spacing-24);
-  padding: var(--l3-spacing-08) var(--l3-spacing-16) 0;
-  flex-direction: column;
-  display: flex;
-}
-
 /* ≈ ₹ under the $ price: 10, secondary. */
 .priceInr {
   font: var(--l3-text-description-12);
@@ -23284,8 +23281,6 @@ export const screens: UsScreenMap = {
 /* FLAG: hand-drawn price chart (svg line + positioned dot/halo) — L3 has a Chart component */
 .chart {
   height: 184px; /* FLAG: raw px */
-  margin: var(--l3-spacing-24) 0 var(--l3-spacing-16);
-  padding: 0 var(--l3-spacing-16);
   display: flex;
   position: relative;
 }
@@ -23350,25 +23345,6 @@ export const screens: UsScreenMap = {
 
 .yAxis span:first-child {
   color: var(--l3-content-primary);
-}
-
-.tabsAndContent {
-  gap: var(--l3-spacing-24);
-  padding: 0 var(--l3-spacing-16) var(--l3-spacing-14);
-  flex-direction: column;
-  display: flex;
-}
-
-.tabsBlock {
-  gap: var(--l3-spacing-24);
-  flex-direction: column;
-  display: flex;
-}
-
-.tabsBlock > .flatTabs.flatTabs {
-  width: calc(100% + 2 * var(--l3-spacing-16));
-  max-width: none;
-  margin-inline: calc(-1 * var(--l3-spacing-16));
 }
 
 /* FLAG: hand-made range meter */
@@ -24437,6 +24413,8 @@ import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { PriceChange } from '@l3/components/PriceChange'
+import { Stack } from '@l3/components/Stack'
+import { Inset } from '@l3/components/Inset'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
@@ -24611,122 +24589,132 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
 
   return (
     <Phone label={stock.name} header={header} footer={footer} gesture="none" bodyRef={setBody} className={backdrop ? styles.still : undefined}>
-      <div className={styles.assetHeader}>
-        <div className={styles.titleRow}>
-          <div className={styles.namePrice}>
-            <h1 className={styles.name}>{stock.name}</h1>
-            <div className={styles.priceRow}>
-              <span className={styles.price}><Usd value={stock.price} layout="inline" /></span>
-              <span className={styles.change}>
-                <PriceChange value={periodPct} size="lg" />
-                <span
-                  className={styles.changeAbs}
-                  data-down={periodChangeAbs < 0 || undefined}
-                  aria-label={`${periodChangeAbs < 0 ? 'down' : 'up'} ${usd(Math.abs(periodChangeAbs))} over ${period}`}
-                >
-                  (<Usd value={periodChangeAbs} sign layout="inline" />) {period}
-                </span>
-              </span>
-            </div>
-            {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
-            {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(stock.price * usdInr)}</span>}
-          </div>
-          {isNvda ? (
-            <img src={asset('assets/activation/nvda-logo.svg')} alt="" width={44} height={44} />
-          ) : (
-            <span
-              className={styles.logoDisc}
-              style={stock.plate ? ({ '--plate': stock.plate } as CSSProperties) : undefined}
-              aria-hidden="true"
-            >
-              {stock.logo ? <img src={/^(\/|https?:)/.test(stock.logo) ? stock.logo : asset(stock.logo)} alt="" /> : stock.sym[0]}
-            </span>
-          )}
-        </div>
-        <div className={styles.tagsRow}>
-          <div className={styles.tags}>
-            <Tag variant="tertiary" color="neutral" size="md">Technology</Tag>
-            <Tag variant="tertiary" color="neutral" size="md">Large Cap</Tag>
-          </div>
-          <div className={styles.chartActions}>
-            <button type="button" className={styles.tradingView} aria-label="Open TradingView chart">
-              <ImgIcon src="assets/activation/tradingview.svg" w={16} h={12} />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.chart} role="img" aria-label={`${shortName} price over ${period}, ${usd(chartLow)} to ${usd(chartHigh)}`}>
-        <div className={styles.plot} data-down={periodPct < 0 || undefined}>
-          <span className={styles.line} style={{ '--y': `${yOf(stock.price)}%` } as CSSProperties}>
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <polyline points={linePoints} fill="none" stroke="currentColor" strokeWidth={1.5} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
-            </svg>
-            <span className={styles.halo} />
-            <span className={styles.dot} />
-          </span>
-        </div>
-        <div className={styles.yAxis} aria-hidden="true">
-          {yAxis.map((p) => (
-            <span key={p}>{p}</span>
-          ))}
-        </div>
-      </div>
-
-      <div className={styles.tabsAndContent}>
-        <Tabs
-                    appearance="pill-group"
-          size="sm"
-          width="fill"
-          aria-label="Chart period"
-          value={period}
-          onChange={setPeriod}
-          items={PERIODS.map((p) => ({ value: p, label: p }))}
-        />
-        <div className={styles.tabsBlock}>
-          <Tabs
-            appearance="underline"
-            width="fill"
-            aria-label="Stock sections"
-            className={styles.flatTabs}
-            value={tab}
-            onChange={setTab}
-            items={[
-              { value: 'overview', label: 'Overview' },
-              { value: 'news', label: 'News & Events' },
-            ]}
-          />
-          {tab === 'news' ? (
-            <div className={styles.feed}>
-              <Tabs
-                appearance="pill"
-                size="sm"
-                aria-label="Show"
-                value={feed}
-                onChange={setFeed}
-                items={[
-                  { value: 'events', label: 'Events' },
-                  { value: 'news', label: 'News' },
-                ]}
-              />
-              {feed === 'events' ? <Events /> : <News items={news} stock={shortName} />}
-            </div>
-          ) : (
-            <div className={styles.overview}>
-              {state === 'holding' && <HoldingsSection stock={stock} dayChange={dayChangeAbs} />}
-              <DailyPerformance price={stock.price} low={low} high={high} stats={stockDayStats(stock)} />
-              <AnalystRatings />
-              <Fundamentals />
-              <AboutCompany stock={stock} />
-              <Peers stock={stock} />
-              {/* Related ETFs (leveraged only) are off for now (2 Nov). */}
-              {false && <RelatedEtfs sym={stock.sym} />}
-              <KeyHolders />
-              <Financials />
-            </div>
-          )}
-        </div>
-      </div>
+      {/* The body (8 Nov, the user's call): one column, 24 between its two containers. 1 · the summary (name, price,
+          tags) and the chart with its periods, in the page's 16 gutter. 2 · the sections: their underline tabs edge to
+          edge, then the open tab's content in the gutter. No container pads or margins itself. */}
+      <Inset paddingInline="00" paddingBlock="08">
+        <Stack gap="24">
+          <Inset paddingInline="16" paddingBlock="00">
+            <Stack gap="24">
+              <Stack gap="24">
+                <div className={styles.titleRow}>
+                  <div className={styles.namePrice}>
+                    <h1 className={styles.name}>{stock.name}</h1>
+                    <div className={styles.priceRow}>
+                      <span className={styles.price}><Usd value={stock.price} layout="inline" /></span>
+                      <span className={styles.change}>
+                        <PriceChange value={periodPct} size="lg" />
+                        <span
+                          className={styles.changeAbs}
+                          data-down={periodChangeAbs < 0 || undefined}
+                          aria-label={`${periodChangeAbs < 0 ? 'down' : 'up'} ${usd(Math.abs(periodChangeAbs))} over ${period}`}
+                        >
+                          (<Usd value={periodChangeAbs} sign layout="inline" />) {period}
+                        </span>
+                      </span>
+                    </div>
+                    {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
+                    {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(stock.price * usdInr)}</span>}
+                  </div>
+                  {isNvda ? (
+                    <img src={asset('assets/activation/nvda-logo.svg')} alt="" width={44} height={44} />
+                  ) : (
+                    <span
+                      className={styles.logoDisc}
+                      style={stock.plate ? ({ '--plate': stock.plate } as CSSProperties) : undefined}
+                      aria-hidden="true"
+                    >
+                      {stock.logo ? <img src={/^(\/|https?:)/.test(stock.logo) ? stock.logo : asset(stock.logo)} alt="" /> : stock.sym[0]}
+                    </span>
+                  )}
+                </div>
+                <div className={styles.tagsRow}>
+                  <div className={styles.tags}>
+                    <Tag variant="tertiary" color="neutral" size="md">Technology</Tag>
+                    <Tag variant="tertiary" color="neutral" size="md">Large Cap</Tag>
+                  </div>
+                  <div className={styles.chartActions}>
+                    <button type="button" className={styles.tradingView} aria-label="Open TradingView chart">
+                      <ImgIcon src="assets/activation/tradingview.svg" w={16} h={12} />
+                    </button>
+                  </div>
+                </div>
+              </Stack>
+              <Stack gap="16">
+                <div className={styles.chart} role="img" aria-label={`${shortName} price over ${period}, ${usd(chartLow)} to ${usd(chartHigh)}`}>
+                  <div className={styles.plot} data-down={periodPct < 0 || undefined}>
+                    <span className={styles.line} style={{ '--y': `${yOf(stock.price)}%` } as CSSProperties}>
+                      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <polyline points={linePoints} fill="none" stroke="currentColor" strokeWidth={1.5} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+                      </svg>
+                      <span className={styles.halo} />
+                      <span className={styles.dot} />
+                    </span>
+                  </div>
+                  <div className={styles.yAxis} aria-hidden="true">
+                    {yAxis.map((p) => (
+                      <span key={p}>{p}</span>
+                    ))}
+                  </div>
+                </div>
+                <Tabs
+                            appearance="pill-group"
+                  size="sm"
+                  width="fill"
+                  aria-label="Chart period"
+                  value={period}
+                  onChange={setPeriod}
+                  items={PERIODS.map((p) => ({ value: p, label: p }))}
+                />
+              </Stack>
+            </Stack>
+          </Inset>
+          <Stack gap="24">
+            <Tabs
+              appearance="underline"
+              width="fill"
+              aria-label="Stock sections"
+              value={tab}
+              onChange={setTab}
+              items={[
+                { value: 'overview', label: 'Overview' },
+                { value: 'news', label: 'News & Events' },
+              ]}
+            />
+            <Inset paddingInline="16" paddingBlock="00">
+              {tab === 'news' ? (
+                <div className={styles.feed}>
+                  <Tabs
+                    appearance="pill"
+                    size="sm"
+                    aria-label="Show"
+                    value={feed}
+                    onChange={setFeed}
+                    items={[
+                      { value: 'events', label: 'Events' },
+                      { value: 'news', label: 'News' },
+                    ]}
+                  />
+                  {feed === 'events' ? <Events /> : <News items={news} stock={shortName} />}
+                </div>
+              ) : (
+                <div className={styles.overview}>
+                  {state === 'holding' && <HoldingsSection stock={stock} dayChange={dayChangeAbs} />}
+                  <DailyPerformance price={stock.price} low={low} high={high} stats={stockDayStats(stock)} />
+                  <AnalystRatings />
+                  <Fundamentals />
+                  <AboutCompany stock={stock} />
+                  <Peers stock={stock} />
+                  {/* Related ETFs (leveraged only) are off for now (2 Nov). */}
+                  {false && <RelatedEtfs sym={stock.sym} />}
+                  <KeyHolders />
+                  <Financials />
+                </div>
+              )}
+            </Inset>
+          </Stack>
+        </Stack>
+      </Inset>
     </Phone>
   )
 }
@@ -32899,13 +32887,6 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   position: absolute;
 }
 
-.assetHeader {
-  gap: var(--l3-spacing-24);
-  padding: var(--l3-spacing-08) var(--l3-spacing-16) 0;
-  flex-direction: column;
-  display: flex;
-}
-
 /* ≈ ₹ under the $ price (playground): secondary. */
 .priceInr {
   font: var(--l3-text-description-12);
@@ -33028,8 +33009,6 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 /* FLAG: hand-drawn price chart (svg line + positioned dot/halo) — L3 has a Chart component */
 .chart {
   height: 184px; /* FLAG: raw px */
-  margin: var(--l3-spacing-24) 0 var(--l3-spacing-16);
-  padding: 0 var(--l3-spacing-16);
   display: flex;
   position: relative;
 }
@@ -33083,25 +33062,6 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
 
 .yAxis span:first-child {
   color: var(--l3-content-primary);
-}
-
-.tabsAndContent {
-  gap: var(--l3-spacing-24);
-  padding: 0 var(--l3-spacing-16) var(--l3-spacing-14);
-  flex-direction: column;
-  display: flex;
-}
-
-.tabsBlock {
-  gap: var(--l3-spacing-24);
-  flex-direction: column;
-  display: flex;
-}
-
-.tabsBlock > .flatTabs.flatTabs {
-  width: calc(100% + 2 * var(--l3-spacing-16));
-  max-width: none;
-  margin-inline: calc(-1 * var(--l3-spacing-16));
 }
 
 /* FLAG: hand-made range meter */
@@ -33424,6 +33384,8 @@ import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { MaskIcon } from '@l3/components/MaskIcon'
 import { msBookmark, msSearch, msTrendingDown, msTrendingUp } from '@l3/icons/material'
+import { Stack } from '@l3/components/Stack'
+import { Inset } from '@l3/components/Inset'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
@@ -33606,134 +33568,145 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
 
   return (
     <Phone label={etf.name} header={header} footer={footer} gesture="none" bodyRef={setBody} className={backdrop ? styles.still : undefined}>
-      <div className={styles.assetHeader}>
-        <div className={styles.titleRow}>
-          <div className={styles.namePrice}>
-            {/* Ticker · exchange (after Perplexity's "TTWO · NASDAQ"), the exchange from the US snapshot; the fund's name
-                under it in 14 (3 Nov). */}
-            <p className={styles.alias}>{catalogue[etf.sym]?.exchange ? `${etf.sym} · ${catalogue[etf.sym].exchange}` : etf.sym}</p>
-            <h1 className={styles.name}>{etf.name}</h1>
-            <div className={styles.priceRow}>
-              <span className={styles.price}><Usd value={etf.price} layout="inline" /></span>
-              <span className={styles.change}>
-                {/* EtfMove, not L3 PriceChange: PriceChange always writes "+" / "−" beside its arrow (L3 gap: a no-sign
-                    option); the arrow alone says which way (3 Nov). The $ move has no sign either. */}
-                <EtfMove change={etf.change} size="lg" />
-                <span className={styles.changeAbs} data-down={dayChangeAbs < 0 || undefined}>
-                  (<Usd value={Math.abs(dayChangeAbs)} layout="inline" />)
-                </span>
-              </span>
-            </div>
-            {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
-            {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>}
-          </div>
-          <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
-            {logo ? <img src={logo.src} alt="" /> : etf.sym[0]}
-          </span>
-        </div>
-        <div className={styles.tagsRow}>
-          <div className={styles.tags}>
-            <Tag variant="tertiary" color="neutral" size="md">ETF</Tag>
-            {/* What's in it, in a word or two (3 Nov): "Top 500", "US"; "Chips", "Global". */}
-            {tagsFor(etf).map((tag) => <Tag key={tag} variant="tertiary" color="neutral" size="md">{tag}</Tag>)}
-            {leveraged && (
-              <SideTag etf={etf} size="md" />
-            )}
-          </div>
-          {/* What's inside (3 Nov): up to three of the biggest holdings' logos, then a "+35" capsule tucked under the last
-              one — the rest of the fund's stocks. A leveraged fund shows the stocks of the index it follows. A tap opens
-              the Top holdings page (3 Nov). */}
-          {behind && (
-            <button
-              type="button"
-              className={styles.inside}
-              onClick={act(() => go(ETF_HOLDINGS))}
-              aria-label={`${behind.follows ? 'Follows' : 'Holds'} ${behind.count.toLocaleString('en-US')} ${behind.count === 1 ? 'stock' : 'stocks'}. See top holdings`}
-            >
-              <span className={styles.insideLogos} aria-hidden="true">
-                {etf.holdings.slice(0, Math.min(3, behind.count)).map((h) => <HoldingLogo key={h.sym} sym={h.sym} size={24} />)}
-                {behind.count > 3 && (
-                  <span className={styles.insideCount}>+{(behind.count - Math.min(3, etf.holdings.length)).toLocaleString('en-US')}</span>
-                )}
-              </span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.chart} role="img" aria-label={`${etf.sym} price today`}>
-        <div className={styles.plot}>
-          <span className={styles.line}><MaskIcon src={asset('assets/etf/price-line-1d.svg')} /></span>
-          <span className={styles.halo} />
-          <span className={styles.dot} />
-        </div>
-        <div className={styles.yAxis} aria-hidden="true">
-          {Y_STEPS.map((s) => <span key={s}>{usd(etf.price * s)}</span>)}
-        </div>
-      </div>
-
-      <div className={styles.tabsAndContent}>
-        <Tabs
-          appearance="pill-group"
-          size="sm"
-          width="fill"
-          aria-label="Chart period"
-          value={period}
-          onChange={setPeriod}
-          items={PERIODS.map((p) => ({ value: p, label: p }))}
-        />
-        <div className={styles.tabsBlock}>
-          <Tabs appearance="underline" width="fill" aria-label="ETF sections" className={styles.flatTabs} value={section} onChange={setSection} items={SECTIONS} />
-          {section === 'news' ? (
-            // News & Events, as on the stock page: Events / News pills, then the list.
-            <div className={styles.feed}>
-              <Tabs
-                appearance="pill"
-                size="sm"
-                aria-label="Show"
-                value={feed}
-                onChange={setFeed}
-                items={[
-                  { value: 'events', label: 'Events' },
-                  { value: 'news', label: 'News' },
-                ]}
-              />
-              {feed === 'events' ? <Events items={d.events} /> : <News items={newsFor(etf)} stock={etf.sym} />}
-            </div>
-          ) : (
-            <div className={styles.overview}>
-              {/* A Boosted fund (3 Nov): what its leverage does, in one sentence on the gold strip, above About. */}
-              {leveraged && <LeverageStrip etf={etf} onOpen={BOOST_SHEET ? act(() => setBoostOpen(true)) : undefined} />}
-              {/* What the ETF is: the stock page's About card ("SPY tracks …"), three lines until Read more. */}
-              <AboutCard title="About Fund" text={aboutFor(etf)} />
-              {!leveraged && (
-                <section className={styles.section}>
-                  <SectionTitle title="Allocation" />
-                  <Allocation etf={etf} />
-                </section>
+      {/* The body (8 Nov, the user's call): one column, 24 between its two containers. 1 · the summary (name, price,
+          tags) and the chart with its periods, in the page's 16 gutter. 2 · the sections: their underline tabs edge to
+          edge, then the open tab's content in the gutter. No container pads or margins itself. */}
+      <Inset paddingInline="00" paddingBlock="08">
+        <Stack gap="24">
+          <Inset paddingInline="16" paddingBlock="00">
+            <Stack gap="24">
+              <Stack gap="24">
+                <div className={styles.titleRow}>
+                  <div className={styles.namePrice}>
+                    {/* Ticker · exchange (after Perplexity's "TTWO · NASDAQ"), the exchange from the US snapshot; the fund's name
+                        under it in 14 (3 Nov). */}
+                    <p className={styles.alias}>{catalogue[etf.sym]?.exchange ? `${etf.sym} · ${catalogue[etf.sym].exchange}` : etf.sym}</p>
+                    <h1 className={styles.name}>{etf.name}</h1>
+                    <div className={styles.priceRow}>
+                      <span className={styles.price}><Usd value={etf.price} layout="inline" /></span>
+                      <span className={styles.change}>
+                        {/* EtfMove, not L3 PriceChange: PriceChange always writes "+" / "−" beside its arrow (L3 gap: a no-sign
+                            option); the arrow alone says which way (3 Nov). The $ move has no sign either. */}
+                        <EtfMove change={etf.change} size="lg" />
+                        <span className={styles.changeAbs} data-down={dayChangeAbs < 0 || undefined}>
+                          (<Usd value={Math.abs(dayChangeAbs)} layout="inline" />)
+                        </span>
+                      </span>
+                    </div>
+                    {/* The price in rupees at the live rate, small under the $ — hidden for now (SHOW_PRICE_INR). */}
+                    {SHOW_PRICE_INR && <span className={styles.priceInr}>≈ {formatInr(etf.price * usdInr)}</span>}
+                  </div>
+                  <span className={styles.logoDisc} style={logo ? ({ '--plate': logo.plate } as React.CSSProperties) : undefined} aria-hidden="true">
+                    {logo ? <img src={logo.src} alt="" /> : etf.sym[0]}
+                  </span>
+                </div>
+                <div className={styles.tagsRow}>
+                  <div className={styles.tags}>
+                    <Tag variant="tertiary" color="neutral" size="md">ETF</Tag>
+                    {/* What's in it, in a word or two (3 Nov): "Top 500", "US"; "Chips", "Global". */}
+                    {tagsFor(etf).map((tag) => <Tag key={tag} variant="tertiary" color="neutral" size="md">{tag}</Tag>)}
+                    {leveraged && (
+                      <SideTag etf={etf} size="md" />
+                    )}
+                  </div>
+                  {/* What's inside (3 Nov): up to three of the biggest holdings' logos, then a "+35" capsule tucked under the last
+                      one — the rest of the fund's stocks. A leveraged fund shows the stocks of the index it follows. A tap opens
+                      the Top holdings page (3 Nov). */}
+                  {behind && (
+                    <button
+                      type="button"
+                      className={styles.inside}
+                      onClick={act(() => go(ETF_HOLDINGS))}
+                      aria-label={`${behind.follows ? 'Follows' : 'Holds'} ${behind.count.toLocaleString('en-US')} ${behind.count === 1 ? 'stock' : 'stocks'}. See top holdings`}
+                    >
+                      <span className={styles.insideLogos} aria-hidden="true">
+                        {etf.holdings.slice(0, Math.min(3, behind.count)).map((h) => <HoldingLogo key={h.sym} sym={h.sym} size={24} />)}
+                        {behind.count > 3 && (
+                          <span className={styles.insideCount}>+{(behind.count - Math.min(3, etf.holdings.length)).toLocaleString('en-US')}</span>
+                        )}
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </Stack>
+              <Stack gap="16">
+                <div className={styles.chart} role="img" aria-label={`${etf.sym} price today`}>
+                  <div className={styles.plot}>
+                    <span className={styles.line}><MaskIcon src={asset('assets/etf/price-line-1d.svg')} /></span>
+                    <span className={styles.halo} />
+                    <span className={styles.dot} />
+                  </div>
+                  <div className={styles.yAxis} aria-hidden="true">
+                    {Y_STEPS.map((s) => <span key={s}>{usd(etf.price * s)}</span>)}
+                  </div>
+                </div>
+                <Tabs
+                  appearance="pill-group"
+                  size="sm"
+                  width="fill"
+                  aria-label="Chart period"
+                  value={period}
+                  onChange={setPeriod}
+                  items={PERIODS.map((p) => ({ value: p, label: p }))}
+                />
+              </Stack>
+            </Stack>
+          </Inset>
+          <Stack gap="24">
+            <Tabs appearance="underline" width="fill" aria-label="ETF sections" value={section} onChange={setSection} items={SECTIONS} />
+            <Inset paddingInline="16" paddingBlock="00">
+              {section === 'news' ? (
+                // News & Events, as on the stock page: Events / News pills, then the list.
+                <div className={styles.feed}>
+                  <Tabs
+                    appearance="pill"
+                    size="sm"
+                    aria-label="Show"
+                    value={feed}
+                    onChange={setFeed}
+                    items={[
+                      { value: 'events', label: 'Events' },
+                      { value: 'news', label: 'News' },
+                    ]}
+                  />
+                  {feed === 'events' ? <Events items={d.events} /> : <News items={newsFor(etf)} stock={etf.sym} />}
+                </div>
+              ) : (
+                <div className={styles.overview}>
+                  {/* A Boosted fund (3 Nov): what its leverage does, in one sentence on the gold strip, above About. */}
+                  {leveraged && <LeverageStrip etf={etf} onOpen={BOOST_SHEET ? act(() => setBoostOpen(true)) : undefined} />}
+                  {/* What the ETF is: the stock page's About card ("SPY tracks …"), three lines until Read more. */}
+                  <AboutCard title="About Fund" text={aboutFor(etf)} />
+                  {!leveraged && (
+                    <section className={styles.section}>
+                      <SectionTitle title="Allocation" />
+                      <Allocation etf={etf} />
+                    </section>
+                  )}
+                  <section className={styles.section}>
+                    <SectionTitle title={leveraged ? 'Tracks' : 'Top holdings'} />
+                    <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} onOthers={act(() => go(ETF_HOLDINGS))} />
+                  </section>
+                  <DailyPerformance price={etf.price} low={d.low} high={d.high} stats={dayStats} />
+                  <section className={styles.section}>
+                    <SectionTitle title="Fundamentals" />
+                    <dl className={styles.panel} data-gap="12" data-rows="">
+                      {fundamentals.map(([k, v], i) => (
+                        <div className={styles.kv} data-sep={i > 0 || undefined} key={k}><dt>{k}</dt><dd>{v}</dd></div>
+                      ))}
+                    </dl>
+                  </section>
+                  {/* Similar ETFs (4 Nov): the stock page's Peers table for funds — this one first, then five like it. */}
+                  <section className={styles.section}>
+                    <SectionTitle title="Similar ETFs" />
+                    <EtfPeers etf={etf} />
+                  </section>
+                </div>
               )}
-              <section className={styles.section}>
-                <SectionTitle title={leveraged ? 'Tracks' : 'Top holdings'} />
-                <TopHoldings etf={etf} onOpen={(sym) => act(() => openHolding(go, sym))()} onOthers={act(() => go(ETF_HOLDINGS))} />
-              </section>
-              <DailyPerformance price={etf.price} low={d.low} high={d.high} stats={dayStats} />
-              <section className={styles.section}>
-                <SectionTitle title="Fundamentals" />
-                <dl className={styles.panel} data-gap="12" data-rows="">
-                  {fundamentals.map(([k, v], i) => (
-                    <div className={styles.kv} data-sep={i > 0 || undefined} key={k}><dt>{k}</dt><dd>{v}</dd></div>
-                  ))}
-                </dl>
-              </section>
-              {/* Similar ETFs (4 Nov): the stock page's Peers table for funds — this one first, then five like it. */}
-              <section className={styles.section}>
-                <SectionTitle title="Similar ETFs" />
-                <EtfPeers etf={etf} />
-              </section>
-            </div>
-          )}
-        </div>
-      </div>
+            </Inset>
+          </Stack>
+        </Stack>
+      </Inset>
       {BOOST_SHEET && leveraged && !backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
     </Phone>
   )
