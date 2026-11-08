@@ -24772,6 +24772,10 @@ type StockListCardProps = {
   changePct?: number
   /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
   onOpen?: () => void
+  /** A plain row (L3 ListCell `variant="plain"`, no card) for lists split by hairlines — the US F1 home (Figma 6441:3). */
+  plain?: boolean
+  /** The logo's size (default 40; the F1 home's plain rows use 32). */
+  logoSize?: 24 | 32 | 40
   'aria-label'?: string
 }
 
@@ -24782,13 +24786,14 @@ type StockListCardProps = {
  *
  * Symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
-export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, plain = false, logoSize = 40, ...rest }: StockListCardProps) {
+  const look = plain ? ({ variant: 'plain' } as const) : ({ variant: 'card', raised: false } as const)
   return (
     <ListCell
-      variant="card"
+      {...look}
       as={onOpen ? 'button' : undefined}
       className={onOpen ? undefined : styles.static}
-      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={logoSize} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
       labelSize="14"

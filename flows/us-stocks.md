@@ -199,6 +199,9 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 
 ### Changelog
 
+- 2026-11-08 — The F1 stock and ETF pages (from the jojo branch) are a flow option here, **Stock / ETF page**: Classic
+  (default, the earlier page, its rating ring as it was) or F1 (one page, candles, Figma's rating ring). The Boosted
+  line stays Grey by default (jojo made Gold its default).
 - 2026-11-04 — ETF page: a Similar ETFs section after Fundamentals — the stock page's Peers table for funds (this ETF first, five like it by `similarEtfs`; Overview: Today / Expense / AUM, Returns: 1M / 3M / 1Y; rows by ticker; a tap opens that ETF).
 - 2026-11-04 — Stock and ETF pages: the "≈ ₹" line under the price is hidden (`SHOW_PRICE_INR = false` in StockPage.tsx / EtfPage.tsx), not deleted.
 - 2026-11-04 — US stock page: the NASDAQ exchange switch beside the TradingView button is gone (US stocks trade on one listing; nothing to switch).
@@ -245,6 +248,7 @@ Every tap he wired is kept. The main path: FTUX sheet → Activate → Declarati
 - 2026-11-04 — Add money: the amount's caret is L3's discover blue (as on TextField); the money sheets (Pay from, charges, withdraw breakdown) lose their hand-drawn grabber — the mockup's system navbar is enough.
 - 2026-11-04 — **Add bank account now finishes**: Verify → Verifying (₹1 check) → Bank account added → back to this Add money with the new bank (SBI ••5526) picked; the name-mismatch failure too (deposit flow, deposit-13 … 15).
 - 2026-11-04 — **Add money opens on $50** (was $1,000): the amount screen and the screens shown over it (charges breakdown, bank mismatch, pick a bank).
+- 2026-11-08 — **Stock and ETF pages rebuilt to Figma (Stocks Playground 6538:84949 stock, 6538:107342 ETF).** Shared pieces in `screens/activation/details.tsx`: title (logo · name ⇕ · $ price + change, green / red), a sideways row of stat chips, candlestick chart with Figma's ranges 1H · 24H · 7D · 1M · 3M · 1Y (full screen icon, line / candle switch), About at the end of the page with the logo, and an alert bell · Buy · Sell dock (L3 buy / sell, 40 tall). One long page, no Overview / News tabs. Stock page order: Your Holdings (held) · Daily Performance · Analyst Ratings · Fundamentals · Company financials · News · Peers · Key Holders · About. ETF page: search in the bar, ETF tag and bookmark in the title, a live Pre Market countdown chip, then Asset info (10 facts) · Top holdings ("Top 10 make up X%", ten-step bar, five rows, View all) · Allocation (Market cap · Sectors · Countries) · Daily Performance · News · About (`etf/EtfDetailsF1.tsx`). The user's calls: $ only (no ≈ ₹ line; Figma shows ₹), ranges exactly as Figma, and Your Holdings, Daily Performance and Key Holders kept though Figma doesn't draw them. Differences: Events (the old News & Events tab) aren't on the pages; Market cap and Countries splits are sample data; the ETF chips say Total Assets · Expense Ratio · 52W High / Low (Figma's Market Cap / P/E don't apply to a fund); the Allocation donut is the existing side-by-side card, not Figma's centred ring. `F1_DETAILS` in StockPage.tsx switches back to the earlier pages. Polish the same day: the page is `surface="primary"` with the bar see-through over it (no cut), no glow behind the logo (Figma's brand-colour bloom dropped, the user's call), the chart and sections on a black sheet with a rounded rim; plain-word ranges; a ruled time axis; and the Analyst Ratings ring rebuilt from Figma's layers (gradient disc on a 4px track, stacked round-ended Sell · Hold · Buy arcs from 12 o'clock with a gap at the end). Conflict board: `figma/audits/details-6538/` in the US STOCKS folder.
 - 2026-11-04 — **Wallet tabs stay on the page:** the wallet's INR and USD screens (us-stocks-53 / 54) are one page (screen group `wallet`), so tapping USD Wallet no longer pushes a new screen. Only the wallet content swaps, as it already did going back to INR.
 - 2026-11-04 — **Order type switch stays on the page:** the order pads are one page (screen group `order-pad`), so Market / Limit / SL no longer pushes a new screen. The header, tabs and dock stay put and only the fields under the tabs slide in: from the right going Market → Limit → SL, from the left going back.
 - 2026-11-03 — **Analyst Ratings ring has gaps between its arcs:** Buy, Hold and Sell are drawn from their shares (78.13 / 18.75 / 3.12%), starting at the top, with a small gap between each one like the Allocation donut. Before, three fixed overlapping paths.
@@ -3082,6 +3086,48 @@ UAq�oZ�+����}gc�Vti�\�MbXg	�֖,Asb��@���!y�d�
 
 ```tsx
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+```
+
+### `src/flows/us-stocks/assets/details/bell.svg`
+
+```tsx
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame">
+<path id="Vector" d="M5.25 18.8845C5.0375 18.8845 4.85942 18.8127 4.71575 18.669C4.57192 18.5252 4.5 18.3469 4.5 18.1343C4.5 17.9218 4.57192 17.7437 4.71575 17.6C4.85942 17.4565 5.0375 17.3848 5.25 17.3848H6.30775V9.923C6.30775 8.57817 6.72283 7.38908 7.553 6.35575C8.383 5.32242 9.44867 4.6615 10.75 4.373V3.75C10.75 3.40283 10.8714 3.10767 11.1143 2.8645C11.3571 2.6215 11.6519 2.5 11.9988 2.5C12.3458 2.5 12.641 2.6215 12.8845 2.8645C13.1282 3.10767 13.25 3.40283 13.25 3.75V4.373C14.5513 4.6615 15.617 5.32242 16.447 6.35575C17.2772 7.38908 17.6923 8.57817 17.6923 9.923V17.3848H18.75C18.9625 17.3848 19.1406 17.4566 19.2843 17.6003C19.4281 17.7441 19.5 17.9223 19.5 18.135C19.5 18.3475 19.4281 18.5256 19.2843 18.6693C19.1406 18.8128 18.9625 18.8845 18.75 18.8845H5.25ZM11.9983 21.6923C11.5008 21.6923 11.0754 21.5153 10.7223 21.1613C10.3689 20.8073 10.1923 20.3817 10.1923 19.8845H13.8077C13.8077 20.3833 13.6306 20.8093 13.2762 21.1625C12.9219 21.5157 12.4959 21.6923 11.9983 21.6923ZM7.80775 17.3848H16.1923V9.923C16.1923 8.76533 15.783 7.77725 14.9645 6.95875C14.1458 6.14008 13.1577 5.73075 12 5.73075C10.8423 5.73075 9.85417 6.14008 9.0355 6.95875C8.217 7.77725 7.80775 8.76533 7.80775 9.923V17.3848ZM11.25 12.8078V14.0578C11.25 14.2703 11.3219 14.4483 11.4658 14.592C11.6096 14.7358 11.7878 14.8078 12.0003 14.8078C12.2129 14.8078 12.391 14.7358 12.5345 14.592C12.6782 14.4483 12.75 14.2703 12.75 14.0578V12.8078H14C14.2125 12.8078 14.3906 12.7358 14.5343 12.592C14.6781 12.4482 14.75 12.2699 14.75 12.0573C14.75 11.8448 14.6781 11.6667 14.5343 11.523C14.3906 11.3795 14.2125 11.3078 14 11.3078H12.75V10.0578C12.75 9.84525 12.6781 9.66708 12.5343 9.52325C12.3904 9.37958 12.2122 9.30775 11.9997 9.30775C11.7871 9.30775 11.609 9.37958 11.4655 9.52325C11.3218 9.66708 11.25 9.84525 11.25 10.0578V11.3078H10C9.7875 11.3078 9.60942 11.3797 9.46575 11.5235C9.32192 11.6673 9.25 11.8455 9.25 12.058C9.25 12.2707 9.32192 12.4488 9.46575 12.5923C9.60942 12.7359 9.7875 12.8078 10 12.8078H11.25Z" fill="#E8E8E8" style="fill:#E8E8E8;fill:color(display-p3 0.9098 0.9098 0.9098);fill-opacity:1;"/>
+</g>
+</svg>
+```
+
+### `src/flows/us-stocks/assets/details/chart-toggle.svg`
+
+```tsx
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame">
+<path id="Vector" d="M2.69434 17.0397C2.69434 16.8332 2.777 16.6473 2.94234 16.4819L8.25784 11.1667C8.60267 10.8217 9.02959 10.6492 9.53859 10.6492C10.0476 10.6492 10.4745 10.8217 10.8193 11.1667L13.3078 13.6549C13.3718 13.7191 13.4488 13.7496 13.5386 13.7464C13.6283 13.7433 13.702 13.7064 13.7598 13.6359L20.0636 6.45894C20.2021 6.2936 20.3771 6.21094 20.5886 6.21094C20.8001 6.21094 20.9834 6.28527 21.1386 6.43394C21.2771 6.57244 21.3505 6.73719 21.3588 6.92819C21.3672 7.11919 21.3021 7.29227 21.1636 7.44744L14.8231 14.6799C14.4783 15.0749 14.0482 15.2833 13.5328 15.3049C13.0175 15.3268 12.5707 15.1486 12.1923 14.7704L9.75984 12.3377C9.702 12.28 9.62825 12.2512 9.53859 12.2512C9.44875 12.2512 9.375 12.28 9.31734 12.3377L4.05784 17.5974C3.89884 17.7563 3.7145 17.8374 3.50484 17.8407C3.29534 17.8439 3.10784 17.7628 2.94234 17.5974C2.777 17.4319 2.69434 17.246 2.69434 17.0397Z" fill="#37AD75" style="fill:#37AD75;fill:color(display-p3 0.2157 0.6784 0.4588);fill-opacity:1;"/>
+</g>
+</svg>
+```
+
+### `src/flows/us-stocks/assets/details/fullscreen.svg`
+
+```tsx
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="SVG">
+<path id="Vector" d="M7.28592 5.14062C6.7176 5.14063 6.17256 5.36639 5.77069 5.76825C5.36883 6.17012 5.14307 6.71516 5.14307 7.28348V9.42634H6.00021V7.28348C6.00021 6.57205 6.57449 5.99777 7.28592 5.99777H9.42878V5.14062H7.28592ZM5.14307 14.5692V16.7121C5.14307 17.2804 5.36883 17.8254 5.77069 18.2273C6.17256 18.6291 6.7176 18.8549 7.28592 18.8549H9.42878V17.9978H7.28592C6.94493 17.9978 6.6179 17.8623 6.37679 17.6212C6.13567 17.3801 6.00021 17.053 6.00021 16.7121V14.5692H5.14307ZM16.7145 5.99777H14.5716V5.14062H16.7145C17.2828 5.14063 17.8279 5.36639 18.2297 5.76825C18.6316 6.17012 18.8574 6.71516 18.8574 7.28348V9.42634H18.0002V7.28348C18.0002 6.57205 17.4259 5.99777 16.7145 5.99777ZM18.8574 16.7121V14.5692H18.0002V16.7121C18.0002 17.4235 17.4259 17.9978 16.7145 17.9978H14.5716V18.8549H16.7145C17.2828 18.8549 17.8279 18.6291 18.2297 18.2273C18.6316 17.8254 18.8574 17.2804 18.8574 16.7121Z" fill="#E8E8E8" style="fill:#E8E8E8;fill:color(display-p3 0.9098 0.9098 0.9098);fill-opacity:1;"/>
+</g>
+</svg>
+```
+
+### `src/flows/us-stocks/assets/details/info.svg`
+
+```tsx
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon Shapes">
+<path id="Vector (Stroke)" d="M6 2C3.79086 2 2 3.79086 2 6C2 8.20914 3.79086 10 6 10C8.20914 10 10 8.20914 10 6C10 3.79086 8.20914 2 6 2ZM1 6C1 3.23858 3.23858 1 6 1C8.76142 1 11 3.23858 11 6C11 8.76142 8.76142 11 6 11C3.23858 11 1 8.76142 1 6Z" fill-rule="evenodd" clip-rule="evenodd" fill="#E8E8E8" fill-opacity="0.6" style="fill:#E8E8E8;fill:color(display-p3 0.9098 0.9098 0.9098);fill-opacity:0.6;"/>
+<path id="Vector (Stroke)_2" d="M6 5.5C6.27614 5.5 6.5 5.72386 6.5 6V7.8C6.5 8.07614 6.27614 8.3 6 8.3C5.72386 8.3 5.5 8.07614 5.5 7.8V6C5.5 5.72386 5.72386 5.5 6 5.5Z" fill-rule="evenodd" clip-rule="evenodd" fill="#E8E8E8" fill-opacity="0.6" style="fill:#E8E8E8;fill:color(display-p3 0.9098 0.9098 0.9098);fill-opacity:0.6;"/>
+<path id="Vector (Stroke)_3" d="M5.5 4.2C5.5 3.92386 5.72386 3.7 6 3.7H6.0045C6.28064 3.7 6.5045 3.92386 6.5045 4.2C6.5045 4.47614 6.28064 4.7 6.0045 4.7H6C5.72386 4.7 5.5 4.47614 5.5 4.2Z" fill-rule="evenodd" clip-rule="evenodd" fill="#E8E8E8" fill-opacity="0.6" style="fill:#E8E8E8;fill:color(display-p3 0.9098 0.9098 0.9098);fill-opacity:0.6;"/>
+</g>
+</svg>
 ```
 
 ### `src/flows/us-stocks/assets/entry/index/back.svg`
@@ -22451,6 +22497,18 @@ export const usStocks: Flow = {
       default: 'mini',
       floatOn: ['us-stocks-72'],
     },
+    // The stock and ETF pages from Figma 6538:84949 / 6538:107342 (8 Nov, the jojo branch's work): a new version beside
+    // the earlier page, which stays the default.
+    {
+      id: 'detailsPage',
+      group: 'Stock page',
+      label: 'Stock / ETF page',
+      values: [
+        { value: 'classic', label: 'Classic · tabs, line chart' },
+        { value: 'f1', label: 'F1 · one page, candles' },
+      ],
+      default: 'classic',
+    },
     // The Boosted note's colour (3 Nov).
     {
       id: 'boostTone',
@@ -22463,6 +22521,7 @@ export const usStocks: Flow = {
         { value: 'blue', label: 'Blue' },
         { value: 'purple', label: 'Purple' },
       ],
+      // Grey by default (3 Nov). The jojo branch made Gold its default (8 Nov); here Gold stays a pick.
       default: 'grey',
       floatOn: ['us-stocks-71'],
     },
@@ -24032,14 +24091,16 @@ export const screens: UsScreenMap = {
   stroke-width: 4px; /* FLAG: raw px */
 }
 
+/* The disc's gradient (Figma Ellipse 6890: #101110 at the top to #153023 at the foot in dark): the page's darkest
+   surface to a dark green — 25% of the success green on the card's surface. */
 .discTop {
-  stop-color: var(--l3-surface-primary);
+  stop-color: var(--l3-surface-default);
 }
 
 .discFoot {
   stop-color: color-mix(
     in srgb,
-    var(--l3-content-accent-success-default) 18%,
+    var(--l3-content-accent-success-default) 25%,
     var(--l3-surface-primary)
   );
 }
@@ -24308,6 +24369,57 @@ export const screens: UsScreenMap = {
 .etfPrice [data-change][data-up] {
   color: var(--l3-content-accent-indicator-up-default);
 }
+
+/* Figma 6538:84949: the sections sit straight on the page (no tabs), 16 at the sides, 32 apart and 32 under the chart. */
+.overview[data-details] {
+  padding: var(--l3-spacing-32) var(--l3-spacing-16);
+}
+
+/* The rating ring as Figma's layers (6538:85139). Its own classes, so the older `.ring circle` rule (fill: none, a 6px
+   grey stroke) no longer wipes the disc's gradient and track. FLAG: raw SVG units. */
+.ratingRing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ratingDisc {
+  stroke: var(--l3-border-intense); /* Figma #292C2B in dark */
+  stroke-width: 4px; /* FLAG: raw px (svg units) */
+}
+.ratingArc {
+  fill: none;
+  stroke-width: 4.5px; /* FLAG: raw px (svg units) — Figma's band, 31.5 to 36 */
+  stroke-linecap: round;
+}
+.ratingArc[data-tone='up'] {
+  stroke: var(--l3-content-accent-indicator-up-default); /* Figma #37AD75 */
+}
+.ratingArc[data-tone='warning'] {
+  stroke: var(--l3-surface-accent-warning-default); /* Figma #F6C12F */
+}
+.ratingArc[data-tone='down'] {
+  stroke: var(--l3-content-accent-indicator-down-default); /* Figma #E5505F */
+}
+
+/* Analyst Ratings card as Figma 6538:85135: surface/primary with the intense border, rows and footer in Label 10
+   (labels tertiary, values primary), bars 6 tall. */
+.rateCard {
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-intense);
+}
+.rateCard .ratingLabel {
+  font: var(--l3-text-label-10);
+  color: var(--l3-content-tertiary);
+}
+.rateCard .ratingValue {
+  font: var(--l3-text-label-10);
+  color: var(--l3-content-primary);
+}
+.rateFoot {
+  font: var(--l3-text-label-10);
+}
 ```
 
 ### `src/flows/us-stocks/screens/activation/StockPage.tsx`
@@ -24330,8 +24442,9 @@ import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
 import { asset } from '../../asset'
 import { currentStock } from '../../data'
+import { useFlowOption } from '../../../../shared/prototype'
 import { useLiveQuote } from '../../../../shared/data/live'
-import { usQuote } from '../../../../shared/data/usStocks'
+import { usLogo, usQuote } from '../../../../shared/data/usStocks'
 import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
 import { useUsNav } from '../../nav'
 import { ImgIcon } from './components/ImgIcon'
@@ -24343,10 +24456,19 @@ import {
   BUY_PAD, KYC_START, RISK_DISCLOSURE, SELL_PAD_HOLDING, SELL_PAD_NO_HOLDINGS,
 } from './ids'
 import { EtfMove } from '../etf/parts'
+import { COMPANY_PROFILES } from './companyProfiles'
+import { FUNDAMENTALS } from './data'
+import { AboutBlock, AssetTitle, CandleChart, DetailsSheet, LogoImg, StatChips, TradeDock, detailsPhone } from './details'
+import { msBookmark } from '@l3/icons/material'
 import styles from './StockPage.module.css'
 
 /** The "≈ ₹" line under the price: hidden for now (4 Nov), kept to turn back on. */
 const SHOW_PRICE_INR = false
+/** The detail page from Figma 6538:84949 (8 Nov, from the jojo branch): the flow option "Stock / ETF page" (F1), off by
+ *  default here, so the earlier page (tabs, line chart) stays as it was. Shared with the ETF page. */
+export function useF1Details() {
+  return useFlowOption('us-stocks', 'detailsPage', 'classic') === 'f1'
+}
 
 /** kyc-pending: the user's Lemonn KYC isn't done, so US Stocks can't be activated yet (not in Jojo's Figma). */
 export type StockState = 'kyc-pending' | 'not-activated' | 'review' | 'support' | 'failed' | 'no-holdings' | 'holding'
@@ -24371,6 +24493,7 @@ export function activationFooter(state: StockState, go: (figma: string) => void)
 }
 
 export function StockPage({ state, backdrop, emptyWallet }: { state: StockState; backdrop?: boolean; emptyWallet?: boolean }) {
+  const f1Details = useF1Details()
   const { go, back } = useUsNav()
   const usd = useUsd()
   const snapshotStock = currentStock()
@@ -24426,14 +24549,65 @@ export function StockPage({ state, backdrop, emptyWallet }: { state: StockState;
     />
   )
 
+  // Figma 6538:84949: the alert bell · Buy · Sell dock (L3 buy / sell, 40 tall as in Figma).
   const footer = activationFooter(state, go) ?? (
-    <ButtonGroup aria-label={`Trade ${shortName}`} direction="horizontal" scrollIndicator>
-      <Button variant="buy" size="lg" onClick={() => go(emptyWallet ? BUY_PAD_EMPTY_WALLET : BUY_PAD)}>Buy</Button>
-      <Button variant="sell" size="lg" onClick={() => go(state === 'holding' ? SELL_PAD_HOLDING : SELL_PAD_NO_HOLDINGS)}>
-        Sell
-      </Button>
-    </ButtonGroup>
+    <TradeDock
+      buy="Buy"
+      sell="Sell"
+      onBuy={() => go(emptyWallet ? BUY_PAD_EMPTY_WALLET : BUY_PAD)}
+      onSell={() => go(state === 'holding' ? SELL_PAD_HOLDING : SELL_PAD_NO_HOLDINGS)}
+    />
   )
+  // The company's real logo: the stock's own, else the shared US logos (Microsoft's had fallen back to an "M").
+  const logoSrc = isNvda ? asset('assets/activation/nvda-logo.svg') : stock.logo ? (/^(\/|https?:)/.test(stock.logo) ? stock.logo : asset(stock.logo)) : usLogo(stock.sym)
+  const logo = <LogoImg src={logoSrc} plate={stock.plate} size={32} fallback={stock.sym[0]} />
+  const aboutLogo = <LogoImg src={logoSrc} plate={stock.plate} size={40} fallback={stock.sym[0]} />
+  const fundamental = (label: string) => FUNDAMENTALS.find(([k]) => k === label)?.[1] ?? '—'
+
+  // Figma 6538:84949 (8 Nov): one long page, no Overview / News tabs. Title · stat chips · candles, then the sections in
+  // Figma's order with the three it doesn't draw kept (the user's call): Your Holdings (when held) and Daily Performance
+  // first, Analyst Ratings, Fundamentals, Company financials, News, Peers, Key Holders, and About at the end.
+  // Events (the old News & Events tab) aren't on this page.
+  if (f1Details) {
+    // Figma: the bar's icons are plain (no boxes) — back and the bookmark.
+    const f1Header = (
+      <Actionbar
+        onBack={() => back('stocks-01')}
+        title={scrolled ? stock.name : undefined}
+        description={scrolled ? <><Usd value={stock.price} layout="inline" /> <EtfMove change={stock.change} /></> : undefined}
+        actions={<ActionbarAction icon={msBookmark} variant="ghost" label={`Add ${stock.sym} to watchlist`} onClick={() => {}} />}
+      />
+    )
+    return (
+      <Phone label={stock.name} header={f1Header} footer={footer} surface="primary" gesture="none" bodyRef={setBody} className={[detailsPhone, backdrop && styles.still].filter(Boolean).join(' ')}>
+        <AssetTitle logo={logo} name={stock.name} price={stock.price} changePct={stock.change} />
+        <StatChips
+          items={[
+            { label: 'Market Cap', value: <Usd text={fundamental('Mkt Cap')} /> },
+            { label: 'P/E Ratio (TTM)', value: fundamental('P/E Ratio (TTM)'), info: true },
+            { label: '24H High / Low', value: <><Usd value={high} layout="inline" /> / <Usd value={low} layout="inline" /></> },
+            // Figma's row has four cards, the last running off the edge (it scrolls); its fourth repeats "24 High / Low",
+            // so the 52-week range here.
+            { label: '52W High / Low', value: <><Usd value={Math.max(quote?.high52 ?? high, stock.price)} layout="inline" /> / <Usd value={Math.min(quote?.low52 ?? low, stock.price)} layout="inline" /></> },
+          ]}
+        />
+        <DetailsSheet>
+          <CandleChart sym={stock.sym} name={shortName} price={stock.price} dayPct={stock.change} />
+          <div className={styles.overview} data-details="">
+            {state === 'holding' && <HoldingsSection stock={stock} dayChange={dayChangeAbs} />}
+            <DailyPerformance price={stock.price} low={low} high={high} stats={stockDayStats(stock)} />
+            <AnalystRatings />
+            <Fundamentals />
+            <Financials />
+            <News items={news} stock={shortName} />
+            <Peers stock={stock} />
+            <KeyHolders />
+          </div>
+          <AboutBlock logo={aboutLogo} title={`About ${shortName}`} text={COMPANY_PROFILES[stock.sym] ?? `${stock.name} is listed on the ${stock.exchange ?? 'NASDAQ'} and trades in US dollars.`} />
+        </DetailsSheet>
+      </Phone>
+    )
+  }
 
   return (
     <Phone label={stock.name} header={header} footer={footer} gesture="none" bodyRef={setBody} className={backdrop ? styles.still : undefined}>
@@ -24924,15 +25098,72 @@ export function PeerTable({ stock, onOpen }: { stock: UsStock; onOpen: (peer: { 
 ### `src/flows/us-stocks/screens/activation/components/RatingRing.tsx`
 
 ```tsx
-// The rating gauge's ring: a disc with one arc per rating (buy green, hold yellow, sell red), sized by its share and
+// The rating gauge's ring, as Figma's layers draw it (6538:85139, 8 Nov), bottom to top:
+//   1. the disc (r 34): a 4px track, filled with a gradient — surface at the top to a dark green at the foot;
+//   2. three arcs on the track, 4.5 wide with round ends, all starting at 12 o'clock and running clockwise, stacked so
+//      the longest is at the back: Sell (red) to the end of all three, Hold (yellow) to the end of Buy + Hold, Buy
+//      (green) on top — so each shows its share, and the ring ends in a gap before 12 o'clock.
+// FLAG: hand-drawn gauge — L3 has no rating gauge; raw SVG circles (StockPage.module.css .ratingRing).
+//
+// The earlier page's ring (kept as it was): a disc with one arc per rating (buy green, hold yellow, sell red), sized by its share and
 // starting at the top, with a small gap between arcs — the same way the ETF page's Allocation donut is drawn.
 // FLAG: hand-drawn gauge — L3 has no rating gauge; arcs are raw SVG circles.
+import { useId } from 'react'
+import { useFlowOption } from '../../../../../shared/prototype'
 import { RATINGS } from '../data'
 import styles from '../StockPage.module.css'
 
+/** The arcs' centre line (the band runs 31.5–36, Figma's 8px stroke masked inside the 36 edge). */
+const ARC_R = 33.75
+/** How much of the ring the three arcs use together; the rest is the gap before 12 o'clock (Figma ≈ 30°). */
+const FILLED = 0.92
+/** The earlier ring's radius and the gap between its arcs. */
 const RING = { r: 32, gap: 2 }
 
+/** The F1 stock page (flow option "Stock / ETF page") draws Figma's ring; the earlier page keeps its own. */
 export function RatingRing() {
+  return useFlowOption('us-stocks', 'detailsPage', 'classic') === 'f1' ? <RatingRingF1 /> : <RatingRingClassic />
+}
+
+function RatingRingF1() {
+  const gradient = useId()
+  const length = 2 * Math.PI * ARC_R
+  const total = RATINGS.reduce((sum, r) => sum + r.value, 0)
+  // Each arc runs from the start to the end of its own share and every share before it (Buy, Buy + Hold, all three).
+  let upTo = 0
+  const arcs = RATINGS.map((r) => {
+    upTo += r.value
+    return { tone: r.tone, label: r.label, dash: (upTo / total) * FILLED * length }
+  })
+  return (
+    <svg className={styles.ratingRing} viewBox="0 0 72 72" aria-hidden="true">
+      <defs>
+        <linearGradient id={gradient} x1="35" y1="18.5" x2="36" y2="72" gradientUnits="userSpaceOnUse">
+          <stop className={styles.discTop} />
+          <stop offset="1" className={styles.discFoot} />
+        </linearGradient>
+      </defs>
+      <circle cx="36" cy="36" r="34" className={styles.ratingDisc} style={{ fill: `url(#${CSS.escape(gradient)})` }} />
+      {/* A quarter turn back, so the arcs start at 12 o'clock and run clockwise; the longest is drawn first. */}
+      <g transform="rotate(-90 36 36)">
+        {[...arcs].reverse().map((a) => (
+          <circle
+            key={a.label}
+            cx="36"
+            cy="36"
+            r={ARC_R}
+            className={styles.ratingArc}
+            data-tone={a.tone}
+            strokeDasharray={`${a.dash} ${length}`}
+          />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+
+function RatingRingClassic() {
   const length = 2 * Math.PI * RING.r
   const total = RATINGS.reduce((sum, r) => sum + r.value, 0)
   let start = 0
@@ -25231,6 +25462,673 @@ export const PERSONAL_DETAILS: [string, string, string, string][] = [
   ['Email', 'aarav@example.com', 'Mobile', '+91 XXXXX X4521'],
 ]
 export const ADDRESS = 'Flat 12, Green Park, Baner, Pune 411045'
+```
+
+### `src/flows/us-stocks/screens/activation/details.module.css`
+
+```css
+/* The detail pages' shared top and bottom (Figma 6538:84949 / 6538:107342). FLAG: hand-made on L3 tokens — chip cards,
+   candles, the countdown chip and the About block have no L3 component. */
+
+/* ---- Title: logo 32 · name ⇕ · price + change (16 sides, 12 between logo and text) ---- */
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-20) var(--l3-spacing-16) 0; /* Figma: the title 20 under the bar */
+}
+.logo {
+  display: inline-flex;
+  flex: none;
+}
+.titleText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+.name {
+  margin: 0;
+  overflow: hidden;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-14); /* Figma: Heading 12; a step up (the user's call, 8 Nov) */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--l3-spacing-04);
+  color: var(--l3-content-accent-indicator-up-default);
+}
+.priceRow[data-down] {
+  color: var(--l3-content-accent-indicator-down-default);
+}
+.price {
+  font: var(--l3-text-label-18);
+}
+.change {
+  font: var(--l3-text-label-12);
+}
+.titleEnd {
+  display: inline-flex;
+  flex: none;
+}
+
+/* ---- Stat chips: a sideways row, 12 apart, 16 at the sides ---- */
+.chips {
+  display: flex;
+  gap: var(--l3-spacing-12);
+  overflow-x: auto;
+  padding: var(--l3-spacing-16) var(--l3-spacing-16) 0;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-08) var(--l3-spacing-12) var(--l3-spacing-08) var(--l3-spacing-08);
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-default);
+}
+.chip[data-tone='gold'] {
+  border-color: var(--l3-border-accent-zing-default);
+  background: var(--l3-surface-accent-zing-light);
+}
+.chipLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-10);
+  white-space: nowrap;
+}
+.chipInfo {
+  display: inline-flex;
+  width: var(--l3-size-12);
+  height: var(--l3-size-12);
+}
+.liveDot {
+  width: var(--l3-size-04);
+  height: var(--l3-size-04);
+  margin-right: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-content-accent-zing-default);
+}
+.chipValue {
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- Chart: ranges · candles with the price axis (60) · time axis ---- */
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--l3-spacing-32);
+}
+.ranges {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  padding: 0 var(--l3-spacing-16) 0 var(--l3-spacing-20);
+}
+.rangeTabs {
+  flex: 1;
+  justify-content: space-between;
+}
+.iconButton {
+  display: inline-flex;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--l3-content-secondary);
+  cursor: pointer;
+}
+.iconButton[data-up] {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+.chart {
+  display: flex;
+  height: 290px; /* FLAG: raw px — Figma's plot height */
+  margin-top: var(--l3-spacing-04);
+}
+.plot {
+  flex: 1;
+  height: 100%;
+  overflow: visible;
+}
+.plot g line {
+  stroke: var(--l3-content-accent-indicator-up-default);
+  stroke-width: 1;
+}
+.plot g rect {
+  fill: var(--l3-content-accent-indicator-up-default);
+}
+.plot g[data-down] line {
+  stroke: var(--l3-content-accent-indicator-down-default);
+}
+.plot g[data-down] rect {
+  fill: var(--l3-content-accent-indicator-down-default);
+}
+.plot polyline {
+  stroke: var(--l3-content-accent-indicator-up-default);
+  stroke-width: 1.5;
+}
+.plot polyline[data-down] {
+  stroke: var(--l3-content-accent-indicator-down-default);
+}
+.yAxis {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--l3-size-64);
+  padding: 0 var(--l3-spacing-08);
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-description-10);
+  text-align: right;
+}
+.xAxis {
+  display: flex;
+  align-items: center;
+  height: var(--l3-size-32);
+  padding-right: var(--l3-spacing-16);
+}
+.xLabels {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-description-10);
+}
+
+/* ---- About: the page's last block ---- */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding: var(--l3-spacing-24) var(--l3-spacing-16) var(--l3-spacing-32);
+  background: linear-gradient(var(--l3-surface-secondary), var(--l3-surface-default));
+}
+.aboutLogo {
+  display: inline-flex;
+  margin-bottom: var(--l3-spacing-04);
+}
+.aboutTitle {
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-14);
+}
+.aboutText {
+  margin: 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+
+/* ---- Dock: bell 40 · Buy · Sell, 12 apart ---- */
+.dock {
+  display: flex;
+  gap: var(--l3-spacing-12);
+}
+.dock > :not(.bell) {
+  flex: 1;
+}
+.bell {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--l3-size-40);
+  height: var(--l3-size-40);
+  padding: var(--l3-spacing-08);
+  border: 1px solid var(--l3-border-intense);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+/* ---- A logo in a round plate ---- */
+.logoImg {
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  overflow: hidden;
+  border-radius: var(--l3-radius-full);
+  background: var(--plate, var(--l3-surface-tertiary));
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-12);
+}
+.logoImg > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---- Sections (ETF page): heading with ⓘ, 16 above the card ---- */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+.heading {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-16);
+}
+.headingInfo {
+  display: inline-flex;
+  width: var(--l3-size-16);
+  height: var(--l3-size-16);
+  color: var(--l3-content-secondary);
+}
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--l3-spacing-16);
+  margin: 0;
+  padding: var(--l3-spacing-16);
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-12);
+}
+.infoGrid dt {
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+.infoGrid dd {
+  margin: var(--l3-spacing-04) 0 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-14);
+}
+
+/* The dock's sides (the L3 ButtonGroup brought them before). */
+.dock {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+}
+
+/* ---- Figma 6538:84949 polish (8 Nov) ---- */
+
+/* The title: no glow behind the logo (8 Nov: the user dropped Figma's brand-colour bloom). */
+.title {
+  position: relative;
+}
+
+/* The sheet under the chips (Figma 6538:84950): surface/default, 24 top corners, a 1px rim, a grey glow on its top. */
+.sheet {
+  position: relative;
+  margin-top: var(--l3-spacing-20);
+  padding-top: var(--l3-spacing-12);
+  overflow: hidden;
+  border-top: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
+  background: var(--l3-surface-default);
+}
+.sheet::before {
+  content: '';
+  position: absolute;
+  top: -156px; /* FLAG: raw px — Figma's 436 × 157 ellipse, centred 78 above the sheet's edge, blurred 33 */
+  left: 50%;
+  width: 436px; /* FLAG: raw px */
+  height: 157px; /* FLAG: raw px */
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--l3-border-intense);
+  filter: blur(33px); /* FLAG: raw px */
+  pointer-events: none;
+}
+.sheet > * {
+  position: relative;
+}
+.chartBlock {
+  margin-top: 0;
+}
+
+/* Ranges: plain words, 4 · 12 padding each, the picked one in content/primary (Figma 6538:85255). */
+.ranges {
+  justify-content: space-between;
+  gap: 0;
+  padding: 0 var(--l3-spacing-16) 0 var(--l3-spacing-20);
+}
+.range {
+  padding: var(--l3-spacing-04) var(--l3-spacing-12);
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-label-12);
+  cursor: pointer;
+}
+.range:first-child {
+  padding-left: 0;
+}
+.range[aria-checked='true'] {
+  color: var(--l3-content-primary);
+}
+.icon24 {
+  display: inline-flex;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+}
+
+/* The time axis: a 32 strip ruled above and below, Label 10 tertiary in a 300 column, the switch in the last 60. */
+.xAxis {
+  height: var(--l3-size-32);
+  padding-right: 0;
+  border-top: 1px solid var(--l3-border-light);
+  border-bottom: 1px solid var(--l3-border-light);
+}
+.xLabels {
+  justify-content: space-between;
+  padding: 0 var(--l3-spacing-16);
+  font: var(--l3-text-label-10);
+}
+.xAxis > .iconButton {
+  justify-content: center;
+  width: var(--l3-size-64);
+}
+
+/* The detail pages' bar takes the page's surface/primary (L3 Actionbar always paints surface/default), so the bar and
+   the title area are one block as in Figma — no cut under the bar. */
+.detailsPhone header > header {
+  background: transparent; /* the page's surface/primary shows through (no cut under the bar) */
+}
+.detailsPhone header[data-scrolled] > header {
+  background: var(--l3-surface-primary);
+}
+
+/* Pre Market chip as Figma 6546:9924: a honey tint (10% of #F6C12F), a honey border, a 6px honey dot, 16 on the right. */
+.chip[data-tone='gold'] {
+  padding-right: var(--l3-spacing-16);
+  border-color: var(--l3-border-accent-warning-default);
+  background: color-mix(in srgb, var(--l3-surface-accent-warning-default) 10%, transparent);
+}
+.chip[data-tone='gold'] .chipLabel {
+  gap: var(--l3-spacing-04);
+}
+.liveDot {
+  width: 6px; /* FLAG: raw px — Figma's 6px dot */
+  height: 6px; /* FLAG: raw px */
+  margin-right: 0;
+  background: var(--l3-surface-accent-warning-default);
+}
+```
+
+### `src/flows/us-stocks/screens/activation/details.tsx`
+
+```tsx
+// The detail pages' shared top and bottom (Figma Stocks Playground 6538:84949 stock, 6538:107342 ETF; 8 Nov), used by
+// StockPage and EtfPage: the title (logo · name ⇕ · price and change), a sideways row of stat chips (the ETF leads with
+// the Pre Market countdown), the candlestick chart with Figma's 1H · 24H · 7D · 1M · 3M · 1Y ranges (and a line /
+// candle switch), the About block at the end of the page, and the trade dock (alert bell · Buy · Sell).
+// Prices are $ only — no ≈ ₹ line (the user's call, 8 Nov; Figma shows ₹). Ranges exactly as Figma (the user's call).
+// FLAG: chips, chart, countdown and About block are hand-made (details.module.css): L3 has no chip card or candles.
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
+import { Button } from '@l3/components/Button'
+import { Icon } from '@l3/components/Icon'
+import { MaskIcon } from '@l3/components/MaskIcon'
+import { msCandlestickChart } from '@l3/icons/material'
+import { Usd, useUsd } from '../../../../shared/money'
+import { asset } from '../../asset'
+import { periodReturn, priceSeries } from './data'
+import styles from './details.module.css'
+
+/** The Phone class for a detail page: its Actionbar takes the page's surface/primary (no cut under the bar). */
+export const detailsPhone = styles.detailsPhone
+
+/** The chart's ranges, exactly as Figma. */
+export const RANGES = ['1H', '24H', '7D', '1M', '3M', '1Y'] as const
+export type Range = (typeof RANGES)[number]
+/** The sample data's period behind each range (1H is the last stretch of the day's line). */
+const DATA_PERIOD: Record<Range, string> = { '1H': '1D', '24H': '1D', '7D': '1W', '1M': '1M', '3M': '3M', '1Y': '1Y' }
+/** The time axis under the chart, per range (US market hours, ET). */
+const X_LABELS: Record<Range, string[]> = {
+  '1H': ['3:00', '3:10', '3:20', '3:30', '3:40', '3:50'],
+  '24H': ['9:30', '10:30', '11:30', '12:30', '1:30', '2:30'],
+  '7D': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Mon'],
+  '1M': ['10 Oct', '15 Oct', '20 Oct', '25 Oct', '30 Oct', '5 Nov'],
+  '3M': ['Aug', 'Sep', 'Sep', 'Oct', 'Oct', 'Nov'],
+  '1Y': ['Dec', 'Feb', 'Apr', 'Jun', 'Aug', 'Oct'],
+}
+/** How many candles a range draws. */
+const CANDLES = 44
+
+// ── Title ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Logo (32) · the name in Heading 12 with the switch arrows (another stock / fund), a Tag after it (ETF) · the price in
+ * Label 18 and the change "(+1.48%)" in Label 12, both green or red with the move. `end`: the ETF's bookmark.
+ */
+export function AssetTitle({ logo, name, tag, price, changePct, end }: { logo: ReactNode; name: string; tag?: ReactNode; price: number; changePct: number; end?: ReactNode }) {
+  const up = changePct >= 0
+  return (
+    <div className={styles.title}>
+      <span className={styles.logo} aria-hidden="true">{logo}</span>
+      <div className={styles.titleText}>
+        <span className={styles.nameRow}>
+          <h1 className={styles.name}>{name}</h1>
+          {tag}
+          {/* No ⇕ after the name on either page (Figma has one; the user's call, 8 Nov). */}
+        </span>
+        <span className={styles.priceRow} data-down={!up || undefined}>
+          <span className={styles.price}><Usd value={price} layout="inline" /></span>
+          <span className={styles.change}>({up ? '+' : '−'}{Math.abs(changePct).toFixed(2)}%)</span>
+        </span>
+      </div>
+      {end && <span className={styles.titleEnd}>{end}</span>}
+    </div>
+  )
+}
+
+// ── Stat chips ────────────────────────────────────────────────────────────────────────────────────────────────────
+
+export type StatChip = { label: string; value: ReactNode; info?: boolean }
+
+/** A sideways row of outlined chips (radius 8): a Description 10 label (with ⓘ) over a Label 12 value. `lead`: a chip
+ *  that comes first (the ETF's Pre Market countdown). */
+export function StatChips({ items, lead }: { items: StatChip[]; lead?: ReactNode }) {
+  return (
+    <div className={styles.chips} role="list">
+      {lead}
+      {items.map((c) => (
+        <div key={c.label} className={styles.chip} role="listitem">
+          <span className={styles.chipLabel}>
+            {c.label}
+            {c.info && <span className={styles.chipInfo} aria-hidden="true"><MaskIcon src={asset('assets/details/info.svg')} /></span>}
+          </span>
+          <span className={styles.chipValue}>{c.value}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** The ETF's first chip: "Pre Market ⓘ" over a live countdown to the open (Figma animates it a second at a time). */
+export function PreMarketChip({ seconds: start = 1 * 3600 + 24 * 60 + 59 }: { seconds?: number }) {
+  const [left, setLeft] = useState(start)
+  useEffect(() => {
+    const id = window.setInterval(() => setLeft((s) => (s > 0 ? s - 1 : start)), 1000)
+    return () => window.clearInterval(id)
+  }, [start])
+  const h = Math.floor(left / 3600)
+  const m = Math.floor((left % 3600) / 60)
+  const s = left % 60
+  return (
+    <div className={styles.chip} data-tone="gold" role="listitem" aria-label={`Pre market, opens in ${h} hours ${m} minutes`}>
+      <span className={styles.chipLabel}>
+        <span className={styles.liveDot} aria-hidden="true" />
+        Pre Market
+        <span className={styles.chipInfo} aria-hidden="true"><MaskIcon src={asset('assets/details/info.svg')} /></span>
+      </span>
+      <span className={styles.chipValue} aria-hidden="true">{h}h : {String(m).padStart(2, '0')}m : {String(s).padStart(2, '0')}s</span>
+    </div>
+  )
+}
+
+// ── Chart ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+type Candle = { o: number; h: number; l: number; c: number }
+
+/** The sample line for a range, grouped into candles (open = first, close = last, high / low = the extremes). */
+function candlesFor(sym: string, range: Range, price: number, dayPct: number): { candles: Candle[]; line: number[] } {
+  const period = DATA_PERIOD[range]
+  const pct = range === '1H' ? dayPct / 6 : periodReturn(sym, period, dayPct)
+  const per = 4
+  const full = priceSeries(sym, period, price, pct, CANDLES * per * (range === '1H' ? 4 : 1))
+  const line = range === '1H' ? full.slice(-CANDLES * per) : full
+  const candles: Candle[] = []
+  for (let i = 0; i < CANDLES; i++) {
+    const chunk = line.slice(i * per, i * per + per + 1)
+    candles.push({ o: chunk[0], c: chunk[chunk.length - 1], h: Math.max(...chunk), l: Math.min(...chunk) })
+  }
+  return { candles, line }
+}
+
+/**
+ * The chart: the range picker (L3 pill Tabs, small) with full screen at its end; candles (or the line) with the price
+ * axis on the right; the time axis under it with the line / candle switch at its end. Green and red are the
+ * indicator up / down tokens.
+ */
+export function CandleChart({ sym, name, price, dayPct }: { sym: string; name: string; price: number; dayPct: number }) {
+  const usd = useUsd()
+  const [range, setRange] = useState<Range>('1H')
+  const [mode, setMode] = useState<'candle' | 'line'>('candle')
+  const { candles, line } = candlesFor(sym, range, price, dayPct)
+  const lo = Math.min(...candles.map((k) => k.l))
+  const hi = Math.max(...candles.map((k) => k.h))
+  const y = (p: number) => ((hi - p) / (hi - lo || 1)) * 100
+  const step = 100 / CANDLES
+  const axis = Array.from({ length: 8 }, (_, i) => usd(hi - ((hi - lo) * i) / 7))
+  const up = line[line.length - 1] >= line[0]
+  return (
+    <div className={styles.chartBlock}>
+      {/* Figma 6538:85255: the ranges are plain Label 12 words (content/tertiary), the picked one in content/primary —
+          no pill fills. FLAG: hand-made radio row (L3 Tabs always draws a pill or an underline). */}
+      <div className={styles.ranges} role="radiogroup" aria-label="Chart range">
+        {RANGES.map((r) => (
+          <button key={r} type="button" role="radio" aria-checked={r === range} className={styles.range} onClick={() => setRange(r)}>{r}</button>
+        ))}
+        <button type="button" className={styles.iconButton} aria-label="Full screen chart"><span className={styles.icon24}><MaskIcon src={asset('assets/details/fullscreen.svg')} /></span></button>
+      </div>
+      <div className={styles.chart} role="img" aria-label={`${name} over ${range}, ${usd(lo)} to ${usd(hi)}`}>
+        <svg className={styles.plot} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {mode === 'candle'
+            ? candles.map((k, i) => {
+                const x = i * step + step / 2
+                const top = y(Math.max(k.o, k.c))
+                const bottom = y(Math.min(k.o, k.c))
+                return (
+                  <g key={i} data-down={k.c < k.o || undefined}>
+                    <line x1={x} x2={x} y1={y(k.h)} y2={y(k.l)} vectorEffect="non-scaling-stroke" />
+                    <rect x={x - step * 0.3} width={step * 0.6} y={top} height={Math.max(bottom - top, 0.6)} />
+                  </g>
+                )
+              })
+            : <polyline data-down={!up || undefined} points={line.map((p, i) => `${((i / (line.length - 1)) * 100).toFixed(2)},${y(p).toFixed(2)}`).join(' ')} fill="none" vectorEffect="non-scaling-stroke" />}
+        </svg>
+        <div className={styles.yAxis} aria-hidden="true">{axis.map((p, i) => <span key={i}>{p}</span>)}</div>
+      </div>
+      <div className={styles.xAxis}>
+        <span className={styles.xLabels} aria-hidden="true">{X_LABELS[range].map((t, i) => <span key={i}>{t}</span>)}</span>
+        <button
+          type="button"
+          className={styles.iconButton}
+          data-up={up || undefined}
+          aria-label={mode === 'candle' ? 'Show as a line' : 'Show as candles'}
+          onClick={() => setMode(mode === 'candle' ? 'line' : 'candle')}
+        >
+          {mode === 'candle' ? <span className={styles.icon24}><MaskIcon src={asset('assets/details/chart-toggle.svg')} /></span> : <Icon icon={msCandlestickChart} size={24} />}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Sections ──────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** A section's heading row: Heading 16 with an ⓘ after it (Figma "Asset info ⓘ", "Top holdings ⓘ"). */
+export function DetailsHeading({ title }: { title: string }) {
+  return (
+    <h2 className={styles.heading}>
+      {title}
+      <span className={styles.headingInfo} aria-hidden="true"><MaskIcon src={asset('assets/details/info.svg')} /></span>
+    </h2>
+  )
+}
+
+/** Figma "Asset info": a card with two columns of label (Description 12) over value (Label 14), 16 apart. */
+export function InfoGrid({ title, items }: { title: string; items: [string, ReactNode][] }) {
+  return (
+    <section className={styles.block} aria-label={title}>
+      <DetailsHeading title={title} />
+      <dl className={styles.infoGrid}>
+        {items.map(([k, v]) => (
+          <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
+// ── About · dock ──────────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Figma 6538:84950: from the ranges down, the page sits on a sheet of surface/default with 24 top corners and a 1px rim,
+ * a soft grey glow along its top edge, over the header's surface/primary (the Phone is `surface="primary"`).
+ */
+export function DetailsSheet({ children }: { children: ReactNode }) {
+  return <div className={styles.sheet}>{children}</div>
+}
+
+/** The page's last block: the logo (40), "About NVIDIA" and the whole profile, on a soft wash from the page. */
+export function AboutBlock({ logo, title, text }: { logo: ReactNode; title: string; text: string }) {
+  return (
+    <section className={styles.about} aria-label={title}>
+      <span className={styles.aboutLogo} aria-hidden="true">{logo}</span>
+      <h2 className={styles.aboutTitle}>{title}</h2>
+      <p className={styles.aboutText}>{text}</p>
+    </section>
+  )
+}
+
+/** The trade dock: a price-alert bell (40, outlined) · Buy · Sell, 12 apart (L3 buy / sell, md as in Figma). */
+export function TradeDock({ buy, sell, onBuy, onSell }: { buy: string; sell: string; onBuy?: () => void; onSell?: () => void }) {
+  return (
+    <div className={styles.dock}>
+      <button type="button" className={styles.bell} aria-label="Set a price alert">
+        <MaskIcon src={asset('assets/details/bell.svg')} />
+      </button>
+      <Button variant="buy" size="md" onClick={onBuy}>{buy}</Button>
+      <Button variant="sell" size="md" onClick={onSell}>{sell}</Button>
+    </div>
+  )
+}
+
+/** A logo image in a round plate (the stock's or the fund house's). */
+export function LogoImg({ src, plate, size, fallback }: { src?: string; plate?: string; size: number; fallback: string }) {
+  return (
+    <span className={styles.logoImg} style={{ '--size': `${size}px`, ...(plate ? { '--plate': plate } : {}) } as CSSProperties}>
+      {src ? <img src={src} alt="" /> : fallback}
+    </span>
+  )
+}
 ```
 
 ### `src/flows/us-stocks/screens/activation/icons.ts`
@@ -30868,6 +31766,238 @@ span:has(>.diagCol){width:auto;height:auto}
 }
 ```
 
+### `src/flows/us-stocks/screens/etf/EtfDetailsF1.module.css`
+
+```css
+/* The ETF page's Top holdings and Allocation, Figma 6538:107342. */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-16);
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-12);
+}
+.lead {
+  margin: 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+.lead b {
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+}
+/* FLAG: hand-made segmented bar — each top holding a green step (2 apart), the rest one grey step. */
+.bar {
+  display: flex;
+  gap: 2px; /* FLAG: raw px — Figma's step gap */
+  height: var(--l3-size-08);
+}
+.step {
+  flex-basis: 0;
+  border-radius: var(--l3-radius-02, 2px);
+  background: var(--l3-surface-accent-indicator-up-default);
+}
+.rest {
+  flex-basis: 0;
+  border-radius: var(--l3-radius-02, 2px);
+  background: var(--l3-surface-tertiary);
+}
+.legend {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-label-10);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.legend i {
+  display: inline-block;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  margin-right: var(--l3-spacing-06);
+  border-radius: var(--l3-radius-02, 2px);
+  background: var(--l3-surface-accent-indicator-up-default);
+}
+.legend i[data-tone='rest'] {
+  background: var(--l3-surface-tertiary);
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  width: 100%;
+  padding: var(--l3-spacing-10) 0;
+  border: 0;
+  background: none;
+  color: var(--l3-content-primary);
+  text-align: start;
+  cursor: pointer;
+}
+.rank {
+  width: var(--l3-size-12);
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-label-12);
+}
+.who {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+}
+.who > :first-child {
+  overflow: hidden;
+  font: var(--l3-text-label-14);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.who > :last-child {
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+.weight {
+  font: var(--l3-text-label-14);
+}
+.all {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-08) 0 0;
+  border: 0;
+  background: none;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+  cursor: pointer;
+}
+.chips {
+  justify-content: flex-start;
+}
+```
+
+### `src/flows/us-stocks/screens/etf/EtfDetailsF1.tsx`
+
+```tsx
+// The ETF page's sections from Figma 6538:107342 (8 Nov): Top holdings ("Top 10 make up 50.2% of the fund", a bar in ten
+// green steps and the others in grey, the five biggest rows, "View all N more holdings") and Allocation (Market cap ·
+// Sectors · Countries chips over the share donut).
+// Market cap and Countries splits are sample data (by the fund's sector / country); Sectors are the fund's own.
+// FLAG: the segmented bar is hand-made (EtfDetailsF1.module.css); L3 ProgressBar has one value.
+import { useState } from 'react'
+import { Icon } from '@l3/components/Icon'
+import { Tabs } from '@l3/components/Tabs'
+import { msKeyboardArrowDown } from '@l3/icons/material'
+import { DetailsHeading } from '../activation/details'
+import { holdingsBeyond, sectorsFor, stockName, topHoldings, type Etf } from './data'
+import { ShareDonut, type DonutPart } from './EtfHoldings'
+import { HoldingLogo } from './parts'
+import styles from './EtfDetailsF1.module.css'
+
+/** How many holdings the bar counts and how many rows show. */
+const TOP = 10
+const ROWS = 5
+
+export function TopHoldingsF1({ etf, title = 'Top holdings', onOpen, onAll }: { etf: Etf; title?: string; onOpen: (sym: string) => void; onAll?: () => void }) {
+  const top = topHoldings(etf, TOP)
+  const share = top.reduce((sum, h) => sum + h.weight, 0)
+  const more = holdingsBeyond(etf, ROWS)
+  return (
+    <section className={styles.block} aria-label={title}>
+      <DetailsHeading title={title} />
+      <div className={styles.card}>
+        <p className={styles.lead}>
+          Top {top.length} make up <b>{share.toFixed(1)}%</b> of the fund
+        </p>
+        <div className={styles.bar} aria-hidden="true">
+          {top.map((h) => <span key={h.sym} className={styles.step} style={{ flexGrow: h.weight }} />)}
+          <span className={styles.rest} style={{ flexGrow: Math.max(0, 100 - share) }} />
+        </div>
+        <p className={styles.legend} aria-hidden="true">
+          <span><i data-tone="top" />Top {top.length} holdings</span>
+          <span><i data-tone="rest" />Others</span>
+        </p>
+        <ol className={styles.rows}>
+          {top.slice(0, ROWS).map((h, i) => (
+            <li key={h.sym}>
+              <button type="button" className={styles.row} onClick={() => onOpen(h.sym)} aria-label={`${stockName(h.sym)}, ${h.weight.toFixed(1)}% of the fund. Open stock`}>
+                <span className={styles.rank}>{i + 1}</span>
+                <HoldingLogo sym={h.sym} size={32} />
+                <span className={styles.who}>
+                  <span>{stockName(h.sym)}</span>
+                  <span>{h.sym}</span>
+                </span>
+                <span className={styles.weight}>{h.weight.toFixed(1)}%</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        {more > 0 && (
+          // "View more" (the user's wording, 8 Nov; Figma: "View all N more holdings") opens the full Top holdings page.
+          <button type="button" className={styles.all} onClick={onAll} aria-label={`View all ${more.toLocaleString('en-US')} more holdings`}>
+            View more
+            <Icon icon={msKeyboardArrowDown} size={16} />
+          </button>
+        )}
+      </div>
+    </section>
+  )
+}
+
+type AllocationBy = 'cap' | 'sectors' | 'countries'
+
+/** Sample market-cap split by the kind of fund. */
+function capSplit(etf: Etf): DonutPart[] {
+  if (etf.sector === 'Broad market') return [{ name: 'Mega cap', weight: 62 }, { name: 'Large cap', weight: 28 }, { name: 'Mid cap', weight: 8 }, { name: 'Small cap', weight: 2 }]
+  if (etf.sector === 'Technology') return [{ name: 'Mega cap', weight: 74 }, { name: 'Large cap', weight: 18 }, { name: 'Mid cap', weight: 6 }, { name: 'Small cap', weight: 2 }]
+  return [{ name: 'Mega cap', weight: 48 }, { name: 'Large cap', weight: 34 }, { name: 'Mid cap', weight: 14 }, { name: 'Small cap', weight: 4 }]
+}
+
+/** Sample country split: the fund's own country, then the rest. */
+function countrySplit(etf: Etf): DonutPart[] {
+  const home = etf.country === 'US' ? 'United States' : etf.country
+  return etf.country === 'US' ? [{ name: home, weight: 98.9 }, { name: 'Other', weight: 1.1 }] : [{ name: home, weight: 96 }, { name: 'Other', weight: 4 }]
+}
+
+export function AllocationF1({ etf }: { etf: Etf }) {
+  const sectors = sectorsFor(etf)
+  const [by, setBy] = useState<AllocationBy>('cap')
+  const parts = by === 'cap' ? capSplit(etf) : by === 'countries' ? countrySplit(etf) : sectors
+  return (
+    <section className={styles.block} aria-label="Allocation">
+      <DetailsHeading title="Allocation" />
+      <Tabs
+        appearance="pill"
+        size="sm"
+        aria-label="Allocation by"
+        value={by}
+        onChange={(v) => setBy(v as AllocationBy)}
+        items={[
+          { value: 'cap', label: 'Market cap' },
+          ...(sectors.length ? [{ value: 'sectors', label: 'Sectors' }] : []),
+          { value: 'countries', label: 'Countries' },
+        ]}
+        className={styles.chips}
+      />
+      <ShareDonut key={by} parts={parts} of="the fund" legendLabel={`Share of the fund by ${by === 'cap' ? 'market cap' : by === 'sectors' ? 'sector' : 'country'}`} />
+    </section>
+  )
+}
+```
+
 ### `src/flows/us-stocks/screens/etf/EtfHoldings.module.css`
 
 ```css
@@ -32259,6 +33389,21 @@ export function EtfListScreen({ backdrop }: { backdrop?: boolean }) {
   flex-direction: column;
   display: flex;
 }
+
+/* Figma 6538:107342: the sections sit straight on the page, 16 at the sides, 32 apart and 32 under the chart. */
+.overview[data-details] {
+  padding: var(--l3-spacing-32) var(--l3-spacing-16);
+}
+
+/* The bookmark at the title's end (Figma). */
+.bookmark {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
 ```
 
 ### `src/flows/us-stocks/screens/etf/EtfPage.tsx`
@@ -32278,7 +33423,7 @@ import { Button } from '@l3/components/Button'
 import { ButtonGroup } from '@l3/components/ButtonGroup'
 import { Icon } from '@l3/components/Icon'
 import { MaskIcon } from '@l3/components/MaskIcon'
-import { msTrendingDown, msTrendingUp } from '@l3/icons/material'
+import { msBookmark, msSearch, msTrendingDown, msTrendingUp } from '@l3/icons/material'
 import { Tabs } from '@l3/components/Tabs'
 import { Tag } from '@l3/components/Tag'
 import { Phone } from '../../components/Phone'
@@ -32286,7 +33431,9 @@ import { asset } from '../../asset'
 import { useUsNav } from '../../nav'
 import { useUsJourney } from '../../../../shared/userStatus'
 import { Usd, formatInr, useUsd, useUsdInrRate } from '../../../../shared/money'
-import { activationFooter, type StockState } from '../activation/StockPage'
+import { useF1Details, activationFooter, type StockState } from '../activation/StockPage'
+import { AboutBlock, AssetTitle, CandleChart, DetailsSheet, InfoGrid, LogoImg, PreMarketChip, StatChips, TradeDock, detailsPhone } from '../activation/details'
+import { AllocationF1, TopHoldingsF1 } from './EtfDetailsF1'
 import { AboutCard, DailyPerformance, Events, News } from '../activation/sections'
 import { catalogue } from '../../data'
 import { getCurrentEtf } from './currentEtf'
@@ -32324,6 +33471,7 @@ function SectionTitle({ title }: { title: string }) {
 }
 
 export function EtfPage({ backdrop }: { backdrop?: boolean }) {
+  const f1Details = useF1Details()
   const { go, back } = useUsNav()
   const usd = useUsd()
   const usdInr = useUsdInrRate()
@@ -32392,6 +33540,69 @@ export function EtfPage({ backdrop }: { backdrop?: boolean }) {
     ['Holdings', d.holdings],
     ...(leveraged ? ([['Leverage', `${etf.lev} daily, ${long ? 'long' : 'short'}`]] as [string, ReactNode][]) : []),
   ]
+
+  // Figma 6538:107342 (8 Nov): one long page. Back · search in the bar; logo · name + ETF tag ⇕ · $ price, the bookmark at
+  // the end; Pre Market countdown and stat chips; candles; then Asset info, Top holdings, Allocation (Market cap ·
+  // Sectors · Countries), Daily Performance (kept, the user's call), News, About; bell · Buy · Sell dock.
+  if (f1Details) {
+    const f1Header = (
+      <Actionbar
+        onBack={() => back(ETF_LIST)}
+        title={scrolled ? etf.name : undefined}
+        description={scrolled ? <><Usd value={etf.price} layout="inline" /> <EtfMove change={etf.change} /></> : undefined}
+        actions={<ActionbarAction icon={msSearch} variant="ghost" label="Search" onClick={() => {}} />}
+      />
+    )
+    const f1Footer = (gate && activationFooter(gate, (id) => act(() => go(id))())) || (
+      <TradeDock buy={leveraged ? 'Go Long' : 'Buy'} sell={leveraged ? 'Go Short' : 'Sell'} onBuy={act(() => go(buyTo))} onSell={act(() => go(BUY_PAD))} />
+    )
+    const fundLogo = (size: number) => <LogoImg src={logo?.src} plate={logo?.plate} size={size} fallback={etf.sym[0]} />
+    const assetInfo: [string, ReactNode][] = [
+      ['NAV (USD)', <Usd value={d.nav} layout="inline" />],
+      ['Total Assets', <Usd text={etf.aum} />],
+      ['Avg Volume', <Usd text={d.volume} />],
+      ['Expense Ratio', percent(etf.expense)],
+      ['Dividend Yield', d.yield],
+      ['Leverage', leveraged ? `${etf.lev} ${long ? 'long' : 'short'}` : '1x'],
+      ['Tracking Index', d.index],
+      ['Issuer', issuer ?? '—'],
+      ['Domicile', 'US'],
+      ['Holdings', d.holdings],
+    ]
+    return (
+      <Phone label={etf.name} header={f1Header} footer={f1Footer} surface="primary" gesture="none" bodyRef={setBody} className={[detailsPhone, backdrop && styles.still].filter(Boolean).join(' ')}>
+        <AssetTitle
+          logo={fundLogo(32)}
+          name={etf.name}
+          tag={<Tag variant="secondary" color="neutral" size="sm">ETF</Tag>}
+          price={etf.price}
+          changePct={etf.change}
+          end={<button type="button" className={styles.bookmark} aria-label={`Add ${etf.sym} to watchlist`}><Icon icon={msBookmark} size={24} /></button>}
+        />
+        <StatChips
+          lead={<PreMarketChip />}
+          items={[
+            { label: 'Total Assets', value: <Usd text={etf.aum} /> },
+            { label: 'Expense Ratio', value: percent(etf.expense), info: true },
+            { label: '52W High / Low', value: <><Usd value={d.high52} layout="inline" /> / <Usd value={d.low52} layout="inline" /></> },
+          ]}
+        />
+        <DetailsSheet>
+          <CandleChart sym={etf.sym} name={etf.sym} price={etf.price} dayPct={etf.change} />
+          <div className={styles.overview} data-details="">
+            {leveraged && <LeverageStrip etf={etf} onOpen={BOOST_SHEET ? act(() => setBoostOpen(true)) : undefined} />}
+            <InfoGrid title="Asset info" items={assetInfo} />
+            <TopHoldingsF1 etf={etf} title={leveraged ? 'Tracks' : 'Top holdings'} onOpen={(sym) => act(() => openHolding(go, sym))()} onAll={act(() => go(ETF_HOLDINGS))} />
+            {!leveraged && <AllocationF1 etf={etf} />}
+            <DailyPerformance price={etf.price} low={d.low} high={d.high} stats={dayStats} />
+            <News items={newsFor(etf)} stock={etf.sym} />
+          </div>
+          <AboutBlock logo={fundLogo(40)} title={`About ${etf.sym}`} text={aboutFor(etf)} />
+        </DetailsSheet>
+        {BOOST_SHEET && leveraged && !backdrop && <BoostedSheet key={String(boostOpen)} open={boostOpen} onClose={() => setBoostOpen(false)} />}
+      </Phone>
+    )
+  }
 
   return (
     <Phone label={etf.name} header={header} footer={footer} gesture="none" bodyRef={setBody} className={backdrop ? styles.still : undefined}>
@@ -63494,6 +64705,10 @@ type StockListCardProps = {
   changePct?: number
   /** Opens the stock / ETF page. Without it the card is static (no fill, no press). */
   onOpen?: () => void
+  /** A plain row (L3 ListCell `variant="plain"`, no card) for lists split by hairlines — the US F1 home (Figma 6441:3). */
+  plain?: boolean
+  /** The logo's size (default 40; the F1 home's plain rows use 32). */
+  logoSize?: 24 | 32 | 40
   'aria-label'?: string
 }
 
@@ -63504,13 +64719,14 @@ type StockListCardProps = {
  *
  * Symbol in Label 14 = `labelSize="14"` (list-cell 1.9.0).
  */
-export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, ...rest }: StockListCardProps) {
+export function StockListCard({ symbol, name, logoUrl, initials, logo, tag, price, changePct, onOpen, plain = false, logoSize = 40, ...rest }: StockListCardProps) {
+  const look = plain ? ({ variant: 'plain' } as const) : ({ variant: 'card', raised: false } as const)
   return (
     <ListCell
-      variant="card"
+      {...look}
       as={onOpen ? 'button' : undefined}
       className={onOpen ? undefined : styles.static}
-      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={40} label={name} />}
+      iconLeft={logo ?? <Avatar initials={initials ?? symbol.slice(0, 2)} src={logoUrl} size={logoSize} label={name} />}
       labelSuffix={tag || undefined}
       labelSuffixTone="neutral"
       labelSize="14"
