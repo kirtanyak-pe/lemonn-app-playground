@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-09T12:22:50.153Z",
+ "fetchedAt": "2026-11-09T20:28:18.643Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -12653,8 +12653,8 @@
      "close": 1904.5
     }
    ],
-   "sector": null,
-   "industry": null
+   "sector": "Healthcare",
+   "industry": "Drug Manufacturers—Specialty & Generic"
   },
   "SUZLON": {
    "price": 38.91,
