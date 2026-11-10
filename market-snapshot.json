@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-09T20:28:18.643Z",
+ "fetchedAt": "2026-11-10T11:46:51.318Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -8643,7 +8643,7 @@
    "changePct": 1.27,
    "dayHigh": 401,
    "dayLow": 393.1,
-   "high52": 465.95,
+   "high52": 460.5,
    "low52": 360.75,
    "volume": 5998917,
    "longName": "Life Insurance Corporation of India",
@@ -13736,7 +13736,7 @@
    "dayHigh": 4835,
    "dayLow": 4734.5,
    "high52": 5250,
-   "low52": 3602,
+   "low52": 3672.3,
    "volume": 403353,
    "longName": "Torrent Pharmaceuticals Limited",
    "closes": [
