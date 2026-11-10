@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-10T11:46:51.318Z",
+ "fetchedAt": "2026-11-10T11:58:19.909Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -1943,7 +1943,7 @@
    "changePct": -1.49,
    "dayHigh": 1869.9,
    "dayLow": 1822,
-   "high52": 2126.8,
+   "high52": 2118.5,
    "low52": 1597,
    "volume": 569587,
    "longName": "Bajaj Finserv Ltd.",
