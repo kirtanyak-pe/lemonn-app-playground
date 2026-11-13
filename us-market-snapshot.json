@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart endpoint)",
- "fetchedAt": "2026-11-13T20:37:53.941Z",
+ "fetchedAt": "2026-11-13T20:49:26.213Z",
  "symbols": [
   "AAL",
   "AAPL",
@@ -179,16 +179,16 @@
    "name": "American Airlines Group Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 13.33,
+   "price": 13.36,
    "open": 13.41,
    "prevClose": 13.31,
-   "change": 0.02,
-   "changePct": 0.15,
+   "change": 0.05,
+   "changePct": 0.38,
    "dayHigh": 13.56,
    "dayLow": 13.29,
    "high52": 18.79,
    "low52": 10.09,
-   "volume": 38529214,
+   "volume": 39805595,
    "closes": [
     12.5,
     11.79,
@@ -213,23 +213,23 @@
     14.11,
     14.1,
     13.31,
-    13.32
+    13.35
    ]
   },
   "AAPL": {
    "name": "Apple Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 356.27,
+   "price": 355.91,
    "open": 357.96,
    "prevClose": 354.88,
-   "change": 1.39,
-   "changePct": 0.39,
+   "change": 1.03,
+   "changePct": 0.29,
    "dayHigh": 360.83,
-   "dayLow": 356.08,
+   "dayLow": 355.76,
    "high52": 360.83,
    "low52": 243.42,
-   "volume": 23873181,
+   "volume": 24905007,
    "closes": [
     341.27,
     342.96,
@@ -254,23 +254,23 @@
     348.51,
     355.63,
     354.88,
-    356.27
+    355.9
    ]
   },
   "ABBV": {
    "name": "AbbVie Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 295.08,
+   "price": 294.46,
    "open": 296.58,
    "prevClose": 294.45,
-   "change": 0.63,
-   "changePct": 0.21,
+   "change": 0.01,
+   "changePct": 0,
    "dayHigh": 297.25,
    "dayLow": 293.56,
    "high52": 302.93,
    "low52": 190.75,
-   "volume": 1945874,
+   "volume": 2028375,
    "closes": [
     274.36,
     283.48,
@@ -295,23 +295,23 @@
     293.89,
     294.98,
     294.45,
-    295.08
+    294.46
    ]
   },
   "ABNB": {
    "name": "Airbnb, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 186.33,
+   "price": 186.73,
    "open": 182.66,
    "prevClose": 181.13,
-   "change": 5.2,
-   "changePct": 2.87,
+   "change": 5.6,
+   "changePct": 3.09,
    "dayHigh": 187.03,
    "dayLow": 181.81,
    "high52": 197.87,
    "low52": 110.81,
-   "volume": 3055688,
+   "volume": 3199600,
    "closes": [
     165.58,
     167.06,
@@ -336,23 +336,23 @@
     186.9,
     181.13,
     181.13,
-    186.33
+    186.73
    ]
   },
   "ADBE": {
    "name": "Adobe Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 243.3,
+   "price": 242.69,
    "open": 240.19,
    "prevClose": 238.54,
-   "change": 4.76,
-   "changePct": 2,
+   "change": 4.15,
+   "changePct": 1.74,
    "dayHigh": 243.78,
    "dayLow": 237.94,
    "high52": 362.71,
    "low52": 190.12,
-   "volume": 1556609,
+   "volume": 1627902,
    "closes": [
     236.28,
     240.68,
@@ -377,23 +377,23 @@
     236.7,
     237.6,
     238.54,
-    243.29
+    242.68
    ]
   },
   "AEO": {
    "name": "American Eagle Outfitters, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 21.78,
+   "price": 21.76,
    "open": 21.76,
    "prevClose": 21.67,
-   "change": 0.11,
-   "changePct": 0.51,
+   "change": 0.09,
+   "changePct": 0.42,
    "dayHigh": 21.94,
    "dayLow": 21.42,
    "high52": 28.46,
    "low52": 14.1,
-   "volume": 1443428,
+   "volume": 1560988,
    "closes": [
     17.78,
     17.6,
@@ -418,23 +418,23 @@
     21.48,
     21.55,
     21.67,
-    21.77
+    21.76
    ]
   },
   "AMC": {
    "name": "AMC Entertainment Holdings, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 3.24,
+   "price": 3.25,
    "open": 3.34,
    "prevClose": 3.34,
-   "change": -0.1,
-   "changePct": -2.99,
+   "change": -0.09,
+   "changePct": -2.69,
    "dayHigh": 3.37,
    "dayLow": 3.22,
    "high52": 3.77,
    "low52": 0.93,
-   "volume": 13548115,
+   "volume": 13937093,
    "closes": [
     3.06,
     2.89,
@@ -459,23 +459,23 @@
     3.46,
     3.42,
     3.34,
-    3.23
+    3.25
    ]
   },
   "AMD": {
    "name": "Advanced Micro Devices, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 530.25,
+   "price": 533.6,
    "open": 566.67,
    "prevClose": 585.3,
-   "change": -55.05,
-   "changePct": -9.41,
+   "change": -51.7,
+   "changePct": -8.83,
    "dayHigh": 571.13,
    "dayLow": 520.01,
    "high52": 658.52,
    "low52": 188.22,
-   "volume": 40933349,
+   "volume": 41745034,
    "closes": [
     605.53,
     570.82,
@@ -500,23 +500,23 @@
     515.21,
     552.9,
     585.3,
-    530.25
+    533.6
    ]
   },
   "AMZN": {
    "name": "Amazon.com, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 265.75,
+   "price": 266.36,
    "open": 269.55,
    "prevClose": 267.44,
-   "change": -1.69,
-   "changePct": -0.63,
+   "change": -1.08,
+   "changePct": -0.4,
    "dayHigh": 269.94,
    "dayLow": 263.91,
    "high52": 287.2,
    "low52": 196,
-   "volume": 18768001,
+   "volume": 19560910,
    "closes": [
     258.58,
     254.08,
@@ -541,23 +541,23 @@
     270.87,
     266.17,
     267.44,
-    265.75
+    266.36
    ]
   },
   "ANF": {
    "name": "Abercrombie & Fitch Co.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 148.16,
+   "price": 148.57,
    "open": 148.31,
    "prevClose": 150.49,
-   "change": -2.33,
-   "changePct": -1.55,
+   "change": -1.92,
+   "changePct": -1.28,
    "dayHigh": 150.54,
    "dayLow": 145.26,
    "high52": 172,
    "low52": 65.45,
-   "volume": 460955,
+   "volume": 488768,
    "closes": [
     150.88,
     149.74,
@@ -582,23 +582,23 @@
     154,
     151.92,
     150.49,
-    148.16
+    148.57
    ]
   },
   "AVGO": {
    "name": "Broadcom Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 345.02,
+   "price": 346.29,
    "open": 356.54,
    "prevClose": 364.36,
-   "change": -19.34,
-   "changePct": -5.31,
+   "change": -18.07,
+   "changePct": -4.96,
    "dayHigh": 358.47,
    "dayLow": 337.67,
    "high52": 495,
    "low52": 289.77,
-   "volume": 21586753,
+   "volume": 22129278,
    "closes": [
     357.31,
     346.25,
@@ -623,23 +623,23 @@
     331.98,
     345.22,
     364.36,
-    345.02
+    346.29
    ]
   },
   "BA": {
    "name": "The Boeing Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 171.25,
+   "price": 171.21,
    "open": 171.49,
    "prevClose": 171.55,
-   "change": -0.3,
-   "changePct": -0.17,
+   "change": -0.34,
+   "changePct": -0.2,
    "dayHigh": 171.75,
    "dayLow": 169.56,
    "high52": 254.35,
    "low52": 165.01,
-   "volume": 3504790,
+   "volume": 3681895,
    "closes": [
     186.49,
     184.66,
@@ -664,23 +664,23 @@
     173.38,
     174.54,
     171.55,
-    171.25
+    171.21
    ]
   },
   "BAC": {
    "name": "Bank of America Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 50.78,
+   "price": 50.8,
    "open": 50.89,
    "prevClose": 50.51,
-   "change": 0.27,
-   "changePct": 0.53,
+   "change": 0.29,
+   "changePct": 0.57,
    "dayHigh": 50.92,
    "dayLow": 50.43,
    "high52": 65.23,
    "low52": 46.12,
-   "volume": 11630187,
+   "volume": 12154595,
    "closes": [
     53.96,
     51.39,
@@ -705,23 +705,23 @@
     50.68,
     50.67,
     50.51,
-    50.78
+    50.79
    ]
   },
   "BB": {
    "name": "BlackBerry Limited",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 8.88,
+   "price": 8.9,
    "open": 9.13,
    "prevClose": 9.12,
-   "change": -0.24,
-   "changePct": -2.63,
+   "change": -0.22,
+   "changePct": -2.41,
    "dayHigh": 9.22,
    "dayLow": 8.6,
    "high52": 13.59,
    "low52": 3.12,
-   "volume": 8554074,
+   "volume": 8782454,
    "closes": [
     8.47,
     8.23,
@@ -746,23 +746,23 @@
     9.14,
     9.4,
     9.12,
-    8.88
+    8.9
    ]
   },
   "BBWI": {
    "name": "Bath & Body Works, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 21.37,
+   "price": 21.38,
    "open": 21.21,
    "prevClose": 21.08,
-   "change": 0.29,
-   "changePct": 1.38,
+   "change": 0.3,
+   "changePct": 1.42,
    "dayHigh": 21.5,
    "dayLow": 21.12,
    "high52": 24.94,
    "low52": 14.28,
-   "volume": 2630942,
+   "volume": 2769529,
    "closes": [
     18,
     18.95,
@@ -787,23 +787,23 @@
     21.65,
     21.72,
     21.08,
-    21.37
+    21.38
    ]
   },
   "BIRK": {
    "name": "Birkenstock Holding plc",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 36.42,
+   "price": 36.43,
    "open": 36.17,
    "prevClose": 35.7,
-   "change": 0.72,
-   "changePct": 2.02,
+   "change": 0.73,
+   "changePct": 2.04,
    "dayHigh": 36.77,
    "dayLow": 35.79,
    "high52": 50.73,
    "low52": 29.93,
-   "volume": 580383,
+   "volume": 613636,
    "closes": [
     34.18,
     33.92,
@@ -828,7 +828,7 @@
     37.27,
     36.61,
     35.7,
-    36.42
+    36.43
    ]
   },
   "BLNK": {
@@ -844,7 +844,7 @@
    "dayLow": 0.42,
    "high52": 1.47,
    "low52": 0.38,
-   "volume": 876668,
+   "volume": 911167,
    "closes": [
     0.48,
     0.45,
@@ -876,16 +876,16 @@
    "name": "Boot Barn Holdings, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 137.4,
+   "price": 137.49,
    "open": 138.15,
    "prevClose": 133.67,
-   "change": 3.73,
-   "changePct": 2.79,
+   "change": 3.82,
+   "changePct": 2.86,
    "dayHigh": 140.07,
    "dayLow": 135.91,
    "high52": 210.25,
    "low52": 110.53,
-   "volume": 441239,
+   "volume": 490815,
    "closes": [
     117.57,
     112.86,
@@ -910,23 +910,23 @@
     134.42,
     135.49,
     133.67,
-    137.4
+    137.49
    ]
   },
   "BOTZ": {
    "name": "Global X Robotics & Artificial Intelligence ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 31.16,
+   "price": 31.19,
    "open": 31.55,
    "prevClose": 31.42,
-   "change": -0.26,
-   "changePct": -0.83,
+   "change": -0.23,
+   "changePct": -0.73,
    "dayHigh": 31.6,
    "dayLow": 30.92,
    "high52": 41.71,
    "low52": 30.54,
-   "volume": 473962,
+   "volume": 484872,
    "closes": [
     34.96,
     34.11,
@@ -951,23 +951,23 @@
     31.57,
     32.23,
     31.42,
-    31.16
+    31.19
    ]
   },
   "BROS": {
    "name": "Dutch Bros Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 35.61,
+   "price": 35.65,
    "open": 33.56,
    "prevClose": 33.71,
-   "change": 1.9,
-   "changePct": 5.64,
-   "dayHigh": 35.69,
+   "change": 1.94,
+   "changePct": 5.75,
+   "dayHigh": 35.7,
    "dayLow": 33.25,
    "high52": 74.02,
    "low52": 33.17,
-   "volume": 4700076,
+   "volume": 4819165,
    "closes": [
     37.98,
     39.17,
@@ -992,23 +992,23 @@
     35.29,
     35.01,
     33.71,
-    35.61
+    35.65
    ]
   },
   "BYND": {
    "name": "Beyond Meat, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 5.36,
+   "price": 5.35,
    "open": 5.45,
    "prevClose": 5.41,
-   "change": -0.05,
-   "changePct": -0.92,
+   "change": -0.06,
+   "changePct": -1.11,
    "dayHigh": 5.53,
    "dayLow": 5.3,
    "high52": 44.4,
    "low52": 5.3,
-   "volume": 598931,
+   "volume": 606894,
    "closes": [
     7.21,
     6.78,
@@ -1033,23 +1033,23 @@
     5.65,
     5.92,
     5.41,
-    5.36
+    5.35
    ]
   },
   "CAKE": {
    "name": "The Cheesecake Factory Incorporated",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 108.18,
+   "price": 107.94,
    "open": 106.77,
    "prevClose": 106.2,
-   "change": 1.98,
-   "changePct": 1.86,
+   "change": 1.74,
+   "changePct": 1.64,
    "dayHigh": 109.9,
    "dayLow": 106.58,
    "high52": 118.63,
    "low52": 43.07,
-   "volume": 504148,
+   "volume": 536773,
    "closes": [
     112.37,
     112.85,
@@ -1074,23 +1074,23 @@
     108.8,
     109.67,
     106.2,
-    108.18
+    107.93
    ]
   },
   "CAR": {
    "name": "Avis Budget Group, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 124.99,
+   "price": 124.85,
    "open": 125.99,
    "prevClose": 125.7,
-   "change": -0.71,
-   "changePct": -0.56,
+   "change": -0.85,
+   "changePct": -0.68,
    "dayHigh": 125.99,
    "dayLow": 119.59,
    "high52": 847.7,
    "low52": 85.96,
-   "volume": 131433,
+   "volume": 137914,
    "closes": [
     107.6,
     106.72,
@@ -1115,23 +1115,23 @@
     124.08,
     127.32,
     125.7,
-    124.99
+    124.85
    ]
   },
   "CAVA": {
    "name": "CAVA Group, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 58.02,
+   "price": 57.8,
    "open": 56.8,
    "prevClose": 57.35,
-   "change": 0.67,
-   "changePct": 1.17,
+   "change": 0.45,
+   "changePct": 0.78,
    "dayHigh": 58.1,
    "dayLow": 56.75,
    "high52": 98.79,
    "low52": 43.41,
-   "volume": 1650364,
+   "volume": 1786036,
    "closes": [
     52.98,
     51.59,
@@ -1156,23 +1156,23 @@
     60.39,
     59.8,
     57.35,
-    58.01
+    57.8
    ]
   },
   "CHPT": {
    "name": "ChargePoint Holdings, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 11.49,
+   "price": 11.55,
    "open": 12.23,
    "prevClose": 12.05,
-   "change": -0.56,
-   "changePct": -4.65,
+   "change": -0.5,
+   "changePct": -4.15,
    "dayHigh": 12.28,
    "dayLow": 11.04,
    "high52": 12.97,
    "low52": 4.44,
-   "volume": 470639,
+   "volume": 486446,
    "closes": [
     7.22,
     6.65,
@@ -1197,23 +1197,23 @@
     12.25,
     12.51,
     12.05,
-    11.49
+    11.55
    ]
   },
   "CHWY": {
    "name": "Chewy, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 22.48,
+   "price": 22.45,
    "open": 22.49,
    "prevClose": 22.6,
-   "change": -0.12,
-   "changePct": -0.53,
+   "change": -0.15,
+   "changePct": -0.66,
    "dayHigh": 22.69,
    "dayLow": 22.27,
    "high52": 37.34,
    "low52": 17.4,
-   "volume": 3387118,
+   "volume": 3595156,
    "closes": [
     19.71,
     20.83,
@@ -1238,23 +1238,23 @@
     22.86,
     23.15,
     22.6,
-    22.48
+    22.44
    ]
   },
   "CLOV": {
    "name": "Clover Health Investments, Corp.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 4.89,
+   "price": 4.92,
    "open": 4.9,
    "prevClose": 4.88,
-   "change": 0.01,
-   "changePct": 0.2,
+   "change": 0.04,
+   "changePct": 0.82,
    "dayHigh": 4.92,
    "dayLow": 4.62,
    "high52": 5.59,
    "low52": 1.58,
-   "volume": 3280805,
+   "volume": 3336360,
    "closes": [
     4.81,
     4.79,
@@ -1279,23 +1279,23 @@
     4.93,
     4.97,
     4.88,
-    4.89
+    4.91
    ]
   },
   "CMG": {
    "name": "Chipotle Mexican Grill, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 35.24,
+   "price": 35.14,
    "open": 35.5,
    "prevClose": 35.17,
-   "change": 0.07,
-   "changePct": 0.2,
+   "change": -0.03,
+   "changePct": -0.09,
    "dayHigh": 35.51,
    "dayLow": 34.83,
    "high52": 41.42,
    "low52": 27.31,
-   "volume": 8092118,
+   "volume": 8568840,
    "closes": [
     30.35,
     30.52,
@@ -1320,23 +1320,23 @@
     35.92,
     36.64,
     35.17,
-    35.24
+    35.13
    ]
   },
   "COIN": {
    "name": "Coinbase Global, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 128.49,
+   "price": 128.15,
    "open": 127.28,
    "prevClose": 130.67,
-   "change": -2.18,
-   "changePct": -1.67,
+   "change": -2.52,
+   "changePct": -1.93,
    "dayHigh": 130.6,
    "dayLow": 125.38,
    "high52": 292.76,
    "low52": 125.38,
-   "volume": 6509642,
+   "volume": 6693290,
    "closes": [
     181.79,
     172.89,
@@ -1361,23 +1361,23 @@
     132.13,
     136.27,
     130.67,
-    128.49
+    128.15
    ]
   },
   "COLM": {
    "name": "Columbia Sportswear Company",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 73.39,
+   "price": 73.44,
    "open": 72.41,
    "prevClose": 71.64,
-   "change": 1.75,
-   "changePct": 2.44,
+   "change": 1.8,
+   "changePct": 2.51,
    "dayHigh": 73.72,
    "dayLow": 71.74,
    "high52": 73.72,
    "low52": 49.57,
-   "volume": 320814,
+   "volume": 341878,
    "closes": [
     57.06,
     57.7,
@@ -1402,23 +1402,23 @@
     72.26,
     72.19,
     71.64,
-    73.39
+    73.44
    ]
   },
   "COST": {
    "name": "Costco Wholesale Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 1103.8,
+   "price": 1104.34,
    "open": 1094.59,
    "prevClose": 1092.21,
-   "change": 11.59,
-   "changePct": 1.06,
+   "change": 12.13,
+   "changePct": 1.11,
    "dayHigh": 1109.5,
    "dayLow": 1092.64,
    "high52": 1109.5,
    "low52": 844.06,
-   "volume": 1269950,
+   "volume": 1317643,
    "closes": [
     954.63,
     982,
@@ -1443,23 +1443,23 @@
     1066.14,
     1087.61,
     1092.21,
-    1103.8
+    1104.33
    ]
   },
   "CPRI": {
    "name": "Capri Holdings Limited",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 21.43,
+   "price": 21.38,
    "open": 20.79,
    "prevClose": 20.38,
-   "change": 1.05,
-   "changePct": 5.15,
+   "change": 1,
+   "changePct": 4.91,
    "dayHigh": 21.46,
    "dayLow": 20.43,
    "high52": 28.27,
    "low52": 12.4,
-   "volume": 2149506,
+   "volume": 2312764,
    "closes": [
     15.16,
     15.02,
@@ -1484,23 +1484,23 @@
     21.73,
     20.89,
     20.38,
-    21.42
+    21.38
    ]
   },
   "CQQQ": {
    "name": "Invesco China Technology ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 38.31,
+   "price": 38.34,
    "open": 38.16,
    "prevClose": 39.12,
-   "change": -0.81,
-   "changePct": -2.07,
+   "change": -0.78,
+   "changePct": -1.99,
    "dayHigh": 38.36,
    "dayLow": 38.09,
    "high52": 58.92,
    "low52": 37.58,
-   "volume": 1090368,
+   "volume": 1122925,
    "closes": [
     43.09,
     42,
@@ -1525,23 +1525,23 @@
     39.49,
     39.81,
     39.12,
-    38.31
+    38.33
    ]
   },
   "CRM": {
    "name": "Salesforce, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 218.39,
+   "price": 218,
    "open": 220,
    "prevClose": 217.57,
-   "change": 0.82,
-   "changePct": 0.38,
+   "change": 0.43,
+   "changePct": 0.2,
    "dayHigh": 220,
    "dayLow": 215.58,
    "high52": 269.11,
    "low52": 146.32,
-   "volume": 3549277,
+   "volume": 3700700,
    "closes": [
     238.01,
     235.95,
@@ -1566,23 +1566,23 @@
     213.48,
     218.01,
     217.57,
-    218.39
+    218
    ]
   },
   "CROX": {
    "name": "Crocs, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 163.32,
+   "price": 163.25,
    "open": 158.99,
    "prevClose": 156.88,
-   "change": 6.44,
-   "changePct": 4.11,
+   "change": 6.37,
+   "changePct": 4.06,
    "dayHigh": 163.48,
    "dayLow": 156.44,
    "high52": 163.48,
    "low52": 73.21,
-   "volume": 791519,
+   "volume": 839821,
    "closes": [
     117.53,
     117.54,
@@ -1607,23 +1607,23 @@
     159.66,
     159.98,
     156.88,
-    163.32
+    163.24
    ]
   },
   "CRWD": {
    "name": "CrowdStrike Holdings, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 226.79,
+   "price": 227.15,
    "open": 235.5,
    "prevClose": 229.87,
-   "change": -3.08,
-   "changePct": -1.34,
+   "change": -2.72,
+   "changePct": -1.18,
    "dayHigh": 235.86,
    "dayLow": 219.36,
    "high52": 286.99,
    "low52": 85.68,
-   "volume": 4445995,
+   "volume": 4573810,
    "closes": [
     261.21,
     249.29,
@@ -1648,23 +1648,23 @@
     225.76,
     229.06,
     229.87,
-    226.79
+    227.15
    ]
   },
   "CSCO": {
    "name": "Cisco Systems, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 95.58,
+   "price": 95.68,
    "open": 100.29,
    "prevClose": 102.01,
-   "change": -6.43,
-   "changePct": -6.3,
+   "change": -6.33,
+   "changePct": -6.21,
    "dayHigh": 100.75,
    "dayLow": 95.26,
    "high52": 130.37,
    "low52": 72.8,
-   "volume": 19558256,
+   "volume": 20126464,
    "closes": [
     115.07,
     113.64,
@@ -1689,23 +1689,23 @@
     98.15,
     100.76,
     102.01,
-    95.57
+    95.68
    ]
   },
   "CVX": {
    "name": "Chevron Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 218.77,
+   "price": 218.83,
    "open": 218.27,
    "prevClose": 216.35,
-   "change": 2.42,
-   "changePct": 1.12,
-   "dayHigh": 219.03,
+   "change": 2.48,
+   "changePct": 1.15,
+   "dayHigh": 219.12,
    "dayLow": 216.58,
    "high52": 236.48,
    "low52": 146.49,
-   "volume": 3185267,
+   "volume": 3457405,
    "closes": [
     217.73,
     222.04,
@@ -1730,23 +1730,23 @@
     211.22,
     213.28,
     216.35,
-    218.77
+    218.83
    ]
   },
   "CZR": {
    "name": "Caesars Entertainment, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 29.32,
+   "price": 29.31,
    "open": 29.33,
    "prevClose": 29.28,
-   "change": 0.04,
-   "changePct": 0.14,
+   "change": 0.03,
+   "changePct": 0.1,
    "dayHigh": 29.35,
    "dayLow": 29.25,
    "high52": 30.88,
    "low52": 17.86,
-   "volume": 929425,
+   "volume": 982485,
    "closes": [
     29.47,
     29.3,
@@ -1771,23 +1771,23 @@
     29.3,
     29.28,
     29.28,
-    29.32
+    29.31
    ]
   },
   "DAL": {
    "name": "Delta Air Lines, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 86.74,
+   "price": 86.86,
    "open": 87.47,
    "prevClose": 86.55,
-   "change": 0.19,
-   "changePct": 0.22,
+   "change": 0.31,
+   "changePct": 0.36,
    "dayHigh": 87.81,
    "dayLow": 86.14,
    "high52": 95.68,
    "low52": 55.27,
-   "volume": 2341204,
+   "volume": 2463499,
    "closes": [
     79.57,
     76.65,
@@ -1812,23 +1812,23 @@
     92.2,
     91.32,
     86.55,
-    86.74
+    86.86
    ]
   },
   "DASH": {
    "name": "DoorDash, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 171.5,
+   "price": 171.33,
    "open": 173.55,
    "prevClose": 172.58,
-   "change": -1.08,
-   "changePct": -0.63,
+   "change": -1.25,
+   "changePct": -0.72,
    "dayHigh": 175.52,
    "dayLow": 169.65,
    "high52": 239,
    "low52": 143.3,
-   "volume": 3767598,
+   "volume": 3852408,
    "closes": [
     193.09,
     184.01,
@@ -1853,23 +1853,23 @@
     178.25,
     178.26,
     172.58,
-    171.49
+    171.33
    ]
   },
   "DDOG": {
    "name": "Datadog, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 183.48,
+   "price": 184.21,
    "open": 188.24,
    "prevClose": 184.46,
-   "change": -0.98,
-   "changePct": -0.53,
+   "change": -0.25,
+   "changePct": -0.14,
    "dayHigh": 188.44,
    "dayLow": 178.1,
    "high52": 300.68,
    "low52": 98.01,
-   "volume": 2308761,
+   "volume": 2408264,
    "closes": [
     283.34,
     269.33,
@@ -1894,23 +1894,23 @@
     178.4,
     184.38,
     184.46,
-    183.48
+    184.21
    ]
   },
   "DELL": {
    "name": "Dell Technologies Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 342.55,
+   "price": 343.92,
    "open": 367.51,
    "prevClose": 371.17,
-   "change": -28.62,
-   "changePct": -7.71,
+   "change": -27.25,
+   "changePct": -7.34,
    "dayHigh": 375.27,
    "dayLow": 330.42,
    "high52": 595.51,
    "low52": 110.22,
-   "volume": 8137352,
+   "volume": 8344187,
    "closes": [
     572.47,
     507.93,
@@ -1935,23 +1935,23 @@
     334.38,
     373.68,
     371.17,
-    342.55
+    343.92
    ]
   },
   "DIS": {
    "name": "The Walt Disney Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 118.95,
+   "price": 118.79,
    "open": 118.43,
    "prevClose": 118.23,
-   "change": 0.72,
-   "changePct": 0.61,
+   "change": 0.56,
+   "changePct": 0.47,
    "dayHigh": 119.47,
    "dayLow": 118,
    "high52": 120.8,
    "low52": 92.19,
-   "volume": 4873138,
+   "volume": 5255147,
    "closes": [
     108.58,
     108.99,
@@ -1976,23 +1976,23 @@
     119.21,
     119.65,
     118.23,
-    118.94
+    118.79
    ]
   },
   "DXJ": {
    "name": "WisdomTree Japan Hedged Equity Fund",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 59.31,
+   "price": 59.34,
    "open": 59.37,
    "prevClose": 59.14,
-   "change": 0.17,
-   "changePct": 0.29,
+   "change": 0.2,
+   "changePct": 0.34,
    "dayHigh": 59.39,
    "dayLow": 58.8,
    "high52": 61.55,
    "low52": 44.78,
-   "volume": 295462,
+   "volume": 331467,
    "closes": [
     60.6,
     60.09,
@@ -2017,7 +2017,7 @@
     57.89,
     59.01,
     59.14,
-    59.31
+    59.34
    ]
   },
   "EB": {
@@ -2040,16 +2040,16 @@
    "name": "eBay Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 120.77,
+   "price": 120.81,
    "open": 120.68,
    "prevClose": 120.14,
-   "change": 0.63,
-   "changePct": 0.52,
+   "change": 0.67,
+   "changePct": 0.56,
    "dayHigh": 122.4,
    "dayLow": 120.35,
    "high52": 127.74,
    "low52": 78.03,
-   "volume": 1414047,
+   "volume": 1515704,
    "closes": [
     116.41,
     116.88,
@@ -2074,23 +2074,23 @@
     123.52,
     122.68,
     120.14,
-    120.76
+    120.81
    ]
   },
   "ELF": {
    "name": "e.l.f. Beauty, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 118.72,
+   "price": 118.16,
    "open": 113.71,
    "prevClose": 113.53,
-   "change": 5.19,
-   "changePct": 4.57,
+   "change": 4.63,
+   "changePct": 4.08,
    "dayHigh": 119.82,
    "dayLow": 113,
    "high52": 123.13,
    "low52": 48.82,
-   "volume": 1553777,
+   "volume": 1684206,
    "closes": [
     108.16,
     108.13,
@@ -2115,23 +2115,23 @@
     118.51,
     118.46,
     113.53,
-    118.71
+    118.15
    ]
   },
   "EPI": {
    "name": "WisdomTree India Earnings Fund",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 44.1,
+   "price": 44.07,
    "open": 43.93,
    "prevClose": 44.18,
-   "change": -0.08,
-   "changePct": -0.18,
+   "change": -0.11,
+   "changePct": -0.25,
    "dayHigh": 44.11,
    "dayLow": 43.85,
    "high52": 46.83,
    "low52": 39.36,
-   "volume": 216452,
+   "volume": 223294,
    "closes": [
     40.83,
     40.8,
@@ -2156,23 +2156,23 @@
     44.24,
     44.3,
     44.18,
-    44.1
+    44.07
    ]
   },
   "ETSY": {
    "name": "Etsy, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 89.1,
+   "price": 89.28,
    "open": 87.9,
    "prevClose": 88.29,
-   "change": 0.81,
-   "changePct": 0.92,
+   "change": 0.99,
+   "changePct": 1.12,
    "dayHigh": 90,
    "dayLow": 88.01,
    "high52": 97.85,
    "low52": 44,
-   "volume": 1068168,
+   "volume": 1152639,
    "closes": [
     79.28,
     82.93,
@@ -2197,23 +2197,23 @@
     86.5,
     88.35,
     88.29,
-    89.1
+    89.28
    ]
   },
   "EWJ": {
    "name": "iShares MSCI Japan ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 91.59,
+   "price": 91.6,
    "open": 91.75,
    "prevClose": 91.47,
-   "change": 0.12,
-   "changePct": 0.13,
+   "change": 0.13,
+   "changePct": 0.14,
    "dayHigh": 91.95,
    "dayLow": 90.81,
    "high52": 99.98,
    "low52": 79.48,
-   "volume": 1669439,
+   "volume": 1758540,
    "closes": [
     97.32,
     95.84,
@@ -2238,23 +2238,23 @@
     90.39,
     92.12,
     91.47,
-    91.58
+    91.6
    ]
   },
   "EWY": {
    "name": "iShares MSCI South Korea ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 142.18,
+   "price": 142.47,
    "open": 143.24,
    "prevClose": 145.38,
-   "change": -3.2,
-   "changePct": -2.2,
+   "change": -2.91,
+   "changePct": -2,
    "dayHigh": 144.02,
    "dayLow": 139.56,
    "high52": 220.89,
    "low52": 86.9,
-   "volume": 9366212,
+   "volume": 9661755,
    "closes": [
     166.56,
     159.83,
@@ -2279,23 +2279,23 @@
     139.18,
     147.81,
     145.38,
-    142.18
+    142.47
    ]
   },
   "EZU": {
    "name": "iShares MSCI Eurozone ETF",
    "exchange": "Cboe US",
    "type": "ETF",
-   "price": 67.25,
+   "price": 67.28,
    "open": 67.12,
    "prevClose": 67.23,
-   "change": 0.02,
-   "changePct": 0.03,
+   "change": 0.05,
+   "changePct": 0.07,
    "dayHigh": 67.46,
    "dayLow": 67.08,
    "high52": 72.2,
    "low52": 59.92,
-   "volume": 388752,
+   "volume": 401693,
    "closes": [
     65.88,
     65.33,
@@ -2320,7 +2320,7 @@
     67.81,
     67.83,
     67.23,
-    67.25
+    67.28
    ]
   },
   "F": {
@@ -2336,7 +2336,7 @@
    "dayLow": 11.88,
    "high52": 17.78,
    "low52": 11.11,
-   "volume": 22626030,
+   "volume": 23468520,
    "closes": [
     12.1,
     12.05,
@@ -2361,23 +2361,23 @@
     12.28,
     12.25,
     11.9,
-    11.91
+    11.9
    ]
   },
   "FEZ": {
    "name": "State Street SPDR EURO STOXX 50 ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 67.07,
+   "price": 67.08,
    "open": 67.02,
    "prevClose": 67.08,
-   "change": -0.01,
-   "changePct": -0.01,
+   "change": 0,
+   "changePct": 0,
    "dayHigh": 67.21,
    "dayLow": 66.92,
    "high52": 72.36,
    "low52": 59.57,
-   "volume": 392621,
+   "volume": 403749,
    "closes": [
     65.77,
     65.37,
@@ -2409,16 +2409,16 @@
    "name": "Five Below, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 247.55,
+   "price": 247.32,
    "open": 246.17,
    "prevClose": 247.16,
-   "change": 0.39,
-   "changePct": 0.16,
+   "change": 0.16,
+   "changePct": 0.06,
    "dayHigh": 248.58,
    "dayLow": 244.95,
    "high52": 263.88,
    "low52": 143.02,
-   "volume": 317305,
+   "volume": 342677,
    "closes": [
     213.35,
     218.95,
@@ -2443,23 +2443,23 @@
     253.51,
     250.74,
     247.16,
-    247.55
+    247.32
    ]
   },
   "FLKR": {
    "name": "Franklin FTSE South Korea ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 47.22,
+   "price": 47.28,
    "open": 47.51,
    "prevClose": 48.07,
-   "change": -0.85,
-   "changePct": -1.77,
+   "change": -0.79,
+   "changePct": -1.64,
    "dayHigh": 47.54,
    "dayLow": 46.32,
    "high52": 72.49,
    "low52": 29.06,
-   "volume": 314083,
+   "volume": 330327,
    "closes": [
     54.89,
     52.81,
@@ -2484,23 +2484,23 @@
     46.13,
     48.75,
     48.07,
-    47.22
+    47.28
    ]
   },
   "FUBO": {
    "name": "FuboTV Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 7.52,
+   "price": 7.54,
    "open": 7.76,
    "prevClose": 7.67,
-   "change": -0.15,
-   "changePct": -1.96,
+   "change": -0.13,
+   "changePct": -1.69,
    "dayHigh": 7.9,
    "dayLow": 7.44,
    "high52": 44.76,
    "low52": 7.44,
-   "volume": 647191,
+   "volume": 680586,
    "closes": [
     8.19,
     8.26,
@@ -2525,23 +2525,23 @@
     7.85,
     7.87,
     7.67,
-    7.52
+    7.54
    ]
   },
   "FXI": {
    "name": "iShares China Large-Cap ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 33.43,
+   "price": 33.45,
    "open": 33.18,
    "prevClose": 33.48,
-   "change": -0.05,
-   "changePct": -0.15,
+   "change": -0.03,
+   "changePct": -0.09,
    "dayHigh": 33.48,
    "dayLow": 33.18,
    "high52": 41.17,
    "low52": 31.19,
-   "volume": 10280412,
+   "volume": 10763767,
    "closes": [
     34.17,
     33.86,
@@ -2566,23 +2566,23 @@
     34.41,
     33.92,
     33.48,
-    33.43
+    33.44
    ]
   },
   "GAP": {
    "name": "The Gap, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 21.07,
+   "price": 21.04,
    "open": 20.9,
    "prevClose": 21.25,
-   "change": -0.18,
-   "changePct": -0.85,
+   "change": -0.21,
+   "changePct": -0.99,
    "dayHigh": 21.34,
    "dayLow": 20.75,
    "high52": 29.36,
    "low52": 18.11,
-   "volume": 4479775,
+   "volume": 4693044,
    "closes": [
     22.83,
     22.67,
@@ -2607,23 +2607,23 @@
     21.97,
     21.53,
     21.25,
-    21.07
+    21.03
    ]
   },
   "GE": {
    "name": "GE Aerospace",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 331.3,
+   "price": 330.97,
    "open": 332.38,
    "prevClose": 330.86,
-   "change": 0.44,
-   "changePct": 0.13,
+   "change": 0.11,
+   "changePct": 0.03,
    "dayHigh": 333.4,
    "dayLow": 328.1,
    "high52": 388.84,
    "low52": 268.91,
-   "volume": 1700807,
+   "volume": 1777253,
    "closes": [
     307.63,
     307.02,
@@ -2648,23 +2648,23 @@
     337.91,
     342.75,
     330.86,
-    331.3
+    330.96
    ]
   },
   "GM": {
    "name": "General Motors Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 86.13,
+   "price": 85.98,
    "open": 86.5,
    "prevClose": 86.25,
-   "change": -0.12,
-   "changePct": -0.14,
+   "change": -0.27,
+   "changePct": -0.31,
    "dayHigh": 87.54,
-   "dayLow": 86.04,
+   "dayLow": 85.98,
    "high52": 93.7,
    "low52": 67.06,
-   "volume": 1776510,
+   "volume": 1930091,
    "closes": [
     84,
     83.05,
@@ -2689,23 +2689,23 @@
     88.69,
     88.9,
     86.25,
-    86.13
+    85.98
    ]
   },
   "GOOG": {
    "name": "Alphabet Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 292.27,
+   "price": 292.45,
    "open": 299.86,
    "prevClose": 295.35,
-   "change": -3.08,
-   "changePct": -1.04,
+   "change": -2.9,
+   "changePct": -0.98,
    "dayHigh": 301.62,
    "dayLow": 290.34,
    "high52": 404.47,
    "low52": 271.41,
-   "volume": 12913245,
+   "volume": 13229020,
    "closes": [
     349.52,
     343.65,
@@ -2730,23 +2730,23 @@
     284.92,
     290.63,
     295.35,
-    292.27
+    292.45
    ]
   },
   "GOOGL": {
    "name": "Alphabet Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 295.35,
+   "price": 295.59,
    "open": 302.98,
    "prevClose": 298.7,
-   "change": -3.35,
-   "changePct": -1.12,
+   "change": -3.11,
+   "changePct": -1.04,
    "dayHigh": 304.97,
    "dayLow": 293.44,
    "high52": 408.61,
    "low52": 270.7,
-   "volume": 22816478,
+   "volume": 23358650,
    "closes": [
     353.78,
     347.64,
@@ -2771,7 +2771,7 @@
     287.38,
     293.45,
     298.7,
-    295.35
+    295.59
    ]
   },
   "GPRO": {
@@ -2787,7 +2787,7 @@
    "dayLow": 0.63,
    "high52": 2.05,
    "low52": 0.57,
-   "volume": 5133128,
+   "volume": 5373984,
    "closes": [
     1.18,
     1.16,
@@ -2819,16 +2819,16 @@
    "name": "Hasbro, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 120.46,
+   "price": 120.42,
    "open": 122.19,
    "prevClose": 121.48,
-   "change": -1.02,
-   "changePct": -0.84,
+   "change": -1.06,
+   "changePct": -0.87,
    "dayHigh": 122.92,
-   "dayLow": 120.33,
+   "dayLow": 120.18,
    "high52": 124.62,
    "low52": 74.78,
-   "volume": 947988,
+   "volume": 1034556,
    "closes": [
     95.94,
     95.46,
@@ -2853,23 +2853,23 @@
     121.82,
     124.02,
     121.48,
-    120.46
+    120.42
    ]
   },
   "HD": {
    "name": "The Home Depot, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 347.8,
+   "price": 347.12,
    "open": 344,
    "prevClose": 348.26,
-   "change": -0.46,
-   "changePct": -0.13,
+   "change": -1.14,
+   "changePct": -0.33,
    "dayHigh": 349.43,
    "dayLow": 343.26,
    "high52": 397.63,
    "low52": 277.15,
-   "volume": 3014175,
+   "volume": 3139141,
    "closes": [
     293.92,
     295.51,
@@ -2894,7 +2894,7 @@
     351,
     351.31,
     348.26,
-    347.8
+    347.11
    ]
   },
   "HEWJ": {
@@ -2910,7 +2910,7 @@
    "dayLow": 62.12,
    "high52": 67.27,
    "low52": 51.98,
-   "volume": 16754,
+   "volume": 16769,
    "closes": [
     65.59,
     64.61,
@@ -2951,7 +2951,7 @@
    "dayLow": 32.16,
    "high52": 34.84,
    "low52": 17.09,
-   "volume": 821668,
+   "volume": 875820,
    "closes": [
     27.47,
     26.96,
@@ -2983,16 +2983,16 @@
    "name": "Robinhood Markets, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 78.19,
+   "price": 77.93,
    "open": 79.79,
    "prevClose": 81.35,
-   "change": -3.16,
-   "changePct": -3.88,
+   "change": -3.42,
+   "changePct": -4.2,
    "dayHigh": 79.96,
    "dayLow": 76.61,
    "high52": 139.75,
    "low52": 63.52,
-   "volume": 14929710,
+   "volume": 15396247,
    "closes": [
     110.52,
     101.08,
@@ -3017,23 +3017,23 @@
     81.33,
     84.58,
     81.35,
-    78.19
+    77.93
    ]
   },
   "IBM": {
    "name": "International Business Machines Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 247.28,
+   "price": 247.2,
    "open": 246.63,
    "prevClose": 244.67,
-   "change": 2.61,
-   "changePct": 1.07,
+   "change": 2.53,
+   "changePct": 1.03,
    "dayHigh": 247.85,
    "dayLow": 244.83,
    "high52": 332.46,
    "low52": 199.19,
-   "volume": 1549342,
+   "volume": 1623916,
    "closes": [
     230.78,
     227.88,
@@ -3058,7 +3058,7 @@
     244.53,
     248.22,
     244.67,
-    247.27
+    247.2
    ]
   },
   "IEUR": {
@@ -3074,7 +3074,7 @@
    "dayLow": 75.43,
    "high52": 78.9,
    "low52": 66.45,
-   "volume": 262909,
+   "volume": 268596,
    "closes": [
     73.3,
     73.05,
@@ -3106,16 +3106,16 @@
    "name": "iShares MSCI India ETF",
    "exchange": "Cboe US",
    "type": "ETF",
-   "price": 51.44,
+   "price": 51.41,
    "open": 51.14,
    "prevClose": 51.55,
-   "change": -0.11,
-   "changePct": -0.21,
+   "change": -0.14,
+   "changePct": -0.27,
    "dayHigh": 51.46,
    "dayLow": 51.14,
    "high52": 55.1,
    "low52": 45.21,
-   "volume": 4640827,
+   "volume": 4893731,
    "closes": [
     47.24,
     47.04,
@@ -3140,23 +3140,23 @@
     51.72,
     51.59,
     51.55,
-    51.44
+    51.4
    ]
   },
   "INTC": {
    "name": "Intel Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 59.39,
+   "price": 59.5,
    "open": 60.65,
    "prevClose": 61.2,
-   "change": -1.81,
-   "changePct": -2.96,
+   "change": -1.7,
+   "changePct": -2.78,
    "dayHigh": 61.34,
    "dayLow": 57,
    "high52": 142.35,
    "low52": 32.89,
-   "volume": 73459610,
+   "volume": 75884675,
    "closes": [
     102.81,
     98.12,
@@ -3181,7 +3181,7 @@
     58.13,
     62.5,
     61.2,
-    59.39
+    59.49
    ]
   },
   "IRBT": {
@@ -3204,16 +3204,16 @@
    "name": "iShares U.S. Aerospace & Defense ETF",
    "exchange": "Cboe US",
    "type": "ETF",
-   "price": 71.36,
+   "price": 71.32,
    "open": 71.92,
    "prevClose": 71.73,
-   "change": -0.37,
-   "changePct": -0.52,
+   "change": -0.41,
+   "changePct": -0.57,
    "dayHigh": 72.18,
    "dayLow": 70.77,
    "high52": 85.53,
    "low52": 65.24,
-   "volume": 1298445,
+   "volume": 1372830,
    "closes": [
     68,
     68.08,
@@ -3238,23 +3238,23 @@
     72.35,
     73.24,
     71.73,
-    71.36
+    71.32
    ]
   },
   "JBLU": {
    "name": "JetBlue Airways Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 3.77,
+   "price": 3.8,
    "open": 3.83,
    "prevClose": 3.81,
-   "change": -0.04,
-   "changePct": -1.05,
+   "change": -0.01,
+   "changePct": -0.26,
    "dayHigh": 3.84,
    "dayLow": 3.72,
    "high52": 6.62,
    "low52": 2.16,
-   "volume": 9409636,
+   "volume": 9972659,
    "closes": [
     3.35,
     3.01,
@@ -3279,23 +3279,23 @@
     4,
     4.02,
     3.81,
-    3.77
+    3.8
    ]
   },
   "JNJ": {
    "name": "Johnson & Johnson",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 286.31,
+   "price": 285.9,
    "open": 285,
    "prevClose": 283.52,
-   "change": 2.79,
-   "changePct": 0.98,
+   "change": 2.38,
+   "changePct": 0.84,
    "dayHigh": 288.11,
    "dayLow": 284.03,
    "high52": 288.11,
    "low52": 193.55,
-   "volume": 3175157,
+   "volume": 3322149,
    "closes": [
     248.61,
     253.91,
@@ -3320,23 +3320,23 @@
     280.78,
     280.41,
     283.52,
-    286.31
+    285.9
    ]
   },
   "JPM": {
    "name": "JPMorgan Chase & Co.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 344.66,
+   "price": 344.67,
    "open": 346.41,
    "prevClose": 342.82,
-   "change": 1.84,
+   "change": 1.85,
    "changePct": 0.54,
    "dayHigh": 346.8,
    "dayLow": 342.79,
    "high52": 366.5,
    "low52": 279.1,
-   "volume": 2378410,
+   "volume": 2493923,
    "closes": [
     331.43,
     335.28,
@@ -3361,23 +3361,23 @@
     342.07,
     343.39,
     342.82,
-    344.66
+    344.67
    ]
   },
   "KO": {
    "name": "The Coca-Cola Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 99.17,
+   "price": 99.16,
    "open": 98.18,
    "prevClose": 97.44,
-   "change": 1.73,
-   "changePct": 1.78,
+   "change": 1.72,
+   "changePct": 1.77,
    "dayHigh": 99.3,
    "dayLow": 97.96,
    "high52": 99.3,
    "low52": 67.27,
-   "volume": 10460665,
+   "volume": 10824286,
    "closes": [
     90.11,
     91.78,
@@ -3402,23 +3402,23 @@
     96.91,
     97.57,
     97.44,
-    99.17
+    99.15
    ]
   },
   "KWEB": {
    "name": "KraneShares CSI China Internet ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 22.89,
+   "price": 22.92,
    "open": 22.63,
    "prevClose": 22.91,
-   "change": -0.02,
-   "changePct": -0.09,
+   "change": 0.01,
+   "changePct": 0.04,
    "dayHigh": 22.92,
    "dayLow": 22.63,
    "high52": 39.07,
    "low52": 22.54,
-   "volume": 18415682,
+   "volume": 18981145,
    "closes": [
     24.72,
     24.51,
@@ -3443,23 +3443,23 @@
     24.06,
     23.67,
     22.91,
-    22.89
+    22.92
    ]
   },
   "LAZR": {
    "name": "Tema Photonics & Optical ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 29.11,
+   "price": 29.08,
    "open": 30,
    "prevClose": 30.66,
-   "change": -1.55,
-   "changePct": -5.06,
+   "change": -1.58,
+   "changePct": -5.15,
    "dayHigh": 30.17,
    "dayLow": 28.43,
    "high52": 50.82,
    "low52": 25.78,
-   "volume": 269664,
+   "volume": 297220,
    "closes": [
     42.11,
     39.62,
@@ -3484,23 +3484,23 @@
     28.81,
     31.73,
     30.66,
-    29.1
+    29.08
    ]
   },
   "LCID": {
    "name": "Lucid Group, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 2.96,
+   "price": 2.95,
    "open": 3.25,
    "prevClose": 3.26,
-   "change": -0.3,
-   "changePct": -9.2,
+   "change": -0.31,
+   "changePct": -9.51,
    "dayHigh": 3.25,
    "dayLow": 2.94,
    "high52": 14.91,
    "low52": 2.37,
-   "volume": 18494199,
+   "volume": 19009571,
    "closes": [
     3.36,
     3.29,
@@ -3525,23 +3525,23 @@
     3.77,
     3.67,
     3.26,
-    2.96
+    2.95
    ]
   },
   "LEVI": {
    "name": "Levi Strauss & Co.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 24.4,
+   "price": 24.35,
    "open": 24.25,
    "prevClose": 24.04,
-   "change": 0.36,
-   "changePct": 1.5,
+   "change": 0.31,
+   "changePct": 1.29,
    "dayHigh": 24.42,
    "dayLow": 23.96,
    "high52": 25.7,
    "low52": 17.72,
-   "volume": 1723311,
+   "volume": 1837443,
    "closes": [
     19.48,
     19.57,
@@ -3566,23 +3566,23 @@
     24.39,
     24.09,
     24.04,
-    24.4
+    24.35
    ]
   },
   "LLY": {
    "name": "Eli Lilly and Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 1442.27,
+   "price": 1441.22,
    "open": 1429.91,
    "prevClose": 1427.28,
-   "change": 14.99,
-   "changePct": 1.05,
+   "change": 13.94,
+   "changePct": 0.98,
    "dayHigh": 1449.64,
    "dayLow": 1419.81,
    "high52": 1460,
    "low52": 850.51,
-   "volume": 1343520,
+   "volume": 1397096,
    "closes": [
     1166.51,
     1208.74,
@@ -3607,23 +3607,23 @@
     1432.29,
     1437.29,
     1427.28,
-    1442.27
+    1441.22
    ]
   },
   "LULU": {
    "name": "lululemon athletica inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 105.67,
+   "price": 105.47,
    "open": 104.99,
    "prevClose": 104.46,
-   "change": 1.21,
-   "changePct": 1.16,
+   "change": 1.01,
+   "changePct": 0.97,
    "dayHigh": 106.32,
    "dayLow": 104.55,
    "high52": 225.98,
    "low52": 90.38,
-   "volume": 1452782,
+   "volume": 1518925,
    "closes": [
     94.34,
     94.09,
@@ -3648,23 +3648,23 @@
     110.37,
     107.45,
     104.46,
-    105.67
+    105.47
    ]
   },
   "LYFT": {
    "name": "Lyft, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 16.91,
+   "price": 16.97,
    "open": 16.65,
    "prevClose": 16.61,
-   "change": 0.3,
-   "changePct": 1.81,
+   "change": 0.36,
+   "changePct": 2.17,
    "dayHigh": 17.13,
    "dayLow": 16.57,
    "high52": 23.73,
    "low52": 12.46,
-   "volume": 4110747,
+   "volume": 4375110,
    "closes": [
     16.38,
     16.48,
@@ -3689,23 +3689,23 @@
     17.02,
     17.29,
     16.61,
-    16.91
+    16.97
    ]
   },
   "M": {
    "name": "Macy's, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 24.64,
+   "price": 24.67,
    "open": 24.38,
    "prevClose": 24.33,
-   "change": 0.31,
-   "changePct": 1.27,
-   "dayHigh": 24.65,
+   "change": 0.34,
+   "changePct": 1.4,
+   "dayHigh": 24.67,
    "dayLow": 23.92,
    "high52": 26.59,
    "low52": 16.69,
-   "volume": 2864666,
+   "volume": 3051566,
    "closes": [
     22.74,
     22.68,
@@ -3730,23 +3730,23 @@
     25.08,
     24.85,
     24.33,
-    24.64
+    24.67
    ]
   },
   "MA": {
    "name": "Mastercard Incorporated",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 660.44,
+   "price": 659.64,
    "open": 655.9,
    "prevClose": 652.6,
-   "change": 7.84,
-   "changePct": 1.2,
+   "change": 7.04,
+   "changePct": 1.08,
    "dayHigh": 662.68,
    "dayLow": 655,
    "high52": 681.99,
    "low52": 464.52,
-   "volume": 1345530,
+   "volume": 1377378,
    "closes": [
     604.8,
     603.24,
@@ -3771,7 +3771,7 @@
     658.84,
     660.73,
     652.6,
-    660.44
+    659.64
    ]
   },
   "MAR": {
@@ -3787,7 +3787,7 @@
    "dayLow": 422.33,
    "high52": 433.3,
    "low52": 280.99,
-   "volume": 779110,
+   "volume": 845279,
    "closes": [
     371.5,
     371.82,
@@ -3819,16 +3819,16 @@
    "name": "Mattel, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 15.13,
+   "price": 15.21,
    "open": 15.66,
    "prevClose": 15.53,
-   "change": -0.4,
-   "changePct": -2.58,
+   "change": -0.32,
+   "changePct": -2.06,
    "dayHigh": 15.7,
-   "dayLow": 15.13,
+   "dayLow": 15.11,
    "high52": 22.48,
    "low52": 12.4,
-   "volume": 1915211,
+   "volume": 2112097,
    "closes": [
     16.8,
     16.65,
@@ -3853,23 +3853,23 @@
     16,
     16.08,
     15.53,
-    15.13
+    15.2
    ]
   },
   "MCD": {
    "name": "McDonald's Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 272.17,
+   "price": 271.73,
    "open": 274.4,
    "prevClose": 273.63,
-   "change": -1.46,
-   "changePct": -0.53,
+   "change": -1.9,
+   "changePct": -0.69,
    "dayHigh": 275.64,
-   "dayLow": 272.12,
+   "dayLow": 271.64,
    "high52": 341.75,
    "low52": 229.2,
-   "volume": 2554307,
+   "volume": 2667838,
    "closes": [
     235.81,
     238.31,
@@ -3894,23 +3894,23 @@
     282.17,
     274.8,
     273.63,
-    272.17
+    271.73
    ]
   },
   "MCHI": {
    "name": "iShares MSCI China ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 49.49,
+   "price": 49.52,
    "open": 49.14,
    "prevClose": 49.75,
-   "change": -0.26,
-   "changePct": -0.52,
+   "change": -0.23,
+   "changePct": -0.46,
    "dayHigh": 49.53,
    "dayLow": 49.14,
    "high52": 64.91,
    "low52": 48.65,
-   "volume": 1425757,
+   "volume": 1489582,
    "closes": [
     52.14,
     51.44,
@@ -3935,23 +3935,23 @@
     51.1,
     50.69,
     49.75,
-    49.49
+    49.52
    ]
   },
   "META": {
    "name": "Meta Platforms, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 640.25,
+   "price": 641.19,
    "open": 627.21,
    "prevClose": 623.61,
-   "change": 16.64,
-   "changePct": 2.67,
+   "change": 17.58,
+   "changePct": 2.82,
    "dayHigh": 642.6,
    "dayLow": 624.83,
    "high52": 779.82,
    "low52": 520.26,
-   "volume": 11785968,
+   "volume": 12154251,
    "closes": [
     762.5,
     737.54,
@@ -3976,23 +3976,23 @@
     641.39,
     628.77,
     623.61,
-    640.25
+    641.19
    ]
   },
   "MRK": {
    "name": "Merck & Co., Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 147.86,
+   "price": 147.55,
    "open": 147.31,
    "prevClose": 146.95,
-   "change": 0.91,
-   "changePct": 0.62,
+   "change": 0.6,
+   "changePct": 0.41,
    "dayHigh": 147.98,
    "dayLow": 145.24,
    "high52": 156.92,
    "low52": 91.49,
-   "volume": 3267474,
+   "volume": 3569050,
    "closes": [
     141.98,
     147.37,
@@ -4017,23 +4017,23 @@
     148.05,
     147.18,
     146.95,
-    147.86
+    147.55
    ]
   },
   "MSFT": {
    "name": "Microsoft Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 523.79,
+   "price": 523.9,
    "open": 519.91,
    "prevClose": 523,
-   "change": 0.79,
-   "changePct": 0.15,
+   "change": 0.9,
+   "changePct": 0.17,
    "dayHigh": 526.07,
    "dayLow": 513.82,
    "high52": 559.15,
    "low52": 349.2,
-   "volume": 14634194,
+   "volume": 15166738,
    "closes": [
     543.45,
     533.69,
@@ -4058,23 +4058,23 @@
     533.16,
     521.13,
     523,
-    523.79
+    523.9
    ]
   },
   "MU": {
    "name": "Micron Technology, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 772.32,
+   "price": 775.91,
    "open": 782.66,
    "prevClose": 798.44,
-   "change": -26.12,
-   "changePct": -3.27,
+   "change": -22.53,
+   "changePct": -2.82,
    "dayHigh": 796.18,
    "dayLow": 750.25,
    "high52": 1255,
    "low52": 192.59,
-   "volume": 21999727,
+   "volume": 22641823,
    "closes": [
     953.19,
     914.13,
@@ -4099,23 +4099,23 @@
     725.11,
     811.3,
     798.44,
-    772.32
+    775.91
    ]
   },
   "NET": {
    "name": "Cloudflare, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 307.68,
+   "price": 307.34,
    "open": 325,
    "prevClose": 318.5,
-   "change": -10.82,
-   "changePct": -3.4,
+   "change": -11.16,
+   "changePct": -3.5,
    "dayHigh": 325,
    "dayLow": 300.28,
    "high52": 370.35,
    "low52": 158.83,
-   "volume": 2938708,
+   "volume": 3063052,
    "closes": [
     347.7,
     324.33,
@@ -4140,23 +4140,23 @@
     305.8,
     315,
     318.5,
-    307.68
+    307.34
    ]
   },
   "NFLX": {
    "name": "Netflix, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 62.27,
+   "price": 62.29,
    "open": 62.85,
    "prevClose": 62.69,
-   "change": -0.42,
-   "changePct": -0.67,
+   "change": -0.4,
+   "changePct": -0.64,
    "dayHigh": 63.95,
    "dayLow": 62.13,
    "high52": 115.25,
    "low52": 61.39,
-   "volume": 27235643,
+   "volume": 28005560,
    "closes": [
     70.46,
     70.57,
@@ -4181,23 +4181,23 @@
     63.26,
     64.54,
     62.69,
-    62.27
+    62.29
    ]
   },
   "NIO": {
    "name": "NIO Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 2.92,
+   "price": 2.91,
    "open": 3.01,
    "prevClose": 3.05,
-   "change": -0.13,
-   "changePct": -4.26,
+   "change": -0.14,
+   "changePct": -4.59,
    "dayHigh": 3.02,
    "dayLow": 2.9,
    "high52": 7,
    "low52": 2.9,
-   "volume": 49175923,
+   "volume": 51185969,
    "closes": [
     3.56,
     3.41,
@@ -4222,23 +4222,23 @@
     3.28,
     3.24,
     3.05,
-    2.91
+    2.9
    ]
   },
   "NKE": {
    "name": "NIKE, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 37.96,
+   "price": 37.9,
    "open": 37.9,
    "prevClose": 37.76,
-   "change": 0.2,
-   "changePct": 0.53,
+   "change": 0.14,
+   "changePct": 0.37,
    "dayHigh": 38.33,
    "dayLow": 37.64,
    "high52": 69.14,
    "low52": 31.97,
-   "volume": 8130335,
+   "volume": 8573249,
    "closes": [
     35.33,
     35.3,
@@ -4263,23 +4263,23 @@
     38.67,
     38.32,
     37.76,
-    37.96
+    37.9
    ]
   },
   "NVD": {
    "name": "Graniteshares 2x Short NVDA Daily ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 6.73,
+   "price": 6.69,
    "open": 6.1,
    "prevClose": 6.4,
-   "change": 0.33,
-   "changePct": 5.16,
+   "change": 0.29,
+   "changePct": 4.53,
    "dayHigh": 6.99,
    "dayLow": 6.1,
    "high52": 9.76,
    "low52": 3.19,
-   "volume": 83799686,
+   "volume": 85245468,
    "closes": [
     3.61,
     3.83,
@@ -4304,23 +4304,23 @@
     6.23,
     5.87,
     6.4,
-    6.73
+    6.69
    ]
   },
   "NVDA": {
    "name": "NVIDIA Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 161.79,
+   "price": 162.33,
    "open": 169.89,
    "prevClose": 166.19,
-   "change": -4.4,
-   "changePct": -2.65,
+   "change": -3.86,
+   "changePct": -2.32,
    "dayHigh": 170,
    "dayLow": 158.39,
    "high52": 243.37,
    "low52": 148.8,
-   "volume": 318612471,
+   "volume": 324927557,
    "closes": [
     228.52,
     221.3,
@@ -4345,23 +4345,23 @@
     168.89,
     173.73,
     166.19,
-    161.79
+    162.33
    ]
   },
   "NVDL": {
    "name": "GraniteShares 2x Long NVDA Daily ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 17.59,
+   "price": 17.72,
    "open": 19.41,
    "prevClose": 18.57,
-   "change": -0.98,
-   "changePct": -5.28,
+   "change": -0.85,
+   "changePct": -4.58,
    "dayHigh": 19.43,
    "dayLow": 16.84,
    "high52": 43.27,
    "low52": 14.54,
-   "volume": 49081529,
+   "volume": 49585957,
    "closes": [
     36.58,
     34.32,
@@ -4386,7 +4386,7 @@
     19.28,
     20.4,
     18.57,
-    17.59
+    17.72
    ]
   },
   "OPEN": {
@@ -4402,7 +4402,7 @@
    "dayLow": 1.16,
    "high52": 8.96,
    "low52": 1.16,
-   "volume": 25086375,
+   "volume": 25763459,
    "closes": [
     2.11,
     1.99,
@@ -4434,16 +4434,16 @@
    "name": "Oracle Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 125.05,
+   "price": 125.26,
    "open": 127.5,
    "prevClose": 127.11,
-   "change": -2.06,
-   "changePct": -1.62,
+   "change": -1.85,
+   "changePct": -1.46,
    "dayHigh": 128,
    "dayLow": 121.76,
    "high52": 250.25,
    "low52": 109.21,
-   "volume": 17340934,
+   "volume": 17750079,
    "closes": [
     143.2,
     130.55,
@@ -4468,23 +4468,23 @@
     117.98,
     128.38,
     127.11,
-    125.05
+    125.26
    ]
   },
   "PENN": {
    "name": "PENN Entertainment, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 17.52,
+   "price": 17.5,
    "open": 17.53,
    "prevClose": 17.53,
-   "change": -0.01,
-   "changePct": -0.06,
+   "change": -0.03,
+   "changePct": -0.17,
    "dayHigh": 17.72,
    "dayLow": 17.4,
    "high52": 22.36,
    "low52": 11.65,
-   "volume": 1025800,
+   "volume": 1123437,
    "closes": [
     15.37,
     14.52,
@@ -4509,23 +4509,23 @@
     18.45,
     18.15,
     17.53,
-    17.52
+    17.5
    ]
   },
   "PEP": {
    "name": "PepsiCo, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 145.05,
+   "price": 145.25,
    "open": 142.96,
    "prevClose": 142.26,
-   "change": 2.79,
-   "changePct": 1.96,
-   "dayHigh": 145.08,
+   "change": 2.99,
+   "changePct": 2.1,
+   "dayHigh": 145.34,
    "dayLow": 142.53,
    "high52": 171.48,
    "low52": 123.47,
-   "volume": 3634475,
+   "volume": 4094424,
    "closes": [
     127.3,
     129.27,
@@ -4550,23 +4550,23 @@
     143.61,
     143.94,
     142.26,
-    145.05
+    145.24
    ]
   },
   "PFE": {
    "name": "Pfizer Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 28.82,
+   "price": 28.74,
    "open": 28.92,
    "prevClose": 28.83,
-   "change": -0.01,
-   "changePct": -0.03,
+   "change": -0.09,
+   "changePct": -0.31,
    "dayHigh": 28.99,
    "dayLow": 28.62,
    "high52": 31.44,
    "low52": 23.62,
-   "volume": 14470904,
+   "volume": 15086018,
    "closes": [
     28.37,
     29.21,
@@ -4591,23 +4591,23 @@
     29.36,
     29.45,
     28.83,
-    28.82
+    28.74
    ]
   },
   "PG": {
    "name": "The Procter & Gamble Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 169.82,
+   "price": 169.75,
    "open": 168.97,
    "prevClose": 168.03,
-   "change": 1.79,
-   "changePct": 1.07,
+   "change": 1.72,
+   "changePct": 1.02,
    "dayHigh": 170.73,
    "dayLow": 168.5,
    "high52": 170.73,
    "low52": 137.62,
-   "volume": 4545457,
+   "volume": 4704986,
    "closes": [
     153.04,
     156.53,
@@ -4632,23 +4632,23 @@
     168.66,
     167.67,
     168.03,
-    169.82
+    169.75
    ]
   },
   "PLAY": {
    "name": "Dave & Buster's Entertainment, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 8.01,
+   "price": 7.98,
    "open": 7.86,
    "prevClose": 7.85,
-   "change": 0.16,
-   "changePct": 2.04,
+   "change": 0.13,
+   "changePct": 1.66,
    "dayHigh": 8.06,
    "dayLow": 7.67,
    "high52": 22.1,
    "low52": 6.26,
-   "volume": 514320,
+   "volume": 565362,
    "closes": [
     7.39,
     7.15,
@@ -4673,23 +4673,23 @@
     8.06,
     8.03,
     7.85,
-    8.01
+    7.97
    ]
   },
   "PLNT": {
    "name": "Planet Fitness, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 61.16,
+   "price": 61.09,
    "open": 60.72,
    "prevClose": 60.15,
-   "change": 1.01,
-   "changePct": 1.68,
+   "change": 0.94,
+   "changePct": 1.56,
    "dayHigh": 61.26,
    "dayLow": 60.38,
    "high52": 114.26,
    "low52": 37.03,
-   "volume": 351583,
+   "volume": 388188,
    "closes": [
     47.45,
     46.95,
@@ -4714,23 +4714,23 @@
     61.34,
     61.19,
     60.15,
-    61.16
+    61.09
    ]
   },
   "PLTR": {
    "name": "Palantir Technologies Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 168.52,
+   "price": 168.38,
    "open": 171.98,
    "prevClose": 171.58,
-   "change": -3.06,
-   "changePct": -1.78,
+   "change": -3.2,
+   "changePct": -1.87,
    "dayHigh": 172.28,
    "dayLow": 164.75,
    "high52": 212.94,
    "low52": 106.37,
-   "volume": 10875016,
+   "volume": 11199082,
    "closes": [
     208.67,
     200.97,
@@ -4755,7 +4755,7 @@
     168.82,
     172.4,
     171.58,
-    168.51
+    168.38
    ]
   },
   "PLUG": {
@@ -4771,7 +4771,7 @@
    "dayLow": 1.1,
    "high52": 4.33,
    "low52": 1.1,
-   "volume": 39878394,
+   "volume": 40911886,
    "closes": [
     1.56,
     1.45,
@@ -4803,16 +4803,16 @@
    "name": "Peloton Interactive, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 5.65,
+   "price": 5.69,
    "open": 5.67,
    "prevClose": 5.53,
-   "change": 0.12,
-   "changePct": 2.17,
+   "change": 0.16,
+   "changePct": 2.89,
    "dayHigh": 5.8,
    "dayLow": 5.63,
    "high52": 7.6,
    "low52": 3.65,
-   "volume": 4721943,
+   "volume": 4980104,
    "closes": [
     5.22,
     5.06,
@@ -4837,23 +4837,23 @@
     5.81,
     5.72,
     5.53,
-    5.64
+    5.68
    ]
   },
   "PYPL": {
    "name": "PayPal Holdings, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 59.33,
+   "price": 59.24,
    "open": 58.59,
    "prevClose": 58.3,
-   "change": 1.03,
-   "changePct": 1.77,
+   "change": 0.94,
+   "changePct": 1.61,
    "dayHigh": 59.48,
    "dayLow": 58.5,
    "high52": 64.65,
    "low52": 38.46,
-   "volume": 5123759,
+   "volume": 5267645,
    "closes": [
     56.17,
     56.1,
@@ -4878,23 +4878,23 @@
     58.78,
     59.48,
     58.3,
-    59.33
+    59.24
    ]
   },
   "QCOM": {
    "name": "QUALCOMM Incorporated",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 172.88,
+   "price": 172.69,
    "open": 176.4,
    "prevClose": 177.14,
-   "change": -4.26,
-   "changePct": -2.4,
+   "change": -4.45,
+   "changePct": -2.51,
    "dayHigh": 177.53,
    "dayLow": 167.2,
    "high52": 259.92,
    "low52": 121.99,
-   "volume": 5858923,
+   "volume": 6167450,
    "closes": [
     176.86,
     172.62,
@@ -4919,23 +4919,23 @@
     173.53,
     176.57,
     177.14,
-    172.88
+    172.69
    ]
   },
   "QQQ": {
    "name": "Invesco QQQ Trust",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 678.78,
+   "price": 679.52,
    "open": 688.51,
    "prevClose": 688.17,
-   "change": -9.39,
-   "changePct": -1.36,
+   "change": -8.65,
+   "changePct": -1.26,
    "dayHigh": 688.75,
    "dayLow": 671.71,
    "high52": 762.86,
    "low52": 555.6,
-   "volume": 32093846,
+   "volume": 32885462,
    "closes": [
     743.57,
     728.95,
@@ -4960,23 +4960,23 @@
     674.76,
     690.38,
     688.17,
-    678.78
+    679.52
    ]
   },
   "QS": {
    "name": "QuantumScape Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 3.71,
+   "price": 3.69,
    "open": 3.9,
    "prevClose": 3.88,
-   "change": -0.17,
-   "changePct": -4.38,
+   "change": -0.19,
+   "changePct": -4.9,
    "dayHigh": 3.91,
    "dayLow": 3.6,
    "high52": 14.1,
    "low52": 3.6,
-   "volume": 13933476,
+   "volume": 14310063,
    "closes": [
     4.12,
     3.93,
@@ -5001,23 +5001,23 @@
     4.45,
     4.21,
     3.88,
-    3.71
+    3.69
    ]
   },
   "RBLX": {
    "name": "Roblox Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 49.59,
+   "price": 49.68,
    "open": 50.18,
    "prevClose": 51.42,
-   "change": -1.83,
-   "changePct": -3.56,
+   "change": -1.74,
+   "changePct": -3.38,
    "dayHigh": 50.86,
    "dayLow": 49.5,
    "high52": 103.78,
    "low52": 33.88,
-   "volume": 3586144,
+   "volume": 3867859,
    "closes": [
     49.51,
     47.54,
@@ -5042,23 +5042,23 @@
     51.19,
     52.61,
     51.42,
-    49.58
+    49.67
    ]
   },
   "RH": {
    "name": "RH",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 129.37,
+   "price": 129.47,
    "open": 129.25,
    "prevClose": 129.17,
-   "change": 0.2,
-   "changePct": 0.15,
+   "change": 0.3,
+   "changePct": 0.23,
    "dayHigh": 130.67,
    "dayLow": 124.84,
    "high52": 239.4,
    "low52": 106.3,
-   "volume": 312113,
+   "volume": 327874,
    "closes": [
     115.88,
     110.99,
@@ -5083,7 +5083,7 @@
     134.82,
     135.9,
     129.17,
-    129.37
+    129.47
    ]
   },
   "RIG": {
@@ -5099,7 +5099,7 @@
    "dayLow": 5.31,
    "high52": 7.66,
    "low52": 3.68,
-   "volume": 23161263,
+   "volume": 24344000,
    "closes": [
     5.65,
     5.58,
@@ -5131,16 +5131,16 @@
    "name": "Rivian Automotive, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 12.3,
+   "price": 12.16,
    "open": 12.78,
    "prevClose": 12.8,
-   "change": -0.5,
-   "changePct": -3.91,
+   "change": -0.64,
+   "changePct": -5,
    "dayHigh": 12.79,
-   "dayLow": 12.26,
+   "dayLow": 12.16,
    "high52": 22.69,
    "low52": 11.38,
-   "volume": 19372505,
+   "volume": 22323522,
    "closes": [
     13.37,
     12.95,
@@ -5165,23 +5165,23 @@
     13.7,
     13.54,
     12.8,
-    12.3
+    12.16
    ]
   },
   "SBUX": {
    "name": "Starbucks Corporation",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 106.87,
+   "price": 106.62,
    "open": 106.61,
    "prevClose": 107.26,
-   "change": -0.39,
-   "changePct": -0.36,
+   "change": -0.64,
+   "changePct": -0.6,
    "dayHigh": 107.61,
    "dayLow": 106.39,
    "high52": 111.5,
    "low52": 81.97,
-   "volume": 2798115,
+   "volume": 3058119,
    "closes": [
     92,
     93.25,
@@ -5206,23 +5206,23 @@
     109.95,
     109.89,
     107.26,
-    106.86
+    106.61
    ]
   },
   "SCJ": {
    "name": "iShares MSCI Japan Small-Cap ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 105.75,
+   "price": 105.94,
    "open": 105.55,
    "prevClose": 105.35,
-   "change": 0.4,
-   "changePct": 0.38,
-   "dayHigh": 105.91,
+   "change": 0.59,
+   "changePct": 0.56,
+   "dayHigh": 105.94,
    "dayLow": 105.09,
    "high52": 111.44,
    "low52": 88.54,
-   "volume": 19002,
+   "volume": 20524,
    "closes": [
     110.02,
     108.56,
@@ -5247,23 +5247,23 @@
     104.8,
     105.41,
     105.35,
-    105.75
+    105.94
    ]
   },
   "SHAK": {
    "name": "Shake Shack Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 75.03,
+   "price": 74.74,
    "open": 73.28,
    "prevClose": 72.68,
-   "change": 2.35,
-   "changePct": 3.23,
+   "change": 2.06,
+   "changePct": 2.83,
    "dayHigh": 75.3,
    "dayLow": 72.02,
    "high52": 107.46,
    "low52": 51.6,
-   "volume": 679484,
+   "volume": 746921,
    "closes": [
     71.06,
     68.77,
@@ -5288,23 +5288,23 @@
     75.9,
     75.04,
     72.68,
-    75.03
+    74.74
    ]
   },
   "SHOP": {
    "name": "Shopify Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 147.44,
+   "price": 147.47,
    "open": 147.23,
    "prevClose": 146.78,
-   "change": 0.66,
-   "changePct": 0.45,
+   "change": 0.69,
+   "changePct": 0.47,
    "dayHigh": 150.71,
    "dayLow": 144.6,
    "high52": 180.88,
    "low52": 94,
-   "volume": 2909881,
+   "volume": 3039434,
    "closes": [
     176.52,
     172.5,
@@ -5329,23 +5329,23 @@
     146.61,
     149.26,
     146.78,
-    147.44
+    147.47
    ]
   },
   "SIRI": {
    "name": "Sirius XM Holdings Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 32,
+   "price": 31.95,
    "open": 31.88,
    "prevClose": 31.74,
-   "change": 0.26,
-   "changePct": 0.82,
+   "change": 0.21,
+   "changePct": 0.66,
    "dayHigh": 32.34,
    "dayLow": 31.78,
    "high52": 33.76,
    "low52": 19.77,
-   "volume": 1947905,
+   "volume": 2077998,
    "closes": [
     26.57,
     26.51,
@@ -5370,23 +5370,23 @@
     32.24,
     32.26,
     31.74,
-    32
+    31.94
    ]
   },
   "SLB": {
    "name": "SLB N.V.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 51.54,
+   "price": 51.47,
    "open": 51.45,
    "prevClose": 50.91,
-   "change": 0.63,
-   "changePct": 1.24,
+   "change": 0.56,
+   "changePct": 1.1,
    "dayHigh": 51.56,
    "dayLow": 50.88,
    "high52": 60.46,
    "low52": 34.65,
-   "volume": 3032414,
+   "volume": 3237907,
    "closes": [
     48.77,
     48.51,
@@ -5411,23 +5411,23 @@
     49.9,
     50.96,
     50.91,
-    51.53
+    51.47
    ]
   },
   "SMH": {
    "name": "VanEck Semiconductor ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 485.39,
+   "price": 486.41,
    "open": 499.26,
    "prevClose": 501.73,
-   "change": -16.34,
-   "changePct": -3.26,
+   "change": -15.32,
+   "changePct": -3.05,
    "dayHigh": 500.27,
    "dayLow": 473.26,
    "high52": 671.83,
    "low52": 315.05,
-   "volume": 10049107,
+   "volume": 10298856,
    "closes": [
     588.12,
     564.74,
@@ -5452,23 +5452,23 @@
     483.63,
     506.96,
     501.73,
-    485.39
+    486.41
    ]
   },
   "SNAP": {
    "name": "Snap Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 5.25,
+   "price": 5.26,
    "open": 5.24,
    "prevClose": 5.22,
-   "change": 0.03,
-   "changePct": 0.57,
+   "change": 0.04,
+   "changePct": 0.77,
    "dayHigh": 5.35,
    "dayLow": 5.16,
    "high52": 9.07,
    "low52": 3.81,
-   "volume": 28823642,
+   "volume": 29939883,
    "closes": [
     6.49,
     6.1,
@@ -5493,7 +5493,7 @@
     5,
     5.34,
     5.22,
-    5.25
+    5.26
    ]
   },
   "SNBR": {
@@ -5516,16 +5516,16 @@
    "name": "Snowflake Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 290.91,
+   "price": 290.82,
    "open": 301.62,
    "prevClose": 298.7,
-   "change": -7.79,
-   "changePct": -2.61,
+   "change": -7.88,
+   "changePct": -2.64,
    "dayHigh": 301.62,
    "dayLow": 283.41,
    "high52": 384.56,
    "low52": 118.3,
-   "volume": 2189881,
+   "volume": 2245224,
    "closes": [
     357.76,
     335.08,
@@ -5550,23 +5550,23 @@
     295.76,
     301.22,
     298.7,
-    290.91
+    290.82
    ]
   },
   "SONO": {
    "name": "Sonos, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 17.86,
+   "price": 17.94,
    "open": 18.22,
    "prevClose": 18.11,
-   "change": -0.25,
-   "changePct": -1.38,
+   "change": -0.17,
+   "changePct": -0.94,
    "dayHigh": 18.73,
    "dayLow": 17.83,
    "high52": 19.82,
    "low52": 12.44,
-   "volume": 757629,
+   "volume": 809755,
    "closes": [
     17.72,
     17.6,
@@ -5591,23 +5591,23 @@
     16.89,
     19.06,
     18.11,
-    17.86
+    17.94
    ]
   },
   "SOUN": {
    "name": "SoundHound AI, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 3.49,
+   "price": 3.5,
    "open": 3.62,
    "prevClose": 3.6,
-   "change": -0.11,
-   "changePct": -3.06,
+   "change": -0.1,
+   "changePct": -2.78,
    "dayHigh": 3.62,
    "dayLow": 3.4,
    "high52": 13.19,
    "low52": 3.4,
-   "volume": 15979766,
+   "volume": 16367169,
    "closes": [
     4.88,
     4.53,
@@ -5632,23 +5632,23 @@
     3.87,
     3.91,
     3.6,
-    3.48
+    3.49
    ]
   },
   "SOXL": {
    "name": "Direxion Daily Semiconductor Bull 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 57.76,
+   "price": 58.28,
    "open": 63.3,
    "prevClose": 65.53,
-   "change": -7.77,
-   "changePct": -11.86,
+   "change": -7.25,
+   "changePct": -11.06,
    "dayHigh": 64.7,
    "dayLow": 52.36,
    "high52": 302,
    "low52": 28.12,
-   "volume": 186341115,
+   "volume": 189459352,
    "closes": [
     127.57,
     110.54,
@@ -5673,23 +5673,23 @@
     56.06,
     66.03,
     65.53,
-    57.76
+    58.28
    ]
   },
   "SOXS": {
    "name": "Direxion Daily Semiconductor Bear 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 51.16,
+   "price": 50.81,
    "open": 47.26,
    "prevClose": 45.72,
-   "change": 5.44,
-   "changePct": 11.9,
+   "change": 5.09,
+   "changePct": 11.13,
    "dayHigh": 54.94,
    "dayLow": 46.34,
    "high52": 1030,
    "low52": 28.46,
-   "volume": 107516761,
+   "volume": 108492997,
    "closes": [
     37.42,
     42.52,
@@ -5714,7 +5714,7 @@
     55.36,
     45.32,
     45.72,
-    51.16
+    50.81
    ]
   },
   "SPCE": {
@@ -5730,7 +5730,7 @@
    "dayLow": 1.81,
    "high52": 8.9,
    "low52": 1.81,
-   "volume": 33744868,
+   "volume": 35263012,
    "closes": [
     2.63,
     2.55,
@@ -5762,16 +5762,16 @@
    "name": "Spotify Technology S.A.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 611.32,
+   "price": 611.29,
    "open": 600.93,
    "prevClose": 598.51,
-   "change": 12.81,
+   "change": 12.78,
    "changePct": 2.14,
    "dayHigh": 616.56,
    "dayLow": 598.66,
    "high52": 654.68,
    "low52": 405,
-   "volume": 703268,
+   "volume": 741915,
    "closes": [
     527.45,
     523.96,
@@ -5796,23 +5796,23 @@
     606.22,
     609.12,
     598.51,
-    611.32
+    611.28
    ]
   },
   "SPXL": {
    "name": "Direxion Daily S&P500 Bull 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 263.48,
+   "price": 263.81,
    "open": 271.18,
    "prevClose": 268.38,
-   "change": -4.9,
-   "changePct": -1.83,
+   "change": -4.57,
+   "changePct": -1.7,
    "dayHigh": 271.35,
    "dayLow": 258.4,
    "high52": 303.18,
    "low52": 168.04,
-   "volume": 2376458,
+   "volume": 2404775,
    "closes": [
     297.42,
     287.63,
@@ -5837,23 +5837,23 @@
     261.05,
     271.18,
     268.38,
-    263.48
+    263.8
    ]
   },
   "SPXS": {
    "name": "Direxion Daily S&P 500 Bear 3X Shares",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 25.64,
+   "price": 25.61,
    "open": 24.91,
    "prevClose": 25.15,
-   "change": 0.49,
-   "changePct": 1.95,
+   "change": 0.46,
+   "changePct": 1.83,
    "dayHigh": 26.12,
    "dayLow": 24.9,
    "high52": 44.83,
    "low52": 23.04,
-   "volume": 10004475,
+   "volume": 10290067,
    "closes": [
     23.42,
     24.19,
@@ -5878,23 +5878,23 @@
     25.9,
     24.89,
     25.15,
-    25.64
+    25.6
    ]
   },
   "SPY": {
    "name": "State Street SPDR S&P 500 ETF Trust",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 752.78,
+   "price": 753.06,
    "open": 760.07,
    "prevClose": 757.12,
-   "change": -4.34,
-   "changePct": -0.57,
+   "change": -4.06,
+   "changePct": -0.54,
    "dayHigh": 760.12,
    "dayLow": 747.89,
    "high52": 781.62,
    "low52": 629.28,
-   "volume": 25063386,
+   "volume": 25868687,
    "closes": [
     778.01,
     769.6,
@@ -5919,23 +5919,23 @@
     749.92,
     759.81,
     757.12,
-    752.78
+    753.05
    ]
   },
   "SQQQ": {
    "name": "ProShares UltraPro Short QQQ",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 42.67,
+   "price": 42.55,
    "open": 40.95,
    "prevClose": 40.93,
-   "change": 1.74,
-   "changePct": 4.25,
+   "change": 1.62,
+   "changePct": 3.96,
    "dayHigh": 43.94,
    "dayLow": 40.9,
    "high52": 90.72,
    "low52": 31.42,
-   "volume": 46285393,
+   "volume": 47105826,
    "closes": [
     33.99,
     36,
@@ -5960,23 +5960,23 @@
     43.56,
     40.55,
     40.93,
-    42.67
+    42.54
    ]
   },
   "TGT": {
    "name": "Target Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 161.34,
+   "price": 161.11,
    "open": 161.22,
    "prevClose": 160.9,
-   "change": 0.44,
-   "changePct": 0.27,
+   "change": 0.21,
+   "changePct": 0.13,
    "dayHigh": 161.9,
    "dayLow": 159.28,
    "high52": 170.75,
    "low52": 83.44,
-   "volume": 1340761,
+   "volume": 1469200,
    "closes": [
     151.99,
     155.31,
@@ -6001,23 +6001,23 @@
     161.78,
     162.7,
     160.9,
-    161.34
+    161.11
    ]
   },
   "TLRY": {
    "name": "Tilray Brands, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 2.45,
+   "price": 2.44,
    "open": 2.5,
    "prevClose": 2.49,
-   "change": -0.04,
-   "changePct": -1.61,
+   "change": -0.05,
+   "changePct": -2.01,
    "dayHigh": 2.53,
    "dayLow": 2.41,
    "high52": 15.7,
    "low52": 2.41,
-   "volume": 2060699,
+   "volume": 2148632,
    "closes": [
     3.27,
     3.14,
@@ -6042,23 +6042,23 @@
     2.65,
     2.61,
     2.49,
-    2.45
+    2.44
    ]
   },
   "TMUS": {
    "name": "T-Mobile US, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 170.49,
+   "price": 170.32,
    "open": 171.76,
    "prevClose": 171.03,
-   "change": -0.54,
-   "changePct": -0.32,
+   "change": -0.71,
+   "changePct": -0.42,
    "dayHigh": 172.93,
    "dayLow": 169.64,
    "high52": 224.75,
    "low52": 143.75,
-   "volume": 1484539,
+   "volume": 1603540,
    "closes": [
     153.73,
     157.79,
@@ -6083,23 +6083,23 @@
     169.08,
     172.16,
     171.03,
-    170.49
+    170.32
    ]
   },
   "TQQQ": {
    "name": "ProShares UltraPro QQQ",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 57.37,
+   "price": 57.56,
    "open": 59.9,
    "prevClose": 59.88,
-   "change": -2.51,
-   "changePct": -4.19,
+   "change": -2.32,
+   "changePct": -3.87,
    "dayHigh": 59.97,
-   "dayLow": 55.52,
+   "dayLow": 55.53,
    "high52": 88.09,
    "low52": 37.32,
-   "volume": 71974351,
+   "volume": 73006226,
    "closes": [
     78.81,
     74.12,
@@ -6124,7 +6124,7 @@
     56.56,
     60.44,
     59.88,
-    57.37
+    57.56
    ]
   },
   "TRIP": {
@@ -6140,7 +6140,7 @@
    "dayLow": 7.15,
    "high52": 15.73,
    "low52": 6.78,
-   "volume": 2340972,
+   "volume": 2495070,
    "closes": [
     8.74,
     8.93,
@@ -6172,16 +6172,16 @@
    "name": "Tesla, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 390.59,
+   "price": 390.61,
    "open": 401.94,
    "prevClose": 397.45,
-   "change": -6.86,
-   "changePct": -1.73,
+   "change": -6.84,
+   "changePct": -1.72,
    "dayHigh": 404.4,
    "dayLow": 385.83,
    "high52": 498.83,
    "low52": 297.38,
-   "volume": 25535062,
+   "volume": 26004307,
    "closes": [
     375.23,
     367.16,
@@ -6206,7 +6206,7 @@
     379.78,
     390.84,
     397.45,
-    390.59
+    390.61
    ]
   },
   "TTD": {
@@ -6222,7 +6222,7 @@
    "dayLow": 15.45,
    "high52": 42.69,
    "low52": 11.62,
-   "volume": 10833021,
+   "volume": 11250541,
    "closes": [
     12.17,
     12.18,
@@ -6254,16 +6254,16 @@
    "name": "Unity Software Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 52.61,
+   "price": 52.79,
    "open": 50.5,
    "prevClose": 50.18,
-   "change": 2.43,
-   "changePct": 4.84,
-   "dayHigh": 52.74,
+   "change": 2.61,
+   "changePct": 5.2,
+   "dayHigh": 52.83,
    "dayLow": 49.71,
    "high52": 54.27,
    "low52": 16.78,
-   "volume": 8431568,
+   "volume": 9010275,
    "closes": [
     46.63,
     41.4,
@@ -6288,23 +6288,23 @@
     50.34,
     49.65,
     50.18,
-    52.6
+    52.79
    ]
   },
   "UAL": {
    "name": "United Airlines Holdings, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 110.92,
+   "price": 111.09,
    "open": 111.3,
    "prevClose": 111.25,
-   "change": -0.33,
-   "changePct": -0.3,
+   "change": -0.16,
+   "changePct": -0.14,
    "dayHigh": 112.79,
    "dayLow": 110.41,
    "high52": 138.77,
    "low52": 84.64,
-   "volume": 3039328,
+   "volume": 3180684,
    "closes": [
     103.23,
     98.96,
@@ -6329,23 +6329,23 @@
     120.56,
     118.37,
     111.25,
-    110.92
+    111.09
    ]
   },
   "UBER": {
    "name": "Uber Technologies, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 69.3,
+   "price": 69.44,
    "open": 69.32,
    "prevClose": 69.12,
-   "change": 0.18,
-   "changePct": 0.26,
+   "change": 0.32,
+   "changePct": 0.46,
    "dayHigh": 70.51,
    "dayLow": 69.03,
    "high52": 92.92,
    "low52": 64.04,
-   "volume": 7784287,
+   "volume": 8366538,
    "closes": [
     71.32,
     69.29,
@@ -6370,23 +6370,23 @@
     70.05,
     70.68,
     69.12,
-    69.29
+    69.43
    ]
   },
   "UFO": {
    "name": "Procure Space ETF",
    "exchange": "NASDAQ",
    "type": "ETF",
-   "price": 40.69,
+   "price": 40.72,
    "open": 41.14,
    "prevClose": 41.12,
-   "change": -0.43,
-   "changePct": -1.05,
+   "change": -0.4,
+   "changePct": -0.97,
    "dayHigh": 41.57,
    "dayLow": 40.09,
    "high52": 68.21,
    "low52": 30.89,
-   "volume": 128031,
+   "volume": 132156,
    "closes": [
     40.74,
     39.73,
@@ -6411,23 +6411,23 @@
     41.73,
     42.17,
     41.12,
-    40.69
+    40.72
    ]
   },
   "UNH": {
    "name": "UnitedHealth Group Incorporated",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 407.69,
+   "price": 407,
    "open": 407.89,
    "prevClose": 405.13,
-   "change": 2.56,
-   "changePct": 0.63,
+   "change": 1.87,
+   "changePct": 0.46,
    "dayHigh": 408.51,
    "dayLow": 400.5,
    "high52": 461.62,
    "low52": 255.97,
-   "volume": 2119574,
+   "volume": 2246046,
    "closes": [
     377.76,
     395.62,
@@ -6452,23 +6452,23 @@
     405.12,
     402.94,
     405.13,
-    407.69
+    407
    ]
   },
   "URBN": {
    "name": "Urban Outfitters, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 85.85,
+   "price": 86.04,
    "open": 85.95,
    "prevClose": 84.8,
-   "change": 1.05,
-   "changePct": 1.24,
-   "dayHigh": 86,
+   "change": 1.24,
+   "changePct": 1.46,
+   "dayHigh": 86.14,
    "dayLow": 83.21,
    "high52": 93.64,
    "low52": 59.54,
-   "volume": 586050,
+   "volume": 621475,
    "closes": [
     84.85,
     84.68,
@@ -6493,23 +6493,23 @@
     86.97,
     86,
     84.8,
-    85.85
+    86.04
    ]
   },
   "V": {
    "name": "Visa Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 425.33,
+   "price": 425.37,
    "open": 423.67,
    "prevClose": 420.31,
-   "change": 5.02,
-   "changePct": 1.19,
+   "change": 5.06,
+   "changePct": 1.2,
    "dayHigh": 427.46,
    "dayLow": 422.59,
    "high52": 442.23,
    "low52": 293.89,
-   "volume": 3279972,
+   "volume": 3379347,
    "closes": [
     396.06,
     391.43,
@@ -6534,23 +6534,23 @@
     423,
     425.55,
     420.31,
-    425.33
+    425.37
    ]
   },
   "VFC": {
    "name": "V.F. Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 20.72,
+   "price": 20.71,
    "open": 20.2,
    "prevClose": 20.03,
-   "change": 0.69,
-   "changePct": 3.44,
+   "change": 0.68,
+   "changePct": 3.39,
    "dayHigh": 20.81,
    "dayLow": 20.06,
    "high52": 22.27,
    "low52": 12.46,
-   "volume": 6651030,
+   "volume": 7051939,
    "closes": [
     16.07,
     16.48,
@@ -6575,7 +6575,7 @@
     20.74,
     20.64,
     20.03,
-    20.72
+    20.71
    ]
   },
   "VGK": {
@@ -6591,7 +6591,7 @@
    "dayLow": 88.84,
    "high52": 93.29,
    "low52": 77.87,
-   "volume": 830837,
+   "volume": 860241,
    "closes": [
     86.31,
     85.99,
@@ -6616,23 +6616,23 @@
     89.65,
     89.46,
     88.91,
-    88.98
+    88.97
    ]
   },
   "VTI": {
    "name": "Vanguard Morningstar Total Stock Market ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 370.52,
+   "price": 370.63,
    "open": 374.15,
    "prevClose": 372.62,
-   "change": -2.1,
-   "changePct": -0.56,
+   "change": -1.99,
+   "changePct": -0.53,
    "dayHigh": 374.23,
    "dayLow": 368,
    "high52": 385.12,
    "low52": 310.4,
-   "volume": 2874868,
+   "volume": 2961863,
    "closes": [
     381.32,
     376.88,
@@ -6657,23 +6657,23 @@
     369.55,
     374.25,
     372.62,
-    370.52
+    370.63
    ]
   },
   "WEN": {
    "name": "The Wendy's Company",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 8.29,
+   "price": 8.27,
    "open": 8.18,
    "prevClose": 8.18,
-   "change": 0.11,
-   "changePct": 1.34,
+   "change": 0.09,
+   "changePct": 1.1,
    "dayHigh": 8.33,
    "dayLow": 8.15,
    "high52": 9.45,
    "low52": 5.94,
-   "volume": 3629080,
+   "volume": 3770772,
    "closes": [
     6.35,
     6.44,
@@ -6698,23 +6698,23 @@
     8.34,
     8.34,
     8.18,
-    8.28
+    8.27
    ]
   },
   "WFC": {
    "name": "Wells Fargo & Company",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 85.73,
+   "price": 85.72,
    "open": 86.47,
    "prevClose": 85.76,
-   "change": -0.03,
-   "changePct": -0.03,
+   "change": -0.04,
+   "changePct": -0.05,
    "dayHigh": 86.85,
    "dayLow": 85.33,
    "high52": 97.76,
    "low52": 72.78,
-   "volume": 6515945,
+   "volume": 6713242,
    "closes": [
     80.74,
     80.9,
@@ -6739,23 +6739,23 @@
     85.76,
     85.8,
     85.76,
-    85.73
+    85.72
    ]
   },
   "WING": {
    "name": "Wingstop Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 159.94,
+   "price": 159.29,
    "open": 159.72,
    "prevClose": 159.26,
-   "change": 0.68,
-   "changePct": 0.43,
+   "change": 0.03,
+   "changePct": 0.02,
    "dayHigh": 162.59,
    "dayLow": 155.59,
    "high52": 302.8,
    "low52": 95.82,
-   "volume": 666765,
+   "volume": 695529,
    "closes": [
     125.76,
     122.9,
@@ -6780,23 +6780,23 @@
     169.58,
     166.73,
     159.26,
-    159.94
+    159.29
    ]
   },
   "WMT": {
    "name": "Walmart Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 127.82,
+   "price": 127.78,
    "open": 126.76,
    "prevClose": 126.19,
-   "change": 1.63,
-   "changePct": 1.29,
+   "change": 1.59,
+   "changePct": 1.26,
    "dayHigh": 128.27,
    "dayLow": 126.24,
    "high52": 135.16,
    "low52": 98.88,
-   "volume": 10403247,
+   "volume": 10808478,
    "closes": [
     112.28,
     116.16,
@@ -6821,23 +6821,23 @@
     125.55,
     125.67,
     126.19,
-    127.82
+    127.78
    ]
   },
   "WOOF": {
    "name": "Petco Health and Wellness Company, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 2.83,
+   "price": 2.84,
    "open": 2.87,
    "prevClose": 2.87,
-   "change": -0.04,
-   "changePct": -1.39,
+   "change": -0.03,
+   "changePct": -1.05,
    "dayHigh": 2.89,
    "dayLow": 2.83,
    "high52": 3.78,
    "low52": 2.14,
-   "volume": 1834440,
+   "volume": 1880392,
    "closes": [
     2.41,
     2.37,
@@ -6862,23 +6862,23 @@
     2.93,
     2.88,
     2.87,
-    2.83
+    2.84
    ]
   },
   "XLE": {
    "name": "State Street Energy Select Sector SPDR ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 64.78,
+   "price": 64.77,
    "open": 64.91,
    "prevClose": 64.33,
-   "change": 0.45,
-   "changePct": 0.7,
+   "change": 0.44,
+   "changePct": 0.68,
    "dayHigh": 64.96,
    "dayLow": 64.16,
    "high52": 70.15,
    "low52": 43.77,
-   "volume": 14222900,
+   "volume": 15048495,
    "closes": [
     67.2,
     67.63,
@@ -6903,23 +6903,23 @@
     62.21,
     63.37,
     64.33,
-    64.78
+    64.77
    ]
   },
   "XLF": {
    "name": "State Street Financial Select Sector SPDR ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 58.49,
+   "price": 58.5,
    "open": 58.6,
    "prevClose": 58.21,
-   "change": 0.28,
-   "changePct": 0.48,
+   "change": 0.29,
+   "changePct": 0.5,
    "dayHigh": 58.71,
    "dayLow": 58.23,
    "high52": 60.04,
    "low52": 47.67,
-   "volume": 23718953,
+   "volume": 24217151,
    "closes": [
     54.82,
     54.52,
@@ -6951,16 +6951,16 @@
    "name": "State Street Health Care Select Sector SPDR ETF",
    "exchange": "NYSE ARCA",
    "type": "ETF",
-   "price": 188.76,
+   "price": 188.54,
    "open": 188.45,
    "prevClose": 187.83,
-   "change": 0.93,
-   "changePct": 0.5,
+   "change": 0.71,
+   "changePct": 0.38,
    "dayHigh": 189.13,
    "dayLow": 187.22,
    "high52": 192.32,
    "low52": 141.97,
-   "volume": 4641312,
+   "volume": 4835626,
    "closes": [
     169.66,
     173.96,
@@ -6985,23 +6985,23 @@
     188.88,
     188.95,
     187.83,
-    188.76
+    188.54
    ]
   },
   "XOM": {
    "name": "ExxonMobil Holdings Corporation",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 170.14,
+   "price": 170.11,
    "open": 171.43,
    "prevClose": 169.78,
-   "change": 0.36,
-   "changePct": 0.21,
+   "change": 0.33,
+   "changePct": 0.19,
    "dayHigh": 171.71,
    "dayLow": 169.21,
    "high52": 188.5,
    "low52": 114.19,
-   "volume": 6814015,
+   "volume": 7450801,
    "closes": [
     174.08,
     177.01,
@@ -7026,23 +7026,23 @@
     164.47,
     166.71,
     169.78,
-    170.13
+    170.11
    ]
   },
   "YETI": {
    "name": "YETI Holdings, Inc.",
    "exchange": "NYSE",
    "type": "EQUITY",
-   "price": 39.4,
+   "price": 39.27,
    "open": 37.51,
    "prevClose": 38.3,
-   "change": 1.1,
-   "changePct": 2.87,
+   "change": 0.97,
+   "changePct": 2.53,
    "dayHigh": 39.53,
    "dayLow": 37.5,
    "high52": 53.99,
    "low52": 34.9,
-   "volume": 3403863,
+   "volume": 3588682,
    "closes": [
     39.34,
     40.51,
@@ -7067,23 +7067,23 @@
     44.77,
     42.79,
     38.3,
-    39.4
+    39.27
    ]
   },
   "ZM": {
    "name": "Zoom Communications, Inc.",
    "exchange": "NASDAQ",
    "type": "EQUITY",
-   "price": 100,
+   "price": 99.92,
    "open": 98.98,
    "prevClose": 97.7,
-   "change": 2.3,
-   "changePct": 2.35,
+   "change": 2.22,
+   "changePct": 2.27,
    "dayHigh": 100.32,
    "dayLow": 96.83,
    "high52": 114.74,
    "low52": 70.7,
-   "volume": 2019428,
+   "volume": 2177628,
    "closes": [
     98.16,
     94.47,
@@ -7108,18 +7108,18 @@
     90.91,
     98.08,
     97.7,
-    100
+    99.92
    ]
   }
  },
  "indices": {
   "sp-500": {
    "symbol": "^GSPC",
-   "price": 7548.13,
+   "price": 7551.2,
    "open": 7616.85,
    "prevClose": 7592.4,
-   "change": -44.27,
-   "changePct": -0.58,
+   "change": -41.2,
+   "changePct": -0.54,
    "dayHigh": 7621.78,
    "dayLow": 7499.4,
    "high52": 7844.52,
@@ -7127,11 +7127,11 @@
   },
   "nasdaq": {
    "symbol": "^IXIC",
-   "price": 25101.06,
+   "price": 25121.7,
    "open": 25408,
    "prevClose": 25366.09,
-   "change": -265.03,
-   "changePct": -1.04,
+   "change": -244.39,
+   "changePct": -0.96,
    "dayHigh": 25423.09,
    "dayLow": 24872.41,
    "high52": 27722.75,
@@ -7139,11 +7139,11 @@
   },
   "dow-jones": {
    "symbol": "^DJI",
-   "price": 52288.92,
+   "price": 52273.29,
    "open": 52490.68,
    "prevClose": 52297.09,
-   "change": -8.17,
-   "changePct": -0.02,
+   "change": -23.8,
+   "changePct": -0.05,
    "dayHigh": 52521.48,
    "dayLow": 52017.86,
    "high52": 54744.33,
