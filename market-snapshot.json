@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-13T11:34:16.970Z",
+ "fetchedAt": "2026-11-13T11:45:31.879Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -8375,7 +8375,7 @@
    "changePct": -0.38,
    "dayHigh": 490.4,
    "dayLow": 483.95,
-   "high52": 491.05,
+   "high52": 494.05,
    "low52": 345.5,
    "volume": 11007257,
    "longName": "Kotak Mahindra Bank Limited",
