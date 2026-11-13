@@ -1,6 +1,6 @@
 {
  "source": "Yahoo Finance (public chart + search endpoints)",
- "fetchedAt": "2026-11-13T11:45:31.879Z",
+ "fetchedAt": "2026-11-13T17:32:00.868Z",
  "symbols": [
   "ADANIENT",
   "ADANIGREEN",
@@ -15077,7 +15077,7 @@
    "change": -155.05,
    "changePct": -0.61,
    "dayHigh": 25246.35,
-   "dayLow": 25054.4,
+   "dayLow": 25054.6,
    "high52": 26373.2,
    "low52": 22179.9
   },
